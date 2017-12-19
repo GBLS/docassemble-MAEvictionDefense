@@ -1,0 +1,5 @@
+---
+question: |
+  What is your quest?
+fields: 
+  - Quest: quest
