@@ -4,5 +4,5 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 
 ## Author
 
-System Administrator, admin@admin.com
+Quinten Steenhuis, quinten@nonprofittechy.com
 
