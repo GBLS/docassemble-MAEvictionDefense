@@ -1,0 +1,79 @@
+---
+question: Bad Housing Conditions
+subquestion: | 
+  List any problems with the apartment you live in now. Think about problems over the last
+  6 years, whether they are currently repaired or not.
+  Your landlord will only be liable for problems that they knew about or should have
+  known about.
+fields:
+  - "Select the conditions you have had": bad_conditions.conditions
+    datatype: checkboxes
+    choices:
+      - insects
+      - cockroaches
+      - mice or rats
+      - water leaks or other plumbing problems
+      - electrical problems
+      - lead paint
+      - defective or leaky windows
+      - defective ceilings, walls, or floors
+      - no heat
+      - no hot water
+      - not enough heat
+      - not enough hot water
+      - defective locks
+      - security problems
+help: |
+  You may have a claim against your landlord for problems in your home over the last
+  6 years, whether they are currently repaired or not. For certain problems, you may only
+  have a claim for the last 4 years.
+  
+  Your landlord may have to pay you the difference between the value of your home in full
+  repair and the value of your home with the bad conditions. For very serious problems
+  that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
+---
+question: Notification of landlord
+subquestion: |
+  How did you notify your landlord of the bad housing conditions?
+fields:
+  - How did you notify your landlord of the bad housing conditions?: bad_conditions.landlord_notified
+    datatype: checkboxes
+    choices:
+      - I told the landlord orally.
+      - I told the landlord in writing.
+      - The landlord was notified by Inspectional Services, Board of Health, housing agency, or someone else.
+      - All or some of the conditions existed when I moved in.
+      - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
+      - All or some of these conditions exist in common areas that the landlord has access to.
+  - Other: bad_conditions.other
+
+---
+question: Breach of Quiet Enjoyment
+subquestion: |
+  Give us some information about how your landlord breached
+  your quiet enjoyment of the premises. Check any that apply.
+fields:
+  - Failed to provide adequate heat: bqe.heat
+    datatype: yesno
+  - Failed to provide adequate hot water: bqe.hot_water
+    datatype: yesno
+  - Did not pay for utilities that were the landlord's responsibility: bqe.unpaid_utilities
+    datatype: yesno
+  - Shut off my utilities: bqe.shutoff_utilities
+    datatype: yesno
+  - Locked me out of my home: bqe.locked_out
+    datatype: yesno
+  - Put out my possessions without a court order: bqe.removed_possessions
+    datatype: yesno
+  - Allowed bad conditions to exist in my home: bqe.bad_conditions
+    datatype: yesno
+  - Entered my home without permission or notice: bqe.entered_without_permission
+    datatype: yesno
+  - Interfered in some other way (specify): bqe.other
+---
+question: Interference with utilities
+fields:
+  - Have you been billed for heat, hot water, electricity or gas without an agreement in writing?: bqe.billed_no_agreement
+    datatype: yesno
+  - Have you been billed any utilities that cover the common area or other people's apartments (cross metering or cross wiring)?: bqe.billed_for_others
+    datatype: yesno

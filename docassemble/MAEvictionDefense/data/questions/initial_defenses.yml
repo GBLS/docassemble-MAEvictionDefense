@@ -1,0 +1,63 @@
+---
+question: Other
+fields: 
+  - Is your rent paid by DTA, and DTA failed to make the payments at no fault of yours? : other.vendor_payments
+    datatype: yesno
+  - Did you make repairs and deduct from your rent pursuant to (G.L. c. 111, §127L)?: other.repair_and_deduct_statute
+    datatype: yesno
+  - Did your landlord charge you for water in violation of G.L. c. 186, §22.? : other.water_violation
+    datatype: yesno
+---
+question: Requested relief
+fields:
+  - relief.other : relief.other
+    datatype: yesno
+  - relief.stay_8A : relief.stay_8A
+    datatype: yesno
+  - relief.request_accommodation : relief.request_accommodation
+    datatype: yesno
+  - relief.not_at_fault : relief.not_at_fault
+    datatype: yesno
+  - relief.stay.request_stay : relief.stay.request_stay
+    datatype: yesno
+  - relief.stay.elderly_or_disabled : relief.stay.elderly_or_disabled
+    datatype: yesno
+  - relief.stay.other : relief.stay.other
+    datatype: yesno
+---
+question: |
+  Did your landlord file the case properly?
+subquestion: |
+  Below are some common problems with a case that your landlord may have overlooked. Select
+  all that apply to you.
+fields:
+  - Did you receive a Notice to Quit? : initial_defense.no_ntq
+    datatype: noyes
+  - Did your landlord fail to properly terminate your tenancy? : initial_defense.no_proper_termination
+    datatype: yesno
+    default: True
+  - Did your landlord start the eviction case (by sending you a copy of the Summons and Complaint) before the Notice to Quit expired? : initial_defense.premature_commencement
+    datatype: yesno
+  - Is your landlord a corporation, and if so, did a lawyer sign the Summons and Complaint? : initial_defense.varney
+    datatype: noyes
+  - Is the Summons and Complaint defective, or was it improperly served? : initial_defense.defective_summons
+    datatype: yesno
+  - Did you "cure" the balance owed by paying all money and fees due, by the answer date if it is a tenancy by lease, or within 10 days of the Notice to Quit if it is a tenancy at will? : initial_defense.cure
+    datatype: yesno
+  - Did your landlord create a new tenancy by entering into a new lease or accepting rent without a proper reservation of rights? : initial_defense.new_tenancy
+    datatype: yesno
+  - Does your landlord lack standing to evict you? : initial_defense.no_standing
+    datatype: yesno
+  - Did your landlord state an unrelated reason for the eviction on the Notice to Quit vs the Summons and Complaint? : initial_defense.inconsistent_reasons
+    datatype: yesno
+  - Other : initial_defense.other
+    datatype: yesno
+  - Other Reason: initial_defense.other_reason
+    required: False
+comments:
+  Should add a guide me button to this form
+---
+question: Other initial defense
+fields: 
+  - Other: initial_defense.other_reason
+ 

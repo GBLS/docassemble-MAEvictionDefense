@@ -1,0 +1,14 @@
+---
+question: What is the Landlord's name?
+fields:
+  - Name: landlord.name.text
+---
+mandatory: True
+question: Information about ${landlord.name}.
+field: landlord.organization_type
+choices:
+  - My landlord is a corporation or LLC.: corporate
+  - My landlord is a public agency (such as a housing authority).: public
+  - My landlord lives in the building with me.: livesinbuilding
+  - My landlord is a trust.: trust
+  - None of the above or I don't know.: other

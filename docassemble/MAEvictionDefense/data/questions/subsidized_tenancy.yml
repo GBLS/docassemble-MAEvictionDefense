@@ -1,0 +1,31 @@
+---
+question: Subsidized Housing Defenses
+fields:
+  - Is a portion of your rent paid for by a public housing authority? : subsidized_housing.pha_pays_rent
+    datatype: yesno
+    default: True
+  - Did the public housing authority stop payment to the landlord due to bad conditions?: subsidized_housing.stopped_payment
+    datatype: yesno
+  - Did your landlord or the housing authority improperly calculate your rent share?: subsidized_housing.improper_rent_calculation
+    datatype: yesno
+  - Did your landlord charge you more rent than allowed by the housing authority (side payments)? : subsidized_housing.landlord_overcharged
+    datatype: yesno
+---
+question: Subsidized Housing
+subquestion: |
+  Common defenses related to subsidized housing
+fields: 
+  - Did the landlord follow the rules for your subsidy program?: subsidized_housing.no_proper_termination
+    datatype: yesno
+    default: True
+  - Did the landlord send a copy of the notice to quit to your housing authority at the same time as they sent it to you? : subsidized_housing.no_ntq_to_agency
+    datatype: noyes
+  - Did your landlord have good cause to evict you? : subsidized_housing.no_just_cause
+    datatype: noyes
+    default: False
+  - Were you offered a chance to discuss the eviction with your landlord in a "private conference" or "grievance hearing"?: subsidized_housing.no_hearing_or_conference
+    datatype: noyes
+  - Did your landlord comply with VAWA? : subsidized_housing.vawa
+    datatype: noyes
+comment:
+  Guide me

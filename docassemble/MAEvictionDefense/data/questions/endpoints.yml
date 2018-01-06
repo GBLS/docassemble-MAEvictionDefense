@@ -1,0 +1,52 @@
+---
+event: client_kicked_out
+progress: 100
+question: |
+  Sorry, you cannot proceed with the interview.
+subquestion: |
+  You can only proceed with the interview if you agree that your
+  completion of the interview does not create an attorney-client
+  relationship.
+
+  % if user_understands_no_attorney_client_relationship == 'unsure':
+  Ask your [local legal services provider](https://www.masslegalservices.org/FindLegalAid) for more information
+  to understand how you can use this form.
+  % endif
+decoration: exit
+buttons:
+  - Exit: exit
+  - Restart: restart
+---
+event: onlyhasntq
+progress: 100
+question: Sorry, this is not the right interview for you.
+subquestion: |
+  This interview helps you fill out paperwork for court. You don't have a court date yet.
+  
+  You may want to call a legal services agency. If you owe money to your landlord
+  or are having trouble getting repairs made, a legal services agency may help you. 
+  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
+  find a legal services agency near you.
+buttons:
+  Exit: exit
+  Restart: restart
+---
+event: firstdatepassed
+question: This may not be the right interview for you.
+subquestion: |
+  This interview is meant to help you respond to your landlord's original case. You said that you
+  have already appeared in court for this case.
+  
+  You may still be able to use this interview to file a "late" response if you have not
+  been in front a judge or magistrate yet. 
+  
+  If you already filed an agreement with the court, this is probably not the right 
+  interview for you. 
+  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
+  find a legal services agency near you. You may receive help or advice to follow
+  in court.
+buttons:
+#  - Keep Going: continue
+  - Restart: restart
+  - Exit: exit
+    url: https://www.gbls.org/

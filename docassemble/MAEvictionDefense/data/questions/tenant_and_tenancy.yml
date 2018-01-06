@@ -1,0 +1,85 @@
+---
+question: What is the Tenant's name?
+fields:
+  - Name: tenant.name
+section: Information About You
+
+---
+question: |
+  What is ${ tenant.object_possessive('address') }?
+fields:
+  - address: tenant.address.address
+    default: "123 Main Street"
+  - unit: tenant.address.unit
+    required: False
+  - city: tenant.address.city
+    default: "Boston"
+  - state: tenant.address.state
+    default: "MA"
+  - zip: tenant.address.zip
+    default: "02110"
+  - country: tenant.address.country  
+    default: 'US'
+---
+question: Your tenancy
+subquestion: |
+  Let's answer some questions about your tenancy.
+fields:
+  - When did you move in?: facts.tenant_movein
+    datatype: date
+    required: False
+  - How much is your portion of the rent?: facts.tenant_rent_share
+    datatype: currency
+  - What is the "contract" rent (if you have a subsidized rent)?: facts.tenant_contract_rent
+    datatype: currency
+  - Do you have a written lease?: facts.tenant_has_lease
+    datatype: yesno
+--- 
+mandatory: True
+question: Information about ${tenant.name} (Select all that apply).
+fields: 
+  - ${tenant.name} is a member of a protected class and was discriminated against.: tenant.is_discriminated
+    datatype: yesno
+  - Someone who lives with ${tenant.name} has a disability: tenant.is_disabled
+    datatype: yesno
+  - Someone who lives with ${tenant.name} is under the age of 6: tenant.is_under6
+    datatype: yesno
+  - Someone who lives with ${tenant.name} is over the age of 60: tenant.is_over60
+    datatype: yesno
+  - English is not ${tenant.name}'s first language.: tenant.is_nonnativespeaker
+    datatype: yesno
+  - ${tenant.name} is a victim of domestic violence.: tenant.is_dvvictim
+    datatype: yesno
+  - ${tenant.name}'s rent is subsidized.: facts.tenant_has_subsidy
+    datatype: yesno
+  - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
+    datatype: yesno
+---
+mandatory: True
+question: Information about ${tenant.address.address} (select all that apply).
+fields:
+  - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
+    datatype: yesno
+  - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
+    datatype: yesno
+  - ${landlord.name} has tried to lock me out or entered my apartment without my permission.: bqe.violated
+    datatype: yesno
+  - ${landlord.name} shut off the utilities.: claims.utilities
+    datatype: yesno
+  - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
+    datatype: yesno
+  - I pay for one or more utilities.: claims.utilities
+    datatype: yesno
+  - "I paid a security deposit or last month's rent when I first moved in.": security_deposit.violated
+    datatype: yesno
+under: |
+  Your response to these questions will be used to 
+  determine which other questions we need to ask you.
+---
+question: Please sign below
+subquestion: |
+  By signing below, you acknowledge that your answers to the questions
+  in this interview were truthful, to the best of your knowledge.
+signature: tenant.signature
+under: |
+  ${ tenant.name }

@@ -1,0 +1,61 @@
+---
+objects:
+  has_defense: DADict
+  defense_is_recent: DADict
+---
+mandatory: True
+code: |
+  info = objects_from_file('eviction.yml')
+  retaliation_defenses = info['retaliation_defenses']
+  retaliation = info['retaliation']
+---
+question: |
+  What was the improper reason why your landlord threatened
+  you with eviction?
+fields:
+  - Reason: retaliation_defense_other
+---
+question: |
+  Do you have a counterclaim?
+yesno: retaliation_counterclaim
+---
+code: |
+if eviction_reason=="My landlord says I violated the lease":
+  retaliation_counterclaim = False
+else:
+  retaliation_counterclaim = True
+---
+question: |
+  % if i == 'other':
+  Did your landlord threaten you with eviction for some other
+  improper reason?
+  % else:
+  ${ retaliation[i].question }
+  % endif
+yesno: has_defense[i]
+---
+question: |
+  % if i == 'other':
+  You said: ${ fix_punctuation(retaliation_defense_other) }
+  % else:
+  Did you ${ retaliation[i].claim } within the
+  six month period before your landlord threatened
+  you with eviction?
+  % endif
+subquestion: |
+  % if i == 'other':
+  Did this happen within the six month period before 
+  your landlord threatened you with eviction?
+  % endif
+yesno: defense_is_recent[i]
+---
+code: |
+  at_least_one_defense_is_recent = False
+  for defense in retaliation_defenses + ['other']:
+    if has_defense[defense] and defense_is_recent[defense]:
+      at_least_one_defense_is_recent = True
+      break
+  if at_least_one_defense_is_recent:
+    retaliation_entitled_to_presumption = True
+  else:
+    retaliation_entitled_to_presumption = False

@@ -1,0 +1,38 @@
+---
+question: What protected class do you fall under?
+subquestion: |
+  If you are a member of a "protected class," meaning that you are a person of color, have Section 8, receive public assistance, or fit into one of the other protected categories, you may be at risk of discrimination. There are steps you can take, however, to protect yourself. People with physical and mental disabilities are entitled to reasonable accommodations in any housing transaction.
+fields:
+  - Select any protected class that you are a member of: discrimination.protected_classes
+    datatype: checkboxes
+    choices:
+      - Family Status
+      - Age
+      - Receipt of public or rental assistance
+      - Gender Identity
+      - Marital Status
+      - Race
+      - Religion
+      - Sex
+      - Sexual orientation
+      - Veteran's Status
+      - National Origin
+      - Disability
+      - Color
+      - Other
+---
+question: Would you like to request a reasonable accommodation?
+yesno: disability.request_reasonable_accommodation
+---
+question: Sexual Harassment
+subquestion: |
+  Have you suffered from sexual harassment at any time during the tenancy?
+fields:
+  - Were you sexually harassed? : discrimination.sexual_harassment.is_harassed
+    datatype: yesno
+  - Were you asked or pressured to give sexual favors? : discrimination.sexual_harassment.pressured_sexual_favors
+    datatype: yesno
+  - Did your landlord change the terms of your tenancy because of your response to harassment?: discrimination.sexual_harassment.tenancy_terms_changed
+    datatype: yesno
+  - Did the harassment make you feel unsafe or uncomfortable? : discrimination.sexual_harassment.unsafe_or_uncomfortable
+    datatype: yesno

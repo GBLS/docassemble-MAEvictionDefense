@@ -1,0 +1,190 @@
+question: |
+  What court is your case being heard in?
+fields: 
+  - Court name: court.name
+    datatype: court
+    default: "Eastern Housing Court"
+    choices:
+      - Barnstable District Court
+      - Boston Housing Court
+      - Brighton Division Boston Municipal Court
+      - Brookline District Court
+      - Cambridge District Court
+      - Central Division Boston Municipal Court
+      - Central Housing Court
+      - Charlestown Division Boston Municipal Court
+      - Chelsea District Court
+      - Concord District Court
+      - Dedham District Court
+      - Dorchester Division, Boston Municipal Court
+      - East Boston Division, Boston Municipal Court
+      - Eastern Housing Court
+      - Falmouth District Court
+      - Framingham District Court
+      - Hingham District Court
+      - Lowell District Court
+      - Malden District Court
+      - Marlborough District Court
+      - Metro South Housing Court
+      - Middlesex Superior Court
+      - Natick District Court
+      - Newton District Court
+      - Norfolk Superior Court
+      - Northeast Housing Court
+      - Northern Berkshire District Court
+      - Orleans District Court
+      - Quincy District Court
+      - Roxbury Division Boston Municipal Court
+      - Somerville District Court
+      - South Boston Division, Boston Municipal Court
+      - Southeast Housing Court
+      - Stoughton District Court
+      - Suffolk Superior Court
+      - Waltham District Court
+      - West Roxbury Division Boston Municipal Court
+      - Western Housing Court
+      - Woburn District Court
+      - Worcester District Court
+      - Worcester Housing Court
+  - County: court.county
+    default: "Suffolk"
+    choices:
+      - Barnstable
+      - Berkshire
+      - Bristol
+      - Dukes
+      - Essex
+      - Franklin
+      - Hampden
+      - Hampshire
+      - Middlesex
+      - Nantucket
+      - Norfolk
+      - Plymouth
+      - Suffolk
+      - Worcester
+  - Docket Number: case.docket_number
+    required: False
+---
+question: |
+  Upcoming court dates
+subquestion: |
+  This interview is designed to help a tenant whose case is scheduled in court for
+  the first time. It can also help you ask for permission to file late.
+  What best describes ${tenant.name}'s case?
+field: case.status
+choices: 
+  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
+  - My first date in court is coming up.: summons
+  - I signed an agreement in this case already. I have a new court date coming up.: afj
+  - I missed my first court date.: late
+default: summons
+help:
+  We need to know where your case is in the court process to choose the right forms.
+  
+  If your first court date has passed, you may be able to use a special form called a 
+  "Motion to File Late Answer." This interview will help you decide. 
+---
+mandatory: True
+code: |
+  if case.status == "onlyntq":
+    need(onlyhasntq)
+  if case.status == "afj":
+    need(firstdatepassed)
+comments:
+  Defined two events with special exit pages.
+---
+mandatory: True
+question: |
+  Hearing Date
+subquestion: |
+  To answer this question, please take a look at your Summons and Complaint. 
+  Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
+  Today is ${ today(format='EEEE') }.
+fields:
+  - What date is your first hearing in court?: case.original_date
+    datatype: date
+    default: "2017-09-07"
+    required: False
+    hint: Often a Thursday.
+  - What date must your answer be received by (usually a Monday)?: eviction.answerdate
+    datatype: date
+    default: "2017-09-04"
+    hint: Usually a Monday
+    required: False
+help:
+  The original trial date is a Thursday in many, but not all jurisdictions.
+  
+  This information will help us figure out if you are responding to the eviction before
+  the deadline. If you are filing these papers on time, your court date will be delayed 
+  by two weeks.It will also help us figure out when you need to appear in court. 
+---
+code: |
+  case.rescheduled_date = format_date(current_datetime() + date_interval(days=14))
+---
+question: |
+  Fault evictions
+fields:
+  - Do you deny the landlord's allegation of ${fault_basis}?: fault.did_not_occur
+    datatype: yesno
+  - Do you claim that ${fault_basis} is not a violation of your lease?: fault.not_violation_of_agreement
+    datatype: yesno
+  - Was the ${fault_basis} the fault of a guest that you had no control over?: fault.no_control_of_guest
+    datatype: yesno
+---
+mandatory: True
+question: Reason for eviction
+subquestion: |
+  To answer this question, please look at your Notice to Quit. What does your notice to quit say is the reason you are being evicted?
+field: eviction_reason
+default: unsure
+choices:
+  - My landlord says I owe rent.: nonpayment
+  - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
+  - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
+  - I never received a Notice to Quit.: nontq
+  - I don't know. : unsure
+help: 
+---
+mandatory: True
+code: |
+  plead_counterclaims = True
+  if eviction_reason == "fault":
+    plead_counterclaims = False
+    need(fault_basis)
+  if eviction_reason == "nofault":
+    plead_counterclaims = True
+    need(nofault_basis)
+  if (eviction_reason == "nonpayment") or (eviction_reason == "nontq"):
+    plead_counterclaims = True
+  if (eviction_reason == "nontq"):
+    initial_defense.no_ntq = True
+---
+question: What does the landlord say is the reason they
+  want you to vacate the apartment?
+field: nofault_basis
+dropdown:
+  - Refused rent increase: rent_increase
+  - Desire to renovate: renovate
+  - Move in a family member: family
+  - No reason given: none
+  - Other: other
+---
+question: What does the landlord say you did wrong?
+subquestion: |
+  Please choose the best match below. This will help
+  us choose the right defenses and discovery. 
+  Selecting an answer below doesn't mean you agree
+  with what your landlord claims you did.
+field: fault_basis
+dropdown:
+  - Chronic Late Payment of Rent: chronic
+  - Overcrowding: overcrowding
+  - Unauthorized occupants: unauthorized
+  - Excessive foot traffic: foot_traffic
+  - Clutter or hoarding: clutter
+  - Destruction of Property: destruction
+  - Assault on staff or other tenant: assault
+  - Harassment of staff or other tenant: harassment
+  - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance
+  - Other lease violation: other

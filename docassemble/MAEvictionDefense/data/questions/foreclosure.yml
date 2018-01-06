@@ -1,0 +1,47 @@
+---
+question: Foreclosure related defenses for owners and tenants
+fields:
+  - Is the foreclosure void due to violations of the power of sale in the mortgage; statutory or regulatory foreclosure requirements; or requirements for note holding or transfer requirements? : postforeclosure.failure_to_comply
+    datatype: yesno 
+    default: True
+  - postforeclosure.unfair_loan_mod : postforeclosure.unfair_loan_mod
+    datatype: yesno
+  - postforeclosure.unfair_notices : postforeclosure.unfair_notices
+    datatype: yesno
+  - postforeclosure.unfair_loan_based_on_income : postforeclosure.unfair_loan_based_on_income
+    datatype: yesno
+  - other.other : other.other
+    datatype: yesno
+---
+question:|
+  Foreclosure related defenses for tenants
+  - I am a bona fide tenant entitled to the protections of G.L. c. 186A. : postforeclosure.no_just_cause.bona_fide_protections
+    datatype: yesno
+  - Because the plaintiff does not have just cause to evict me and there is no binding purchase and sale agreement on the property as required by G.L. c. 186A, §2, this case should be dismissed. : postforeclosure.no_just_cause.no_binding_purchase
+    datatype: yesno
+  - The plaintiff’s service of a Notice to Quit or other actions to force me to vacate the premises without just cause or without a contract for sale on the property violate G.L. c. 186A, §2; c. 186, §14; and c. 93A.: postforeclosure.no_just_cause.ntq_or_other_actions
+    datatype: yesno
+  - I am entitled to possession and damages for the above. : postforeclosure.no_just_cause.possession_and_damages
+    datatype: yesno
+  - I am a bona fide tenant. : postforeclosure.notice_provisions.bona_fide_protections
+    datatype: yesno
+  - Did the plaintiff fail to post, deliver, or slide under my door a notice containing contact information and information about who call for repairs? : postforeclosure.notice_provisions.no_plaintiff_info
+    datatype: yesno
+  - postforeclosure.notice_provisions.less_than_30_days : postforeclosure.notice_provisions.less_than_30_days
+    datatype: yesno
+  - postforeclosure.notice_provisions.no_right_to_court_notice : postforeclosure.notice_provisions.no_right_to_court_notice
+    datatype: yesno
+  - postforeclosure.notice_provisions.no_written_notice_of_violations : postforeclosure.notice_provisions.no_written_notice_of_violations
+    datatype: yesno
+  - postforeclosure.notice_provisions.no_30_days_to_cure_claims : postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    datatype: yesno
+  - postforeclosure.notice_provisions.plaintiff_did_not_inform_amount : postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    datatype: yesno
+  - postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements : postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    datatype: yesno
+  - postforeclosure.notice_provisions.possession_and_damages                        : postforeclosure.notice_provisions.possession_and_damages                       
+    datatype: yesno
+  - postforeclosure.no_standing : postforeclosure.no_standing
+    datatype: yesno
+  - relief.void_foreclosure : relief.void_foreclosure
+    datatype: yesno

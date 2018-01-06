@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2017-12-12
+  revision_date: 2017-12-27
 ---
 sections:
   - Getting Started
@@ -16,7 +16,7 @@ sections:
 ---
 features:
   progress bar: True
-  navigation: True
+#  navigation: True
   bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/yeti/bootstrap.min.css
 ---
@@ -27,7 +27,14 @@ include:
   - basic-questions.yml
   - help.yml
   - glossary.yml
-  - all-variables.yml
+  - endpoints.yml
+  - tenant_and_tenancy.yml
+  - initial_defenses.yml
+  - landlord.yml
+  - court_and_eviction.yml
+  - conditions.yml
+  - foreclosure.yml
+  - subsidized_tenancy.yml
 ---
 objects:
   - tenant: Individual
@@ -38,7 +45,6 @@ objects:
   - claims: DAObject
   - facts: DAObject
   - bad_conditions: DAObject
-  - bad_conditions.landlord_notified: DAObject
   - bqe: DAObject
   - disability: DAObject
   - fault: DAObject
@@ -50,7 +56,6 @@ objects:
   - postforeclosure.notice_provisions: DAObject
   - retaliation: DAObject
   - security_deposit: DAObject
-  - security_deposit.violations: DAObject
   - subsidized_housing: DAObject
   - discrimination: DAObject
   - relief: DAObject
@@ -99,24 +104,6 @@ code: |
   if not user_understands_no_attorney_client_relationship == "understands":
     need(client_kicked_out)
 ---
-event: client_kicked_out
-progress: 100
-question: |
-  Sorry, you cannot proceed with the interview.
-subquestion: |
-  You can only proceed with the interview if you agree that your
-  completion of the interview does not create an attorney-client
-  relationship.
-
-  % if user_understands_no_attorney_client_relationship == 'unsure':
-  Ask your [local legal services provider](https://www.masslegalservices.org/FindLegalAid) for more information
-  to understand how you can use this form.
-  % endif
-decoration: exit
-buttons:
-  - Exit: exit
-  - Restart: restart
----
 mandatory: true
 question: Overview of Tenant's Rights in Evictions in Massachusetts
 subquestion: | 
@@ -139,211 +126,20 @@ buttons:
   - Continue: continue
   - Exit: exit
 ---
-question: What is the Tenant's name?
+question: Violation of the Consumer Protection Act
 fields:
-  - Name: tenant.name
-section: Information About You
----
-question: What is the Landlord's name?
-fields:
-  - Name: landlord.name.text
----
-question: Upcoming court dates
-subquestion: |
-  This interview is designed to help a tenant whose case is scheduled in court for
-  the first time. It can also help you ask for permission to file late.
-  What best describes ${tenant.name}'s case?
-field: case.status
-choices: 
-  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - My first date in court is coming up.: summons
-  - I signed an agreement in this case already. I have a new court date coming up.: afj
-  - I missed my first court date.: late
-default: summons
-help:
-  We need to know where your case is in the court process to choose the right forms.
-  
-  If your first court date has passed, you may be able to use a special form called a 
-  "Motion to File Late Answer." This interview will help you decide. 
----
-mandatory: True
-code: |
-  if case.status == "onlyntq":
-    need(onlyhasntq)
-  if case.status == "afj":
-    need(firstdatepassed)
-comments:
-  Defined two events with special exit pages.
----
-mandatory: True
-question: Hearing Date
-subquestion: |
-  To answer this question, please take a look at your Summons and Complaint. 
-  Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
-  Today is ${ today(format='EEEE') }.
-fields:
-  - What date is your first hearing in court?: case.original_date
-    datatype: date
-    default: "2017-09-07"
-    required: False
-    hint: Often a Thursday.
-  - What date must your answer be received by (usually a Monday)?: eviction.answerdate
-    datatype: date
-    default: "2017-09-04"
-    hint: Usually a Monday
-    required: False
-help:
-  The original trial date is a Thursday in many, but not all jurisdictions.
-  
-  This information will help us figure out if you are responding to the eviction before
-  the deadline. If you are filing these papers on time, your court date will be delayed 
-  by two weeks.It will also help us figure out when you need to appear in court. 
----
-#  case.rescheduled_date = format_date(case.original_date + date_interval(days=14))
-code: |
-  case.rescheduled_date = format_date(current_datetime() + date_interval(days=14))
----
-question: Bad Housing Conditions
-subquestion: | 
-  List any problems with the apartment you live in now. Think about problems over the last
-  6 years, whether they are currently repaired or not.
-  Your landlord will only be liable for problems that they knew about or should have
-  known about.
-fields:
-  - "Select the conditions you have had": tenancy.conditions
-    datatype: checkboxes
-    choices:
-      - insects
-      - cockroaches
-      - mice or rats
-      - water leaks or other plumbing problems
-      - electrical problems
-      - lead paint
-      - defective or leaky windows
-      - defective ceilings, walls, or floors
-      - no heat
-      - no hot water
-      - not enough heat
-      - not enough hot water
-      - defective locks
-      - security problems
-help: |
-  You may have a claim against your landlord for problems in your home over the last
-  6 years, whether they are currently repaired or not. For certain problems, you may only
-  have a claim for the last 4 years.
-  
-  Your landlord may have to pay you the difference between the value of your home in full
-  repair and the value of your home with the bad conditions. For very serious problems
-  that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
----
-question: What protected class do you fall under?
-subquestion: |
-  If you are a member of a "protected class," meaning that you are a person of color, have Section 8, receive public assistance, or fit into one of the other protected categories, you may be at risk of discrimination. There are steps you can take, however, to protect yourself. People with physical and mental disabilities are entitled to reasonable accommodations in any housing transaction.
-fields:
-  - Select any protected class that you are a member of: protected_classes
-    datatype: checkboxes
-    choices:
-      - Family Status
-      - Age
-      - Receipt of public or rental assistance
-      - Gender Identity
-      - Marital Status
-      - Race
-      - Religion
-      - Sex
-      - Sexual orientation
-      - Veteran's Status
-      - National Origin
-      - Disability
-      - Color
-      - Other
----
-mandatory: True
-question: Reason for eviction
-subquestion: |
-  To answer this question, please look at your Notice to Quit. What does your notice to quit say is the reason you are being evicted?
-field: eviction_reason
-default: unsure
-choices:
-  - My landlord says I owe rent.: nonpayment
-  - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
-  - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
-  - I never received a Notice to Quit.: nontq
-  - I don't know. : unsure
-help: 
----
-mandatory: True
-code: |
-  plead_counterclaims = True
-  if eviction_reason == "fault":
-    plead_counterclaims = False
-    need(fault_basis)
-  if eviction_reason == "nofault":
-    plead_counterclaims = True
-    need(nofault_basis)
-  if (eviction_reason == "nonpayment") or (eviction_reason == "nontq"):
-    plead_counterclaims = True
-  if (eviction_reason == "nontq"):
-    initial_defense.no_ntq = True
----
-question: What does the landlord say is the reason they
-  want you to vacate the apartment?
-field: nofault_basis
-dropdown:
-  - Refused rent increase: rent_increase
-  - Desire to renovate: renovate
-  - Move in a family member: family
-  - No reason given: none
-  - Other: other
----
-question: What does the landlord say you did wrong?
-subquestion: |
-  Please choose the best match below. This will help
-  us choose the right defenses and discovery. 
-  Selecting an answer below doesn't mean you agree
-  with what your landlord claims you did.
-field: fault_basis
-dropdown:
-  - Chronic Late Payment of Rent: chronic
-  - Overcrowding: overcrowding
-  - Unauthorized occupants: unauthorized
-  - Excessive foot traffic: foot_traffic
-  - Clutter or hoarding: clutter
-  - Destruction of Property: destruction
-  - Assault on staff or other tenant: assault
-  - Harassment of staff or other tenant: harassment
-  - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance
-  - Other lease violation: other
----
-question: |
-  Did your landlord file the case properly?
-subquestion: |
-  Below are some common problems with a case that your landlord may have overlooked. Select
-  all that apply to you.
-fields:
-  - Did you receive a Notice to Quit? : initial_defense.no_ntq
-    datatype: noyes
-  - Did your landlord fail to properly terminate your tenancy? : initial_defense.no_proper_termination
+  - Is the landlord subject to c. 93A? : consumer_protection.landlord_is_subject
     datatype: yesno
-    default: True
-  - Did your landlord start the eviction case (by sending you a copy of the Summons and Complaint) before the Notice to Quit expired? : initial_defense.premature_commencement
+  - Were you charged illegal late fees? : consumer_protection.late_fees
     datatype: yesno
-  - Is your landlord a corporation, and if so, did a lawyer sign the Summons and Complaint? : initial_defense.varney
-    datatype: noyes
-  - Is the Summons and Complaint defective, or was it improperly served? : initial_defense.defective_summons
+  - Were you charged an amount of rent that you never agreed to pay? : consumer_protection.nonagreed_rent
     datatype: yesno
-  - Did you "cure" the balance owed by paying all money and fees due, by the answer date if it is a tenancy by lease, or within 10 days of the Notice to Quit if it is a tenancy at will? : initial_defense.cure
+  - Were you charged court fees or constable fees unlawfully?: consumer_protection.unlawful_court_fees
     datatype: yesno
-  - Did your landlord create a new tenancy by entering into a new lease or accepting rent without a proper reservation of rights? : initial_defense.new_tenancy
+  - Are there any unlawful terms in your lease? : consumer_protection.unlawful_lease_terms
     datatype: yesno
-  - Does your landlord lack standing to evict you? : initial_defense.no_standing
+  - Other : consumer_protection.other
     datatype: yesno
-  - Did your landlord state an unrelated reason for the eviction on the Notice to Quit vs the Summons and Complaint? : initial_defense.inconsistent_reasons
-    datatype: yesno
-  - Other : initial_defense.other
-    datatype: yesno
-comments:
-  Should add a guide me button to this form
 ---
 question: Retaliation
 subquestion: |
@@ -374,165 +170,48 @@ fields:
   - Are you a survivor of abuse, sexual assault, rape or stalking, and your landlord is evicting you for breaking your lease or changing your locks for safety reasons?: retaliation.survivor_rights
     datatype: yesno
   - Other: retaliation.other
---- 
-mandatory: True
-question: Information about ${tenant.name} (Select all that apply).
-fields: 
-  - ${tenant.name} is a member of a protected class and was discriminated against.: tenant.is_discriminated
-    datatype: yesno
-  - Someone who lives with ${tenant.name} has a disability: tenant.is_disabled
-    datatype: yesno
-  - Someone who lives with ${tenant.name} is under the age of 6: tenant.is_under6
-    datatype: yesno
-  - Someone who lives with ${tenant.name} is over the age of 60: tenant.is_over60
-    datatype: yesno
-  - English is not ${tenant.name}'s first language.: tenant.is_nonnativespeaker
-    datatype: yesno
-  - ${tenant.name} is a victim of domestic violence.: tenant.is_dvvictim
-    datatype: yesno
-  - ${tenant.name}'s rent is subsidized.: facts.tenant_has_subsidy
-    datatype: yesno
-  - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
-    datatype: yesno
----
-mandatory: True
-question: Information about ${landlord.name}.
-field: landlord.organization_type
-choices:
-  - My landlord is a corporation or LLC.: corporate
-  - My landlord is a public agency (such as a housing authority).: public
-  - My landlord lives in the building with me.: livesinbuilding
-  - My landlord is a trust.: trust
-  - None of the above or I don't know.: other
----
-mandatory: True
-question: Information about ${tenant.address.address} (select all that apply).
-fields:
-  - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: claims.conditions
-    datatype: yesno
-  - ${tenant.address.address} has been foreclosed on.: tenancy.is_postforeclosure
-    datatype: yesno
-  - ${landlord.name} has tried to lock me out or entered my apartment without my permission.: claims.bqe
-    datatype: yesno
-  - ${landlord.name} shut off the utilities.: claims.utilities
-    datatype: yesno
-  - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
-    datatype: yesno
-  - I pay for one or more utilities.: claims.utilities
-    datatype: yesno
-  - "I paid a security deposit or last month's rent when I first moved in.": claims.deposit
-    datatype: yesno
----
-question: |
-  What is ${ tenant.object_possessive('address') }?
-fields:
-  - address: tenant.address.address
-    default: "123 Main Street"
-  - unit: tenant.address.unit
     required: False
-  - city: tenant.address.city
-    default: "Boston"
-  - state: tenant.address.state
-    default: "MA"
-  - zip: tenant.address.zip
-    default: "02110"
-  - country: tenant.address.country  
-    default: 'US'
+  - Did any of the above happen in the last 6 months?: retaliation.within_6_months
+    datatype: yesno
+    required: False
 ---
-mandatory: True
-question: |
-  What is the monthly rent for ${ tenant.address.address }?
+question: Security Deposit
+subquestion: |
+  Check any security deposit violations that apply below
+fields: 
+  - Amount of security deposit: security_deposit.amount
+    datatype: currency
+  - My landlord violated the Security Deposit law: security_deposit.violated
+    datatype: yesno
+  - Violations: security_deposit.violations
+    datatype: checkboxes
+    choices:
+      - Accepted a deposit for more than one month's rent
+      - Failed to keep the deposit in a separate bank account
+      - Failed to provide required receipts
+      - Failed to pay interest on each anniversary of your deposit
+      - Failed to provide a statement of conditions
+      - Did not take responsibility for the deposit paid to a former landlord
+---
+question: Prepaid last month's rent
+subquestion: |
+  Did your landlord violate the rules for handling your prepaid last month's rent?
 fields:
-  - Rent: facts.tenant_rent_share
+  - Did your landlord fail to pay you interest on your pre-paid last month's rent each year on the anniversary of your payment?: last_months_rent.violated
+    datatype: yesno
+  - Amount of your prepaid last month's rent: last_months_rent.amount
     datatype: currency
-    default: "700"
-  - Contract rent: facts.tenant_contract_rent
-    datatype: currency
-    default: "1500"
 ---
 generic object: Individual
 question: What is generic ${ x.object_possessive('name') }?
 fields:
   - Name: x.name
 ---
-mandatory: True
-question: What court is your case being heard in?
-fields: 
-  - Court name: court.name
-    datatype: court
-    default: "Eastern Housing Court"
-    choices:
-      - Barnstable District Court
-      - Boston Housing Court
-      - Brighton Division, Boston Municipal Court
-      - Brookline District Court
-      - Cambridge District Court
-      - Central Division, Boston Municipal Court
-      - Central Housing Court
-      - Charlestown Division, Boston Municipal Court
-      - Chelsea District Court
-      - Concord District Court
-      - Dedham District Court
-      - Dorchester Division, Boston Municipal Court
-      - East Boston Division, Boston Municipal Court
-      - Eastern Housing Court
-      - Falmouth District Court
-      - Framingham District Court
-      - Hingham District Court
-      - Lowell District Court
-      - Malden District Court
-      - Marlborough District Court
-      - Metro South Housing Court
-      - Middlesex Superior Court
-      - Natick District Court
-      - Newton District Court
-      - Norfolk Superior Court
-      - Northeast Housing Court
-      - Northern Berkshire District Court
-      - Orleans District Court
-      - Quincy District Court
-      - Roxbury Division, Boston Municipal Court
-      - Somerville District Court
-      - South Boston Division, Boston Municipal Court
-      - Southeast Housing Court
-      - Stoughton District Court
-      - Suffolk Superior Court
-      - Waltham District Court
-      - West Roxbury Division, Boston Municipal Court
-      - Western Housing Court
-      - Woburn District Court
-      - Worcester District Court
-      - Worcester Housing Court
-  - County: court.county
-    default: "Suffolk"
-    choices:
-      - Barnstable
-      - Berkshire
-      - Bristol
-      - Dukes
-      - Essex
-      - Franklin
-      - Hampden
-      - Hampshire
-      - Middlesex
-      - Nantucket
-      - Norfolk
-      - Plymouth
-      - Suffolk
-      - Worcester
-  - Docket Number: case.docket_number
-    required: False
----
 question: Did {{landlord.name}} send a copy of the notice to quit to {{landlord.name}}'s housing authority?
 noyes: no_ntq_sent
 ---
 question: Did the landlord charge you a late fee before 30 days?
 yesno: consumerprotection.charged_latefee
----
-question: Please sign below
-signature: tenant.signature
-under: |
-  ${ tenant.name }
 ---
 mandatory: True
 question: |
@@ -541,38 +220,3 @@ question: |
   landlord or their attorney if they have one.
 attachment:
   docx template file: SummaryProcessAnswer_Final.docx
----
-event: onlyhasntq
-progress: 100
-question: Sorry, this is not the right interview for you.
-subquestion: |
-  This interview helps you fill out paperwork for court. You don't have a court date yet.
-  
-  You may want to call a legal services agency. If you owe money to your landlord
-  or are having trouble getting repairs made, a legal services agency may help you. 
-  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
-  find a legal services agency near you.
-buttons:
-  Exit: exit
-  Restart: restart
----
-event: firstdatepassed
-question: This may not be the right interview for you.
-subquestion: |
-  This interview is meant to help you respond to your landlord's original case. You said that you
-  have already appeared in court for this case.
-  
-  You may still be able to use this interview to file a "late" response if you have not
-  been in front a judge or magistrate yet. 
-  
-  If you already filed an agreement with the court, this is probably not the right 
-  interview for you. 
-  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
-  find a legal services agency near you. You may receive help or advice to follow
-  in court.
-buttons:
-#  - Keep Going: continue
-  - Restart: restart
-  - Exit: exit
-    url: https://www.gbls.org/
-  
