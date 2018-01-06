@@ -4,16 +4,15 @@ fields:
   - Is the foreclosure void due to violations of the power of sale in the mortgage; statutory or regulatory foreclosure requirements; or requirements for note holding or transfer requirements? : postforeclosure.failure_to_comply
     datatype: yesno 
     default: True
-  - postforeclosure.unfair_loan_mod : postforeclosure.unfair_loan_mod
+  - I was treated unfairly with respect to loan modification and/or alternatives to foreclosure. : postforeclosure.unfair_loan_mod
     datatype: yesno
-  - postforeclosure.unfair_notices : postforeclosure.unfair_notices
+  - I was treated unfairly with respect to pre-foreclosure notices. : postforeclosure.unfair_notices
     datatype: yesno
-  - postforeclosure.unfair_loan_based_on_income : postforeclosure.unfair_loan_based_on_income
+  - My loan was predatory, unfair, and/or was unaffordable based on my income.  : postforeclosure.unfair_loan_based_on_income
     datatype: yesno
-  - other.other : other.other
-    datatype: yesno
+  - Other defense : other.other
 ---
-question:|
+question: |
   Foreclosure related defenses for tenants
   - I am a bona fide tenant entitled to the protections of G.L. c. 186A. : postforeclosure.no_just_cause.bona_fide_protections
     datatype: yesno
@@ -27,21 +26,21 @@ question:|
     datatype: yesno
   - Did the plaintiff fail to post, deliver, or slide under my door a notice containing contact information and information about who call for repairs? : postforeclosure.notice_provisions.no_plaintiff_info
     datatype: yesno
-  - postforeclosure.notice_provisions.less_than_30_days : postforeclosure.notice_provisions.less_than_30_days
+  - The plaintiff served me with a Notice to Quit less than 30 days after it posted and delivered the required contact information in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.less_than_30_days
     datatype: yesno
-  - postforeclosure.notice_provisions.no_right_to_court_notice : postforeclosure.notice_provisions.no_right_to_court_notice
+  - The plaintiff did not provide me with a written notice about my right to a court hearing in violation of G.L. c. 186A, §§3 and 4.  : postforeclosure.notice_provisions.no_right_to_court_notice
     datatype: yesno
-  - postforeclosure.notice_provisions.no_written_notice_of_violations : postforeclosure.notice_provisions.no_written_notice_of_violations
+  - The plaintiff did not give me written notice claiming that I had substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : postforeclosure.notice_provisions.no_written_notice_of_violations
     datatype: yesno
-  - postforeclosure.notice_provisions.no_30_days_to_cure_claims : postforeclosure.notice_provisions.no_30_days_to_cure_claims
+  - The plaintiff did not give me 30 days to cure the claim that I substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : postforeclosure.notice_provisions.no_30_days_to_cure_claims
     datatype: yesno
-  - postforeclosure.notice_provisions.plaintiff_did_not_inform_amount : postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+  - The plaintiff did not inform me of the amount of monthly rent it claims and to whom the rent should be paid in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
     datatype: yesno
-  - postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements : postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+  - Because the plaintiff did not comply with the notice requirements of G.L. c. 186A, §§3 and 4, this case should be dismissed.  : postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
     datatype: yesno
-  - postforeclosure.notice_provisions.possession_and_damages                        : postforeclosure.notice_provisions.possession_and_damages                       
+  - This defense and counterclaim entitles me to possession and damages under G.L. c. 186, §14, and/or G.L. c. 93A.: postforeclosure.notice_provisions.possession_and_damages                        : postforeclosure.notice_provisions.possession_and_damages                       
     datatype: yesno
-  - postforeclosure.no_standing : postforeclosure.no_standing
+  - The plaintiff’s case should be dismissed because it does not have proper title to the property and therefore it cannot prove a superior right to possession of the property and the foreclosure is void. Wayne Inv. Corp. v. Abbott, 350 Mass. 775 (1966) (title defects can be raised as defense in summary process); G.L. c. 239, §1 (summary process available to plaintiff only if foreclosure carried out according to law). : postforeclosure.no_standing
     datatype: yesno
-  - relief.void_foreclosure : relief.void_foreclosure
+  - I ask the court to declare the foreclosure void. : relief.void_foreclosure
     datatype: yesno
