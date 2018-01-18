@@ -9,17 +9,17 @@ question: |
   What is ${ tenant.object_possessive('address') }?
 fields:
   - address: tenant.address.address
-    default: "123 Main Street"
+    #default: "123 Main Street"
   - unit: tenant.address.unit
     required: False
   - city: tenant.address.city
-    default: "Boston"
+    #default: "Boston"
   - state: tenant.address.state
-    default: "MA"
+    #default: "MA"
   - zip: tenant.address.zip
-    default: "02110"
+    #default: "02110"
   - country: tenant.address.country  
-    default: 'US'
+    #default: 'US'
 ---
 question: Your tenancy
 subquestion: |

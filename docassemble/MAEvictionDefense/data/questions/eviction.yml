@@ -19,22 +19,10 @@ features:
 #  navigation: True
   bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/yeti/bootstrap.min.css
+  css: base3.css
 ---
 modules:
   - docassemble.base.util
----
-include:
-  - basic-questions.yml
-  - help.yml
-  - glossary.yml
-  - endpoints.yml
-  - tenant_and_tenancy.yml
-  - initial_defenses.yml
-  - landlord.yml
-  - court_and_eviction.yml
-  - conditions.yml
-  - foreclosure.yml
-  - subsidized_tenancy.yml
 ---
 objects:
   - tenant: Individual
@@ -112,6 +100,20 @@ subquestion: |
 video: "[YOUTUBE TSaTw0Y5OFA]"
 buttons:
   - Continue: continue
+---
+#moved include because initial questions were showing up later
+include:
+  - basic-questions.yml
+  - help.yml
+  - glossary.yml
+  - endpoints.yml
+  - tenant_and_tenancy.yml
+  - initial_defenses.yml
+  - landlord.yml
+  - court_and_eviction.yml
+  - conditions.yml
+  - foreclosure.yml
+  - subsidized_tenancy.yml
 ---
 mandatory: true
 question: Getting Started
