@@ -10,8 +10,6 @@ fields:
     datatype: yesno
   - My loan was predatory, unfair, and/or was unaffordable based on my income.  : postforeclosure.unfair_loan_based_on_income
     datatype: yesno
-  - Other defense : other.other
-    required: False
 ---
 question: |
   Foreclosure related defenses for tenants

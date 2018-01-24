@@ -1,0 +1,27 @@
+---
+question: Security Deposit
+subquestion: |
+  Check any security deposit violations that apply below
+fields: 
+  - Amount of security deposit: security_deposit.amount
+    datatype: currency
+  - My landlord violated the Security Deposit law: security_deposit.violated
+    datatype: yesno
+  - Violations: security_deposit.violations
+    datatype: checkboxes
+    choices:
+      - Accepted a deposit for more than one month's rent
+      - Failed to keep the deposit in a separate bank account
+      - Failed to provide required receipts
+      - Failed to pay interest on each anniversary of your deposit
+      - Failed to provide a statement of conditions
+      - Did not take responsibility for the deposit paid to a former landlord
+---
+question: Prepaid last month's rent
+subquestion: |
+  Did your landlord violate the rules for handling your prepaid last month's rent? Check all that apply.
+fields:
+  - My landlord failed to pay me interest on my pre-paid last month's rent each year on the anniversary of my payment.: last_months_rent.violated
+    datatype: yesno
+  - Amount of your prepaid last month's rent: last_months_rent.amount
+    datatype: currency

@@ -15,7 +15,7 @@ fields:
     datatype: yesno
 ---
 code: |
-  if landlord.organization_type in ["corporate","trust","other"]:
+  if (landlord.organization_type in ["corporate","trust","other"]) and plead_counterclaims:
     plead_93a = True
   else:
     plead_93a = False

@@ -59,5 +59,8 @@ comments:
 ---
 question: Other initial defense
 fields: 
-  - Other: initial_defense.other_reason
+  - Other initial defense: initial_defense.other_reason
+  - Other defense : other.other
+    required: False
+
  
