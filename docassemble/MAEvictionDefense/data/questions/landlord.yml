@@ -4,7 +4,11 @@ fields:
   - Name: landlord.name.text
 ---
 mandatory: True
-question: Information about ${landlord.name}.
+question: |
+  Information about ${landlord.name}.
+subquestion: |
+  Some defenses may only apply to some types of landlords. Please choose the option
+  that best matches your landlord.
 field: landlord.organization_type
 choices:
   - My landlord is a corporation or LLC.: corporate

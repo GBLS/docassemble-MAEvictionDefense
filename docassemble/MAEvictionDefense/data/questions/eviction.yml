@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2017-12-27
+  revision_date: 2018-01-22
 ---
 sections:
   - Getting Started
@@ -101,81 +101,63 @@ video: "[YOUTUBE TSaTw0Y5OFA]"
 buttons:
   - Continue: continue
 ---
-#moved include because initial questions were showing up later
-include:
-  - basic-questions.yml
-  - help.yml
-  - glossary.yml
-  - endpoints.yml
-  - tenant_and_tenancy.yml
-  - initial_defenses.yml
-  - landlord.yml
-  - court_and_eviction.yml
-  - conditions.yml
-  - foreclosure.yml
-  - subsidized_tenancy.yml
----
 mandatory: true
 question: Getting Started
 subquestion: |
   Please locate the Summons and Complaint and the Notice to Quit for your case
   before you begin. You'll be asked to look for information on both
-  documents to help answer some questions.
-
-  You may still be able to complete this interview without these two documents.
-  The answer to some questions may be available on [MassCourts](https://www.masscourts.org/).
+  documents to help answer some questions. If you don't have either document,
+  you can still do your best to answer from your memory.
 buttons: 
   - Continue: continue
   - Exit: exit
 ---
-question: Violation of the Consumer Protection Act
-fields:
-  - Is the landlord subject to c. 93A? : consumer_protection.landlord_is_subject
-    datatype: yesno
-  - Were you charged illegal late fees? : consumer_protection.late_fees
-    datatype: yesno
-  - Were you charged an amount of rent that you never agreed to pay? : consumer_protection.nonagreed_rent
-    datatype: yesno
-  - Were you charged court fees or constable fees unlawfully?: consumer_protection.unlawful_court_fees
-    datatype: yesno
-  - Are there any unlawful terms in your lease? : consumer_protection.unlawful_lease_terms
-    datatype: yesno
-  - Other : consumer_protection.other
-    datatype: yesno
----
-question: Retaliation
+question: |
+  Include instructions in the printed forms?
 subquestion: |
-  Do you have any reason to believe that the landlord is not evicting you due 
-  to ${eviction_reason}, and is instead is evicting you because of something you 
-  have a legal right to do?
-yesno: retaliation.is_retaliated
+  We can include the standard pre-printed instructions with the forms for you
+  to print and review, or leave them out.
+yesno: show_instructions 
 ---
-question: Retaliation
+mandatory: True
+question: |
+  Your right to a jury trial
 subquestion: |
-  Did you take any of the following actions that you believe are the true
-  reason that the landlord is evicting you? Check all that apply.
-fields:
-  - Did you withhold rent because of bad conditions?: retaliation.withheld_rent
-    datatype: yesno
-  - Did you report bad conditions in writing to the landlord?: retaliation.badconditions_to_landlord
-    datatype: yesno
-  - Did you report bad conditions orally or in writing to a public agency?: retaliation.badconditions_to_agency
-    datatype: yesno
-  - Are you a member of a tenants union or did you participate in tenant organizing meetings?: retaliation.tenant_union
-    datatype: yesno
-  - Did you sue your landlord or bring a claim against your landlord?: retaliation.brought_claim
-    datatype: yesno
-  - Did you or someone in your household take any steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E)?: retaliation.protection_or_prevention_order
-    datatype: yesno
-  - Did you or someone in your household report an incident of domestic violance, rape, sexaul assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order?: retaliation.domestic_violence
-    datatype: yesno
-  - Are you a survivor of abuse, sexual assault, rape or stalking, and your landlord is evicting you for breaking your lease or changing your locks for safety reasons?: retaliation.survivor_rights
-    datatype: yesno
-  - Other: retaliation.other
-    required: False
-  - Did any of the above happen in the last 6 months?: retaliation.within_6_months
-    datatype: yesno
-    required: False
+  Both the tenant and the landlord have the right to have a jury decide the facts of their case instead of 
+  a judge. This is your only chance to claim your
+  right to a jury (unless you file a separate form before the answer date).
+  
+  #### Why claim your right to a jury trial?
+  1. Members of the jury are your peers. Some may be tenants who can understand your experiences.
+  1. Jury trials take time to schedule. You can use this time to try to resolve your case.
+  1. You still can waive your jury trial right later. Claiming a jury trial also does not
+     stop you from reaching an agreement with your landlord.
+  
+  There is a chance that the judge will ask you to pay rent while you
+  are waiting for the jury trial to be scheduled. 
+  Most tenants who receive assistance in Greater Boston Legal Services clinics request a 
+  jury trial. 
+
+field: claim_jurytrial
+buttons:
+  - Claim a jury trial: True
+  - Waive my right to a jury: False
+---
+include:
+  - tenant_and_tenancy.yml
+  - basic-questions.yml
+  - landlord.yml
+  - court_and_eviction.yml
+  - help.yml
+  - glossary.yml
+  - endpoints.yml
+  - initial_defenses.yml
+  - conditions.yml
+  - foreclosure.yml
+  - subsidized_tenancy.yml
+  - retaliation.yml
+  - discrimination_and_harassment.yml
+  - consumer_protection.yml
 ---
 question: Security Deposit
 subquestion: |
@@ -197,9 +179,9 @@ fields:
 ---
 question: Prepaid last month's rent
 subquestion: |
-  Did your landlord violate the rules for handling your prepaid last month's rent?
+  Did your landlord violate the rules for handling your prepaid last month's rent? Check all that apply.
 fields:
-  - Did your landlord fail to pay you interest on your pre-paid last month's rent each year on the anniversary of your payment?: last_months_rent.violated
+  - My landlord failed to pay me interest on my pre-paid last month's rent each year on the anniversary of my payment.: last_months_rent.violated
     datatype: yesno
   - Amount of your prepaid last month's rent: last_months_rent.amount
     datatype: currency
@@ -214,6 +196,14 @@ noyes: no_ntq_sent
 ---
 question: Did the landlord charge you a late fee before 30 days?
 yesno: consumerprotection.charged_latefee
+---
+question: Please sign below
+subquestion: |
+  By signing below, you acknowledge that your answers to the questions
+  in this interview were truthful, to the best of your knowledge.
+signature: tenant.signature
+under: |
+  ${ tenant.name }
 ---
 mandatory: True
 question: |

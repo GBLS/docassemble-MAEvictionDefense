@@ -94,7 +94,6 @@ code: |
 comments:
   Defined two events with special exit pages.
 ---
-mandatory: True
 question: |
   Hearing Date
 subquestion: |
@@ -123,21 +122,24 @@ code: |
   case.rescheduled_date = format_date(current_datetime() + date_interval(days=14))
 ---
 question: |
-  Fault evictions
+  Defenses for fault eviction
+subquestion: |
+  Check any that apply.
 fields:
-  - Do you deny the landlord's allegation of ${fault_basis}?: fault.did_not_occur
+  - I deny the landlord's allegation of ${fault_basis}.: fault.did_not_occur
     datatype: yesno
-  - Do you claim that ${fault_basis} is not a violation of your lease?: fault.not_violation_of_agreement
+    default: True
+  - ${capitalize(fault_basis)} is not a violation of my lease.: fault.not_violation_of_agreement
     datatype: yesno
-  - Was the ${fault_basis} the fault of a guest that you had no control over?: fault.no_control_of_guest
+    default: True
+  - The ${fault_basis} was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
 ---
-mandatory: True
 question: Reason for eviction
 subquestion: |
   To answer this question, please look at your Notice to Quit. What does your notice to quit say is the reason you are being evicted?
 field: eviction_reason
-default: unsure
+#default: unsure
 choices:
   - My landlord says I owe rent.: nonpayment
   - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
@@ -160,7 +162,10 @@ code: |
   if (eviction_reason == "nontq"):
     initial_defense.no_ntq = True
 ---
-question: What does the landlord say is the reason they
+question: | 
+  Basis for no-fault eviction
+subquestion: |
+  What does the landlord say is the reason they
   want you to vacate the apartment?
 field: nofault_basis
 dropdown:
@@ -170,21 +175,24 @@ dropdown:
   - No reason given: none
   - Other: other
 ---
-question: What does the landlord say you did wrong?
+question: | 
+  Basis for fault eviction
 subquestion: |
+  What specifically does your landlord claim as the reason for
+  your eviction?
   Please choose the best match below. This will help
   us choose the right defenses and discovery. 
   Selecting an answer below doesn't mean you agree
   with what your landlord claims you did.
 field: fault_basis
 dropdown:
-  - Chronic Late Payment of Rent: chronic
+  - Chronic late payment of rent: chronic late payment of rent
   - Overcrowding: overcrowding
-  - Unauthorized occupants: unauthorized
-  - Excessive foot traffic: foot_traffic
-  - Clutter or hoarding: clutter
-  - Destruction of Property: destruction
-  - Assault on staff or other tenant: assault
-  - Harassment of staff or other tenant: harassment
-  - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance
+  - Unauthorized occupants: unauthorized occupants
+  - Excessive foot traffic: excessive foot traffic
+  - Clutter or hoarding: clutter or hoarding
+  - Destruction of property: destruction of property
+  - Assault on staff or other tenant: assault on staff or other tenant
+  - Harassment of staff or other tenant: harassment of staff or other tenant
+  - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance of other tenants
   - Other lease violation: other

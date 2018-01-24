@@ -27,14 +27,17 @@ auto terms:
     A tenancy where the tenant pays something less than market rent, and a housing
     authority or HUD pays the difference. Often the tenant's rent is fixed at 30 or 40% of
     their income.
-  Massachusetts General Laws Chapter G.L. c. 93A: |
+  G.L. c. 93A: |
     Referred to as the Consumer Protection Act. Enables legal action against unfair or deceptive conduct in the marketplace
   demand letter: |
-    The purpose of the demand letter is threefold. 
-    
-    1. Gives notice of a consumer's claim, and provides information about the nature of the claim. 
-    
-    2. Encourages negotiations or settlements of the matter without the necessity of going to court. 
-    
-    3. Acts as a control on the amount of money damages that the consumer may ultimately recover if the claim is proven in court.
-   
+    Under the consumer protection law, G.L. c. 93A, a consumer (or tenant) may send a
+    "demand letter" explaining what the seller (or landlord) did wrong and requesting payment. 
+    If the landlord fails to respond with a reasonable settlement offer, it may be liable for double
+    or triple damages.
+  disabled: |
+    Legally, a person who is limited in one more areas of essential life activities.
+    A disability may be physical or mental.
+  reasonable accommodation: |
+    A change in a landlord's rules, policies, or practices that would allow the tenant to 
+    remain in the leased apartment. A tenant who is disabled and whose disability is
+    related to the basis for the eviction may be legally entitled to such a change.

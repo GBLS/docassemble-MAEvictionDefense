@@ -1,61 +1,34 @@
 ---
-objects:
-  has_defense: DADict
-  defense_is_recent: DADict
----
-mandatory: True
-code: |
-  info = objects_from_file('eviction.yml')
-  retaliation_defenses = info['retaliation_defenses']
-  retaliation = info['retaliation']
----
-question: |
-  What was the improper reason why your landlord threatened
-  you with eviction?
-fields:
-  - Reason: retaliation_defense_other
----
-question: |
-  Do you have a counterclaim?
-yesno: retaliation_counterclaim
----
-code: |
-if eviction_reason=="My landlord says I violated the lease":
-  retaliation_counterclaim = False
-else:
-  retaliation_counterclaim = True
----
-question: |
-  % if i == 'other':
-  Did your landlord threaten you with eviction for some other
-  improper reason?
-  % else:
-  ${ retaliation[i].question }
-  % endif
-yesno: has_defense[i]
----
-question: |
-  % if i == 'other':
-  You said: ${ fix_punctuation(retaliation_defense_other) }
-  % else:
-  Did you ${ retaliation[i].claim } within the
-  six month period before your landlord threatened
-  you with eviction?
-  % endif
+question: Retaliation
 subquestion: |
-  % if i == 'other':
-  Did this happen within the six month period before 
-  your landlord threatened you with eviction?
-  % endif
-yesno: defense_is_recent[i]
+  Do you have any reason to believe that the landlord is not evicting you due 
+  to ${eviction_reason}, and is instead is evicting you because of something you 
+  have a legal right to do?
+yesno: retaliation.is_retaliated
 ---
-code: |
-  at_least_one_defense_is_recent = False
-  for defense in retaliation_defenses + ['other']:
-    if has_defense[defense] and defense_is_recent[defense]:
-      at_least_one_defense_is_recent = True
-      break
-  if at_least_one_defense_is_recent:
-    retaliation_entitled_to_presumption = True
-  else:
-    retaliation_entitled_to_presumption = False
+question: Retaliation
+subquestion: |
+  Did you take any of the following actions that you believe are the true
+  reason that the landlord is evicting you? Check all that apply.
+fields:
+  - I withheld rent because of bad conditions.: retaliation.withheld_rent
+    datatype: yesno
+  - I reported bad conditions in writing to the landlord.: retaliation.badconditions_to_landlord
+    datatype: yesno
+  - I reported bad conditions orally or in writing to a public agency.: retaliation.badconditions_to_agency
+    datatype: yesno
+  - I am a member of a tenants union or participated in tenant organizing meetings.: retaliation.tenant_union
+    datatype: yesno
+  - I sued my landlord or brought a claim against my landlord.: retaliation.brought_claim
+    datatype: yesno
+  - I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E).: retaliation.protection_or_prevention_order
+    datatype: yesno
+  - I or someone in my household reported an incident of domestic violance, rape, sexaul assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
+    datatype: yesno
+  - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting you for breaking your lease or changing your locks for safety reasons.: retaliation.survivor_rights
+    datatype: yesno
+  - Other: retaliation.other
+    required: False
+  - One or more of the above happened in the last 6 months.: retaliation.within_6_months
+    datatype: yesno
+    required: False

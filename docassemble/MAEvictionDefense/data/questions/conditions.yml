@@ -71,9 +71,13 @@ fields:
     datatype: yesno
   - Interfered in some other way (specify): bqe.other
 ---
-question: Interference with utilities
+question: |
+  Interference with utilities
+subquestion: |
+  You may have claims against your landlord for improper handling of your utilities.
+  Select any that apply.
 fields:
-  - Have you been billed for heat, hot water, electricity or gas without an agreement in writing?: bqe.billed_no_agreement
+  - I have been billed for heat, hot water, electricity or gas without an agreement in writing.: bqe.billed_no_agreement
     datatype: yesno
-  - Have you been billed any utilities that cover the common area or other people's apartments (cross metering or cross wiring)?: bqe.billed_for_others
+  - I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring).: bqe.billed_for_others
     datatype: yesno

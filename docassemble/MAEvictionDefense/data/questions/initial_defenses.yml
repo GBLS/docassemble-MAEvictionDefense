@@ -1,11 +1,11 @@
 ---
 question: Other
 fields: 
-  - Is your rent paid by DTA, and DTA failed to make the payments at no fault of yours? : other.vendor_payments
+  - My rent is paid by DTA, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
-  - Did you make repairs and deduct from your rent pursuant to (G.L. c. 111, §127L)?: other.repair_and_deduct_statute
+  - I made repairs and deducted the cost from my rent pursuant to (G.L. c. 111, §127L).: other.repair_and_deduct_statute
     datatype: yesno
-  - Did your landlord charge you for water in violation of G.L. c. 186, §22.? : other.water_violation
+  - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
     datatype: yesno
 ---
 question: Requested relief
@@ -31,24 +31,24 @@ subquestion: |
   Below are some common problems with a case that your landlord may have overlooked. Select
   all that apply to you.
 fields:
-  - Did you receive a Notice to Quit? : initial_defense.no_ntq
-    datatype: noyes
-  - Did your landlord fail to properly terminate your tenancy? : initial_defense.no_proper_termination
+  - My landlord failed to properly terminate my tenancy. : initial_defense.no_proper_termination
     datatype: yesno
     default: True
-  - Did your landlord start the eviction case (by sending you a copy of the Summons and Complaint) before the Notice to Quit expired? : initial_defense.premature_commencement
+  - I did not receive a Notice to Quit. : initial_defense.no_ntq
     datatype: yesno
-  - Is your landlord a corporation, and if so, did a lawyer sign the Summons and Complaint? : initial_defense.varney
+  - My landlord started the eviction case (by sending me a copy of the Summons and Complaint) before the Notice to Quit expired. : initial_defense.premature_commencement
+    datatype: yesno
+  - My landlord is a corporation, and the summons and complaint is not signed by a lawyer. : initial_defense.varney
     datatype: noyes
-  - Is the Summons and Complaint defective, or was it improperly served? : initial_defense.defective_summons
+  - The summons and complaint is defective or improperly served. : initial_defense.defective_summons
     datatype: yesno
-  - Did you "cure" the balance owed by paying all money and fees due, by the answer date if it is a tenancy by lease, or within 10 days of the Notice to Quit if it is a tenancy at will? : initial_defense.cure
+  - I legally cured the balance owed by paying all money and fees due, by the answer date if it is a tenancy by lease, or within 10 days of the Notice to Quit if it is a tenancy at will. : initial_defense.cure
     datatype: yesno
-  - Did your landlord create a new tenancy by entering into a new lease or accepting rent without a proper reservation of rights? : initial_defense.new_tenancy
+  - My landlord created a new tenancy by entering into a new lease or accepting rent without a proper reservation of rights. : initial_defense.new_tenancy
     datatype: yesno
-  - Does your landlord lack standing to evict you? : initial_defense.no_standing
+  - My landlord lacks standing to evict me. : initial_defense.no_standing
     datatype: yesno
-  - Did your landlord state an unrelated reason for the eviction on the Notice to Quit vs the Summons and Complaint? : initial_defense.inconsistent_reasons
+  - My landlord stated an unrelated reason for the eviction on the Notice to Quit vs the Summons and Complaint. : initial_defense.inconsistent_reasons
     datatype: yesno
   - Other : initial_defense.other
     datatype: yesno

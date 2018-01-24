@@ -1,0 +1,21 @@
+---
+question: Violation of the Consumer Protection Act
+subquestion: |
+  Check all that apply
+fields:
+  - I was charged illegal late fees. : consumer_protection.late_fees
+    datatype: yesno
+  - I was charged an amount of rent that I never agreed to pay. : consumer_protection.nonagreed_rent
+    datatype: yesno
+  - I was charged court fees or constable fees unlawfully.: consumer_protection.unlawful_court_fees
+    datatype: yesno
+  - There are unlawful terms in my lease. : consumer_protection.unlawful_lease_terms
+    datatype: yesno
+  - Other : consumer_protection.other
+    datatype: yesno
+---
+code: |
+  if landlord.organization_type in ["corporate","trust","other"]:
+    plead_93a = True
+  else:
+    plead_93a = False

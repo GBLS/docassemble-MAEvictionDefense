@@ -9,17 +9,16 @@ question: |
   What is ${ tenant.object_possessive('address') }?
 fields:
   - address: tenant.address.address
-    #default: "123 Main Street"
+    address autocomplete: True
   - unit: tenant.address.unit
     required: False
   - city: tenant.address.city
-    #default: "Boston"
   - state: tenant.address.state
-    #default: "MA"
+    code: |
+      states_list()
+    default: "MA"
   - zip: tenant.address.zip
-    #default: "02110"
   - country: tenant.address.country  
-    #default: 'US'
 ---
 question: Your tenancy
 subquestion: |
@@ -32,11 +31,15 @@ fields:
     datatype: currency
   - What is the "contract" rent (if you have a subsidized rent)?: facts.tenant_contract_rent
     datatype: currency
-  - Do you have a written lease?: facts.tenant_has_lease
+  - I have a written lease: facts.tenant_has_lease
     datatype: yesno
 --- 
 mandatory: True
-question: Information about ${tenant.name} (Select all that apply).
+question: | 
+  Information about ${tenant.name} 
+subquestion: |
+  Your answers will help us select the right defenses and counterclaims.
+  Check all that apply.
 fields: 
   - ${tenant.name} is a member of a protected class and was discriminated against.: tenant.is_discriminated
     datatype: yesno
@@ -56,7 +59,10 @@ fields:
     datatype: yesno
 ---
 mandatory: True
-question: Information about ${tenant.address.address} (select all that apply).
+question: Information about ${tenant.address.address}
+subquestion: |
+  Your answers will help us select the right defenses and counterclaims.
+  Check all that apply.
 fields:
   - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
     datatype: yesno
@@ -72,14 +78,3 @@ fields:
     datatype: yesno
   - "I paid a security deposit or last month's rent when I first moved in.": security_deposit.violated
     datatype: yesno
-under: |
-  Your response to these questions will be used to 
-  determine which other questions we need to ask you.
----
-question: Please sign below
-subquestion: |
-  By signing below, you acknowledge that your answers to the questions
-  in this interview were truthful, to the best of your knowledge.
-signature: tenant.signature
-under: |
-  ${ tenant.name }

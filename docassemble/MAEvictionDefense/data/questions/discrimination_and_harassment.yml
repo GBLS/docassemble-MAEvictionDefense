@@ -1,7 +1,11 @@
 ---
-question: What protected class do you fall under?
+question: |
+  Protected classes and discrimination
 subquestion: |
-  If you are a member of a "protected class," meaning that you are a person of color, have Section 8, receive public assistance, or fit into one of the other protected categories, you may be at risk of discrimination. There are steps you can take, however, to protect yourself. People with physical and mental disabilities are entitled to reasonable accommodations in any housing transaction.
+  It is illegal for someone to discriminate against you because of your membership in certain 
+  groups or "classes". If you were evicted or otherwise treated unfairly because of your
+  membership in a legally protected class, you may have a defense and counterclaim to
+  your eviction.
 fields:
   - Select any protected class that you are a member of: discrimination.protected_classes
     datatype: checkboxes
@@ -21,18 +25,25 @@ fields:
       - Color
       - Other
 ---
-question: Would you like to request a reasonable accommodation?
+question: | 
+  Discrimination on basis of disability
+subquestion: |
+  If you are disabled and there is a connection between your disability and the eviction,
+  you may be entitled to a "reasonable accommodation" from your landlord. This may be
+  a defense to the eviction.
+  Would you like to request a reasonable accommodation?
 yesno: disability.request_reasonable_accommodation
 ---
-question: Sexual Harassment
+question: |
+  Sexual Harassment
 subquestion: |
-  Have you suffered from sexual harassment at any time during the tenancy?
+  Check any that apply.
 fields:
-  - Were you sexually harassed? : discrimination.sexual_harassment.is_harassed
+  - I was sexually harassed by my landlord or someone who works for them. : discrimination.sexual_harassment.is_harassed
     datatype: yesno
-  - Were you asked or pressured to give sexual favors? : discrimination.sexual_harassment.pressured_sexual_favors
+  - I was asked or pressured to give sexual favors. : discrimination.sexual_harassment.pressured_sexual_favors
     datatype: yesno
-  - Did your landlord change the terms of your tenancy because of your response to harassment?: discrimination.sexual_harassment.tenancy_terms_changed
+  - My landlord changed the terms of my tenancy because of my response to harassment.: discrimination.sexual_harassment.tenancy_terms_changed
     datatype: yesno
-  - Did the harassment make you feel unsafe or uncomfortable? : discrimination.sexual_harassment.unsafe_or_uncomfortable
+  - The harassment made me feel unsafe or uncomfortable. : discrimination.sexual_harassment.unsafe_or_uncomfortable
     datatype: yesno
