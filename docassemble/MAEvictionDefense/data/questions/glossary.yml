@@ -19,7 +19,7 @@ auto terms:
   defendant: |
     The person who is on the defensive in a case.  In an eviction, this is normally the tenant.
   tenant: |
-    Someone who pays rent to a landlord.
+    Someone who pays rent to a landlord. This is probably you.
   tenancy at will: |
     An agreement to rent an apartment or house from month-to-month. It automatically 
     renews unless it is ended by a written notice.
@@ -41,3 +41,8 @@ auto terms:
     A change in a landlord's rules, policies, or practices that would allow the tenant to 
     remain in the leased apartment. A tenant who is disabled and whose disability is
     related to the basis for the eviction may be legally entitled to such a change.
+  protected class: |
+    Protected class is a legal term to describe persons who are protected from discrimination.
+    For example, you are protected from discrimination on account of (but not limited to) 
+    race, gender, family status (having children), disability, and gender identity or 
+    sexual orientation.

@@ -10,6 +10,8 @@ fields:
     datatype: yesno
   - My loan was predatory, unfair, and/or was unaffordable based on my income.  : postforeclosure.unfair_loan_based_on_income
     datatype: yesno
+section: Claims and Defenses
+
 ---
 question: |
   Foreclosure related defenses for tenants
@@ -44,3 +46,4 @@ fields:
     datatype: yesno
   - I ask the court to declare the foreclosure void. : relief.void_foreclosure
     datatype: yesno
+section: Claims and Defenses

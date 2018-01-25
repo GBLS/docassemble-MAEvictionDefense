@@ -31,6 +31,7 @@ help: |
   Your landlord may have to pay you the difference between the value of your home in full
   repair and the value of your home with the bad conditions. For very serious problems
   that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
+section: Claims and Defenses
 ---
 question: Notification of landlord
 subquestion: |
@@ -46,6 +47,7 @@ fields:
       - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
       - All or some of these conditions exist in common areas that the landlord has access to.
   - Other: bad_conditions.other
+section: Claims and Defenses
 
 ---
 question: Breach of Quiet Enjoyment
@@ -70,6 +72,8 @@ fields:
   - Entered my home without permission or notice: bqe.entered_without_permission
     datatype: yesno
   - Interfered in some other way (specify): bqe.other
+section: Claims and Defenses
+
 ---
 question: |
   Interference with utilities
@@ -81,3 +85,4 @@ fields:
     datatype: yesno
   - I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring).: bqe.billed_for_others
     datatype: yesno
+section: Claims and Defenses

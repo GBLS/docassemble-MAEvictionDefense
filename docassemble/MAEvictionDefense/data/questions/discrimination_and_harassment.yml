@@ -24,6 +24,8 @@ fields:
       - Disability
       - Color
       - Other
+section: Claims and Defenses
+
 ---
 question: | 
   Discrimination on basis of disability
@@ -33,6 +35,8 @@ subquestion: |
   a defense to the eviction.
   Would you like to request a reasonable accommodation?
 yesno: disability.request_reasonable_accommodation
+section: Claims and Defenses
+
 ---
 question: |
   Sexual Harassment
@@ -47,3 +51,4 @@ fields:
     datatype: yesno
   - The harassment made me feel unsafe or uncomfortable. : discrimination.sexual_harassment.unsafe_or_uncomfortable
     datatype: yesno
+section: Claims and Defenses

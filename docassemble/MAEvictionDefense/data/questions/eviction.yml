@@ -12,12 +12,19 @@ metadata:
 ---
 sections:
   - Getting Started
-  - Information About You
+  - Your Right to a Jury Trial
+  - About You
+  - About Your Landlord
+  - About Your Tenancy
+  - Claims and Defenses
+  - Relief
+  - Discovery
+  - Conclusion
 ---
 features:
   progress bar: True
-#  navigation: True
-  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
+  navigation: True
+#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/yeti/bootstrap.min.css
   css: base3.css
 ---
@@ -28,6 +35,7 @@ objects:
   - tenant: Individual
   - landlord: Person
   - court: Court
+  - case: DAObject
   - eviction: DAObject
   - tenancy: DAObject
   - claims: DAObject
@@ -58,13 +66,17 @@ mandatory: true
 question: |
   About this interview
 subquestion: |
-  This interview is for tenants who are being evicted. It will help you
-  defend against your eviction. You will receive documents at the end that you 
-  must print and deliver to the court and your landlord. You may also have your 
-  first court date postponed by two weeks.
+  This interview was created by Massachusetts legal aid programs as a free
+  service for tenants who are facing eviction.
+  It will help you complete forms that you must deliver to your landlord and 
+  to the court. It is estimated to take about 25 minutes. 
   
-  You should have received a summons and complaint with a court date to use this
-  interview.
+  At the end of the interview and when you have delivered the forms to the proper
+  place:
+  
+  1. You may better understand your legal rights and defenses.
+  1. You may get more information from your landlord to help you prepare for court.
+  1. Your court appearance may be delayed by two weeks.
   
   Words that you may not understand will be {highlighted in green}. Click on a green
   word to learn more. Click the "[Help]" button at any time to learn more about this
@@ -115,13 +127,6 @@ buttons:
   - Continue: continue
   - Exit: exit
 ---
-question: |
-  Include instructions in the printed forms?
-subquestion: |
-  We can include the standard pre-printed instructions with the forms for you
-  to print and review, or leave them out.
-yesno: show_instructions 
----
 mandatory: True
 question: |
   Your right to a jury trial
@@ -145,10 +150,10 @@ field: claim_jurytrial
 buttons:
   - Claim a jury trial: True
   - Waive my right to a jury: False
+section: Your Right to a Jury Trial
 ---
 include:
   - tenant_and_tenancy.yml
-  - basic-questions.yml
   - landlord.yml
   - court_and_eviction.yml
   - help.yml
@@ -162,11 +167,12 @@ include:
   - discrimination_and_harassment.yml
   - consumer_protection.yml
   - security_deposit_and_prepaid_rent.yml
----
-generic object: Individual
-question: What is generic ${ x.object_possessive('name') }?
-fields:
-  - Name: x.name
+  - basic-questions.yml
+#---
+#generic object: Individual
+#question: What is generic ${ x.object_possessive('name') }?
+#fields:
+#  - Name: x.name
 ---
 question: Did {{landlord.name}} send a copy of the notice to quit to {{landlord.name}}'s housing authority?
 noyes: no_ntq_sent
@@ -182,10 +188,25 @@ signature: tenant.signature
 under: |
   ${ tenant.name }
 ---
+question: |
+  Include instructions in the printed forms?
+subquestion: |
+  We can include the standard pre-printed instructions with the forms for you
+  to print and review, or leave them out.
+yesno: show_instructions 
+section: Conclusion
+---
 mandatory: True
 question: |
   Here is your document. You will need to print and bring a copy of this
   document to the court. A second copy must be given at the same time to your
   landlord or their attorney if they have one.
 attachment:
-  docx template file: SummaryProcessAnswer_Final.docx
+  - name: Answer Form
+    filename: Answer.docx
+    docx template file: SummaryProcessAnswer_Final.docx
+  - name: Request for Discovery
+    filename: Discovery.docx
+    docx template file: SummaryProcessDiscovery_Final.docx
+
+section: Conclusion 

@@ -16,6 +16,8 @@ fields:
       - Failed to pay interest on each anniversary of your deposit
       - Failed to provide a statement of conditions
       - Did not take responsibility for the deposit paid to a former landlord
+section: Claims and Defenses
+
 ---
 question: Prepaid last month's rent
 subquestion: |
@@ -25,3 +27,4 @@ fields:
     datatype: yesno
   - Amount of your prepaid last month's rent: last_months_rent.amount
     datatype: currency
+section: Claims and Defenses

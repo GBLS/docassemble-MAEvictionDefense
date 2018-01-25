@@ -65,6 +65,7 @@ fields:
       - Worcester
   - Docket Number: case.docket_number
     required: False
+section: About Your Tenancy
 ---
 question: |
   Upcoming court dates
@@ -84,6 +85,7 @@ help:
   
   If your first court date has passed, you may be able to use a special form called a 
   "Motion to File Late Answer." This interview will help you decide. 
+section: About Your Tenancy
 ---
 mandatory: True
 code: |
@@ -117,6 +119,8 @@ help:
   This information will help us figure out if you are responding to the eviction before
   the deadline. If you are filing these papers on time, your court date will be delayed 
   by two weeks.It will also help us figure out when you need to appear in court. 
+section: About Your Tenancy
+
 ---
 code: |
   case.rescheduled_date = format_date(current_datetime() + date_interval(days=14))
@@ -134,6 +138,8 @@ fields:
     default: True
   - The ${fault_basis} was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
+section: About Your Tenancy
+
 ---
 question: Reason for eviction
 subquestion: |
@@ -147,6 +153,8 @@ choices:
   - I never received a Notice to Quit.: nontq
   - I don't know. : unsure
 help: 
+section: About Your Tenancy
+
 ---
 mandatory: True
 code: |
@@ -157,7 +165,7 @@ code: |
   if eviction_reason == "nofault":
     plead_counterclaims = True
     need(nofault_basis)
-  if (eviction_reason == "nonpayment") or (eviction_reason == "nontq"):
+  if (eviction_reason == "nonpayment") or (eviction_reason == "nontq")  or (eviction_reason == "unsure"):
     plead_counterclaims = True
   if (eviction_reason == "nontq"):
     initial_defense.no_ntq = True
@@ -174,6 +182,8 @@ dropdown:
   - Move in a family member: family
   - No reason given: none
   - Other: other
+section: About Your Tenancy
+
 ---
 question: | 
   Basis for fault eviction
@@ -196,3 +206,4 @@ dropdown:
   - Harassment of staff or other tenant: harassment of staff or other tenant
   - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance of other tenants
   - Other lease violation: other
+section: About Your Tenancy

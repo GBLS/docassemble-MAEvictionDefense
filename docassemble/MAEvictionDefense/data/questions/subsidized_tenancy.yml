@@ -10,6 +10,8 @@ fields:
     datatype: yesno
   - My landlord charged me more rent than allowed by the housing authority (side payments). : subsidized_housing.landlord_overcharged
     datatype: yesno
+section: Claims and Defenses
+
 ---
 question: Subsidized Housing
 subquestion: |
@@ -29,3 +31,4 @@ fields:
     datatype: yesno
 comment:
   Guide me
+section: Claims and Defenses

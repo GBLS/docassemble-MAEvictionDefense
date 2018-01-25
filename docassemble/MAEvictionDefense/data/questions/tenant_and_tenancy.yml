@@ -1,8 +1,17 @@
 ---
 question: What is the Tenant's name?
 fields:
-  - Name: tenant.name
-section: Information About You
+  - First Name: tenant.name.first
+    default: ${ tenant.first_name_hint() }
+  - Middle Name: tenant.name.middle
+    required: False
+  - Last Name: tenant.name.last
+    default: ${ tenant.last_name_hint() }
+  - Suffix: tenant.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: About You
 
 ---
 question: |
@@ -31,8 +40,10 @@ fields:
     datatype: currency
   - What is the "contract" rent (if you have a subsidized rent)?: facts.tenant_contract_rent
     datatype: currency
+    required: False
   - I have a written lease: facts.tenant_has_lease
     datatype: yesno
+section: About Your Tenancy
 --- 
 mandatory: True
 question: | 
@@ -57,6 +68,8 @@ fields:
     datatype: yesno
   - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
+section: About You
+
 ---
 mandatory: True
 question: Information about ${tenant.address.address}
@@ -78,3 +91,4 @@ fields:
     datatype: yesno
   - "I paid a security deposit or last month's rent when I first moved in.": paid_deposit_or_lmr
     datatype: yesno
+section: About You

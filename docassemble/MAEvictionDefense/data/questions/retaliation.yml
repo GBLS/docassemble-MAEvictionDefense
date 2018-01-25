@@ -5,6 +5,8 @@ subquestion: |
   to ${eviction_reason}, and is instead is evicting you because of something you 
   have a legal right to do?
 yesno: retaliation.is_retaliated
+section: Claims and Defenses
+
 ---
 question: Retaliation
 subquestion: |
@@ -32,3 +34,4 @@ fields:
   - One or more of the above happened in the last 6 months.: retaliation.within_6_months
     datatype: yesno
     required: False
+section: Claims and Defenses

@@ -1,7 +1,15 @@
 ---
-question: Violation of the Consumer Protection Act
+code: |
+  if (landlord.organization_type in ["corporate","trust","other"]) and plead_counterclaims:
+    plead_93a = True
+  else:
+    plead_93a = False
+---
+question: Violation of the Consumer Protection Act M.G.L. c. 93A
 subquestion: |
-  Check all that apply
+  The consumer protection law protects tenants renting from a landlord who is in
+  the business of being a landlord from unfair or deceptive actions.
+  If any of the examples below apply to you please select all that apply.
 fields:
   - I was charged illegal late fees. : consumer_protection.late_fees
     datatype: yesno
@@ -13,9 +21,4 @@ fields:
     datatype: yesno
   - Other : consumer_protection.other
     datatype: yesno
----
-code: |
-  if (landlord.organization_type in ["corporate","trust","other"]) and plead_counterclaims:
-    plead_93a = True
-  else:
-    plead_93a = False
+section: Claims and Defenses

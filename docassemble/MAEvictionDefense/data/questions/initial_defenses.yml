@@ -7,6 +7,8 @@ fields:
     datatype: yesno
   - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
     datatype: yesno
+section: Claims and Defenses
+
 ---
 question: Requested relief
 fields:
@@ -24,6 +26,8 @@ fields:
     datatype: yesno
   - relief.stay.other : relief.stay.other
     datatype: yesno
+section: Relief
+
 ---
 question: |
   Did your landlord file the case properly?
@@ -56,11 +60,14 @@ fields:
     required: False
 comments:
   Should add a guide me button to this form
+
+section: Claims and Defenses
 ---
 question: Other initial defense
 fields: 
   - Other initial defense: initial_defense.other_reason
   - Other defense : other.other
     required: False
+section: Claims and Defenses
 
  
