@@ -68,35 +68,6 @@ fields:
 section: About Your Tenancy
 ---
 question: |
-  Upcoming court dates
-subquestion: |
-  This interview is designed to help a tenant whose case is scheduled in court for
-  the first time. It can also help you ask for permission to file late.
-  What best describes ${tenant.name}'s case?
-field: case.status
-choices: 
-  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - My first date in court is coming up.: summons
-  - I signed an agreement in this case already. I have a new court date coming up.: afj
-  - I missed my first court date.: late
-default: summons
-help:
-  We need to know where your case is in the court process to choose the right forms.
-  
-  If your first court date has passed, you may be able to use a special form called a 
-  "Motion to File Late Answer." This interview will help you decide. 
-section: About Your Tenancy
----
-mandatory: True
-code: |
-  if case.status == "onlyntq":
-    need(onlyhasntq)
-  if case.status == "afj":
-    need(firstdatepassed)
-comments:
-  Defined two events with special exit pages.
----
-question: |
   Hearing Date
 subquestion: |
   To answer this question, please take a look at your Summons and Complaint. 
@@ -108,7 +79,7 @@ fields:
     default: "2017-09-07"
     required: False
     hint: Often a Thursday.
-  - What date must your answer be received by (usually a Monday)?: eviction.answerdate
+  - What date must your answer be received by (usually a Monday)?: case.answer_date
     datatype: date
     default: "2017-09-04"
     hint: Usually a Monday
@@ -123,7 +94,12 @@ section: About Your Tenancy
 
 ---
 code: |
-  case.rescheduled_date = format_date(current_datetime() + date_interval(days=14))
+  if as_datetime(case.answer_date) > current_datetime():
+    case.rescheduled_date = format_date(as_datetime(case.original_date) + date_interval(days=14))
+    case.on_time = True
+  else:
+    case.rescheduled_date = case.original_date
+    case.on_time = False
 ---
 question: |
   Defenses for fault eviction

@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-01-22
+  revision_date: 2018-01-25
 ---
 sections:
   - Getting Started
@@ -26,7 +26,8 @@ features:
   navigation: True
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/yeti/bootstrap.min.css
-  css: base3.css
+#  css: base3.css 
+# CSS to center DA does not work on mobile if the navigation menu is turned on
 ---
 modules:
   - docassemble.base.util
@@ -127,6 +128,35 @@ buttons:
   - Continue: continue
   - Exit: exit
 ---
+question: |
+  Upcoming court dates
+subquestion: |
+  This interview is designed to help a tenant whose case is scheduled in court for
+  the first time. It can also help you ask for permission to file late.
+  What best describes ${tenant.name}'s case?
+field: case.status
+choices: 
+  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
+  - My first date in court is coming up.: summons
+  - I signed an agreement in this case already. I have a new court date coming up.: afj
+  - I missed my first court date.: late
+default: summons
+help:
+  We need to know where your case is in the court process to choose the right forms.
+  
+  If your first court date has passed, you may be able to use a special form called a 
+  "Motion to File Late Answer." This interview will help you decide. 
+section: Getting Started
+---
+mandatory: True
+code: |
+  if case.status == "onlyntq":
+    need(onlyhasntq)
+  if case.status == "afj":
+    need(firstdatepassed)
+comments:
+  Defined two events with special exit pages.
+---
 mandatory: True
 question: |
   Your right to a jury trial
@@ -141,7 +171,7 @@ subquestion: |
   1. You still can waive your jury trial right later. Claiming a jury trial also does not
      stop you from reaching an agreement with your landlord.
   
-  There is a chance that the judge will ask you to pay rent while you
+  There is a chance that the judge will ask you to pay rent or use and occupancy while you
   are waiting for the jury trial to be scheduled. 
   Most tenants who receive assistance in Greater Boston Legal Services clinics request a 
   jury trial. 
@@ -198,9 +228,26 @@ section: Conclusion
 ---
 mandatory: True
 question: |
-  Here is your document. You will need to print and bring a copy of this
-  document to the court. A second copy must be given at the same time to your
-  landlord or their attorney if they have one.
+  Your documents are ready. Please print and file!
+subquestion: |
+  Please download and print 3 copies of each document below. You should
+  bring one copy to your landlord or their attorney. A second copy must be filed with
+  the court that your case is scheduled in. Keep one copy for your records.
+  
+  
+  % if case.on_time :
+  Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.
+  You will not receive any special notice in the mail. The new date is also printed
+  on your paperwork.
+
+  According to your earlier answer, you must deliver all copies no later than 
+  **${format_date(case.answer_date)}**. Please note, most Massachusetts courts close at 
+  4:30 PM.
+
+  % else:
+  Please note: because you are filing your answer after the Answer date (${format_date(case.answer_date)}),
+  your hearing date will not be postponed. Please attend court as originally scheduled.
+  % endif
 attachment:
   - name: Answer Form
     filename: Answer.docx
