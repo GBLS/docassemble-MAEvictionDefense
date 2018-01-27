@@ -2,7 +2,7 @@
 question: Retaliation
 subquestion: |
   Do you have any reason to believe that the landlord is not evicting you due 
-  to ${eviction_reason}, and is instead is evicting you because of something you 
+  to "${eviction_detailed_reason}", and is instead is evicting you because of something you 
   have a legal right to do?
 yesno: retaliation.is_retaliated
 section: Claims and Defenses

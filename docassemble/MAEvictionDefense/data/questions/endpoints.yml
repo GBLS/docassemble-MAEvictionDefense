@@ -8,7 +8,7 @@ subquestion: |
   completion of the interview does not create an attorney-client
   relationship.
 
-  % if user_understands_no_attorney_client_relationship == 'unsure':
+  % if user_understands == 'unsure':
   Ask your [local legal services provider](https://www.masslegalservices.org/FindLegalAid) for more information
   to understand how you can use this form.
   % endif

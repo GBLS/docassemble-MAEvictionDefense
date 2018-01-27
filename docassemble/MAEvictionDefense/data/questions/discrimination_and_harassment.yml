@@ -1,4 +1,11 @@
 ---
+question: Protected classes and discrimination
+subquestion: |
+  Do you have any reason to believe that your landlord is discriminating against you
+  because of your membership in a protected class?
+yesno: tenant.is_discriminated
+section: Claims and Defenses
+---
 question: |
   Protected classes and discrimination
 subquestion: |
@@ -7,25 +14,30 @@ subquestion: |
   membership in a legally protected class, you may have a defense and counterclaim to
   your eviction.
 fields:
-  - Select any protected class that you are a member of: discrimination.protected_classes
+  - Select the protected class that you believe is the reason for your landlord's discrimination.: discrimination.protected_classes
     datatype: checkboxes
     choices:
-      - Family Status
+      - Family status (having children): Family status
       - Age
       - Receipt of public or rental assistance
-      - Gender Identity
-      - Marital Status
+      - Gender identity
+      - Marital status
       - Race
       - Religion
       - Sex
       - Sexual orientation
-      - Veteran's Status
-      - National Origin
+      - Veteran's status
+      - National origin
       - Disability
       - Color
       - Other
+    default: 
+      code: |
+        dict(Disability = tenant.is_disabled)  
 section: Claims and Defenses
-
+comment: |
+  Setting the dictionary of defaults, Disability is a 
+  default if tenant.is_disabled is true, and false if it is false.
 ---
 question: | 
   Discrimination on basis of disability
@@ -41,7 +53,8 @@ section: Claims and Defenses
 question: |
   Sexual Harassment
 subquestion: |
-  Check any that apply.
+  If you faced sexual harassment from your landlord or their employee, you may have a
+  defense to the eviction. Check any of the below that apply.
 fields:
   - I was sexually harassed by my landlord or someone who works for them. : discrimination.sexual_harassment.is_harassed
     datatype: yesno

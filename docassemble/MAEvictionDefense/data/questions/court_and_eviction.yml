@@ -119,12 +119,17 @@ section: About Your Tenancy
 ---
 question: Reason for eviction
 subquestion: |
-  To answer this question, please look at your Notice to Quit. What does your notice to quit say is the reason you are being evicted?
+  To answer this question, please look at your Notice to Quit. What does your 
+  notice to quit say is the reason you are being evicted?
+  
+  If the notice to quit lists rent owed but also states a different reason, choose
+  the most specific answer below.
+  
 field: eviction_reason
 #default: unsure
 choices:
   - My landlord says I owe rent.: nonpayment
-  - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
+  - My landlord says I did something wrong other than owe rent or in addition to owing rent. For example, a noise complaint or damage to the apartment.: fault  
   - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
   - I never received a Notice to Quit.: nontq
   - I don't know. : unsure
@@ -153,10 +158,10 @@ subquestion: |
   want you to vacate the apartment?
 field: nofault_basis
 dropdown:
-  - Refused rent increase: rent_increase
-  - Desire to renovate: renovate
-  - Move in a family member: family
-  - No reason given: none
+  - Refused rent increase: refusal of rent increase
+  - Desire to renovate: desire to renovate
+  - Move in a family member: moving in a family member
+  - No reason given: no reason
   - Other: other
 section: About Your Tenancy
 
@@ -183,3 +188,14 @@ dropdown:
   - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance of other tenants
   - Other lease violation: other
 section: About Your Tenancy
+---
+code: |
+  eviction_detailed_reason = "Unknown"
+  if eviction_reason == "fault":
+    eviction_detailed_reason = fault_basis
+  elif eviction_reason == "nofault":
+    eviction_detailed_reason = nofault_basis
+  elif eviction_reason == "nonpayment":
+    eviction_detailed_reason = "nonpayment of rent"
+  elif eviction_reason == "nontq" or (eviction_reason == "unsure"):
+    eviction_detailed_reason = "unknown"

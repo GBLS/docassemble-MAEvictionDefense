@@ -23,6 +23,7 @@ fields:
       - not enough hot water
       - defective locks
       - security problems
+      - other
 help: |
   You may have a claim against your landlord for problems in your home over the last
   6 years, whether they are currently repaired or not. For certain problems, you may only
@@ -47,6 +48,7 @@ fields:
       - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
       - All or some of these conditions exist in common areas that the landlord has access to.
   - Other: bad_conditions.other
+    required: False
 section: Claims and Defenses
 
 ---
@@ -69,6 +71,9 @@ fields:
     datatype: yesno
   - Allowed bad conditions to exist in my home: bqe.bad_conditions
     datatype: yesno
+    default:
+      code: |
+        bad_conditions.have_conditions
   - Entered my home without permission or notice: bqe.entered_without_permission
     datatype: yesno
   - Interfered in some other way (specify): bqe.other
@@ -86,3 +91,9 @@ fields:
   - I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring).: bqe.billed_for_others
     datatype: yesno
 section: Claims and Defenses
+---
+code: |
+  if bad_conditions.have_conditions or bqe.entered_without_permission:
+    bqe.violated = True
+  else:
+    bqe.violated = False

@@ -63,10 +63,15 @@ comments:
 
 section: Claims and Defenses
 ---
-question: Other initial defense
+question: Custom Defenses
+subquestion: |
+  If you would like to add a custom defense, complete the sentences below:
 fields: 
-  - Other initial defense: initial_defense.other_reason
-  - Other defense : other.other
+  - The Landlord's case should be dismissed because: initial_defense.other_reason
+    datatype: area
+    required: False
+  - I have other defenses or counterclaims as follows: other.other
+    datatype: area
     required: False
 section: Claims and Defenses
 

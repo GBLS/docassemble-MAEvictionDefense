@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-01-25
+  revision_date: 2018-01-26
 ---
 sections:
   - Getting Started
@@ -75,7 +75,7 @@ subquestion: |
   At the end of the interview and when you have delivered the forms to the proper
   place:
   
-  1. You may better understand your legal rights and defenses.
+  1. You will better understand your legal rights and defenses.
   1. You may get more information from your landlord to help you prepare for court.
   1. Your court appearance may be delayed by two weeks.
   
@@ -83,7 +83,8 @@ subquestion: |
   word to learn more. Click the "[Help]" button at any time to learn more about this
   interview. If "Help <i class="glyphicon glyphicon-star"></i>"
   appears in the navigation bar, that means help text specific to the
-  question is available.
+  question is available. At any time you can click "back" to change your response to a 
+  question.
 field: user_saw_initial_screen
 terms: 
   - highlighted in green: This is an example. Click it again to hide this definition.
@@ -96,7 +97,10 @@ question: |
 subquestion: |
   Your use of this system does not mean that you have a lawyer.  Do
   you understand this?
-field: user_understands_no_attorney_client_relationship
+  
+  If you would like a lawyer, you may qualify for help from legal aid. You can use the
+  [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to find out.
+field: user_understands
 buttons:
   - "I understand": understands
   - code: |
@@ -105,8 +109,23 @@ buttons:
 mandatory: True
 code: |
   need(user_saw_initial_screen)
-  if not user_understands_no_attorney_client_relationship == "understands":
+  if not user_understands == "understands":
     need(client_kicked_out)
+---
+mandatory: True
+question: |
+  Interview Experience
+subquestion: |
+  This interview offers two experiences: "Guided" and "Expert".
+  Most tenants choose "Guided". Guided mode will ask you extra questions.
+  The questions will help you decide whether each defense applies to you.
+  Expert mode may be faster for people who have experience with eviction law.
+  
+  What kind of interview do you want?
+field: interview_mode
+buttons:
+  - Guided: guided
+  - Expert: expert
 ---
 mandatory: true
 question: Overview of Tenant's Rights in Evictions in Massachusetts
@@ -219,12 +238,12 @@ under: |
   ${ tenant.name }
 ---
 question: |
-  Include instructions in the printed forms?
+  Printed Instructions
 subquestion: |
-  We can include the standard pre-printed instructions with the forms for you
-  to print and review, or leave them out.
+  Should we include printed instructions about delivering the forms 
+  in the documents for you to print?
 yesno: show_instructions 
-section: Conclusion
+#section: Conclusion
 ---
 mandatory: True
 question: |

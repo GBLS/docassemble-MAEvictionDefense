@@ -27,7 +27,7 @@ fields:
       states_list()
     default: "MA"
   - zip: tenant.address.zip
-  - country: tenant.address.country  
+  - country: tenant.address.country
 ---
 question: Your tenancy
 subquestion: |
@@ -52,8 +52,6 @@ subquestion: |
   Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
 fields: 
-  - ${tenant.name} is a member of a protected class and was discriminated against.: tenant.is_discriminated
-    datatype: yesno
   - Someone who lives with ${tenant.name} has a disability: tenant.is_disabled
     datatype: yesno
   - Someone who lives with ${tenant.name} is under the age of 6: tenant.is_under6
@@ -69,7 +67,6 @@ fields:
   - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
 section: About You
-
 ---
 mandatory: True
 question: Information about ${tenant.address.address}
@@ -81,9 +78,7 @@ fields:
     datatype: yesno
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
-  - ${landlord.name} has tried to lock me out or entered my apartment without my permission.: bqe.violated
-    datatype: yesno
-  - ${landlord.name} shut off the utilities.: claims.utilities
+  - ${landlord.name} has tried to lock me out or entered my apartment without my permission.: bqe.entered_without_permission
     datatype: yesno
   - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
     datatype: yesno
