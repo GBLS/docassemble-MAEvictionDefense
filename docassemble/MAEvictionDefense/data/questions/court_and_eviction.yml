@@ -1,9 +1,11 @@
 question: |
   What court is your case being heard in?
+subquestion: |
+  Copy the name of the court from the upper-right-hand corner of the Summons and Complaint form.
 fields: 
   - Court name: court.name
     datatype: court
-    default: "Eastern Housing Court"
+    #default: "Eastern Housing Court"
     choices:
       - Barnstable District Court
       - Boston Housing Court
@@ -47,7 +49,8 @@ fields:
       - Worcester District Court
       - Worcester Housing Court
   - County: court.county
-    default: "Suffolk"
+    default: ${tenant.address.county}
+    #default: "Suffolk"
     choices:
       - Barnstable
       - Berkshire

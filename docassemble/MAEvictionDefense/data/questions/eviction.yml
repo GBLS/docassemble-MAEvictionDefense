@@ -59,6 +59,8 @@ objects:
   - relief.stay: DAObject
   - consumer_protection: DAObject
   - discrimination.sexual_harassment: DAObject
+  #rp
+  - county: DAObject
 ---
 images:
   summons: summons_and_complaint.png

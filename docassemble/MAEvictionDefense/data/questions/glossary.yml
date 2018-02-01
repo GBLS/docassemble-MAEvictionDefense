@@ -2,6 +2,7 @@
 images:
   summons: summons_and_complaint.png
   ntq: notice-to-quit-14.png
+  jury: jury.png
 ---
 auto terms:
   notice to quit: |
@@ -54,5 +55,7 @@ auto terms:
     must agree to reach a decision in your case. They will reach a separate decision
     about each of your claims and defenses, money owed to the landlord, and whether
     you get to remain in your apartment.
+  docket number: |
+    The Docket Number is the number the court has assigned to your case. Sometimes it has not yet been assigned to your case, so it will not be on the Summons and Complaint. You may ask the court for this number, or leave it blank
     
     
