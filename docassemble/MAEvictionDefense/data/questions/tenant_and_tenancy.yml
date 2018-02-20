@@ -28,7 +28,9 @@ fields:
     default: "MA"
   - zip: tenant.address.zip
   - country: tenant.address.country
+    required: False
   - county: tenant.address.county
+    required: False
 ---
 question: Your tenancy
 subquestion: |

@@ -77,6 +77,7 @@ fields:
   - Entered my home without permission or notice: bqe.entered_without_permission
     datatype: yesno
   - Interfered in some other way (specify): bqe.other
+    required: False
 section: Claims and Defenses
 
 ---

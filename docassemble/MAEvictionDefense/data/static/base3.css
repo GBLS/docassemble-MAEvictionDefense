@@ -4,3 +4,8 @@ body > .container {
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.navbar-inverse { 
+    background-image: #ff7f50;
+    background-repeat: repeat-x;
+}

@@ -1,0 +1,58 @@
+---
+modules:
+  - docassemble.base.util
+  - .discovery
+---
+code: |
+  ints.there_is_another = False
+  drq.there_is_another = False
+  discovery_categories.there_is_another = False
+  other_ints.there_are_any = False
+  other_drq.there_are_any = False
+  discovery_categories.there_are_any = True
+  ints.there_are_any = True
+  drq.there_are_any = True
+  
+  """
+  Load the CSV file into a list 
+  """
+  discovery_url = 'data/sources/discovery-map.csv'
+  claim_discovery_link_url = 'data/sources/claim-discovery-link.csv'
+  discovery_list = load_from_csv(discovery_url)
+  discovery_map = load_from_csv(claim_discovery_link_url)
+ 
+  for item in discovery_list:
+    """ Build the set of unique categories """
+    if item['Category'] not in discovery_categories:
+      discovery_categories.append(item['Category'])
+      
+    """ Strip off the prefix "int." or "drq.": should refactor this in csv? """
+    iname = item['Variable'][item['Variable'].find('.') + 1:] 
+    is_checked = item['AlwaysChecked'].lower() == 'true'
+    if 'ints.' in item['Variable']:
+      ints.initializeObject(iname, DiscoveryRequest)
+      ints[iname].description = item['Description']
+      ints[iname].checked = is_checked
+      ints[iname].category = item['Category']
+    if 'drq.' in item['Variable']:
+      drq.initializeObject(iname, DiscoveryRequest)
+      drq[iname].description = item['Description']
+      drq[iname].checked = is_checked
+      drq[iname].category = item['Category']
+  
+  """ Evalue our logic table to set discovery values automatically. """
+  for lemma in discovery_map:
+    if lemma['Value'].lower() == 'true':
+      comparison = True
+    elif lemma['Value'].lower() == 'false':
+      comparison = False
+    else:
+      comparison = lemma['Value']
+    discovery_name = lemma['Discovery'][lemma['Discovery'].find('.') + 1:]
+    if defined(lemma['Claim']) and value(lemma['Claim']) == comparison:
+      if 'ints.' in lemma['Discovery']:
+        ints[discovery_name].checked = True
+      elif 'drq.' in lemma['Discovery']:
+        drq[discovery_name].checked = True
+      else:
+        pass

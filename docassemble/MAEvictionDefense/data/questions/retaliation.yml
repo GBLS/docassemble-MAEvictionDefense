@@ -1,5 +1,9 @@
 ---
 question: Retaliation
+help: |
+  Mass. Gen. Laws c. 239, §2A: Reprisal for reporting violations of law, for tenant's union activity, or actions taken pursuant to laws protecting tenants who are victims of domestic violence, rape, sexual assault or stalking; defense; presumption
+  
+  Mass. Gen. Laws c. 186, §18: Reprisal for reporting violations of law or for tenant's union activity; damages and costs; notice of termination, presumption; waiver in leases or other rental agreements prohibited
 subquestion: |
   Do you have any reason to believe that the landlord is not evicting you due 
   to "${eviction_detailed_reason}", and is instead is evicting you because of something you 

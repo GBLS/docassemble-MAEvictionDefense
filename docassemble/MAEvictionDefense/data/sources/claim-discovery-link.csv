@@ -1,0 +1,9 @@
+Claim,Value,Discovery,Remarks
+fault_basis,overcrowding,ints.household_members,
+eviction_reason,nonpayment,ints.rent_owed,
+eviction_reason,nofault,ints.rent_owed,
+eviction_reason,nonpayment,ints.rent_paid_after_ntq,
+eviction_reason,nonpayment,ints.third_party_payment,
+nofault_basis,rent_increase,ints.rent_increase_request,
+tenancy.is_subsidized,TRUE,ints.subsidized_housing_basic_facts,
+nofault_basis,rent_increase,ints.subsidized_housing_rent_increase_request,
