@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-01-26
+  revision_date: 2018-02-20
   logo: |
     <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 100px">
 ---
@@ -91,7 +91,8 @@ mandatory: true
 question: |
   About this interview
 subquestion: |
-  This interview was created by Massachusetts legal aid programs as a free
+  This interview was created by Greater Boston Legal Services and other
+  Massachusetts legal aid programs as a free
   service for tenants who are facing eviction.
   It will help you complete forms that you must deliver to your landlord and 
   to the court. It is estimated to take about 25 minutes. 
@@ -151,22 +152,26 @@ buttons:
   - Guided: guided
   - Expert: expert
 ---
-mandatory: true
+mandatory: True
+code: |
+  if interview_mode == 'guided':
+    need(overview_video)
+    need(getting_started)
+---
 question: Overview of Tenant's Rights in Evictions in Massachusetts
 subquestion: | 
   Watch the video below to learn a little more about the eviction process.
   You can also visit the [MassLegalHelp](http://www.masslegalhelp.org/housing/evictions) website.
 video: "[YOUTUBE TSaTw0Y5OFA]"
-buttons:
-  - Continue: continue
+field: overview_video
 ---
-mandatory: true
 question: Getting Started
 subquestion: |
   Please locate the Summons and Complaint and the Notice to Quit for your case
   before you begin. You'll be asked to look for information on both
   documents to help answer some questions. If you don't have either document,
   you can still do your best to answer from your memory.
+field: getting_started
 buttons: 
   - Continue: continue
   - Exit: exit
@@ -197,8 +202,6 @@ code: |
     need(onlyhasntq)
   if case.status == "afj":
     need(firstdatepassed)
-comments:
-  Defined two events with special exit pages.
 ---
 mandatory: True
 question: |
@@ -242,43 +245,6 @@ include:
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
   - basic-questions.yml
-#---
-#generic object: Individual
-#question: What is generic ${ x.object_possessive('name') }?
-#fields:
-#  - Name: x.name
----
-question: Did {{landlord.name}} send a copy of the notice to quit to {{landlord.name}}'s housing authority?
-noyes: no_ntq_sent
----
-question: Did the landlord charge you a late fee before 30 days?
-yesno: consumerprotection.charged_latefee
----
-mandatory: True
-question: |
-  Summary of Discovery Selections
-subquestion: |
-  ###The Discovery categories are
-  ${ discovery_categories }
-  
-  ${ints['person_answering'].checked}
-   
-  Number selected: ${ len(ints.checked_values()) }
-  
-  ###You've selected ${ len(ints.checked_values()) } interrogatories
-    
-  %for int in ints.checked_values():
-  * ${ints[int].description}  
-  %endfor
-
-  ###You've selected ${ len(drq.checked_values()) } document requests
-    
-  %for d in drq.checked_values():
-  * ${drq[d].description}  
-  %endfor
-section: Discovery
-buttons:
-  - Continue: continue
 ---
 question: Please sign below
 subquestion: |
@@ -321,7 +287,7 @@ subquestion: |
 attachment:
   - name: Answer Form
     filename: Answer.docx
-    docx template file: SummaryProcessAnswer_Finaledit.docx
+    docx template file: SummaryProcessAnswer_Final.docx
   - name: Request for Discovery
     filename: Discovery.docx
     docx template file: SummaryProcessDiscovery_Final.docx

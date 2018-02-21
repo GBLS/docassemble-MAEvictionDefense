@@ -27,8 +27,122 @@ fields:
   - relief.stay.other : relief.stay.other
     datatype: yesno
 section: Relief
-
 ---
+show if: |
+  interview_mode == 'guided'
+question: |
+  Termination of tenancy
+subquestion: |
+  
+  The first step in termination is a Notice to Quit, 
+  (also called Notice to Terminate Tenancy). If your landlord
+  did not do this properly, you may have a defense.
+  We'll start by asking questions about what type of notice you received and the
+  type of tenancy agreement you have.
+
+fields:
+  - Type of termination notice: notice_type
+    choices:
+      - 14 day Notice to Quit: fourteen_day
+      - 30 day Notice to Quit: thirty_day
+      - 72 hour Notice to Quit: seventy_two_hour
+      - Notice "until the end of the next rental period" or similar: rental_period
+      - I never received a Notice to Quit: no_ntq
+  - I was behind in rent at the time I received the 14-day notice.: behind_in_rent
+    datatype: yesno
+    show if: 
+      variable: notice_type
+      is: fourteen_day
+  - I never agreed to pay the amount of rent the landlord is charging me for on the 14-day notice: rent_increase
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: fourteen_day
+  - I paid or offered to pay the full amount of money owed.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: fourteen_day
+  - Type of Tenant/Occupant: tenant_type
+    choices:
+      - I pay rent to a landord or bank: renter
+      - I am a former owner after foreclosure: pfc_owner
+      - I live in the property to help the owner or tenant but do not pay rent: pca
+  - My rental agreement is: tenancy_type
+    show if:
+      variable: tenant_type
+      is: renter
+    choices:
+      - I have a written lease: lease
+      - I pay month-to-month or week-to-week (tenancy at will): taw
+  - Type of lease: lease_type
+    show if:
+      variable: tenancy_type
+      is: lease
+    choices:
+      - My lease ends on a specific day and does not renew: fixed_term
+      - My lease automatically renews for a specific term (usually 1 year): self_extending
+      - My lease changes into a month-to-month tenancy or tenancy at will: renews_as_taw
+  - Date my lease ends: lease_end_date
+    datatype: date
+    show if:
+      variable: lease_type
+      is: fixed_term
+  - I paid rent after receiving the notice to quit.: paid_rent
+    datatype: yesno
+  - The notice states that rent will be accepted as "use and occupancy": notice_states_use_and_occupancy
+    datatype: yesno
+    show if: 
+      variable: paid_rent
+      is: True
+help:
+  https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section1
+  http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf
+---
+question: Timing of notices
+subquestion: |
+  It's important for your landlord to file your eviction case and pre-eviction notice
+  at the proper time. You may have a defense if this was not done in your case.
+fields:
+  - Date I received notice to quit: date_received_ntq
+    datatype: date
+  - Date I received the notice to appear in court (Summons and Complaint).: date_received_summons
+    datatype: date
+  - I received the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
+    datatype: yesno
+  - The summons and complaint was mailed to me.: summons_mailed
+    datatype: yesno
+  - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
+    datatype: yesno
+---
+question: |
+  Form of notices
+fields:
+  - The summons and complaint says I did something wrong that was not listed on the notice to quit (other than owing rent). : notice_inconsistent
+    datatype: yesno
+  - I received something like a Notice to Quit but it does not tell me to leave on a certain day.: notice_does_not_terminate
+    datatype: yesno
+---
+question: |
+  Cure of nonpayment
+subquestion: |
+  You may have the right to cure if you paid all money that was owed to the landlord
+  at the proper time.
+fields:
+  - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
+    datatype: yesno
+  - My payment included the cost of filing in court (typically about $180).: paid_court_fees
+    datatype: yesno
+  - Date of payment to the landlord: cure_date
+    datatype: date
+help:
+  See Chapter 12 of Legal Tactics, the section titled "Paying the Rent Owed".
+  Also see G.L. 186 s. 11 (https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11)
+  
+  
+---
+show if: |
+  interview_mode == 'expert'
 question: |
   Did your landlord file the case properly?
 subquestion: |

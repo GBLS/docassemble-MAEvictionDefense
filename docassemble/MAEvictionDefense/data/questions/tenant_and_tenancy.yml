@@ -44,6 +44,7 @@ fields:
   - What is the "contract" rent (if you have a subsidized rent)?: facts.tenant_contract_rent
     datatype: currency
     required: False
+    show if: facts.tenant_has_subsidy
   - I have a written lease: facts.tenant_has_lease
     datatype: yesno
 section: About Your Tenancy

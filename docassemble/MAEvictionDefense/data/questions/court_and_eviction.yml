@@ -52,20 +52,20 @@ fields:
     default: ${tenant.address.county}
     #default: "Suffolk"
     choices:
-      - Barnstable
-      - Berkshire
-      - Bristol
-      - Dukes
-      - Essex
-      - Franklin
-      - Hampden
-      - Hampshire
-      - Middlesex
-      - Nantucket
-      - Norfolk
-      - Plymouth
-      - Suffolk
-      - Worcester
+      - Barnstable County
+      - Berkshire County
+      - Bristol County
+      - Dukes County
+      - Essex County
+      - Franklin County
+      - Hampden County
+      - Hampshire County
+      - Middlesex County
+      - Nantucket County
+      - Norfolk County
+      - Plymouth County
+      - Suffolk County
+      - Worcester County
   - Docket Number: case.docket_number
     required: False
 section: About Your Tenancy

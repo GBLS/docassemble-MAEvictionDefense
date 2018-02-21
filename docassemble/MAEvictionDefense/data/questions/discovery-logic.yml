@@ -56,3 +56,59 @@ code: |
         drq[discovery_name].checked = True
       else:
         pass
+---
+generic object: Interrogatory
+question: |
+  Custom Interrogatories (Questions)
+subquestion: |
+  What additional question would you like to ask the landlord?
+fields:
+  - Question text: x.content
+    datatype: textarea
+---
+generic object: DocumentRequest
+question: |
+  Custom Document Requests
+subquestion: |
+  What additional documents would you like to request from the landlord?
+fields:
+  - Document request text: x.content
+    datatype: textarea
+---
+question: |
+  Additional Interrogatories
+subquestion: |
+  Would you like to ask an additional, custom interrogatory (question)?
+yesno: other_ints.there_is_another
+---
+question: |
+  Additional Document Requests
+subquestion: |
+  Would you like to ask your landlord for additional documents?
+yesno: other_drq.there_is_another
+---
+mandatory: True
+question: |
+  Summary of Discovery Selections
+subquestion: |
+  ###The Discovery categories are
+  ${ discovery_categories }
+  
+  ${ints['person_answering'].checked}
+   
+  Number selected: ${ len(ints.checked_values()) }
+  
+  ###You've selected ${ len(ints.checked_values()) } interrogatories
+    
+  %for int in ints.checked_values():
+  * ${ints[int].description}  
+  %endfor
+
+  ###You've selected ${ len(drq.checked_values()) } document requests
+    
+  %for d in drq.checked_values():
+  * ${drq[d].description}  
+  %endfor
+section: Discovery
+buttons:
+  - Continue: continue
