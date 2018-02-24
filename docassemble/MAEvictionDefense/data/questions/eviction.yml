@@ -8,9 +8,9 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-02-20
-  logo: |
-    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 100px">
+  revision_date: 2018-02-23
+#  logo: |
+#    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
 sections:
   - Getting Started
@@ -26,11 +26,16 @@ sections:
 features:
   progress bar: True
   navigation: True
+  javascript: 
+    - analytics.js
+    - autotrack.js
   bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css
 #  inverse navbar: False
 #  css: originalbase.css
 #  css: originalnav.css
+#  css: logonav.css
+  
 ---
 modules:
   - docassemble.base.util
@@ -81,11 +86,6 @@ code: |
   pleading.title = "Defendant's Request for Discovery (Interrogatories and Document Requests)"
   pleading.case.firstParty.gathered = True
   pleading.case.secondParty.gathered = True
----
-#mandatory: True
-question: Test
-subquestion: |
-  ${pleading.caption()}
 ---
 mandatory: true
 question: |
@@ -229,6 +229,7 @@ buttons:
 section: Your Right to a Jury Trial
 ---
 include:
+  - control-order.yml
   - tenant_and_tenancy.yml
   - landlord.yml
   - court_and_eviction.yml
@@ -245,6 +246,7 @@ include:
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
   - basic-questions.yml
+
 ---
 question: Please sign below
 subquestion: |
@@ -254,6 +256,7 @@ signature: tenant.signature
 under: |
   ${ tenant.name }
 ---
+need: all_answer_variables
 question: |
   Printed Instructions
 subquestion: |
@@ -269,7 +272,6 @@ subquestion: |
   Please download and print 3 copies of each document below. You should
   bring one copy to your landlord or their attorney. A second copy must be filed with
   the court that your case is scheduled in. Keep one copy for your records.
-  
   
   % if case.on_time :
   Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.
@@ -287,9 +289,9 @@ subquestion: |
 attachment:
   - name: Answer Form
     filename: Answer.docx
-    docx template file: SummaryProcessAnswer_Final.docx
+    docx template file: SummaryProcessAnswer_Finaledit.docx
   - name: Request for Discovery
     filename: Discovery.docx
-    docx template file: SummaryProcessDiscovery_Final.docx
+    docx template file: SummaryProcessDiscovery.docx
 
 section: Conclusion 

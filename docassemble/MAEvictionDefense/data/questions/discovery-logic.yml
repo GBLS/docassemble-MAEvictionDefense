@@ -3,13 +3,11 @@ modules:
   - docassemble.base.util
   - .discovery
 ---
+mandatory: True
+need: all_answer_variables
 code: |
-  ints.there_is_another = False
-  drq.there_is_another = False
-  discovery_categories.there_is_another = False
   other_ints.there_are_any = False
   other_drq.there_are_any = False
-  discovery_categories.there_are_any = True
   ints.there_are_any = True
   drq.there_are_any = True
   
@@ -22,10 +20,15 @@ code: |
   discovery_map = load_from_csv(claim_discovery_link_url)
  
   for item in discovery_list:
+    
     """ Build the set of unique categories """
+    """
     if item['Category'] not in discovery_categories:
       discovery_categories.append(item['Category'])
-      
+    
+    discovery_categories.there_are_any = True
+    """
+
     """ Strip off the prefix "int." or "drq.": should refactor this in csv? """
     iname = item['Variable'][item['Variable'].find('.') + 1:] 
     is_checked = item['AlwaysChecked'].lower() == 'true'
@@ -39,6 +42,8 @@ code: |
       drq[iname].description = item['Description']
       drq[iname].checked = is_checked
       drq[iname].category = item['Category']
+  
+  discovery_categories.there_is_another = False
   
   """ Evalue our logic table to set discovery values automatically. """
   for lemma in discovery_map:
@@ -54,8 +59,10 @@ code: |
         ints[discovery_name].checked = True
       elif 'drq.' in lemma['Discovery']:
         drq[discovery_name].checked = True
-      else:
-        pass
+
+  ints.there_is_another = False
+  drq.there_is_another = False
+
 ---
 generic object: Interrogatory
 question: |
@@ -87,12 +94,56 @@ subquestion: |
   Would you like to ask your landlord for additional documents?
 yesno: other_drq.there_is_another
 ---
+code: |
+  ints_fields = []
+  for key in ints:
+    ints_fields.append({'label': ints[key].category + ": " + ints[key].description,
+                        'field': "ints[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
+                        
+  drq_fields = []
+  for key in drq:
+    drq_fields.append({'label': drq[key].category + ": " + drq[key].description,
+                        'field': "drq[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
+---
 mandatory: True
+need: all_answer_variables
+question: |
+  Interrogatories (questions for your landlord)
+subquestion: |
+  You can ask your landlord up to 30 questions, so long as they are related
+  to your case. We may have recommended some for you automatically and some
+  will always be asked.
+  
+  ${ ints.count_checked() } interrogatories are already selected. 
+  
+  Below is a short summary of the topic of each question.
+  Please select all questions that you would like to ask your landlord.
+fields: 
+  code: ints_fields
+---
+mandatory: True
+need: all_answer_variables
+question: |
+  Document requests (letters, leases, photos, and other printed information)
+subquestion: |
+  There is no limit to the number of documents you can ask your landlord
+  to provide to you, so long as they are related to your case. We may have 
+  recommended some for you automatically and some will always be asked.
+
+  Below is a short summary sentence for each pre-written question available.
+  Select the documents you would like your landlord to give you.
+fields: 
+  code: drq_fields
+help: |
+  Document requests can be unreadable for non-lawyers. The important thing
+  to review is the topic of the request.
+---
 question: |
   Summary of Discovery Selections
 subquestion: |
   ###The Discovery categories are
-  ${ discovery_categories }
   
   ${ints['person_answering'].checked}
    

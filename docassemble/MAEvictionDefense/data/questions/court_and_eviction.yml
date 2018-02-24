@@ -66,8 +66,6 @@ fields:
       - Plymouth County
       - Suffolk County
       - Worcester County
-  - Docket Number: case.docket_number
-    required: False
 section: About Your Tenancy
 ---
 question: |
@@ -75,16 +73,13 @@ question: |
 subquestion: |
   To answer this question, please take a look at your Summons and Complaint. 
   Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
-  Today is ${ today(format='EEEE') }.
 fields:
   - What date is your first hearing in court?: case.original_date
     datatype: date
-    default: "2017-09-07"
     required: False
     hint: Often a Thursday.
   - What date must your answer be received by (usually a Monday)?: case.answer_date
     datatype: date
-    default: "2017-09-04"
     hint: Usually a Monday
     required: False
 help:
@@ -120,22 +115,38 @@ fields:
 section: About Your Tenancy
 
 ---
+sets: eviction_reason
+code: |
+  if eviction_all_reasons['fault']:
+    eviction_reason = 'fault'
+  elif eviction_all_reasons['nonpayment']:
+    eviction_reason = 'nonpayment'
+  elif eviction_all_reasons['nofault']:
+    eviction_reason = 'nofault'
+  elif eviction_all_reasons['nontq']:
+    eviction_reason = 'nontq'
+  else:
+    eviction_reason = 'unsure'
+    
+  if eviction_all_reasons['nontq']:
+    initial_defense.no_ntq = True
+---
 question: Reason for eviction
 subquestion: |
-  To answer this question, please look at your Notice to Quit. What does your 
-  notice to quit say is the reason you are being evicted?
+  Look at your Notice to Quit. 
   
-  If the notice to quit lists rent owed but also states a different reason, choose
-  the most specific answer below.
+  What does your notice to quit say is the reason you are being evicted?
   
-field: eviction_reason
-#default: unsure
-choices:
-  - My landlord says I owe rent.: nonpayment
-  - My landlord says I did something wrong other than owe rent or in addition to owing rent. For example, a noise complaint or damage to the apartment.: fault  
-  - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
-  - I never received a Notice to Quit.: nontq
-  - I don't know. : unsure
+fields: 
+  - Choose all that apply.: eviction_all_reasons
+    datatype: checkboxes
+    none of the above: False
+    choices:
+      - My landlord says I owe rent.: nonpayment
+      - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
+      - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
+      - I never received a Notice to Quit.: nontq
+      - I don't know. : unsure
 help: 
 section: About Your Tenancy
 

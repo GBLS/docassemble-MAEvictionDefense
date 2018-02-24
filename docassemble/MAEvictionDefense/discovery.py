@@ -39,7 +39,18 @@ class DiscoveryDict(DADict):
     return super(DiscoveryDict, self).init(*pargs, **kwargs) 
   def checked_values(self):
     return DAList(elements=[key for key,value in self.iteritems() if value.checked is True])
+  def unchecked_values(self):
+    return DAList(elements=[key for key,value in self.iteritems() if value.checked is True])
+  def matches_category(self, category):
+    return DAList(elements=[key for key,value in self.iteritems() if value.category == category])
+  def count_checked(self):
+    i = 0
+    for key in self.elements:
+      if self.elements[key].checked: 
+        i += 1
+    return i
  
+
 def load_from_csv(relative_path):
   """ Return a list containing a dictionary for each line of the CSV file at relative_path. Uses Docassemble path_and_mimetype to locate the path."""
   (path,mimetype) = path_and_mimetype(relative_path)

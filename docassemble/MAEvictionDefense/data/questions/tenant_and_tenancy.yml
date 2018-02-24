@@ -31,6 +31,9 @@ fields:
     required: False
   - county: tenant.address.county
     required: False
+  - I still live at this address: facts.tenant_moved
+    datatype: noyes
+    default: False
 ---
 question: Your tenancy
 subquestion: |
@@ -39,12 +42,17 @@ fields:
   - When did you move in?: facts.tenant_movein
     datatype: date
     required: False
-  - How much is your portion of the rent?: facts.tenant_rent_share
+  - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
-  - What is the "contract" rent (if you have a subsidized rent)?: facts.tenant_contract_rent
+  - What is the full "contract" or "market" rent?: facts.tenant_contract_rent
     datatype: currency
     required: False
-    show if: facts.tenant_has_subsidy
+    help: |
+      Enter the full amount of money your landlord is paid for the apartment,
+      or the best number that you know.
+    show if: 
+      code: |
+        facts.tenant_has_subsidy
   - I have a written lease: facts.tenant_has_lease
     datatype: yesno
 section: About Your Tenancy

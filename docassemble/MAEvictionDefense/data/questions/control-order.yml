@@ -1,0 +1,78 @@
+---
+comment: |
+  This block should require all of the mandatory variables in the Answer file so we can ensure
+  that the answer file is completed before we work on the request for discovery.
+  it should mirror the logic of the answer file and must be
+  updated if the answer file changes.
+sets: all_answer_variables
+code: |
+  claim_jurytrial
+  eviction_reason
+  court.county
+  court.name
+  case.original_date
+  case.rescheduled_date
+  landlord.name
+  tenant.name
+  tenant.address
+  facts.tenant_movein
+  facts.tenant_rent_share
+  """ facts.tenant_rent_frequency """
+  """ facts.tenant_contract_rent """
+  facts.tenant_has_lease
+  facts.tenant_has_subsidy
+  facts.tenant_moved
+
+  initial_defense.no_ntq
+  initial_defense.premature_commencement
+  initial_defense.varney
+  initial_defense.defective_summons
+  initial_defense.cure
+  initial_defense.new_tenancy
+  initial_defense.no_standing
+  initial_defense.inconsistent_reasons
+  initial_defense.other
+
+  retaliation.is_retaliated
+  tenant.is_discriminated
+  plead_counterclaims
+  
+  if plead_counterclaims:
+    bad_conditions.have_conditions
+    paid_deposit_or_lmr
+    bqe.violated
+    plead_93a
+    consumer_protection.late_fees
+    consumer_protection.nonagreed_rent
+    consumer_protection.unlawful_court_fees
+    consumer_protection.unlawful_lease_terms
+  
+  other.vendor_payments
+  other.repair_and_deduct_statute
+  other.water_violation
+  
+  if postforeclosure.is_foreclosed:
+    postforeclosure.no_just_cause.bona_fide_protections
+    postforeclosure.no_just_cause.no_binding_purchase
+    postforeclosure.no_just_cause.ntq_or_other_actions
+    postforeclosure.no_just_cause.possession_and_damages
+    postforeclosure.notice_provisions.bona_fide_protections
+    postforeclosure.notice_provisions.no_plaintiff_info
+    postforeclosure.notice_provisions.less_than_30_days
+    postforeclosure.notice_provisions.no_right_to_court_notice
+    postforeclosure.notice_provisions.no_written_notice_of_violations
+    postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    postforeclosureotice_provisions.plaintiff_did_not_comply_with_requirements
+    postforeclosure.no_standing
+    other.foreclosure
+    other.foreclosure.failure_to_comply
+    other.foreclosure.unfair_loan_mod
+    other.foreclosure.unfair_notices
+    other.foreclosure.unfair_loan_based_on_income
+  
+  discrimination.sexual_harassment.is_harassed
+  initial_defense.other_reason
+
+  
+  all_answer_variables = True
