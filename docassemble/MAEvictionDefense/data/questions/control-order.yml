@@ -114,7 +114,7 @@ code: |
     postforeclosure.unfair_loan_based_on_income
   
   discrimination.sexual_harassment.is_harassed
-  if intial_defense.other:
+  if initial_defense.other:
     initial_defense.other_reason
 
   if tenant.is_discriminated:
