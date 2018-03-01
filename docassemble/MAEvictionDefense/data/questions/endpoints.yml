@@ -31,22 +31,24 @@ buttons:
   Exit: exit
   Restart: restart
 ---
-event: firstdatepassed
 question: This may not be the right interview for you.
 subquestion: |
-  This interview is meant to help you respond to your landlord's original case. You said that you
-  have already appeared in court for this case.
+  This interview is meant to help you respond to your landlord's original eviction case.
+  You said that you have already appeared in court for this case.
   
-  You may still be able to use this interview to file a "late" response if you have not
-  been in front a judge or magistrate yet. 
+  Click "Keep Going" if you would like to ask for permission from the judge to file a
+  late response. Your court date will not be postponed.
   
-  If you already filed an agreement with the court, this is probably not the right 
-  interview for you. 
-  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
-  find a legal services agency near you. You may receive help or advice to follow
-  in court.
+  If you already filed a response in court or signed an agreement, this is not the right
+  interview for you.
+  
+sets: firstdatepassed
 buttons:
-#  - Keep Going: continue
+  - Keep going:
+      code: |
+        firstdatepassed = True  
   - Restart: restart
   - Exit: exit
     url: https://www.gbls.org/
+  
+  

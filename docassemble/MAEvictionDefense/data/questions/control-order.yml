@@ -12,16 +12,27 @@ code: |
   court.name
   case.original_date
   case.rescheduled_date
-  landlord.name
   tenant.name
   tenant.address
+  defendants_name
   facts.tenant_movein
   facts.tenant_rent_share
+  landlord.name
   """ facts.tenant_rent_frequency """
   """ facts.tenant_contract_rent """
   facts.tenant_has_lease
   facts.tenant_has_subsidy
-  facts.tenant_moved
+  
+  if facts.tenant_has_subsidy:
+    subsidized_housing.no_proper_termination
+    subsidized_housing.no_just_cause
+    subsidized_housing.no_ntq_to_agency
+    subsidized_housing.no_hearing_or_conference
+    subsidized_housing.vawa
+    subsidized_housing.pha_pays_rent
+    subsidized_housing.stopped_payment
+    subsidized_housing.improper_rent_calculation
+    subsidized_housing.landlord_overcharged
 
   initial_defense.no_ntq
   initial_defense.premature_commencement
@@ -34,13 +45,45 @@ code: |
   initial_defense.other
 
   retaliation.is_retaliated
+  if retaliation.is_retaliated:
+    retaliation.withheld_rent
+    retaliation.badconditions_to_landlord
+    retaliation.badconditions_to_agency
+    retaliation.tenant_union
+    retaliation.protection_or_prevention_order
+    retaliation.domestic_violence
+    retaliation.survivor_rights
+    retaliation.other
+    retaliation.within_6_months
+    
   tenant.is_discriminated
   plead_counterclaims
   
   if plead_counterclaims:
     bad_conditions.have_conditions
+    if bad_conditions.have_conditions:
+      bad_conditions.landlord_notified
     paid_deposit_or_lmr
+    if paid_deposit_or_lmr:
+      security_deposit.amount
+      security_deposit.violated
+      security_deposit.violations
+      last_months_rent.violated
+      last_months_rent.amount
     bqe.violated
+    if bqe.violated:
+      bqe.heat
+      bqe.hot_water
+      bqe.unpaid_utilities
+      bqe.shutoff_utilities
+      bqe.locked_out
+      bqe.removed_possessions
+      bqe.bad_conditions
+      bqe.entered_without_permission
+      bqe.other
+    """ if paid utilities (find variable name) """
+    bqe.billed_no_agreement
+    bqe.billed_for_others
     plead_93a
     consumer_protection.late_fees
     consumer_protection.nonagreed_rent
@@ -63,16 +106,27 @@ code: |
     postforeclosure.notice_provisions.no_written_notice_of_violations
     postforeclosure.notice_provisions.no_30_days_to_cure_claims
     postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
-    postforeclosureotice_provisions.plaintiff_did_not_comply_with_requirements
+    postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
     postforeclosure.no_standing
-    other.foreclosure
-    other.foreclosure.failure_to_comply
-    other.foreclosure.unfair_loan_mod
-    other.foreclosure.unfair_notices
-    other.foreclosure.unfair_loan_based_on_income
+    postforeclosure.failure_to_comply
+    postforeclosure.unfair_loan_mod
+    postforeclosure.unfair_notices
+    postforeclosure.unfair_loan_based_on_income
   
   discrimination.sexual_harassment.is_harassed
-  initial_defense.other_reason
+  if intial_defense.other:
+    initial_defense.other_reason
 
+  if tenant.is_discriminated:
+    if discrimination.protected_classes['Family status']:
+      if bad_conditions.conditions['lead paint']:
+        plead_lead_paint
   
+  if claims.utilities or bad_conditions.have_conditions or bqe.violated:
+    need_rental_value
+  tenant.is_disabled
+  if tenant.is_disabled:
+    disability.request_reasonable_accommodation
+  
+
   all_answer_variables = True

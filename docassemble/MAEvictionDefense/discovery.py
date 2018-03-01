@@ -4,6 +4,8 @@ import csv, sys
 
 class DiscoveryRequest(DAObject):
   """Discovery items should have a checked property."""
+  def __str__(self):
+      return self.description
   def __nonzero__(self):
     return self.checked
 

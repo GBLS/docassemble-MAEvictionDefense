@@ -1,14 +1,13 @@
 question: |
   What court is your case being heard in?
 subquestion: |
-  Copy the name of the court from the upper-right-hand corner of the Summons and Complaint form.
+  Copy the name of the court and county from the upper-right-hand corner of the Summons and Complaint form.
 fields: 
   - Court name: court.name
     datatype: court
     #default: "Eastern Housing Court"
     choices:
       - Barnstable District Court
-      - Boston Housing Court
       - Brighton Division Boston Municipal Court
       - Brookline District Court
       - Cambridge District Court
@@ -18,8 +17,8 @@ fields:
       - Chelsea District Court
       - Concord District Court
       - Dedham District Court
-      - Dorchester Division, Boston Municipal Court
-      - East Boston Division, Boston Municipal Court
+      - Dorchester Division Boston Municipal Court
+      - East Boston Division Boston Municipal Court
       - Eastern Housing Court
       - Falmouth District Court
       - Framingham District Court
@@ -38,7 +37,7 @@ fields:
       - Quincy District Court
       - Roxbury Division Boston Municipal Court
       - Somerville District Court
-      - South Boston Division, Boston Municipal Court
+      - South Boston Division Boston Municipal Court
       - Southeast Housing Court
       - Stoughton District Court
       - Suffolk Superior Court
@@ -47,10 +46,8 @@ fields:
       - Western Housing Court
       - Woburn District Court
       - Worcester District Court
-      - Worcester Housing Court
   - County: court.county
     default: ${tenant.address.county}
-    #default: "Suffolk"
     choices:
       - Barnstable County
       - Berkshire County
@@ -76,12 +73,10 @@ subquestion: |
 fields:
   - What date is your first hearing in court?: case.original_date
     datatype: date
-    required: False
     hint: Often a Thursday.
   - What date must your answer be received by (usually a Monday)?: case.answer_date
     datatype: date
     hint: Usually a Monday
-    required: False
 help:
   The original trial date is a Thursday in many, but not all jurisdictions.
   
@@ -147,7 +142,11 @@ fields:
       - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
       - I never received a Notice to Quit.: nontq
       - I don't know. : unsure
-help: 
+help: |
+  Look carefully at your notice to quit or notice to terminate tenancy. Choose the 
+  best answer you can from the information on the notice. There is no special
+  language that your landlord must use when telling you the reason for the eviction.
+  It can sometimes be written in a confusing or unclear way.
 section: About Your Tenancy
 
 ---

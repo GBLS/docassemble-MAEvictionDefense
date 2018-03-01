@@ -172,6 +172,7 @@ fields:
     datatype: yesno
   - Other Reason: initial_defense.other_reason
     required: False
+    show if: initial_defense.other
 comments:
   Should add a guide me button to this form
 
@@ -179,12 +180,15 @@ section: Claims and Defenses
 ---
 question: Custom Defenses
 subquestion: |
+  You can customize your response to the eviction by adding additional
+  defenses or reasons for the case to be dismissed.
+  You should normally only do this if you were advised by a lawyer. 
   If you would like to add a custom defense, complete the sentences below:
 fields: 
-  - The Landlord's case should be dismissed because: initial_defense.other_reason
+  - The Landlord's case should be dismissed because: initial_defense.custom_reason_for_dismissal 
     datatype: area
     required: False
-  - I have other defenses or counterclaims as follows: other.other
+  - I have other defenses or counterclaims as follows: initial_defense.custom_other
     datatype: area
     required: False
 section: Claims and Defenses

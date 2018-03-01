@@ -21,4 +21,6 @@ fields:
     datatype: yesno
   - Other : consumer_protection.other
     datatype: yesno
+  - Other violation: consumer_protection.other_reason
+    show if: consumer_protection.other
 section: Claims and Defenses

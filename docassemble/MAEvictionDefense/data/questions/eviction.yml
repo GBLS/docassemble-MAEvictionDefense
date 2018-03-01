@@ -24,12 +24,13 @@ sections:
   - Conclusion
 ---
 features:
+  question back button: True
   progress bar: True
   navigation: True
   javascript: 
     - analytics.js
     - autotrack.js
-  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
+#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css
 #  inverse navbar: False
 #  css: originalbase.css
@@ -139,18 +140,11 @@ code: |
 ---
 mandatory: True
 question: |
-  Interview Experience
-subquestion: |
-  This interview offers two experiences: "Guided" and "Expert".
-  Most tenants choose "Guided". Guided mode will ask you extra questions.
-  The questions will help you decide whether each defense applies to you.
-  Expert mode may be faster for people who have experience with eviction law.
-  
-  What kind of interview do you want?
+  Who is completing this interview?
 field: interview_mode
 buttons:
-  - Guided: guided
-  - Expert: expert
+  - Tenant or helper: guided
+  - Attorney or paralegal: expert
 ---
 mandatory: True
 code: |
@@ -174,14 +168,12 @@ subquestion: |
 field: getting_started
 buttons: 
   - Continue: continue
-  - Exit: exit
+  - Come back later: exit
 ---
 question: |
   Upcoming court dates
 subquestion: |
-  This interview is designed to help a tenant whose case is scheduled in court for
-  the first time. It can also help you ask for permission to file late.
-  What best describes ${tenant.name}'s case?
+  What best describes your case?
 field: case.status
 choices: 
   - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq

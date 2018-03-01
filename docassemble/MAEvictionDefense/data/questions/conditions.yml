@@ -34,6 +34,7 @@ help: |
   that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
 section: Claims and Defenses
 ---
+need: bad_conditions.conditions
 question: Notification of landlord
 subquestion: |
   How did you notify your landlord of the bad housing conditions?
@@ -98,3 +99,9 @@ code: |
     bqe.violated = True
   else:
     bqe.violated = False
+---
+code: |
+  if tenant.is_discriminated:
+    if discrimination.protected_classes['Family status']:
+      if bad_conditions.conditions['lead paint']:
+        plead_lead_paint = True

@@ -1,21 +1,43 @@
 ---
-question: What is the Tenant's name?
+question: What is your name?
 fields:
   - First Name: tenant.name.first
-    default: ${ tenant.first_name_hint() }
+    default: ${user_info().first_name}
   - Middle Name: tenant.name.middle
     required: False
   - Last Name: tenant.name.last
-    default: ${ tenant.last_name_hint() }
+    default: ${user_info().last_name}
   - Suffix: tenant.name.suffix
     required: False
     code: |
       name_suffix()
 section: About You
-
 ---
 question: |
-  What is ${ tenant.object_possessive('address') }?
+  How are you named on the court summons?
+subquestion: |
+  Look at the Summons and Complaint when answering this question. Find the line labeled
+   "To Defendants / Tenants / Occupants"
+fields:
+  - The line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}": tenant.name_different_on_summons
+    datatype: yesno
+  - There are additional names listed. : tenant.more_names_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - My name is misspelled on the summons.: tenant.name_misspelled
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - Exact contents of the line "To Defendants / Tenants / Occupants": defendant_name_as_listed_on_summons
+    show if: tenant.name_different_on_summons
+---
+code: |
+  if tenant.name_different_on_summons:
+    defendants_name = defendant_name_as_listed_on_summons
+  else:
+    defendants_name = tenant.name
+---
+question: |
+  What is your current address?
 fields:
   - address: tenant.address.address
     address autocomplete: True
@@ -27,13 +49,15 @@ fields:
       states_list()
     default: "MA"
   - zip: tenant.address.zip
-  - country: tenant.address.country
-    required: False
   - county: tenant.address.county
     required: False
-  - I still live at this address: facts.tenant_moved
+  - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
     datatype: noyes
     default: False
+---
+mandatory: True
+code: |
+  tenant.address.geolocate()
 ---
 question: Your tenancy
 subquestion: |
@@ -53,7 +77,7 @@ fields:
     show if: 
       code: |
         facts.tenant_has_subsidy
-  - I have a written lease: facts.tenant_has_lease
+  - I have a written agreement or lease: facts.tenant_has_lease
     datatype: yesno
 section: About Your Tenancy
 --- 
@@ -83,14 +107,15 @@ section: About You
 mandatory: True
 question: Information about ${tenant.address.address}
 subquestion: |
-  Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
 fields:
   - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
     datatype: yesno
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
-  - ${landlord.name} has tried to lock me out or entered my apartment without my permission.: bqe.entered_without_permission
+  - ${landlord.name} has tried to lock me out.: bqe.lockout
+    datatype: yesno
+  - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
     datatype: yesno
   - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
     datatype: yesno

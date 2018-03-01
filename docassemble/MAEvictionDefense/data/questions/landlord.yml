@@ -1,20 +1,48 @@
 ---
 question: What is the Landlord's name?
+subquestion: |
+  To answer this question, look at the Summons and Complaint. Write your landlord's
+  name exactly the same way it is written on the line "...defend against the complaint
+  of Plaintiff / Landlord / Owner"
 fields:
   - Name: landlord.name.text
 section: About Your Landlord
+---
+code: |
+  if "LLC" in landlord.name:
+    landlord.appears_corporate = True
+  else: 
+    landlord.appears_corporate = False
 ---
 mandatory: True
 question: |
   Information about ${landlord.name}.
 subquestion: |
-  Some defenses may only apply to some types of landlords. Please choose the option
-  that best matches your landlord.
-field: landlord.organization_type
-choices:
-  - My landlord is a corporation or LLC.: corporate
-  - My landlord is a public agency (such as a housing authority).: public
-  - My landlord lives in the building with me.: livesinbuilding
-  - My landlord is a trust.: trust
-  - None of the above or I don't know.: other
+  Look at your summons and complaint while answering this question.
+fields: 
+  - What type of landlord do you have?: landlord.organization_type
+    datatype: radio
+    default: "corporate"
+    choices:
+    - My landlord is a company (or corporation, or LLC).: corporate
+      help: |
+        Might include "LLC" in the name. Many landlords, except very 
+        small landlords, are companies or agencies.
+    - My landlord is a housing authority or public agency.: public
+    - My landlord lives in the building with me.: livesinbuilding
+    - My landlord is a trust.: trust
+      help: |
+        Might include "Realty Trust" in the name. Common for investors
+        who may buy property to resell.
+    - None of the above or I don't know.: other
+  - My landlord has changed since I first moved in.: landlord.is_new
+    datatype: yesno
+    default: False
+help: |
+  Some defenses and claims only apply to certain types of landlords.
+  Your responses on this page will help us learn if your landlord is subject 
+  to consumer protection laws and also whether they are required to use a lawyer
+  to file their case.
+  If your landlord has changed since you first moved in, we will also ask
+  them different questions to help you prepare for court.
 section: About Your Landlord
