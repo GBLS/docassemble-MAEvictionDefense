@@ -87,7 +87,7 @@ section: About Your Tenancy
 
 ---
 code: |
-  if as_datetime(case.answer_date) > current_datetime():
+  if int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
     case.rescheduled_date = format_date(as_datetime(case.original_date) + date_interval(days=14))
     case.on_time = True
   else:

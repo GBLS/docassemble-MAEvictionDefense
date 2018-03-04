@@ -24,6 +24,7 @@ sections:
   - Conclusion
 ---
 features:
+  question help button: True
   question back button: True
   progress bar: True
   navigation: True
@@ -168,12 +169,14 @@ subquestion: |
 field: getting_started
 buttons: 
   - Continue: continue
-  - Come back later: exit
+  - Exit: exit
 ---
 question: |
   Upcoming court dates
 subquestion: |
-  What best describes your case?
+  This interview is designed to help a tenant whose case is scheduled in court for
+  the first time. It can also help you ask for permission to file late.
+  What best describes ${tenant.name}'s case?
 field: case.status
 choices: 
   - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
@@ -261,9 +264,15 @@ mandatory: True
 question: |
   Your documents are ready. Please print and file!
 subquestion: |
-  Please download and print 3 copies of each document below. You should
-  bring one copy to your landlord or their attorney. A second copy must be filed with
-  the court that your case is scheduled in. Keep one copy for your records.
+  Please download and print 3 copies of each document below. 
+  
+  1. Bring one copy to the "Summary Process Clerk" at the ${ court.name }.
+  2. Keep one copy for your personal records.
+  % if landlord.has_attorney:
+  3. Deliver the final copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}.
+  % else:
+  3. Deliver the final copy to your landlord ${landlord.name}.
+  %endif
   
   % if case.on_time :
   Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.

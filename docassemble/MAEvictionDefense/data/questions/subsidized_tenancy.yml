@@ -1,4 +1,27 @@
 ---
+question: |
+  What type of subsidy do you have?
+subquestion: |
+  What is the best description of the program that lowers your rent?
+field: subsidy_type
+choices:
+  - Section 8 voucher (portable voucher): Section 8 voucher
+    help: |
+      A portable voucher used with a private landlord. Rent is usually set to 30% of your income.
+  - MRVP (Massachusetts Rental Voucher Program): MRVP
+    help: |
+      A portable voucher used with a private landlord. Rent is usually set to 40% of your income.      
+  - Public housing (my landlord is a housing authority): public housing
+    help: |
+      If part of your landlord's name is "Housing Authority" this is the type of housing you
+      have. Rent is usually set to 30% of your income.
+  - HUD housing run by a private landlord: HUD multi-family
+    help: |
+      Usually rent is 30% of income. The most common type is HUD multi-family housing.
+  - Tax credit: tax credit
+    help: |
+      There may be an income limit but rent does not change if income changes.---
+---
 question: Subsidized Housing Defenses
 fields:
   - A portion of my rent is paid for by a public housing authority. : subsidized_housing.pha_pays_rent

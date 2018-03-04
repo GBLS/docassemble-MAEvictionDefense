@@ -21,6 +21,7 @@ subquestion: |
 fields:
   - The line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}": tenant.name_different_on_summons
     datatype: yesno
+    default: False
   - There are additional names listed. : tenant.more_names_on_summons
     datatype: yesno
     show if: tenant.name_different_on_summons

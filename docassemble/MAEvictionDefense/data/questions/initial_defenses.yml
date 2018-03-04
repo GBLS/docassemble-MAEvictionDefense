@@ -173,9 +173,9 @@ fields:
   - Other Reason: initial_defense.other_reason
     required: False
     show if: initial_defense.other
-comments:
-  Should add a guide me button to this form
-
+help: |
+  These are some of the trickiest questions. We're working on adding more guidance to 
+  this section! Bear with us.
 section: Claims and Defenses
 ---
 question: Custom Defenses

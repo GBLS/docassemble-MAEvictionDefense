@@ -15,11 +15,8 @@ code: |
   tenant.name
   tenant.address
   defendants_name
-  facts.tenant_movein
   facts.tenant_rent_share
   landlord.name
-  """ facts.tenant_rent_frequency """
-  """ facts.tenant_contract_rent """
   facts.tenant_has_lease
   facts.tenant_has_subsidy
   
