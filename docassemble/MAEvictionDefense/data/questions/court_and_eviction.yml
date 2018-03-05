@@ -1,49 +1,51 @@
+---
+need: local_housing_court
 question: |
   What court is your case being heard in?
 subquestion: |
   Copy the name of the court and county from the upper-right-hand corner of the Summons and Complaint form.
 fields: 
   - Court name: court.name
-    datatype: court
-    #default: "Eastern Housing Court"
+    default: ${local_housing_court}
     choices:
+      - Central Housing Court
+      - Eastern Housing Court
+      - Metro South Housing Court
+      - Northeast Housing Court
+      - Southeast Housing Court
+      - Western Housing Court
+      - -----------------------
       - Barnstable District Court
       - Brighton Division Boston Municipal Court
       - Brookline District Court
       - Cambridge District Court
       - Central Division Boston Municipal Court
-      - Central Housing Court
       - Charlestown Division Boston Municipal Court
       - Chelsea District Court
       - Concord District Court
       - Dedham District Court
       - Dorchester Division Boston Municipal Court
       - East Boston Division Boston Municipal Court
-      - Eastern Housing Court
       - Falmouth District Court
       - Framingham District Court
       - Hingham District Court
       - Lowell District Court
       - Malden District Court
       - Marlborough District Court
-      - Metro South Housing Court
       - Middlesex Superior Court
       - Natick District Court
       - Newton District Court
       - Norfolk Superior Court
-      - Northeast Housing Court
       - Northern Berkshire District Court
       - Orleans District Court
       - Quincy District Court
       - Roxbury Division Boston Municipal Court
       - Somerville District Court
       - South Boston Division Boston Municipal Court
-      - Southeast Housing Court
       - Stoughton District Court
       - Suffolk Superior Court
       - Waltham District Court
       - West Roxbury Division Boston Municipal Court
-      - Western Housing Court
       - Woburn District Court
       - Worcester District Court
   - County: court.county
@@ -64,6 +66,22 @@ fields:
       - Suffolk County
       - Worcester County
 section: About Your Tenancy
+---
+code: |
+  if (tenant.address.county == "Suffolk County") or (tenant.address.city in ["Arlington","Belmont","Cambridge","Medford","Newton","Somerville","Brookline"]):
+    local_housing_court = "Eastern Housing Court"
+  elif tenant.address.county in ["Berkshire County","Franklin County","Hampden County","Hampshire County"]:
+    local_housing_court = "Western Housing Court"
+  elif (tenant.address.county == "Worcester County") or (tenant.address.city in ["Ashland","Framingham","Holliston","Hopkinton","Hudson","Marlborough","Natick","Sherborn","Sudbury","Wayland"]):
+    local_housing_court = "Central Housing Court"
+  elif (tenant.address.county == "Norfolk" and tenant.address.city != "Brookline") or (tenant.address.city in ["Abington","Bridgewater","Brockton","East Bridgewater","West Bridgewater","Whitman"]): 
+    local_housing_court = "Metro South Housing Court"
+  elif (tenant.address.county == "Essex County") or (tenant.address.county == "Middlesex County" and tenant.address.city not in ["Arlington","Belmont","Cambridge","Medford","Newton","Somerville","Ashland","Framingham","Holliston","Hopkinton","Hudson","Marlborough","Natick","Sherborn","Sudbury","Wayland"]):
+    local_housing_court = "Northeast Housing Court"
+  elif (tenant.address.county in ["Barnstable County","Bristol County","Dukes County","Nantucket County"]) or (tenant.address.county == "Plymouth County" and tenant.address.city not in ["Abington","Bridgewater","Brockton","East Bridgewater","West Bridgewater","Whitman"]):
+    local_housing_court = "Southeast Housing Court"
+  else:
+    local_housing_court = ""
 ---
 question: |
   Hearing Date

@@ -47,6 +47,8 @@ code: |
   discovery_categories.there_is_another = False
   
   """ Evalue our logic table to set discovery values automatically. """
+  always_true = True
+  
   for lemma in discovery_map:
     if lemma['Claim'] and lemma['Value'] and lemma['Discovery']:
       if lemma['Value'].lower() == 'true':

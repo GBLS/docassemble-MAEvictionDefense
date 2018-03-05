@@ -260,6 +260,34 @@ subquestion: |
 yesno: show_instructions 
 #section: Conclusion
 ---
+need: all_answer_variables
+question: |
+  Method of Service
+subquestion: |
+  A copy of the paperwork needs to go to your landlord. If your landlord has an attorney,
+  you need to bring it to their attorney. The address is written on your Summons and
+  Complaint.
+  
+  % if format_date(case.answer_date) == format_date(today()):
+  You must deliver the paperwork in person today. You cannot mail it.
+  % endif
+
+  Some landlords or landlord's attorneys will allow you to deliver the paperwork
+  by fax or email. However, you must call and confirm with your landlord before
+  faxing or emailing. The landlord has to agree to get the paperwork this way.
+
+  When and how will you bring the paperwork to your landlord or their attorney?
+fields: 
+  - Delivery method: method_of_service
+    choices:
+      - Mail: mailed
+      - Delivering by hand: delivered in-hand
+      - Email (with permission of my landlord): emailed
+      - Fax (with permission of my landlord): faxed
+  - Date of delivery: service_date
+    datatype: date
+section: Conclusion
+---
 mandatory: True
 question: |
   Your documents are ready. Please print and file!

@@ -79,13 +79,14 @@ code: |
       bqe.entered_without_permission
       bqe.other
     """ if paid utilities (find variable name) """
-    bqe.billed_no_agreement
-    bqe.billed_for_others
-    plead_93a
-    consumer_protection.late_fees
-    consumer_protection.nonagreed_rent
-    consumer_protection.unlawful_court_fees
-    consumer_protection.unlawful_lease_terms
+    if claims.utilities: 
+      bqe.billed_no_agreement
+      bqe.billed_for_others
+    if plead_93a:
+      consumer_protection.late_fees
+      consumer_protection.nonagreed_rent
+      consumer_protection.unlawful_court_fees
+      consumer_protection.unlawful_lease_terms
   
   other.vendor_payments
   other.repair_and_deduct_statute
