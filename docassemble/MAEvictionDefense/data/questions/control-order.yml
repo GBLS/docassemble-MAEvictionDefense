@@ -78,7 +78,7 @@ code: |
       bqe.bad_conditions
       bqe.entered_without_permission
       bqe.other
-    """ if paid utilities (find variable name) """
+    # if paid utilities (find variable name)
     if claims.utilities: 
       bqe.billed_no_agreement
       bqe.billed_for_others

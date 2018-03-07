@@ -115,6 +115,34 @@ fields:
   - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
     datatype: yesno
 ---
+sets: 
+  - initial_defense.premature_commencement
+code: |
+  if notice_type == "fourteen_day":
+    required_notice_time = 14
+  elif notice_type == "thirty_day":
+    required_notice_time = 30
+  elif notice_type == "seventy_two_hour":
+    required_notice_time = 3
+  if defined('required_notice_time'):
+    initial_defense.premature_commencement = (date_received_ntq + date_interval(days=required_notice_time) ) <= date_received_summons
+  else:
+    if notice_type == "rental_period":
+      month_part = date_received_ntq.month
+      year_part = date_received_ntq.year
+      month_that_begins_next = month_part + 1
+      # Handle end of year notices
+      if month_that_begins_next + 1 <= 12:
+        next_month_plus1 = as_datetime(str(year_part) + '-' + str(month_that_begins_next + 1) + '-01')
+        initial_defense.premature_commencement = (date_received_ntq < next_month_plus1) and (date_difference(starting=date_received_ntq,ending=next_month_plus1).days > 30)
+      else:
+        next_month_plus1 = as_datetime(str(year_part+1) + '-' + str((month_that_begins_next + 1) % 12 ) + '-01')
+        initial_defense.premature_commencement = (date_received_ntq < next_month_plus1) and (date_difference(starting=date_received_ntq,ending=next_month_plus1).days > 30)
+    else:
+      # No NTQ received
+      # We should check to see if we think a NTQ was required
+      pass
+---
 question: |
   Form of notices
 fields:

@@ -68,6 +68,11 @@ fields:
   - When did you move in?: facts.tenant_movein
     datatype: date
     required: False
+  - Type of Tenant/Occupant: tenant_type
+    choices:
+      - I pay rent to a landord or bank: renter
+      - I am a former owner after foreclosure: pfc_owner
+      - I live in the property to help the owner or tenant (live-in aide or caretaker) but do not pay rent: pca
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
   - What is the full "contract" or "market" rent?: facts.tenant_contract_rent
