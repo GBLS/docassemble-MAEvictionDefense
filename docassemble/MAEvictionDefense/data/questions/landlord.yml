@@ -9,10 +9,15 @@ fields:
 section: About Your Landlord
 ---
 code: |
-  if "LLC" in landlord.name:
-    landlord.appears_corporate = True
-  else: 
-    landlord.appears_corporate = False
+  t_landlord_name = str(landlord.name).lower()
+  if facts.tenant_has_subsidy and subsidy_type == "public housing":
+    default_landlord_type = "public"
+  elif ("llc" in t_landlord_name) or ("company" in t_landlord_name):
+    default_landlord_type = "corporate"
+  elif "trust" in t_landlord_name:
+    default_landlord_type = "trust"
+  else:
+    default_landlord_type = "other"
 ---
 mandatory: True
 question: |
@@ -22,7 +27,9 @@ subquestion: |
 fields: 
   - What type of landlord do you have?: landlord.organization_type
     datatype: radio
-    default: "corporate"
+    default: 
+      code: |
+        default_landlord_type
     choices:
     - My landlord is a company (or corporation, or LLC).: corporate
       help: |
