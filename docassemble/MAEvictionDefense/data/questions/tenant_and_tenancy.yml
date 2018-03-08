@@ -69,8 +69,9 @@ fields:
     datatype: date
     required: False
   - Type of Tenant/Occupant: tenant_type
+    default: "renter"
     choices:
-      - I pay rent to a landord or bank: renter
+      - I pay rent to a landlord or bank: renter
       - I am a former owner after foreclosure: pfc_owner
       - I live in the property to help the owner or tenant (live-in aide or caretaker) but do not pay rent: pca
   - What do you pay for rent?: facts.tenant_rent_share
@@ -83,7 +84,7 @@ fields:
       or the best number that you know.
     show if: 
       code: |
-        facts.tenant_has_subsidy
+        facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
   - I have a written agreement or lease: facts.tenant_has_lease
     datatype: yesno
 section: About Your Tenancy
@@ -95,19 +96,19 @@ subquestion: |
   Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
 fields: 
-  - Someone who lives with ${tenant.name} has a disability: tenant.is_disabled
+  - I or someone who lives with me has a disability: tenant.is_disabled
     datatype: yesno
-  - Someone who lives with ${tenant.name} is under the age of 6: tenant.is_under6
+  - Someone who lives with me is under the age of 6: tenant.is_under6
     datatype: yesno
-  - Someone who lives with ${tenant.name} is over the age of 60: tenant.is_over60
+  - I or someone who lives with me is over the age of 60: tenant.is_over60
     datatype: yesno
-  - English is not ${tenant.name}'s first language.: tenant.is_nonnativespeaker
+  - English is not my first language.: tenant.is_nonnativespeaker
     datatype: yesno
-  - ${tenant.name} is a victim of domestic violence.: tenant.is_dvvictim
+  - I am a victim of domestic violence.: tenant.is_dvvictim
     datatype: yesno
-  - ${tenant.name}'s rent is subsidized.: facts.tenant_has_subsidy
+  - I pay reduced (subsidized) rent with an income limit or live in public housing.: facts.tenant_has_subsidy
     datatype: yesno
-  - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
+  - I am a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
 section: About You
 ---

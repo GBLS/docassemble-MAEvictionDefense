@@ -80,6 +80,9 @@ objects:
 images:
   summons: summons_and_complaint.png
 ---
+comment: |
+  This is testing code for using the built-in case caption feature. Don't think
+  we'll use this.
 code: |
   case.defendant.append(tenant)
   case.plaintiff.append(landlord)
