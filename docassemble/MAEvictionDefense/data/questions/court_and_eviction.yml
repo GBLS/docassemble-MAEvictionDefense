@@ -3,7 +3,9 @@ need: local_housing_court
 question: |
   What court is your case being heard in?
 subquestion: |
-  Copy the name of the court and county from the upper-right-hand corner of the Summons and Complaint form.
+  Copy the name of the court and county from the upper-left-hand corner of the Summons and Complaint form.
+  
+  [FILE court_and_county.png, 100%]
 fields: 
   - Court name: court.name
     default: ${local_housing_court}
@@ -88,6 +90,9 @@ question: |
 subquestion: |
   To answer this question, please take a look at your Summons and Complaint. 
   Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
+  
+  [FILE hearing_date.png, 100%]
+  
 fields:
   - What date is your first hearing in court?: case.original_date
     datatype: date
@@ -151,7 +156,7 @@ subquestion: |
   What does your notice to quit say is the reason you are being evicted?
   
 fields: 
-  - Choose all that apply.: eviction_all_reasons
+  - Choose all that apply. Must be stated in your Notice to Quit. : eviction_all_reasons
     datatype: checkboxes
     none of the above: False
     choices:

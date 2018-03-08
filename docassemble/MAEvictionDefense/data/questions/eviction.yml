@@ -80,9 +80,6 @@ objects:
 images:
   summons: summons_and_complaint.png
 ---
-comment: |
-  This is testing code for using the built-in case caption feature. Don't think
-  we'll use this.
 code: |
   case.defendant.append(tenant)
   case.plaintiff.append(landlord)
@@ -183,7 +180,7 @@ subquestion: |
 field: case.status
 choices: 
   - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - My first date in court is coming up.: summons
+  - I have a court date scheduled: summons
   - I signed an agreement in this case already. I have a new court date coming up.: afj
   - I missed my first court date.: late
 default: summons
@@ -244,6 +241,7 @@ include:
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
   - basic-questions.yml
+
 ---
 question: Please sign below
 subquestion: |
