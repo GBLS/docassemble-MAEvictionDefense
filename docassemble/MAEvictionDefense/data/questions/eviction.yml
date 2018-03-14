@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-02-23
+  revision_date: 2018-03-14
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -31,6 +31,7 @@ features:
   javascript: 
     - analytics.js
     - autotrack.js
+  default icons: material icons
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
 #  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css
 #  inverse navbar: False
@@ -94,27 +95,17 @@ code: |
 ---
 mandatory: true
 question: |
-  About this interview
+  Massachusetts Eviction Defense
 subquestion: |
-  This interview was created by Greater Boston Legal Services and other
-  Massachusetts legal aid programs as a free
-  service for tenants who are facing eviction.
-  It will help you complete forms that you must deliver to your landlord and 
-  to the court. It is estimated to take about 25 minutes. 
+  This interview is designed to help a tenant respond to an eviction case in court.
   
-  At the end of the interview and when you have delivered the forms to the proper
-  place:
-  
-  1. You will better understand your legal rights and defenses.
-  1. You may get more information from your landlord to help you prepare for court.
-  1. Your court appearance may be delayed by two weeks.
+  A typical tenant will take about 25 minutes to complete this interview. :stopwatch:
+  You will receive documents that you can print and file at the end. It may postpone
+  your court hearing by 2 weeks.
   
   Words that you may not understand will be {highlighted in green}. Click on a green
   word to learn more. Click the "[Help]" button at any time to learn more about this
-  interview. If "Help <i class="glyphicon glyphicon-star"></i>"
-  appears in the navigation bar, that means help text specific to the
-  question is available. At any time you can click "back" to change your response to a 
-  question.
+  interview.
 field: user_saw_initial_screen
 terms: 
   - highlighted in green: This is an example. Click it again to hide this definition.
@@ -167,7 +158,10 @@ question: Getting Started
 subquestion: |
   Please locate the Summons and Complaint and the Notice to Quit for your case
   before you begin. You'll be asked to look for information on both
-  documents to help answer some questions. If you don't have either document,
+  documents to help answer some questions. For some situations, it may help to
+  refer to your lease or any written rental agreement.
+  
+  If you don't have either document, 
   you can still do your best to answer from your memory.
 field: getting_started
 buttons: 

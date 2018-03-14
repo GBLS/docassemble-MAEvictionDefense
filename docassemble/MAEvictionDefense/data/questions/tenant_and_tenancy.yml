@@ -53,6 +53,9 @@ fields:
   - county: tenant.address.county
     required: False
   - Phone number: tenant.phone_number
+    required: False
+  - Email address: tenant.email
+    required: False
   - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
     datatype: noyes
     default: False

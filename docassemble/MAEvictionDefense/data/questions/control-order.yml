@@ -35,7 +35,8 @@ code: |
   initial_defense.premature_commencement
   initial_defense.varney
   initial_defense.defective_summons
-  initial_defense.cure
+  if eviction_reason == 'nonpayment':
+    initial_defense.cure
   initial_defense.new_tenancy
   initial_defense.no_standing
   initial_defense.inconsistent_reasons

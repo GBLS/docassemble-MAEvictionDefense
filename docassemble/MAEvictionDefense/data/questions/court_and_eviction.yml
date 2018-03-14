@@ -102,7 +102,9 @@ help:
   the deadline. If you are filing these papers on time, your court date will be delayed 
   by two weeks.It will also help us figure out when you need to appear in court. 
 section: About Your Tenancy
-
+---
+code: |
+  case.entry_date = case.answer_date + date_interval(days=-7)
 ---
 code: |
   if int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
