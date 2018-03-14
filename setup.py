@@ -45,10 +45,10 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.MAEvictionDefense',
-      version='0.0.17',
+      version='0.0.14a',
       description=('A guided interview for pro se eviction defense in Massachusetts. Generates an Answer form, Request for Discovery, and accompanying forms and motions.'),
-      author=u'Jane Tenant',
-      author_email=u'admin@admin.com',
+      author='',
+      author_email=u'rpadua@gbls.org',
       license='The MIT License (MIT)',
       url='https://www.gbls.org',
       packages=find_packages(),
