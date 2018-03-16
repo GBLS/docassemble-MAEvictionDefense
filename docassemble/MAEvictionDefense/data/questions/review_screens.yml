@@ -1,0 +1,58 @@
+include:
+  - control-order.yml
+  - review_screens.yml
+  - tenant_and_tenancy.yml
+  - landlord.yml
+  - court_and_eviction.yml
+  - help.yml
+  - glossary.yml
+  - endpoints.yml
+  - initial_defenses.yml
+  - conditions.yml
+  - foreclosure.yml
+  - subsidized_tenancy.yml
+  - retaliation.yml
+  - discrimination_and_harassment.yml
+  - consumer_protection.yml
+  - security_deposit_and_prepaid_rent.yml
+  - discovery-logic.yml
+  - basic-questions.yml
+---
+mandatory: True
+question: |
+  Please review your answers
+subquestion: |
+  You said you are ${ tenant.name }. [Edit name].
+  
+  Your address is ${ tenant.address }. [Edit address].
+  
+  Your landlord is ${ landlord.name }.
+  
+  Eviction reason is ${ eviction_reason }.
+  
+  County is ${ court.county } and Court Name is ${ court.name }.
+  
+  Your rent share is ${ facts.tenant_rent_share }.
+  
+ 
+  [Edit name]: ${ url_action('edit_tenant_name') }
+  [Edit address]: ${ url_action('edit_tenant_address') }
+field: user_has_reviewed_section_one
+section: Review Answers
+---
+mandatory: True
+question: |
+  Please review your defenses
+subquestion: |
+  Your list of defenses 
+
+field: user_has_reviewed_defenses
+---
+event: edit_tenant_name
+code: |
+  force_ask('tenant.name.first')
+---
+event: edit_tenant_address
+code: |
+  force_ask('tenant.address.address')
+  
