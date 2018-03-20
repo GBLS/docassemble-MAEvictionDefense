@@ -38,16 +38,17 @@ features:
 #  css: originalbase.css
 #  css: originalnav.css
 #  css: logonav.css
-  
+
 ---
 modules:
   - docassemble.base.util
+  - docassemble.base.legal
 ---
 objects:
   - tenant: Individual
   - landlord: Person
   - court: Court
-#  - case: Case # defined in basic-questions.yml
+  - case: Case
   - eviction: DAObject
   - tenancy: DAObject
   - claims: DAObject
@@ -94,12 +95,13 @@ code: |
   pleading.case.secondParty.gathered = True
 ---
 mandatory: true
+decoration: home
 question: |
   Massachusetts Eviction Defense
 subquestion: |
   This interview is designed to help a tenant respond to an eviction case in court.
   
-  A typical tenant will take about 25 minutes to complete this interview. :stopwatch:
+  A typical tenant will take about :stopwatch: 25 minutes to complete this interview.
   You will receive documents that you can print and file at the end. It may postpone
   your court hearing by 2 weeks.
   
@@ -220,6 +222,9 @@ buttons:
   - Waive my right to a jury: False
 section: Your Right to a Jury Trial
 ---
+code: |
+  last_months_rent_amount = 0
+---
 include:
   - control-order.yml
   - tenant_and_tenancy.yml
@@ -237,7 +242,7 @@ include:
   - consumer_protection.yml
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
-  - basic-questions.yml
+#  - basic-questions.yml
 ---
 question: Please sign below
 subquestion: |
