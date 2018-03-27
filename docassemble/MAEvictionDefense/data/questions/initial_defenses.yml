@@ -78,19 +78,6 @@ fields:
     show if:
       variable: notice_type
       is: fourteen_day
-  - Type of Tenant/Occupant: tenant_type
-    choices:
-      - I pay rent to a landord or bank: renter
-      - I am a former owner after foreclosure: pfc_owner
-      - I live in the property to help the owner or tenant but do not pay rent: pca
-  - My rental agreement is: tenancy_type
-    show if:
-      variable: tenant_type
-      is: renter
-    choices:
-      - I have a written lease (even if expired): lease
-      - I pay month-to-month or week-to-week (tenancy at will): taw
-      - I don't know: taw
   - Type of lease: lease_type
     show if:
       variable: tenancy_type
@@ -108,6 +95,7 @@ fields:
   - I paid rent after receiving the notice to quit.: paid_rent
     datatype: yesno
   - The notice states that rent will be accepted for "use and occupancy" only: notice_states_use_and_occupancy
+    default: True
     datatype: yesno
     show if: paid_rent
 help:

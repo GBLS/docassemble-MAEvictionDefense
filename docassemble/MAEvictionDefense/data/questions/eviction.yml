@@ -25,7 +25,7 @@ sections:
 ---
 features:
   question help button: True
-  question back button: True
+#  question back button: True
   progress bar: True
   navigation: True
   javascript: 
@@ -138,14 +138,14 @@ code: |
 mandatory: True
 question: |
   Who is completing this interview?
-field: interview_mode
+field: person_answering
 buttons:
-  - Tenant or helper: guided
-  - Attorney or paralegal: expert
+  - Tenant or helper: tenant
+  - Attorney or paralegal: attorney
 ---
 mandatory: True
 code: |
-  if interview_mode == 'guided':
+  if person_answering == 'tenant':
     need(overview_video)
     need(getting_started)
 ---

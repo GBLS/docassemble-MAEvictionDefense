@@ -88,9 +88,19 @@ fields:
     show if: 
       code: |
         facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
-  - I have a written agreement or lease: facts.tenant_has_lease
-    datatype: yesno
+  - My rental agreement is: tenancy_type
+    show if:
+      variable: tenant_type
+      is: renter
+    choices:
+      - I have a written lease (even if expired): lease
+      - I pay month-to-month or week-to-week (tenancy at will): taw
+      - I don't have a formal rental agreement: taw
+      - I don't know: taw
 section: About Your Tenancy
+---
+code: |
+  facts.tenant_has_lease = tenancy_type == 'lease'
 --- 
 mandatory: True
 question: | 
