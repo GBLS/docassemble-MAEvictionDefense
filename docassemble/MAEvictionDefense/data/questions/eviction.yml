@@ -77,7 +77,7 @@ objects:
   - drq: DiscoveryDict
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
-  - discovery_categories: DAList
+#  - discovery_categories: DAList
 ---
 images:
   summons: summons_and_complaint.png

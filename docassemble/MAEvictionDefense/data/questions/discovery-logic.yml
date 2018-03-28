@@ -11,26 +11,25 @@ code: |
   ints.there_are_any = True
   drq.there_are_any = True
   
-  """
-  Load the CSV file into a list 
-  """
+  # Load the CSV file into a list 
+  
   discovery_url = 'data/sources/discovery-map.csv'
   claim_discovery_link_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiHI5ZbD2baKGXBZgvHUDQqiOXzbNjtfMJwjAcrjfTIfve_21yjlDQc4yB2XJZII5q56y5wYiLp2yY/pub?gid=1622332186&single=true&output=csv'
   discovery_list = load_from_csv(discovery_url)
   discovery_map = load_from_csv(claim_discovery_link_url)
  
+  discovery_categories = []
+  
   for item in discovery_list:
     if item['Variable'] and item['Description']:
     
-      """ Build the set of unique categories """
-      """
+      # Build the set of unique categories
+      #
       if item['Category'] not in discovery_categories:
         discovery_categories.append(item['Category'])
-    
-      discovery_categories.there_are_any = True
-      """
+      
 
-      """ Strip off the prefix "int." or "drq.": should refactor this in csv? """
+      # Strip off the prefix "int." or "drq.": should refactor this in csv?
       iname = item['Variable'][item['Variable'].find('.') + 1:] 
       is_checked = item['AlwaysChecked'].lower() == 'true'
       if 'ints.' in item['Variable']:
@@ -43,10 +42,9 @@ code: |
         drq[iname].description = item['Description']
         drq[iname].checked = is_checked
         drq[iname].category = item['Category']
-  
-  discovery_categories.there_is_another = False
-  
-  """ Evalue our logic table to set discovery values automatically. """
+
+
+  # Evaluate our logic table to set discovery values automatically.
   always_true = True
   
   for lemma in discovery_map:
@@ -66,6 +64,25 @@ code: |
 
   ints.there_is_another = False
   drq.there_is_another = False
+
+  ints_fields = []
+  for category in discovery_categories:
+    if len(ints.matches_category(category)) > 0:
+      ints_fields.append({'note': 'Questions relating to ' + category})
+    for key in ints.matches_category(category):
+      ints_fields.append({'label': ints[key].description,
+                        'field': "ints[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
+                        
+  drq_fields = []
+
+  for category in discovery_categories:
+    if len(drq.matches_category(category)) > 0:
+      drq_fields.append({'note': 'Documents relating to ' + category})
+    for key in drq.matches_category(category):
+      drq_fields.append({'label': drq[key].description,
+                        'field': "drq[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
 ---
 code: |
   if claims.utilities or bad_conditions.have_conditions or bqe.violated:
@@ -100,19 +117,6 @@ question: |
 subquestion: |
   Would you like to ask your landlord for additional documents?
 yesno: other_drq.there_is_another
----
-code: |
-  ints_fields = []
-  for key in ints:
-    ints_fields.append({'label': ints[key].category + ": " + ints[key].description,
-                        'field': "ints[" + repr(key) + "].checked",
-                        'datatype': 'yesno'})
-                        
-  drq_fields = []
-  for key in drq:
-    drq_fields.append({'label': drq[key].category + ": " + drq[key].description,
-                        'field': "drq[" + repr(key) + "].checked",
-                        'datatype': 'yesno'})
 ---
 mandatory: True
 need: all_answer_variables

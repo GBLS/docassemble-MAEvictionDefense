@@ -127,5 +127,4 @@ code: |
   if tenant.is_disabled:
     disability.request_reasonable_accommodation
   
-
   all_answer_variables = True
