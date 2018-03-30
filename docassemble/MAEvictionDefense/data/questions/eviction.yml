@@ -77,7 +77,7 @@ objects:
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
   - discovery_categories: DAList
-  - user_has_reviewed_section_one: DAObject
+  - review_answers: DAObject
 ---
 images:
   summons: summons_and_complaint.png
@@ -244,6 +244,7 @@ include:
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
   - basic-questions.yml
+  
  
 ---
 question: Please sign below
