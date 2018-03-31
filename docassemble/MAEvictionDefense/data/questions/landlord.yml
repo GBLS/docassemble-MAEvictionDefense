@@ -73,5 +73,7 @@ fields:
     default: False
   - Attorney's name: landlord.attorneys_name
     show if: landlord.has_attorney
+    required: False
   - Attorney's address (all on one line): landlord.attorneys_address
     show if: landlord.has_attorney
+    required: False

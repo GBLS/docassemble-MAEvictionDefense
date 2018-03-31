@@ -67,31 +67,22 @@ fields:
     datatype: yesno
     show if: 
       variable: notice_type
-      is: fourteen_day
+      is: 'fourteen_day'
   - I never agreed to pay the amount of rent the landlord is charging me for on the 14-day notice: refused_rent_increase
     datatype: yesno
     show if:
       variable: notice_type
-      is: fourteen_day
+      is: 'fourteen_day'
   - I paid or offered to pay the full amount of money owed.: attempted_cure
     datatype: yesno
     show if:
       variable: notice_type
-      is: fourteen_day
-  - Type of lease: lease_type
-    show if:
-      variable: tenancy_type
-      is: lease
-    choices:
-      - My lease ends on a specific day and does not renew: fixed_term
-      - My lease automatically renews for a specific term (usually 1 year): self_extending
-      - My lease changes into a month-to-month tenancy or tenancy at will: renews_as_taw
-      - I don't know.: unknown
+      is: 'fourteen_day'
   - Date my lease ends: lease_end_date
     datatype: date
     show if:
-      variable: lease_type
-      is: fixed_term
+      code: |
+        defined(lease_type) and lease_type == 'fixed_term'
   - I paid rent after receiving the notice to quit.: paid_rent
     datatype: yesno
   - The notice states that rent will be accepted for "use and occupancy" only: notice_states_use_and_occupancy
@@ -109,7 +100,9 @@ code: |
   initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
   initial_defense.need_ntq = True
   if tenant_type == 'renter' and tenancy_type == 'lease':
-    initial_defense.need_ntq = not (lease_type == fixed_term) and not (tenancy_type == 'pca')
+    initial_defense.need_ntq = not (lease_type == fixed_term and lease_end_date <= date_received_summons) and not (tenancy_type == 'pca')
+
+  # Check to see if the right type of notice was used to match the type of tenancy and basis for termination
   if notice_type == 'fourteen_day':
     initial_defense.improper_time_given = (not behind_in_rent) or lease_requires_30_day_notice or (refused_rent_increase)
   elif notice_type == 'thirty_day':
@@ -120,6 +113,9 @@ code: |
     initial_defense.improper_time_given = False
   else:
     initial_defense.improper_time_given = True
+  
+  # Tenancy improperly terminated if wrong notice type or defective notice
+  # We're only checking some common scenarios
   initial_defense.no_proper_termination = (initial_defense.ntq_defective or initial_defense.improper_time_given or (initial_defense.need_ntq and initial_defense.no_ntq))
 ---
 question: |
@@ -146,7 +142,12 @@ fields:
 ---
 sets: initial_defense.new_tenancy
 code: |
-  initial_defense.new_tenancy = True
+  if post_ntq_waiver['rent'] and not ntq_contains_reservation:
+    initial_defense.new_tenancy = True
+  elif post_ntq_waiver['lease']:
+    initial_defense.new_tenancy = True
+  else:
+    initial_defense.new_tenancy = False
 ---
 question: |
   Summons and Complaint
@@ -190,7 +191,12 @@ help: |
 ---
 sets: initial_defense.inconsistent_reasons
 code: |
-  initial_defense.inconsistent_reasons = True
+  if ntq_matches_summons:
+    initial_defense.inconsistent_reasons = False
+  elif summons_eviction_reasons['failure_to_vacate'] or summons_eviction_reasons['rent'] and not (summons_eviction_reasons['new_fault']):
+    initial_defense.inconsistent_reasons = False
+  else:
+    initial_defense.inconsistent_reasons = True
 ---
 question: Timing of notices
 subquestion: |
@@ -214,12 +220,6 @@ code: |
   initial_defense.defective_summons = (
         (summons_in_hand or (summons_mailed and summons_last_and_usual))
         and not initial_defense.summons_missing_information)
-  #if summons_in_hand:
-  #  initial_defense.defective_summons = False
-  #elif summons_mailed and summons_last_and_usual:
-  #  initial_defense.defective_summons = False
-  #else:
-  #  initial_defense.defective_summons = True
 ---
 sets: 
   - initial_defense.premature_commencement
@@ -359,6 +359,4 @@ fields:
   - I have other defenses or counterclaims as follows: initial_defense.custom_other
     datatype: area
     required: False
-section: Claims and Defenses
-
- 
+section: Claims and Defenses 

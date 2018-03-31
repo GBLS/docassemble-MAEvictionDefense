@@ -28,6 +28,9 @@ fields:
   - My name is misspelled on the summons.: tenant.name_misspelled
     datatype: yesno
     show if: tenant.name_different_on_summons
+  - My name is missing from the summons.: tenant.not_named_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
   - Exact contents of the line "To Defendants / Tenants / Occupants": defendant_name_as_listed_on_summons
     show if: tenant.name_different_on_summons
 ---
@@ -71,11 +74,11 @@ fields:
   - When did you move in?: facts.tenant_movein
     datatype: date
     required: False
-  - Type of Tenant/Occupant: tenant_type
+  - Your tenancy situation: tenant_type
     default: "renter"
     choices:
       - I pay rent to a landlord or bank: renter
-      - I am a former owner after foreclosure: pfc_owner
+      - I am an owner or former owner after foreclosure: pfc_owner
       - I live in the property to help the owner or tenant (live-in aide or caretaker) but do not pay rent: pca
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
@@ -89,15 +92,26 @@ fields:
       code: |
         facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
   - My rental agreement is: tenancy_type
-    show if:
-      variable: tenant_type
-      is: renter
     choices:
       - I have a written lease (even if expired): lease
       - I pay month-to-month or week-to-week (tenancy at will): taw
       - I don't have a formal rental agreement: taw
       - I don't know: taw
+  - Type of lease: lease_type
+    show if:
+      variable: tenancy_type
+      is: 'lease'
+    choices:
+      - My lease ends on a specific day and does not renew: fixed_term
+      - My lease automatically renews for a specific term (usually 1 year): self_extending
+      - My lease changes into a month-to-month tenancy or tenancy at will: renews_as_taw
+      - I don't know.: unknown
 section: About Your Tenancy
+help: |
+  Your tenancy situation and the type of agreement you have to live at your address
+  may affect your rights. For example, a live in aide or caretaker is entitled
+  to different notice rights than a tenant paying rent or an owner or former owner
+  after foreclosure.
 ---
 code: |
   facts.tenant_has_lease = tenancy_type == 'lease'
