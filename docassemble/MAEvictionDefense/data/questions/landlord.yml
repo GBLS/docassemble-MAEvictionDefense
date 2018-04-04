@@ -9,15 +9,10 @@ fields:
 section: About Your Landlord
 ---
 code: |
-  t_landlord_name = str(landlord.name).lower()
-  if facts.tenant_has_subsidy and subsidy_type == "public housing":
-    default_landlord_type = "public"
-  elif ("llc" in t_landlord_name) or ("company" in t_landlord_name):
-    default_landlord_type = "corporate"
-  elif "trust" in t_landlord_name:
-    default_landlord_type = "trust"
-  else:
-    default_landlord_type = "other"
+  if "LLC" in landlord.name:
+    landlord.appears_corporate = True
+  else: 
+    landlord.appears_corporate = False
 ---
 mandatory: True
 question: |
@@ -27,9 +22,7 @@ subquestion: |
 fields: 
   - What type of landlord do you have?: landlord.organization_type
     datatype: radio
-    default: 
-      code: |
-        default_landlord_type
+    default: "corporate"
     choices:
     - My landlord is a company (or corporation, or LLC).: corporate
       help: |
@@ -56,6 +49,8 @@ section: About Your Landlord
 ---
 question: |
   Does ${landlord.name} have an attorney for this case?
+  
+
 subquestion: |
   Look at your summons and complaint to answer this question.
   Look at the line labeled "Printed name of Plaintiff or Attorney" and
@@ -67,7 +62,9 @@ subquestion: |
   * A BBO # (usually 6 digits)
   * The address might include "LLC" or "Associates" or
     "Law Offices"
-fields:
+   
+
+fields: 
   - My landlord has an attorney.: landlord.has_attorney
     datatype: yesno
     default: False

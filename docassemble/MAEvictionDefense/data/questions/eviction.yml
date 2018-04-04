@@ -16,12 +16,14 @@ sections:
   - Getting Started
   - Your Right to a Jury Trial
   - About You
+  - Review Answers
   - About Your Landlord
   - About Your Tenancy
   - Claims and Defenses
   - Relief
   - Discovery
   - Conclusion
+
 ---
 features:
   question help button: True
@@ -38,7 +40,6 @@ features:
 #  css: originalbase.css
 #  css: originalnav.css
 #  css: logonav.css
-
 ---
 modules:
   - docassemble.base.util
@@ -78,13 +79,11 @@ objects:
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
 #  - discovery_categories: DAList
+  - review_answers: DAObject
 ---
 images:
   summons: summons_and_complaint.png
 ---
-comment: |
-  This is testing code for using the built-in case caption feature. Don't think
-  we'll use this.
 code: |
   case.defendant.append(tenant)
   case.plaintiff.append(landlord)
@@ -179,7 +178,7 @@ subquestion: |
 field: case.status
 choices: 
   - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - My first date in court is coming up.: summons
+  - I have a court date scheduled: summons
   - I signed an agreement in this case already. I have a new court date coming up.: afj
   - I missed my first court date.: late
 default: summons
@@ -227,6 +226,7 @@ code: |
 ---
 include:
   - control-order.yml
+  - review_screens.yml
   - tenant_and_tenancy.yml
   - landlord.yml
   - court_and_eviction.yml
@@ -326,3 +326,4 @@ attachment:
     docx template file: SummaryProcessDiscovery.docx
 
 section: Conclusion 
+

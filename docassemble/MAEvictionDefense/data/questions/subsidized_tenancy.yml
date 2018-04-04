@@ -26,7 +26,7 @@ question: Subsidized Housing Defenses
 fields:
   - A portion of my rent is paid for by a public housing authority. : subsidized_housing.pha_pays_rent
     datatype: yesno
-    default: 
+    default:
       code: |
         subsidy_type in ["Section 8 voucher","MRVP"]
   - The public housing authority stopped payment to the landlord due to bad conditions.: subsidized_housing.stopped_payment
@@ -56,7 +56,7 @@ fields:
     datatype: yesno
     show if: 
       code: |
-        facts.tenant_has_subsidy and subsidy_type in ["HUD multi-family","public housing","tax credit"]
+        facts.tenant_has_subsidy and subsidy_type in ["HUD multi-family","public housing","tax credit"]    
   - My landlord did not comply with the Violence Against Women Act. : subsidized_housing.vawa
     datatype: yesno
 comment:

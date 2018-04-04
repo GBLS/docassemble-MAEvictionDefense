@@ -1,0 +1,143 @@
+---
+modules:
+  - docassemble.base.util
+---
+objects:
+  - tenant: Individual
+  - landlord: Person
+  - court: Court
+#  - case: Case # defined in basic-questions.yml
+  - eviction: DAObject
+  - tenancy: DAObject
+  - claims: DAObject
+  - facts: DAObject
+  - bad_conditions: DAObject
+  - bqe: DAObject
+  - disability: DAObject
+  - fault: DAObject
+  - initial_defense: DAObject
+  - last_months_rent: DAObject
+  - other: DAObject
+  - postforeclosure: DAObject
+  - postforeclosure.no_just_cause: DAObject
+  - postforeclosure.notice_provisions: DAObject
+  - retaliation: DAObject
+  - security_deposit: DAObject
+  - subsidized_housing: DAObject
+  - discrimination: DAObject
+  - relief: DAObject
+  - relief.stay: DAObject
+  - consumer_protection: DAObject
+  - discrimination.sexual_harassment: DAObject
+  #rp
+  - county: DAObject
+  - ints: DiscoveryDict
+  - drq: DiscoveryDict
+  - other_ints: DiscoveryList
+  - other_drq: DiscoveryList
+  - discovery_categories: DAList
+  - user_has_reviewed_section_one: DAObject
+---
+include:
+  - control-order.yml
+  - review_screens.yml
+  - tenant_and_tenancy.yml
+  - landlord.yml
+  - court_and_eviction.yml
+  - help.yml
+  - glossary.yml
+  - endpoints.yml
+  - eviction.yml
+  - initial_defenses.yml
+  - conditions.yml
+  - foreclosure.yml
+  - subsidized_tenancy.yml
+  - retaliation.yml
+  - discrimination_and_harassment.yml
+  - consumer_protection.yml
+  - security_deposit_and_prepaid_rent.yml
+  - discovery-logic.yml
+  - basic-questions.yml
+---
+question: |
+  Did your landlord file the case properly?
+subquestion: |
+  Below are some common problems with a case that your landlord may have overlooked. Select
+  all that apply to you.
+fields:
+  - My landlord failed to properly terminate my tenancy. : initial_defense.no_proper_termination
+    datatype: yesno
+    default: True
+  - I did not receive a Notice to Quit. : initial_defense.no_ntq
+    datatype: yesno
+  - My landlord started the eviction case (by sending me a copy of the Summons and Complaint) before the Notice to Quit expired. : initial_defense.premature_commencement
+    datatype: yesno
+  - My landlord is a corporation, and the summons and complaint is not signed by a lawyer. : initial_defense.varney
+    datatype: noyes
+  - The summons and complaint is defective or improperly served. : initial_defense.defective_summons
+    datatype: yesno
+  - I legally cured the balance owed by paying all money and fees due, by the answer date if it is a tenancy by lease, or within 10 days of the Notice to Quit if it is a tenancy at will. : initial_defense.cure
+    datatype: yesno
+  - My landlord created a new tenancy by entering into a new lease or accepting rent without a proper reservation of rights. : initial_defense.new_tenancy
+    datatype: yesno
+  - My landlord lacks standing to evict me. : initial_defense.no_standing
+    datatype: yesno
+  - My landlord stated an unrelated reason for the eviction on the Notice to Quit vs the Summons and Complaint. : initial_defense.inconsistent_reasons
+    datatype: yesno
+  - Other : initial_defense.other
+    datatype: yesno
+  - Other Reason: initial_defense.other_reason
+    required: False
+    show if: initial_defense.other
+help: |
+  These are some of the trickiest questions. We're working on adding more guidance to 
+  this section! Bear with us.
+section: Claims and Defenses
+---
+mandatory: True
+question: |
+  Please review your answers
+subquestion: |
+  You said you are ${ tenant.name }. [Edit name].
+  
+  Your address is ${ tenant.address }. [Edit address].
+  
+ 
+  [Edit name]: ${ url_action('edit_tenant_name') }
+  [Edit address]: ${ url_action('edit_tenant_address') }
+field: user_has_reviewed_section_one
+section: Review Answers
+---
+mandatory: True
+question: |
+  Please review your defenses
+subquestion: |
+  Your list of defenses 
+  
+  ${ defenses_list } 
+
+field: user_has_reviewed_defenses
+section: Review Answers
+---
+event: edit_tenant_name
+code: |
+  force_ask('tenant.name.first')
+---
+event: edit_tenant_address
+code: |
+  force_ask('tenant.address.address')
+---
+event: defenses_list
+show if:
+code: | 
+  initial_defense.no_ntq
+  initial_defense.premature_commencement
+  initial_defense.varney
+  initial_defense.defective_summons
+  initial_defense.cure
+  initial_defense.new_tenancy
+  initial_defense.no_standing
+  initial_defense.inconsistent_reasons
+  initial_defense.other   
+  
+  

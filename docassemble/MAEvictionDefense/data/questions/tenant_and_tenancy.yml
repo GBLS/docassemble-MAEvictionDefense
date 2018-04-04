@@ -18,6 +18,8 @@ question: |
 subquestion: |
   Look at the Summons and Complaint when answering this question. Find the line labeled
    "To Defendants / Tenants / Occupants"
+   
+  [FILE names_on_summons.png, 100%]
 fields:
   - The line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}": tenant.name_different_on_summons
     datatype: yesno
@@ -123,19 +125,19 @@ subquestion: |
   Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
 fields: 
-  - I or someone who lives with me has a disability: tenant.is_disabled
+  - Someone who lives with ${tenant.name} has a disability: tenant.is_disabled
     datatype: yesno
-  - Someone who lives with me is under the age of 6: tenant.is_under6
+  - Someone who lives with ${tenant.name} is under the age of 6: tenant.is_under6
     datatype: yesno
-  - I or someone who lives with me is over the age of 60: tenant.is_over60
+  - You or someone who lives with you is over the age of 60: tenant.is_over60
     datatype: yesno
-  - English is not my first language.: tenant.is_nonnativespeaker
+  - English is not ${tenant.name}'s first language.: tenant.is_nonnativespeaker
     datatype: yesno
-  - I am a victim of domestic violence.: tenant.is_dvvictim
+  - ${tenant.name} is a victim of domestic violence.: tenant.is_dvvictim
     datatype: yesno
-  - I pay reduced (subsidized) rent with an income limit or live in public housing.: facts.tenant_has_subsidy
+  - ${tenant.name}'s rent is subsidized.: facts.tenant_has_subsidy
     datatype: yesno
-  - I am a member of a tenant's union.: tenant.is_inunion
+  - ${tenant.name} is a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
 section: About You
 ---

@@ -1,0 +1,22 @@
+---
+mandatory: True
+question: |
+  Please review your answers
+subquestion: |   
+  These are the questions you have answered so far. Click to revisit.
+review: 
+  - Your Name: tenant.name
+  - Your Landlord's Name: landlord.name
+  - Eviction Reason: eviction_reason
+  - County: court.county
+  - Court Name: court.name
+  - Notice Type: notice_type
+  - You claimed retaliation: retaliation.is_retaliated
+  - You have bad conditions: bad_conditions.have_conditions
+  - You paid your deposit or last month's rent: paid_deposit_or_lmr
+  - There was a breach of "quiet enjoyment" (your right to undisturbed use and enjoyment of property): bqe.violated
+section: Review Answers
+---
+mandatory: True
+code: |
+  menu_items = [ action_menu_item('Review Answers', 'review_answers') ] 

@@ -58,4 +58,3 @@ setup(name='docassemble.MAEvictionDefense',
       zip_safe=False,
       package_data=find_package_data(where='docassemble/MAEvictionDefense/', package='docassemble.MAEvictionDefense'),
      )
-
