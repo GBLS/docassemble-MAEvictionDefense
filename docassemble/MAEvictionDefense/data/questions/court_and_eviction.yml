@@ -157,8 +157,6 @@ subquestion: |
   
   What does your notice to quit say is the reason you are being evicted?
   
-  [FILE eviction_reason.png, 100%] 
-  
 fields: 
   - Choose all reasons listed on your Notice to Quit that apply. : eviction_all_reasons
     datatype: checkboxes
