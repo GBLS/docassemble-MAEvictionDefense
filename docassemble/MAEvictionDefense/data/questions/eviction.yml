@@ -289,6 +289,7 @@ fields:
     datatype: date
 section: Conclusion
 ---
+id: download
 mandatory: True
 question: |
   Your documents are ready. Please print and file!
