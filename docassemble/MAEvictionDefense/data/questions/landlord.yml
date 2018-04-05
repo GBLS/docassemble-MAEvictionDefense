@@ -17,7 +17,7 @@ code: |
   elif "trust" in t_landlord_name:
     default_landlord_type = "trust"
   else:
-  default_landlord_type = "other"
+    default_landlord_type = "other"
 ---
 mandatory: True
 question: |
