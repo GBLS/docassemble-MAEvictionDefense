@@ -93,6 +93,10 @@ code: |
   pleading.case.firstParty.gathered = True
   pleading.case.secondParty.gathered = True
 ---
+mandatory: True
+code: |
+  multi_user = True
+---
 mandatory: true
 decoration: home
 question: |
