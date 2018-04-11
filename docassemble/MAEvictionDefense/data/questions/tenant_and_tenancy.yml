@@ -116,7 +116,7 @@ help: |
   after foreclosure.
 ---
 code: |
-  facts.tenant_has_lease = tenancy_type == 'lease'
+  facts.tenant_has_lease = showifdef('tenancy_type') == 'lease'
 --- 
 mandatory: True
 question: | 
