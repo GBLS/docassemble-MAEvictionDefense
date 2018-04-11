@@ -271,11 +271,6 @@ subquestion: |
   
   The proper time payment is due depends on whether you have a lease or a tenancy at will.
 fields:
-  - My rental agreement is: tenancy_type
-    choices:
-      - A written lease (even if expired): lease
-      - A month-to-month or week-to-week agreement (tenancy at will): taw
-      - I don't know: taw
   - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
     datatype: yesno
   - My payment included the cost of filing in court and a constable (typically about $200).: paid_court_fees
@@ -290,18 +285,20 @@ help:
 ---
 sets: initial_defense.cure
 code: |
-  if tenancy_type == 'lease':
+  if eviction_reason == 'nonpayment' and tenancy_type == 'lease':
     if paid_rent_owed and cure_date <= case.entry_date:
       initial_defense.cure = True
     elif paid_rent_owed and cure_date <= case.answer_date and paid_court_fees:
       initial_defense.cure = True
     else:
       initial_defense.cure = False
-  else:
+  elif eviction_reason == 'nonpayment':
     if no_ntq_in_12_months and paid_rent_owed and cure_date <= as_datetime(date_received_ntq + date_interval(days=10)):
       initial_defense.cure = True
     else:
       initial_defense.cure = True
+  else:
+    initial_defense.cure = False
 ---
 sets: initial_defense.no_standing
 code: |
