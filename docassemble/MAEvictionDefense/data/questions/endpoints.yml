@@ -2,15 +2,12 @@
 event: client_kicked_out
 progress: 100
 question: |
-  Sorry, you cannot proceed with the interview.
+  Sorry.
 subquestion: |
-  You can only proceed with the interview if you agree that your
-  completion of the interview does not create an attorney-client
-  relationship.
+  We can only help you put together your Answer if you understand and agree that answering the questions  does not create an attorney-client relationship.
 
   % if user_understands == 'unsure':
-  Ask your [local legal services provider](https://www.masslegalservices.org/FindLegalAid) for more information
-  to understand how you can use this form.
+  Ask your [local legal services provider](https://www.masslegalservices.org/FindLegalAid) about how to use this interview.
   % endif
 decoration: exit
 buttons:
@@ -21,10 +18,11 @@ event: onlyhasntq
 progress: 100
 question: Sorry, this is not the right interview for you.
 subquestion: |
-  This interview helps you fill out paperwork for court. You don't have a court date yet.
+  This interview helps you fill out paperwork for court. You do not have a court date yet.
   
-  You may want to call a legal services agency. If you owe money to your landlord
-  or are having trouble getting repairs made, a legal services agency may help you. 
+  You may want to call a legal services program. 
+  If you owe money to your landlord see [Rent] (https://www.masslegalhelp.org/housing/private-housing/ch19/rent) on MassLegalHelp. 
+  If you are having trouble getting your landlord to make repairs See [Getting Repairs Made] (https://www.masslegalhelp.org/housing/lt1-chapter-8-getting-repairs-made.pdf) on MassLegalHelp.
   Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
   find a legal services agency near you.
 buttons:

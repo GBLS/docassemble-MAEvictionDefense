@@ -84,7 +84,7 @@ fields:
       - I live in the property to help the owner or tenant (live-in aide or caretaker) but do not pay rent: pca
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
-  - What is the full "contract" or "market" rent?: facts.tenant_contract_rent
+  - What is the full "contract" or "market" rent? (Skip if unknown): facts.tenant_contract_rent
     datatype: currency
     required: False
     help: |

@@ -3,7 +3,7 @@ need: local_housing_court
 question: |
   What court is your case being heard in?
 subquestion: |
-  Copy the name of the court and county from the upper-left-hand corner of the Summons and Complaint form.
+  Look at the upper-right-hand corner of the Summons and Complaint form. Pick the name of the court from the list(s) below.  
   
   [FILE court_and_county.png, 100%]
 fields: 
@@ -94,18 +94,18 @@ subquestion: |
   [FILE dates.png, 100%]
   
 fields:
-  - What date is your first hearing in court?: case.original_date
+  - What is the date of your first hearing?: case.original_date
     datatype: date
     hint: Often a Thursday.
-  - What date must your answer be received by (usually a Monday)?: case.answer_date
+  - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
     datatype: date
     hint: Usually a Monday
 help:
-  The original trial date is a Thursday in many, but not all jurisdictions.
+  Trial dates are usually on a Thursday in many, but not all courts.
   
-  This information will help us figure out if you are responding to the eviction before
-  the deadline. If you are filing these papers on time, your court date will be delayed 
-  by two weeks.It will also help us figure out when you need to appear in court. 
+  This information helps us figure out if you are answering to the eviction by 
+  the deadline. If you are filing your [Answer] on time, the court will be delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
+ 
 section: About Your Tenancy
 ---
 code: |
@@ -122,9 +122,9 @@ code: |
 question: |
   Defenses for fault eviction
 subquestion: |
-  Check any that apply.
+  If your landlord says you did something wrong, you can argue 1 or more of these 3 things. You did not do whatever the landlord says you did or it did not happen, you were not breaking any rules in your lease, or you could not control a guest’s behavior **so you should not be held responsible**.  
 fields:
-  - I deny the landlord's allegation of ${fault_basis}.: fault.did_not_occur
+  - I deny the landlord's allegation of ${fault_basis}. (My landlord is wrong): fault.did_not_occur
     datatype: yesno
     default: True
   - ${capitalize(fault_basis)} is not a violation of my lease.: fault.not_violation_of_agreement
@@ -155,7 +155,7 @@ question: Reason for eviction
 subquestion: |
   Look at your Notice to Quit. 
   
-  What does your notice to quit say is the reason you are being evicted?
+  What does your Notice to Quit say is the reason you are being evicted?
   
 fields: 
   - Choose all reasons listed on your Notice to Quit that apply. : eviction_all_reasons
@@ -164,8 +164,8 @@ fields:
     choices:
       - My landlord says I owe rent.: nonpayment
       - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
-      - My landlord doesn't want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
-      - I never received a Notice to Quit.: nontq
+      - My landlord does not want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
+      - I never got a Notice to Quit.: nontq
       - I don't know. : unsure
 help: |
   Look carefully at your notice to quit or notice to terminate tenancy. Choose the 
@@ -193,13 +193,13 @@ question: |
   Basis for no-fault eviction
 subquestion: |
   What does the landlord say is the reason they
-  want you to vacate the apartment?
+  want you to move out?
 field: nofault_basis
 dropdown:
-  - Refused rent increase: refusal of rent increase
-  - Desire to renovate: desire to renovate
-  - Move in a family member: moving in a family member
-  - No reason given: no reason
+  - I refused to pay a higher rent: refusal of rent increase
+  - They want to renovate: desire to renovate
+  - They want the apartment for a family member: moving in a family member
+  - My landlord did not give a reason: no reason
   - Other: other
 section: About Your Tenancy
 
@@ -207,12 +207,11 @@ section: About Your Tenancy
 question: | 
   Basis for fault eviction
 subquestion: |
-  What specifically does your landlord claim as the reason for
-  your eviction?
-  Please choose the best match below. This will help
-  us choose the right defenses and discovery. 
-  Selecting an answer below doesn't mean you agree
-  with what your landlord claims you did.
+  What does your landlord say is the reason they are evicting you?
+ 
+  Choose one. This will help us choose the right defenses and discovery. 
+
+  **Remember, you are telling the court what your landlord says. You are not agreeing with the landlord.**
 field: fault_basis
 dropdown:
   - Chronic late payment of rent: chronic late payment of rent
@@ -223,7 +222,7 @@ dropdown:
   - Destruction of property: destruction of property
   - Assault on staff or other tenant: assault on staff or other tenant
   - Harassment of staff or other tenant: harassment of staff or other tenant
-  - Disturbance of other tenants (i.e., smoking, noise, or odor): disturbance of other tenants
+  - Disturbance of other tenants (like smoking, noise, or odor) coming from your apartment: disturbance of other tenants
   - Other lease violation: other
 section: About Your Tenancy
 ---

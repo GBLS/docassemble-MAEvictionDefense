@@ -102,15 +102,20 @@ decoration: home
 question: |
   Massachusetts Eviction Defense
 subquestion: |
-  This interview is designed to help a tenant respond to an eviction case in court.
+  Greater Boston Legal Services and other Massachusetts legal aid programs created this interview for tenants who are facing eviction. It will help you complete the forms that you must give your landlord and the court. It takes about :stopwatch: 25 minutes. And it is free. 
   
-  A typical tenant will take about :stopwatch: 25 minutes to complete this interview.
-  You will receive documents that you can print and file at the end. It may postpone
-  your court hearing by 2 weeks.
+  You will receive documents that you can print and file at the end. When you complete the interview:
   
-  Words that you may not understand will be {highlighted in green}. Click on a green
-  word to learn more. Click the "[Help]" button at any time to learn more about this
+  1. You should  feel more confident about your legal rights and defenses.
+  2. Your landlord may send you more information. You can use this to help you prepare for court.
+  3. Your court appearance may be delayed by two weeks.
+
+  Click on a green word to learn more. Click the "[Help]" button at any time to learn more about this
   interview.
+  
+  You can always click "back" to go back and change your answers to a 
+  question.
+
 field: user_saw_initial_screen
 terms: 
   - highlighted in green: This is an example. Click it again to hide this definition.
@@ -121,8 +126,8 @@ section: Getting Started
 question: | 
   This site does not give legal advice.
 subquestion: |
-  Your use of this system does not mean that you have a lawyer.  Do
-  you understand this?
+  This interview does not take the place of a lawyer. Do
+  you understand that?
   
   If you would like a lawyer, you may qualify for help from legal aid. You can use the
   [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to find out.
@@ -161,13 +166,10 @@ field: overview_video
 ---
 question: Getting Started
 subquestion: |
-  Please locate the Summons and Complaint and the Notice to Quit for your case
-  before you begin. You'll be asked to look for information on both
-  documents to help answer some questions. For some situations, it may help to
-  refer to your lease or any written rental agreement.
+   We will start with information in the documents you need:
+   the Summary Process **Summons and Complaint** and the **Notice to Quit** you got.
   
-  If you don't have either document, 
-  you can still do your best to answer from your memory.
+   If you don't have either document, you can still do your best to answer from your memory.
 field: getting_started
 buttons: 
   - Continue: continue
@@ -187,7 +189,7 @@ choices:
   - I missed my first court date.: late
 default: summons
 help:
-  We need to know where your case is in the court process to choose the right forms.
+  We need to know how far along in the court process you are so we can choose the right forms.
   
   If your first court date has passed, you may be able to use a special form called a 
   "Motion to File Late Answer." This interview will help you decide. 
@@ -204,19 +206,18 @@ mandatory: True
 question: |
   Your right to a jury trial
 subquestion: |
-  Both the tenant and the landlord have the right to have a jury decide the facts of their case instead of 
-  a judge. This is your only chance to claim your
+  Both you and your landlord have the right to have a jury instead of 
+  a judge decide your case. This is your only chance to claim your
   right to a jury (unless you file a separate form before the answer date).
-  
+
   #### Why claim your right to a jury trial?
-  1. Members of the jury are your peers. Some may be tenants who can understand your experiences.
-  1. Jury trials take time to schedule. You can use this time to try to resolve your case.
-  1. You still can waive your jury trial right later. Claiming a jury trial also does not
-     stop you from reaching an agreement with your landlord.
+  1. Members of the jury are your peers. Some may be tenants who can understand your experience.
+  2. Jury trials take time to schedule. You can use this time to try to resolve your case.
+  3. You can change your mind and decide later that you do not want a jury trial. You can still negotiate an agreement with your landlord. A jury trial also does not mean you lose the chance to negotiate an agreement.
+
   
-  There is a chance that the judge will ask you to pay rent or use and occupancy while you
-  are waiting for the jury trial to be scheduled. 
-  Most tenants who receive assistance in Greater Boston Legal Services clinics request a 
+  There is a chance that the judge will ask you to pay rent, or ‘use and occupancy’ while you
+  wait for the jury trial to be scheduled. Most tenants who get help from Greater Boston Legal Services clinics ask for a 
   jury trial. 
 
 field: claim_jurytrial
@@ -248,10 +249,11 @@ include:
   - discovery-logic.yml
 #  - basic-questions.yml
 ---
-question: Please sign below
+question: Sign below
 subquestion: |
-  By signing below, you acknowledge that your answers to the questions
-  in this interview were truthful, to the best of your knowledge.
+  When you sign these forms, you are saying that your answers to the questions
+  in this interview are true as far as you know.
+  
 signature: tenant.signature
 under: |
   ${ tenant.name }
@@ -296,7 +298,7 @@ section: Conclusion
 id: download
 mandatory: True
 question: |
-  Your documents are ready. Please print and file!
+  Your documents are ready!
 subquestion: |
   Please download and print 3 copies of each document below. 
   
@@ -310,16 +312,14 @@ subquestion: |
   
   % if case.on_time :
   Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.
-  You will not receive any special notice in the mail. The new date is also printed
+  You will not get any special notice in the mail. The new date is also printed
   on your paperwork.
 
   According to your earlier answer, you must deliver all copies no later than 
   **${format_date(case.answer_date)}**. Please note, most Massachusetts courts close at 
   4:30 PM.
-
   % else:
-  Please note: because you are filing your answer after the Answer date (${format_date(case.answer_date)}),
-  your hearing date will not be postponed. Please attend court as originally scheduled.
+  Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), the court will not postpone your hearing. You need to go to court as originally scheduled.
   % endif
 attachment:
   - name: Answer Form

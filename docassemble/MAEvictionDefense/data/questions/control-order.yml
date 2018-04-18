@@ -41,7 +41,19 @@ code: |
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
   initial_defense.other
-  
+
+  retaliation.is_retaliated
+  if retaliation.is_retaliated:
+    retaliation.withheld_rent
+    retaliation.badconditions_to_landlord
+    retaliation.badconditions_to_agency
+    retaliation.tenant_union
+    retaliation.protection_or_prevention_order
+    retaliation.domestic_violence
+    retaliation.survivor_rights
+    retaliation.other
+    retaliation.within_6_months
+    
   tenant.is_discriminated
   plead_counterclaims
   
@@ -76,18 +88,6 @@ code: |
       consumer_protection.nonagreed_rent
       consumer_protection.unlawful_court_fees
       consumer_protection.unlawful_lease_terms
-
-  retaliation.is_retaliated
-  if retaliation.is_retaliated:
-    retaliation.withheld_rent
-    retaliation.badconditions_to_landlord
-    retaliation.badconditions_to_agency
-    retaliation.tenant_union
-    retaliation.protection_or_prevention_order
-    retaliation.domestic_violence
-    retaliation.survivor_rights
-    retaliation.other
-    retaliation.within_6_months
   
   other.vendor_payments
   other.repair_and_deduct_statute

@@ -23,10 +23,8 @@ fields:
       - not enough hot water
       - defective locks
       - security problems
-      - other
-  - Other conditions: bad_conditions.other_condition
-    datatype: area
-    show if: bad_conditions.conditions['other']
+  - Other: bad_conditions.other_problem
+    required: False
 help: |
   You may have a claim against your landlord for problems in your home over the last
   6 years, whether they are currently repaired or not. For certain problems, you may only

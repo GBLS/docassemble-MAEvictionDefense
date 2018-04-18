@@ -54,9 +54,7 @@ fields:
         facts.tenant_has_subsidy and subsidy_type == "Section 8 voucher"
   - I was never offered a chance to discuss the eviction with my landlord in a "private conference" or "grievance hearing".: subsidized_housing.no_hearing_or_conference
     datatype: yesno
-    show if: 
-      code: |
-        facts.tenant_has_subsidy and subsidy_type in ["HUD multi-family","public housing","tax credit"]    
+    default: True
   - My landlord did not comply with the Violence Against Women Act. : subsidized_housing.vawa
     datatype: yesno
 comment:
