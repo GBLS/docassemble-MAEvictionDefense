@@ -80,8 +80,9 @@ fields:
     default: "renter"
     choices:
       - I pay rent to a landlord or bank: renter
-      - I am an owner or former owner after foreclosure: pfc_owner
-      - I live in the property to help the owner or tenant (live-in aide or caretaker) but do not pay rent: pca
+      - I used to own the property, but I lost it to foreclosure.: pfc_owner
+      - I do not pay rent, but I live in the property to help the owner but do not pay rent: pca
+      - I do not pay rent, but I live in the property to help the tenant but do not pay rent: pca
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
   - What is the full "contract" or "market" rent? (Skip if unknown): facts.tenant_contract_rent

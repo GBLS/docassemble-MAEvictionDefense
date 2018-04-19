@@ -33,12 +33,7 @@ show if: |
 question: |
   Termination of tenancy
 subquestion: |
-  
-  The first step in termination is a Notice to Quit, 
-  (also called Notice to Terminate Tenancy). If your landlord
-  did not do this properly, you may have a defense.
-  We'll start by asking questions about what type of notice you received and the
-  type of tenancy agreement you have.
+    When a landlord wants to evict you, the first thing they must do is serve you with a Notice to Quit. There are right ways and a wrong ways to get this notice to you. If your landlord did not give you the Notice to Quit in the right way, you may have a reason to stop the eviction.  Reasons to stop your  eviction are called “defenses”  
 
 fields:
   - The notice to quit has my name on it.: ntq_includes_tenant_name
@@ -62,18 +57,23 @@ fields:
       - 30 day Notice to Quit: thirty_day
       - 72 hour Notice to Quit: seventy_two_hour
       - Notice "until the end of the next rental period" or similar: rental_period
-      - I never received a Notice to Quit: no_ntq
-  - I was behind in rent at the time I received the 14-day notice.: behind_in_rent
+      - I never got a Notice to Quit: no_ntq
+  - I was behind in rent when I got the 14-day notice.: behind_in_rent
     datatype: yesno
     show if: 
       variable: notice_type
       is: 'fourteen_day'
-  - I never agreed to pay the amount of rent the landlord is charging me for on the 14-day notice: refused_rent_increase
+  - I never agreed to pay the amount of rent the landlord put in the 14-day notice: refused_rent_increase
     datatype: yesno
     show if:
       variable: notice_type
       is: 'fourteen_day'
-  - I paid or offered to pay the full amount of money owed.: attempted_cure
+  - I paid the full amount of money I owed.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - I offered to pay the full amount of money I owed.: attempted_cure
     datatype: yesno
     show if:
       variable: notice_type
@@ -200,14 +200,14 @@ code: |
 ---
 question: Timing of notices
 subquestion: |
-  It's important for your landlord to file your eviction case and pre-eviction notice
+  It is important for your landlord to file your eviction case and pre-eviction notice
   at the proper time. You may have a defense if this was not done in your case.
 fields:
-  - Date I received notice to quit: date_received_ntq
+  - Date I got the notice to quit: date_received_ntq
     datatype: date
-  - Date I received the notice to appear in court (Summons and Complaint).: date_received_summons
+  - Date I got the notice to appear in court (Summons and Complaint).: date_received_summons
     datatype: date
-  - I received the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
+  - I got the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
     datatype: yesno
   - The summons and complaint was mailed to me.: summons_mailed
     datatype: yesno
@@ -260,7 +260,7 @@ question: |
 fields:
   - The summons and complaint says I did something wrong that was not listed on the notice to quit (other than owing rent). : notice_inconsistent
     datatype: yesno
-  - I received something like a Notice to Quit but it does not tell me to leave on a certain day.: notice_does_not_terminate
+  - I got something like a Notice to Quit but it does not tell me to leave on a certain day.: notice_does_not_terminate
     datatype: yesno
 ---
 question: |
