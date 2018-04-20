@@ -37,6 +37,10 @@ code: |
   initial_defense.defective_summons
   if eviction_reason == 'nonpayment':
     initial_defense.cure
+  if eviction_reason == 'fault':
+    fault.did_not_occur
+    fault.not_violation_of_agreement
+    fault.no_control_of_guest
   initial_defense.new_tenancy
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
