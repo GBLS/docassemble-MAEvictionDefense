@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-03-14
+  revision_date: 2018-6-05
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -23,23 +23,13 @@ sections:
   - Relief
   - Discovery
   - Conclusion
-
 ---
 features:
   question help button: True
 #  question back button: True
   progress bar: True
   navigation: True
-  javascript: 
-    - analytics.js
-    - autotrack.js
   default icons: material icons
-#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
-#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css
-#  inverse navbar: False
-#  css: originalbase.css
-#  css: originalnav.css
-#  css: logonav.css
 ---
 modules:
   - docassemble.base.util
@@ -72,53 +62,46 @@ objects:
   - relief.stay: DAObject
   - consumer_protection: DAObject
   - discrimination.sexual_harassment: DAObject
-  #rp
   - county: DAObject
   - ints: DiscoveryDict
   - drq: DiscoveryDict
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
-#  - discovery_categories: DAList
   - review_answers: DAObject
----
-images:
-  summons: summons_and_complaint.png
----
-code: |
-  case.defendant.append(tenant)
-  case.plaintiff.append(landlord)
-  case.court = court
-  pleading.case = case
-  pleading.title = "Defendant's Request for Discovery (Interrogatories and Document Requests)"
-  pleading.case.firstParty.gathered = True
-  pleading.case.secondParty.gathered = True
 ---
 mandatory: True
 code: |
   multi_user = True
 ---
-mandatory: true
+include:
+  - interview-order.yml
+---
 decoration: home
 question: |
   Massachusetts Eviction Defense
 subquestion: |
-  Greater Boston Legal Services and other Massachusetts legal aid programs created this interview for tenants who are facing eviction. It will help you complete the forms that you must give your landlord and the court. It takes about :stopwatch: 25 minutes. And it is free. 
+  Greater Boston Legal Services and other Massachusetts legal aid programs created this interview for tenants who are
+  facing eviction. It will help you complete forms that you must give your landlord and the court. It takes about 
+  :stopwatch: 25 minutes. And it is free. 
   
-  You will receive documents that you can print and file at the end. When you complete the interview:
-  
-  1. You should  feel more confident about your legal rights and defenses.
-  2. Your landlord may send you more information. You can use this to help you prepare for court.
-  3. Your court appearance may be delayed by two weeks.
+  You will receive documents that you can print and file at the end.
 
+  You will need:
+
+  1. the Summary Process **Summons and Complaint** and 
+  2. the **Notice to Quit** you got from your landlord.
+  
+  If you don't have either document, you can still do your best to answer from your memory.
+  
   Click on a green word to learn more. Click the "[Help]" button at any time to learn more about this
   interview.
   
-  You can always click "back" to go back and change your answers to a 
+  You can always click "[Back]" to go back and change your answers to a 
   question.
 
-field: user_saw_initial_screen
+field: getting_started
 terms: 
-  - highlighted in green: This is an example. Click it again to hide this definition.
+  - green word: This is an example. Click it again to hide this definition.
 buttons: 
   - Continue: continue
 section: Getting Started
@@ -137,25 +120,12 @@ buttons:
   - code: |
       [{'does not understand':"I do not understand"}, {'unsure':"I'm not sure"}]
 ---
-mandatory: True
-code: |
-  need(user_saw_initial_screen)
-  if not user_understands == "understands":
-    need(client_kicked_out)
----
-mandatory: True
 question: |
   Who is completing this interview?
 field: person_answering
 buttons:
   - Tenant or helper: tenant
   - Attorney or paralegal: attorney
----
-mandatory: True
-code: |
-  if person_answering == 'tenant':
-    need(overview_video)
-    need(getting_started)
 ---
 question: Overview of Tenant's Rights in Evictions in Massachusetts
 subquestion: | 
@@ -164,23 +134,10 @@ subquestion: |
 video: "[YOUTUBE TSaTw0Y5OFA]"
 field: overview_video
 ---
-question: Getting Started
-subquestion: |
-   We will start with information in the documents you need:
-   the Summary Process **Summons and Complaint** and the **Notice to Quit** you got.
-  
-   If you don't have either document, you can still do your best to answer from your memory.
-field: getting_started
-buttons: 
-  - Continue: continue
-  - Exit: exit
----
 question: |
   Upcoming court dates
 subquestion: |
-  This interview is designed to help a tenant whose case is scheduled in court for
-  the first time. It can also help you ask for permission to file late.
-  What best describes ${tenant.name}'s case?
+  Do you have a court date coming up for your case?
 field: case.status
 choices: 
   - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
@@ -195,14 +152,6 @@ help:
   "Motion to File Late Answer." This interview will help you decide. 
 section: Getting Started
 ---
-mandatory: True
-code: |
-  if case.status == "onlyntq":
-    need(onlyhasntq)
-  if case.status == "afj":
-    need(firstdatepassed)
----
-mandatory: True
 question: |
   Your right to a jury trial
 subquestion: |
@@ -230,8 +179,6 @@ code: |
   last_months_rent_amount = 0
 ---
 include:
-  - control-order.yml
-#  - review_screens.yml
   - tenant_and_tenancy.yml
   - landlord.yml
   - court_and_eviction.yml
@@ -247,7 +194,6 @@ include:
   - consumer_protection.yml
   - security_deposit_and_prepaid_rent.yml
   - discovery-logic.yml
-#  - basic-questions.yml
 ---
 question: Sign below
 subquestion: |
@@ -258,16 +204,14 @@ signature: tenant.signature
 under: |
   ${ tenant.name }
 ---
-need: all_answer_variables
 question: |
   Printed Instructions
 subquestion: |
   Should we include printed instructions about delivering the forms 
   in the documents for you to print?
-yesno: show_instructions 
+yesno: show_instructions
 #section: Conclusion
 ---
-need: all_answer_variables
 question: |
   Method of Service
 subquestion: |
@@ -319,7 +263,8 @@ subquestion: |
   **${format_date(case.answer_date)}**. Please note, most Massachusetts courts close at 
   4:30 PM.
   % else:
-  Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), the court will not postpone your hearing. You need to go to court as originally scheduled.
+  Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), 
+  the court will not postpone your hearing. You need to go to court as originally scheduled.
   % endif
 attachment:
   - name: Answer Form

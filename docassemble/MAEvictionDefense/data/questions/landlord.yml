@@ -19,7 +19,6 @@ code: |
   else:
     default_landlord_type = "other"
 ---
-mandatory: True
 question: |
   Information about ${landlord.name}.
 subquestion: |
