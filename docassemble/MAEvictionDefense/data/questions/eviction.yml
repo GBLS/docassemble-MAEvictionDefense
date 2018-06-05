@@ -80,23 +80,20 @@ decoration: home
 question: |
   Massachusetts Eviction Defense
 subquestion: |
-  Greater Boston Legal Services and other Massachusetts legal aid programs created this interview for tenants who are
-  facing eviction. It will help you complete forms that you must give your landlord and the court. It takes about 
-  :stopwatch: 25 minutes. And it is free. 
-  
-  You will receive documents that you can print and file at the end.
+  This guided interview will help you respond to an eviction in Massachusetts. It will also allow
+  you to get information from your landlord to be better prepared for court. It should take you about 
+  :stopwatch: 25 minutes to finish. And it is free. At the end of the interview, you will need to print 
+  and deliver paperwork to the court and to your landlord or their attorney.
 
-  You will need:
+  Before we start, you should find:
 
-  1. the Summary Process **Summons and Complaint** and 
+  1. The **Summons and Complaint** and 
   2. the **Notice to Quit** you got from your landlord.
   
   If you don't have either document, you can still do your best to answer from your memory.
   
-  Click on a green word to learn more. Click the "[Help]" button at any time to learn more about this
-  interview.
-  
-  You can always click "[Back]" to go back and change your answers to a 
+  At any time, click on a {green word} to learn what it means. Click the "[Help]" button to learn more
+  about the interview or a specific question. You can also click "[< Back]" to go back and change your answers to a 
   question.
 
 field: getting_started

@@ -22,7 +22,7 @@ subquestion: |
   [FILE names_on_summons.png, 100%]
 fields:
   - The line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}": tenant.name_different_on_summons
-    datatype: yesno
+    datatype: yesnoradio
     default: False
   - There are additional names listed. : tenant.more_names_on_summons
     datatype: yesno
@@ -62,10 +62,9 @@ fields:
   - Email address: tenant.email
     required: False
   - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
-    datatype: noyes
-    default: False
+    datatype: yesnoradio
+    default: True
 ---
-mandatory: True
 code: |
   tenant.address.geolocate()
 ---
@@ -134,6 +133,18 @@ fields:
     datatype: yesno
   - English is not my first language.: tenant.is_nonnativespeaker
     datatype: yesno
+  - I need an interpreter.: tenant.needs_interpreter
+    datatype: yesno
+    show if:  tenant.is_nonnativespeaker
+  - "I need an interpreter who speaks:" : tenant.preferred_language
+    datatype: combobox
+    show if:  tenant.is_nonnativespeaker
+    choices:
+      - Spanish
+      - Portuguese
+      - Haitian Creole
+      - Cantonese
+      - Mandarin
   - I am a victim of domestic violence.: tenant.is_dvvictim
     datatype: yesno
   - My rent is subsidized.: facts.tenant_has_subsidy

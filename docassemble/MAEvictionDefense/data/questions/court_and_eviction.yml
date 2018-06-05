@@ -86,7 +86,7 @@ code: |
     local_housing_court = ""
 ---
 question: |
-  Hearing Date
+  Court Date
 subquestion: |
   To answer this question, please take a look at your Summons and Complaint. 
   Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
@@ -94,7 +94,7 @@ subquestion: |
   [FILE dates.png, 100%]
   
 fields:
-  - What is the date of your first hearing?: case.original_date
+  - What is the date of your first court hearing?: case.original_date
     datatype: date
     hint: Often a Thursday.
   - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
@@ -188,6 +188,8 @@ code: |
     plead_counterclaims = True
   if (eviction_reason == "nontq"):
     initial_defense.no_ntq = True
+  
+  set_plead_counterclaims = True
 ---
 question: | 
   Basis for no-fault eviction

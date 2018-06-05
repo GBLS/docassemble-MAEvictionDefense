@@ -9,22 +9,23 @@ sets: all_answer_variables
 code: |
   # Overview
   getting_started
-  person_answering
+  #person_answering
   if person_answering == 'tenant':
-    need(overview_video)
-  user_understands
-  if not user_understands == "understands":
-    need(client_kicked_out)  
-  case.status
+    user_understands
+    if not user_understands == "understands":
+      client_kicked_out
+    overview_video
+  #case.status
   if case.status == "onlyntq":
-    need(onlyhasntq)
-  if case.status == "afj":
-    need(firstdatepassed)
+    onlyhasntq
+  if case.status == "afj" or case.status == 'late':
+    firstdatepassed
   
   claim_jurytrial
   tenant.name
   defendants_name
   tenant.address
+  tenant.address.geolocate()
   landlord.name
   landlord.organization_type
 
@@ -32,14 +33,17 @@ code: |
   court.name
   case.original_date
   case.rescheduled_date
+  if case.original_date < today():
+    firstdatepassed
 
   eviction_reason
+  set_plead_counterclaims
 
   facts.tenant_rent_share
   facts.tenant_has_lease
-  facts.tenant_has_subsidy
   
   if facts.tenant_has_subsidy:
+    subsidy_type
     subsidized_housing.no_proper_termination
     #subsidized_housing.no_just_cause
     #subsidized_housing.no_ntq_to_agency
