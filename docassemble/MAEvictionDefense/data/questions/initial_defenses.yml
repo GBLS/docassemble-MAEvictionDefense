@@ -1,14 +1,10 @@
 ---
-question: Other
+question: Nonpayment of rent defenses
 fields: 
   - My rent is paid by DTA, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
-  - I made repairs and deducted the cost from my rent pursuant to (G.L. c. 111, §127L).: other.repair_and_deduct_statute
-    datatype: yesno
-  - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
-    datatype: yesno
 section: Claims and Defenses
-
+  
 ---
 question: Requested relief
 fields:
@@ -33,17 +29,21 @@ show if: |
 question: |
   Termination of tenancy
 subquestion: |
-    When a landlord wants to evict you, the first thing they must do is serve you with a Notice to Quit. There are right ways and a wrong ways to get this notice to you. If your landlord did not give you the Notice to Quit in the right way, you may have a reason to stop the eviction.  Reasons to stop your  eviction are called “defenses”  
+    When a landlord wants to evict you, the first thing they must do is give you is some written notice
+    that they plan to evict you. Usually this is called a "notice to quit" or "notice to terminate tenancy"
+    but it could also be included in your lease. If your landlord did not give you the
+    right kind of notice, you may have a defense to being evicted.
 
+    Below are statements about the notice that you received. Select any that apply to you.
 fields:
   - The notice to quit has my name on it.: ntq_includes_tenant_name
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - The notice to quit includes the names of everyone who signed the lease.: ntq_includes_all_tenants
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - The notice to quit has my correct address.: ntq_includes_correct_address
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - My lease requires a 30-day notice even for non-payment of rent.: lease_requires_30_day_notice
     datatype: yesno
@@ -51,6 +51,9 @@ fields:
   - The notice to quit leaves out language that is required by my lease, by law, or by the requirements of a subsidy program.: ntq_leaves_off_required_language
     datatype: yesno
     default: False
+    help: |
+      Answering this question probably requires the help of a lawyer. You can leave it blank if you
+      are not sure.
   - Type of termination notice: notice_type
     choices:
       - 14 day Notice to Quit: fourteen_day
@@ -59,7 +62,8 @@ fields:
       - Notice "until the end of the next rental period" or similar: rental_period
       - I never got a Notice to Quit: no_ntq
   - I was behind in rent when I got the 14-day notice.: behind_in_rent
-    datatype: yesno
+    datatype: yesnoradio
+    default: True
     show if: 
       variable: notice_type
       is: 'fourteen_day'
@@ -85,20 +89,28 @@ fields:
         showifdef('lease_type') == 'fixed_term'
   - I paid rent after receiving the notice to quit.: paid_rent
     datatype: yesno
-  - The notice states that rent will be accepted for "use and occupancy" only: notice_states_use_and_occupancy
-    default: True
-    datatype: yesno
-    show if: paid_rent
 help:
-  https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section1
-  http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf
+  Massachusetts has strict requirements for language in an eviction notice. Language might be required by
+  Massachusetts law, your lease, or a federal rule if you are living in subsidized housing.
+
+  If you are not a lawyer, it may be hard to figure out that certain language is required in your notice.
+  You can learn more at
+  [MassLegalHelp](http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf)
+  and if you aren't sure, you can probably talk to a lawyer at the Attorney for the Day table at your local court.
 ---
 sets: 
   - initial_defense.no_proper_termination
   - initial_defense.need_ntq
 code: |
+  tenant_type = 'renter'
+  if is_pca:
+    tenant_type = 'pca'
+  if is_pfc_owner:
+    tenant_type = 'pfc_owner'
+
   initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
   initial_defense.need_ntq = True
+  
   if tenant_type == 'renter' and tenancy_type == 'lease':
     initial_defense.need_ntq = not (lease_type == 'fixed_term' and lease_end_date <= date_received_summons) and not (tenancy_type == 'pca')
 
@@ -121,24 +133,21 @@ code: |
 question: |
   Waiver / creation of a new tenancy
 subquestion: |
-  Look at your notice to quit to answer this question.
+  In some cases actions you or your landlord take can make the notice to quit invalid, or "waive" it. Look at your notice to quit
+  to answer this question.
   
   Think about the time period after you first received a notice to quit, on
-  ${format_date(date_received_ntq)}.
+  ${format_date(date_received_ntq)}. Check any statements below that apply to you.
 fields:
   - Did any of the following occur after you received the notice to quit on ${format_date(date_received_ntq)}?: post_ntq_waiver
     datatype: checkboxes
     choices:
       - I paid additional rent after ${format_date(date_received_ntq)}: rent
-      - I signed "recertification" paperwork for subsidized housing.: recert
-      - I signed a new lease.: lease
-  - note: If you paid additional rent, answer the question below.
+      - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
   - The notice to quit says "rent will be accepted for use and occupancy only" or similar language.: ntq_contains_reservation
-    datatype: yesno
+    datatype: yesnoradio
     default: True
-    show if:
-      variable: post_ntq_waiver
-      is: 'rent'
+    show if: post_ntq_waiver['rent']
 ---
 sets: initial_defense.new_tenancy
 code: |
@@ -158,7 +167,7 @@ subquestion: |
 fields:
   - It matches the notice to quit. : ntq_matches_summons
     default: True
-    datatype: yesno
+    datatype: yesnoradio
   - Select all reasons listed on the summons and complaint that are not listed on the notice to quit.: summons_eviction_reasons
     hide if: ntq_matches_summons
     datatype: checkboxes
@@ -169,13 +178,13 @@ fields:
       - The same "fault" reason listed on the notice to quit: same_fault
       - A new "fault" reason or breach of lease, not listed on the notice to quit: new_fault
   - The summons and complaint has my name on it.: summons_includes_tenant_name
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - The summons and complaint includes the names of everyone who signed the lease.: summons_includes_all_tenants
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - The summons and complaint has my correct address.: summons_includes_correct_address
-    datatype: yesno
+    datatype: yesnoradio
     default: True
     
 help: |
@@ -269,13 +278,15 @@ subquestion: |
   You may have the right to stop the eviction if you paid all money that was owed at the time to the 
   landlord, even if you owe a new amount of money now.
   
-  The proper time payment is due depends on whether you have a lease or a tenancy at will.
-fields:
-  - My rental agreement is: tenancy_type
-    choices:
-      - A written lease (even if expired): lease
-      - A month-to-month or week-to-week agreement (tenancy at will): taw
-      - I don't know: taw
+  The proper time payment is due depends on whether you have a lease or a tenancy at will. You said
+  earlier that you have a ${tenancy_type.replace('taw','tenancy at will or were unsure')}.
+  % if tenancy_type == 'lease':
+  You have until the answer date, ${case.answer_date}, to pay the full amount due.
+  % else:
+  You likely have or had until 10 days after you received the notice to quit,
+  ${date_received_ntq.plus(days=10)}, to pay the full amount due.
+  % endif
+fields: 
   - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
     datatype: yesno
   - My payment included the cost of filing in court and a constable (typically about $200).: paid_court_fees
@@ -285,8 +296,10 @@ fields:
   - Date of payment to the landlord: cure_date
     datatype: date
 help:
-  See Chapter 12 of Legal Tactics, the section titled "Paying the Rent Owed" and https://www.masslegalhelp.org/receiving-proper-notice.
-  Also see G.L. 186 s. 11 (https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11)  
+  See [Chapter 12 of Legal Tactics](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf), 
+  the section titled "Paying the Rent Owed" 
+  and ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).
+  Also see [G.L. 186 s. 11](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11).  
 ---
 sets: initial_defense.cure
 code: |

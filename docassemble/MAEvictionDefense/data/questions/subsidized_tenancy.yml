@@ -2,16 +2,17 @@
 question: |
   What type of subsidy do you have?
 subquestion: |
-  What is the best description of the program that lowers your rent?
+  What is the best description of the public housing program or program that lowers your rent?
 field: subsidy_type
 choices:
   - Section 8 voucher (portable voucher): Section 8 voucher
     help: |
-      A portable voucher used with a private landlord. Rent is usually set to 30% of your income.
+      A Federal portable voucher used with a private landlord. Rent is usually set to 30% of your income.
   - MRVP (Massachusetts Rental Voucher Program): MRVP
     help: |
-      A portable voucher used with a private landlord. Rent is usually set to 40% of your income.      
+      A State portable voucher used with a private landlord. Rent is usually set to 40% of your income.      
   - Public housing (my landlord is a housing authority): public housing
+    default: ${default_landlord_type == "public"}
     help: |
       If part of your landlord's name is "Housing Authority" this is the type of housing you
       have. Rent is usually set to 30% of your income.
@@ -20,7 +21,8 @@ choices:
       Usually rent is 30% of income. The most common type is HUD multi-family housing.
   - Tax credit: tax credit
     help: |
-      There may be an income limit but rent does not change if income changes.---
+      There may be an income limit but rent does not change if income changes.
+  - Other or I don't know: other
 ---
 question: Subsidized Housing Defenses
 fields:
@@ -37,26 +39,27 @@ fields:
     datatype: yesno
 section: Claims and Defenses
 ---
-question: Subsidized Housing
+question: Subsidized Housing Defenses
 subquestion: |
   Common defenses related to subsidized housing
 fields: 
   - My landlord failed to follow the rules for my subsidy program.: subsidized_housing.no_proper_termination
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - My landlord does not have good cause to evict me. : subsidized_housing.no_just_cause
-    datatype: yesno
+    datatype: yesnoradio
     default: True
   - The landlord did not send a copy of the notice to quit to my housing authority at the same time as they sent it to me. : subsidized_housing.no_ntq_to_agency
-    datatype: yesno
+    datatype: yesnoradio
     show if: 
       code: |
         facts.tenant_has_subsidy and subsidy_type == "Section 8 voucher"
   - I was never offered a chance to discuss the eviction with my landlord in a "private conference" or "grievance hearing".: subsidized_housing.no_hearing_or_conference
-    datatype: yesno
+    datatype: yesnoradio
     default: True
-  - My landlord did not comply with the Violence Against Women Act. : subsidized_housing.vawa
-    datatype: yesno
+  - I have a defense under the Violence Against Women Act. : subsidized_housing.vawa
+    datatype: yesnoradio
+    default: ${claims.harassment or tenant.is_dvvictim}
 comment:
   Guide me
 section: Claims and Defenses

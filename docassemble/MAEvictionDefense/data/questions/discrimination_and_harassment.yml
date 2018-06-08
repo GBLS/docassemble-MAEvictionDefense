@@ -2,15 +2,28 @@
 question: Protected classes and discrimination
 subquestion: |
   Do you have any reason to believe that your landlord is discriminating against you?
+  
+  "Discrimination" means that your landlord is evicting you because of something about you
+  or your family that is legally protected. Discrimination does not mean your landlord does not like you.
+
+  Discrimination may include:
+
+  * Not wanting to rent to children (maybe because of lead paint)
+  * Not wanting to make changes to rules or the property to help a disabled tenant
+  * Not wanting to accept a Section 8 voucher or other rental assistance
+
+  If you are unsure, you can select "yes" and see more detailed questions on the next
+  screen.
 yesno: tenant.is_discriminated
 section: Claims and Defenses
+help: |
+  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
 question: |
   Protected classes and discrimination
 subquestion: |
-  It is illegal for your landlord to unfairly treat you and to try to evict you if you are like a certain 
-  group of people. This is discrimination. You may have a defense and counterclaim to
-  your eviction.
+  It is illegal for your landlord to unfairly treat you or to try to evict you because you are like a certain 
+  group of people.
 fields:
   - Select the protected class that you believe is the reason for your landlord's discrimination.: discrimination.protected_classes
     datatype: checkboxes
@@ -26,11 +39,11 @@ fields:
       - My religion
       - My sexual orientation
       - My Veteran status
-      - My national origin
+      - My national origin (the country my family comes from)
       - I have a disability
-      - Color
+      - My skin color
       - Other
-      - My landlord is not discriminating against me
+      - None of the above
     default: 
       code: |
         dict(Disability = tenant.is_disabled)  
@@ -38,6 +51,8 @@ section: Claims and Defenses
 comment: |
   Setting the dictionary of defaults, Disability is a 
   default if tenant.is_disabled is true, and false if it is false.
+help: |
+  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
 question: | 
   Discrimination on basis of disability

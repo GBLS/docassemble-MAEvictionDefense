@@ -27,6 +27,8 @@ fields:
   - Other conditions: bad_conditions.other_condition
     datatype: area
     show if: bad_conditions.conditions['other']
+  - I made repairs and deducted the cost from my rent pursuant to (G.L. c. 111, §127L).: other.repair_and_deduct_statute
+    datatype: yesno
 help: |
   You may have a claim against your landlord for problems in your home over the last
   6 years, whether they are currently repaired or not. For certain problems, you may only
@@ -75,7 +77,7 @@ fields:
     datatype: yesno
   - Allowed bad conditions to exist in my home: bqe.bad_conditions
     datatype: yesno
-    default:
+    default: 
       code: |
         bad_conditions.have_conditions
   - Entered my home without permission or notice: bqe.entered_without_permission
@@ -83,7 +85,7 @@ fields:
   - Interfered in some other way (specify): bqe.other
     required: False
 section: Claims and Defenses
-
+ 
 ---
 question: |
   Interference with utilities
@@ -94,6 +96,8 @@ fields:
   - I have been billed for heat, hot water, electricity or gas without an agreement in writing.: bqe.billed_no_agreement
     datatype: yesno
   - I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring).: bqe.billed_for_others
+    datatype: yesno
+  - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
     datatype: yesno
 section: Claims and Defenses
 ---

@@ -153,18 +153,20 @@ question: |
   Your right to a jury trial
 subquestion: |
   Both you and your landlord have the right to have a jury instead of 
-  a judge decide your case. This is your only chance to claim your
+  a judge decide your case. This is *your* only chance to claim your
   right to a jury (unless you file a separate form before the answer date).
+
+  There is a chance that the judge will ask you to pay rent, or ‘use and occupancy’ while you
+  wait for a jury trial to be scheduled. If you do have a trial, a jury trial will be difficult
+  to do on your own without a lawyer's help.
 
   #### Why claim your right to a jury trial?
   1. Members of the jury are your peers. Some may be tenants who can understand your experience.
   2. Jury trials take time to schedule. You can use this time to try to resolve your case.
-  3. You can change your mind and decide later that you do not want a jury trial. You can still negotiate an agreement with your landlord. A jury trial also does not mean you lose the chance to negotiate an agreement.
-
-  
-  There is a chance that the judge will ask you to pay rent, or ‘use and occupancy’ while you
-  wait for the jury trial to be scheduled. Most tenants who get help from Greater Boston Legal Services clinics ask for a 
-  jury trial. 
+  3. You can change your mind and decide later that you do not want a jury trial. 
+  A jury trial also does not mean you lose the chance to negotiate an agreement.
+  Most tenants, whether they requested a jury trial or not, end up reaching an agreement with their
+  landlord and don't have a trial of any kind.
 
 field: claim_jurytrial
 buttons:
@@ -236,6 +238,14 @@ fields:
     datatype: date
 section: Conclusion
 ---
+code: |
+  date_discovery_received = service_date
+  if method_of_service == 'mailed':
+    date_discovery_received = date_discovery_received.plus(days=1)
+
+  date_discovery_due = date_discovery_received.plus(days=10)
+  date_motion_to_compel_due = date_discovery_received.plus(days=15)
+---
 id: download
 mandatory: True
 question: |
@@ -266,10 +276,10 @@ subquestion: |
 attachment:
   - name: Answer Form
     filename: Answer.docx
-    docx template file: SummaryProcessAnswer_Finaledit.docx
+    docx template file: SummaryProcessAnswer.docx
   - name: Request for Discovery
     filename: Discovery.docx
     docx template file: SummaryProcessDiscovery.docx
-
-section: Conclusion 
+allow downloading: True
+section: Conclusion
 

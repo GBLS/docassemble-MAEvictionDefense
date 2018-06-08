@@ -214,18 +214,20 @@ subquestion: |
   Choose one. This will help us choose the right defenses and discovery. 
 
   **Remember, you are telling the court what your landlord says. You are not agreeing with the landlord.**
-field: fault_basis
-dropdown:
-  - Chronic late payment of rent: chronic late payment of rent
-  - Overcrowding: overcrowding
-  - Unauthorized occupants: unauthorized occupants
-  - Excessive foot traffic: excessive foot traffic
-  - Clutter or hoarding: clutter or hoarding
-  - Destruction of property: destruction of property
-  - Assault on staff or other tenant: assault on staff or other tenant
-  - Harassment of staff or other tenant: harassment of staff or other tenant
-  - Disturbance of other tenants (like smoking, noise, or odor) coming from your apartment: disturbance of other tenants
-  - Other lease violation: other
+fields: 
+  - Select all that apply: fault_basis
+    datatype: checkboxes
+    choices: 
+      - Chronic late payment of rent: chronic late payment of rent
+      - Overcrowding: overcrowding
+      - Unauthorized occupants: unauthorized occupants
+      - Excessive foot traffic: excessive foot traffic
+      - Clutter or hoarding: clutter or hoarding
+      - Destruction of property: destruction of property
+      - Assault on staff or other tenant: assault on staff or other tenant
+      - Harassment of staff or other tenant: harassment of staff or other tenant
+      - Disturbance of other tenants (like smoking, noise, or odor) coming from your apartment: disturbance of other tenants
+      - Other lease violation: other
 section: About Your Tenancy
 ---
 code: |

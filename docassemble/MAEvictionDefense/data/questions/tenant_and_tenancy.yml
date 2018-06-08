@@ -75,15 +75,11 @@ fields:
   - When did you move in?: facts.tenant_movein
     datatype: date
     required: False
-  - Your tenancy situation: tenant_type
-    default: "renter"
-    choices:
-      - I pay rent to a landlord or bank: renter
-      - I used to own the property, but I lost it to foreclosure.: pfc_owner
-      - I do not pay rent, but I live in the property to help the owner but do not pay rent: pca
-      - I do not pay rent, but I live in the property to help the tenant but do not pay rent: pca
+  - I live in the property as a caretaker (PCA, handyman, or Superintendent) and do not pay rent.: is_pca
+    datatype: yesno
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
+    hide if: is_pca
   - What is the full "contract" or "market" rent? (Skip if unknown): facts.tenant_contract_rent
     datatype: currency
     required: False
@@ -114,13 +110,29 @@ help: |
   may affect your rights. For example, a live in aide or caretaker is entitled
   to different notice rights than a tenant paying rent or an owner or former owner
   after foreclosure.
+
+  There are three common kinds of *leases*:
+  
+  1. A "fixed term" lease states that it ends on a specific day, usually one year
+  from the date it is signed. A tenant with a fixed term lease does not always get a notice to quit if the landlord
+  does not renew the lease.
+  2. A "self-extending" lease automatically gets renewed. Usually, the new term is the same as the original term.
+  3. A special kind of self-extending lease automatically gets renewed but is no longer a lease. Instead it converts into
+  a month-to-month tenancy, or tenancy at will.e
+
+  There are slightly different rules for tenants with a lease that is still in effect, versus a tenant-at-will. For example,
+  you may get a different amount of time to come up-to-date with your rent.
+  The default
+  is that every tenant without a lease has the same rights as a tenant-at-will.
+
+  You can learn more from [Legal Tactics, Chapter 4: Tenancies](https://www.masslegalhelp.org/housing/lt1-chapter-4-tenancies.pdf)
 ---
 code: |
-  facts.tenant_has_lease = showifdef('tenancy_type') == 'lease'
+  facts.tenant_has_lease = tenancy_type == 'lease'
 --- 
 mandatory: True
 question: | 
-  Information about ${tenant.name} 
+  Information about you and your family
 subquestion: |
   Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
@@ -141,17 +153,25 @@ fields:
     show if:  tenant.is_nonnativespeaker
     choices:
       - Spanish
-      - Portuguese
-      - Haitian Creole
       - Cantonese
+      - Cape Verdean Creole
+      - French
+      - Haitian Creole
+      - Khmer
       - Mandarin
+      - Portuguese
+      - Vietnamese      
   - I am a victim of domestic violence.: tenant.is_dvvictim
     datatype: yesno
-  - My rent is subsidized.: facts.tenant_has_subsidy
+  - I live in public housing, have a housing voucher, or my rent is subsidized.: facts.tenant_has_subsidy
     datatype: yesno
+    default: ${landlord.organization_type == 'public'}
   - I am a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
 section: About You
+help: |
+  The questions in this section help us decide which possible defenses we need to ask you more
+  information about. Please read them carefully.
 ---
 mandatory: True
 question: Information about ${tenant.address.address}
@@ -162,6 +182,9 @@ fields:
     datatype: yesno
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
+  - I am or was the owner before the foreclosure.: is_pfc_owner
+    datatype: yesno
+    show if: postforeclosure.is_foreclosed
   - ${landlord.name} has tried to lock me out.: bqe.lockout
     datatype: yesno
   - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
