@@ -295,6 +295,7 @@ fields:
     datatype: yesno
   - Date of payment to the landlord: cure_date
     datatype: date
+    required: False
 help:
   See [Chapter 12 of Legal Tactics](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf), 
   the section titled "Paying the Rent Owed" 
@@ -326,12 +327,7 @@ code: |
     initial_defense.no_standing = False
 ---
 question: |
-  Lack of standing
-subquestion: |
-  If your landlord has "standing" it means that they are the correct person
-  to evict you. Sometimes they may not be. The owner, or an attorney hired by the
-  owner, has standing. If ownership hasn't changed sometimes someone who will
-  be the owner soon lacks the right to evict you.
+  Change in ownership
 fields:
   - Why do you have a new landlord? : new_landlord_reason
     choices:
@@ -343,6 +339,9 @@ fields:
     show if:
       variable: new_landlord_reason
       is: 'My landlord sold the building'
+help: |
+  We want to know about the new ownership of the building to understand if your new
+  landlord has the right (standing) to evict you.
 ---
 code: |
   if eviction_reason == 'nontq': 

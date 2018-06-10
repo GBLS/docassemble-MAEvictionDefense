@@ -70,7 +70,7 @@ subquestion: |
 
 fields: 
   - My landlord has an attorney.: landlord.has_attorney
-    datatype: yesno
+    datatype: yesnoradio
     default: False
   - Attorney's name: landlord.attorneys_name
     show if: landlord.has_attorney

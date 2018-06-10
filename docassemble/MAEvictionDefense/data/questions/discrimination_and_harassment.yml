@@ -22,10 +22,10 @@ help: |
 question: |
   Protected classes and discrimination
 subquestion: |
-  It is illegal for your landlord to unfairly treat you or to try to evict you because you are like a certain 
-  group of people.
+  It is illegal for your landlord to unfairly treat you or someone in your family or to try to evict you 
+  because you are like a certain group of people.
 fields:
-  - Select the protected class that you believe is the reason for your landlord's discrimination.: discrimination.protected_classes
+  - Select the protected class that you believe is the reason for your landlord's discrimination. Select if the class applies to you or someone else in your family.: discrimination.protected_classes
     datatype: checkboxes
     choices:
       - I have children: Family status
@@ -43,10 +43,13 @@ fields:
       - I have a disability
       - My skin color
       - Other
-      - None of the above
     default: 
       code: |
-        dict(Disability = tenant.is_disabled)  
+        dict('I have a disability' == tenant.is_disabled)
+  - "Other:": discrimination.other
+    show if: 
+      variable: discrimination.protected_classes['Other']
+      is: True
 section: Claims and Defenses
 comment: |
   Setting the dictionary of defaults, Disability is a 
@@ -60,7 +63,7 @@ subquestion: |
   If you are disabled and there is a connection between your disability and the eviction,
   you may have the right to a "reasonable accommodation" from your landlord. This may be
   a defense to the eviction.
-  Would you like to ask a reasonable accommodation?
+  Would you like to ask for a reasonable accommodation?
 yesno: disability.request_reasonable_accommodation
 section: Claims and Defenses
 
@@ -73,7 +76,7 @@ subquestion: |
 fields:
   - My landlord or someone who works for them sexually harassed me or someone in my household. : discrimination.sexual_harassment.is_harassed
     datatype: yesno
-  - Asked/pressured me or someone I live with for sexual favors. : discrimination.sexual_harassment.pressured_sexual_favors
+  - My landlord asked/pressured me or someone I live with for sexual favors. : discrimination.sexual_harassment.pressured_sexual_favors
     datatype: yesno
   - My landlord changed the terms of my tenancy because of my response to harassment.: discrimination.sexual_harassment.tenancy_terms_changed
     datatype: yesno

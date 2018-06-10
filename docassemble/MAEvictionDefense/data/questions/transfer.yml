@@ -1,0 +1,55 @@
+---
+code: |
+  court_is_housing_court = "housing court" in court.name.lower()
+---
+question: |
+  Transfer to Housing Court
+subquestion: |
+  You said that your case is currently scheduled in ${court.name}.
+
+  You have the right to transfer your case to ${local_housing_court}.
+  Most tenants benefit from transferring their case to the Housing Court.
+  Depending on your city or town, the housing court may be more difficult to get to.
+
+  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  to learn where the ${local_housing_court} sits for your city or town.
+
+  #### Why transfer your case to housing court? 
+  1. Access to legal aid and [Lawyer for the Day](https://www.mass.gov/service-details/lawyer-for-the-day-programs) programs.
+  2. Access to the [Tenancy Preservation Program](https://www.mass.gov/info-details/tenancy-preservation-program).
+  3. Access to social service agencies that may help you pay back rent.
+  4. Judges who are experts in housing law.
+field: transfer_to_housing_court
+buttons:
+  - Transfer my case: True
+  - Stay in ${court.name}: False
+---
+question: |
+  What is your landlord's address?
+  Look on the summons and complaint if you are not sure.
+fields:
+  - address: landlord.address.address
+    address autocomplete: True
+  - unit: landlord.address.unit
+    required: False
+  - city: landlord.address.city
+  - state: landlord.address.state
+  - zip: landlord.address.zip
+  - country: landlord.address.country
+    default: 'US'    
+--- 
+mandatory: true
+question: |
+  Which Housing Court are you transferring your case to?
+subquestion: |
+  We think that the correct housing court for your city or town
+  is ${local_housing_court}.
+field: transfer_court_name
+dropdown:
+  - Eastern Housing Court
+  - Central Housing Court
+  - Metro South Housing Court  
+  - Northeastern Housing Court
+  - Southeastern Housing Court
+  - Western Housing Court
+default: local_housing_court

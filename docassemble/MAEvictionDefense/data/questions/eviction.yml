@@ -173,6 +173,11 @@ buttons:
   - Claim a jury trial: True
   - Waive my right to a jury: False
 section: Your Right to a Jury Trial
+help: |
+  In Massachusetts evictions, a jury may be either 6 or 12 people. At least 5/6 jurors
+  must agree to reach a decision in your case. They will reach a separate decision
+  about each of your claims and defenses, money owed to the landlord, and whether
+  you get to remain in your apartment.
 ---
 code: |
   last_months_rent_amount = 0
@@ -192,6 +197,7 @@ include:
   - discrimination_and_harassment.yml
   - consumer_protection.yml
   - security_deposit_and_prepaid_rent.yml
+  - transfer.yml
   - discovery-logic.yml
 ---
 question: Sign below
@@ -280,6 +286,10 @@ attachment:
   - name: Request for Discovery
     filename: Discovery.docx
     docx template file: SummaryProcessDiscovery.docx
+  - name: Notice of Transfer Form
+    filename: TransferNotice.docx
+    docx template file: TransferNotice.docx
+    show if: transfer_to_housing_court
 allow downloading: True
 section: Conclusion
 

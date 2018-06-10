@@ -51,11 +51,15 @@ fields:
     datatype: yesno
   - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons.: retaliation.survivor_rights
     datatype: yesno
+  - Other: show_retaliation_other
+    datatype: yesno
   - Other: retaliation.other
     required: False
+    show if: show_retaliation_other
   - One or more of the above happened in the last 6 months.: retaliation.within_6_months
-    datatype: yesno
+    datatype: yesnoradio
     required: False
+    default: True
 section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)

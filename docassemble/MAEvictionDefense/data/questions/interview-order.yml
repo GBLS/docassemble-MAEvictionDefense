@@ -1,7 +1,7 @@
 ---
 mandatory: True
 comment: |
-  This block controls the order key questions are asked in in one place, instead of several mandatory and need
+  This block controls the order in which key questions are asked in one place, instead of several mandatory and need
   statements.
 sets: all_answer_variables
 code: |
@@ -31,9 +31,10 @@ code: |
   court.county
   court.name
   case.original_date
-  case.rescheduled_date
   if case.original_date < today():
     firstdatepassed
+    case.status = 'late'
+  case.rescheduled_date
 
   eviction_reason
   set_plead_counterclaims
@@ -94,7 +95,7 @@ code: |
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
   initial_defense.other
-  
+
   if plead_counterclaims:
     bad_conditions.have_conditions
     if bad_conditions.have_conditions:
@@ -171,4 +172,7 @@ code: |
   show_instructions
   method_of_service
  
+  if not court_is_housing_court:
+    transfer_to_housing_court
+
   all_answer_variables = True

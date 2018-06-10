@@ -4,7 +4,8 @@ subquestion: |
   List any problems with the apartment you live in now. Think about problems over the last
   6 years, whether they are currently repaired or not.
   Your landlord will only be liable for problems that they knew about or should have
-  known about.
+  known about. For example, they may be liable for problems that existed when you first
+  moved in or purchased the building.
 fields:
   - "Select the conditions you have had": bad_conditions.conditions
     datatype: checkboxes

@@ -22,8 +22,6 @@ fields:
     datatype: yesno
   - The plaintiff's service of a Notice to Quit or other actions to force me to vacate the premises without just cause or without a contract for sale on the property violate G.L. c. 186A, §2; c. 186, §14; and c. 93A.: postforeclosure.no_just_cause.ntq_or_other_actions
     datatype: yesno
-  - I am entitled to possession and damages for the above. : postforeclosure.no_just_cause.possession_and_damages
-    datatype: yesno
   - I am a bona fide tenant. : postforeclosure.notice_provisions.bona_fide_protections
     datatype: yesno
   - The plaintiff failed to post, deliver, or slide under my door a notice containing contact information and information about who to call for repairs. : postforeclosure.notice_provisions.no_plaintiff_info
@@ -39,8 +37,6 @@ fields:
   - The plaintiff did not inform me of the amount of monthly rent it claims and to whom the rent should be paid in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
     datatype: yesno
   - Because the plaintiff did not comply with the notice requirements of G.L. c. 186A, §§3 and 4, this case should be dismissed.  : postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
-    datatype: yesno
-  - This defense and counterclaim entitles me to possession and damages under G.L. c. 186, §14, and/or G.L. c. 93A.: postforeclosure.notice_provisions.possession_and_damages
     datatype: yesno
   - The plaintiff's case should be dismissed because it does not have proper title to the property and therefore it cannot prove a superior right to possession of the property and the foreclosure is void. Wayne Inv. Corp. v. Abbott, 350 Mass. 775 (1966) (title defects can be raised as defense in summary process); G.L. c. 239, §1 (summary process available to plaintiff only if foreclosure carried out according to law). : postforeclosure.no_standing
     datatype: yesno

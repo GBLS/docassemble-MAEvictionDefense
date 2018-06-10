@@ -57,6 +57,9 @@ fields:
   - I was never offered a chance to discuss the eviction with my landlord in a "private conference" or "grievance hearing".: subsidized_housing.no_hearing_or_conference
     datatype: yesnoradio
     default: True
+    show if:
+      code: |
+        not subsidy_type == "Section 8 voucher"
   - I have a defense under the Violence Against Women Act. : subsidized_housing.vawa
     datatype: yesnoradio
     default: ${claims.harassment or tenant.is_dvvictim}

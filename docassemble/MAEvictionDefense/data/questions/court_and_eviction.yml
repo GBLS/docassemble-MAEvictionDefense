@@ -211,8 +211,6 @@ question: |
 subquestion: |
   What does your landlord say is the reason they are evicting you?
  
-  Choose one. This will help us choose the right defenses and discovery. 
-
   **Remember, you are telling the court what your landlord says. You are not agreeing with the landlord.**
 fields: 
   - Select all that apply: fault_basis
@@ -233,7 +231,7 @@ section: About Your Tenancy
 code: |
   eviction_detailed_reason = "Unknown"
   if eviction_reason == "fault":
-    eviction_detailed_reason = fault_basis
+    eviction_detailed_reason = fault_basis.true_values()
   elif eviction_reason == "nofault":
     eviction_detailed_reason = nofault_basis
   elif eviction_reason == "nonpayment":

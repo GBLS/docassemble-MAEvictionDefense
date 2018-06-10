@@ -147,7 +147,7 @@ fields:
     datatype: yesno
   - I need an interpreter.: tenant.needs_interpreter
     datatype: yesno
-    show if:  tenant.is_nonnativespeaker
+    show if:  tenant.needs_interpreter
   - "I need an interpreter who speaks:" : tenant.preferred_language
     datatype: combobox
     show if:  tenant.is_nonnativespeaker
