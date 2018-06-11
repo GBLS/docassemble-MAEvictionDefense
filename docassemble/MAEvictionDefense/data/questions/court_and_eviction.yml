@@ -16,7 +16,6 @@ fields:
       - Northeast Housing Court
       - Southeast Housing Court
       - Western Housing Court
-      - -----------------------
       - Barnstable District Court
       - Brighton Division Boston Municipal Court
       - Brookline District Court
@@ -122,15 +121,16 @@ code: |
 question: |
   Defenses for fault eviction
 subquestion: |
-  If your landlord says you did something wrong, you can argue 1 or more of these 3 things. You did not do whatever the landlord says you did or it did not happen, you were not breaking any rules in your lease, or you could not control a guest’s behavior **so you should not be held responsible**.  
+  If you do not agree with the landlord's allegation of ${eviction_detailed_reason}, you may have a defense.
+  Select all that apply below.
 fields:
-  - I deny the landlord's allegation of ${fault_basis}. (My landlord is wrong): fault.did_not_occur
+  - I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong): fault.did_not_occur
     datatype: yesno
     default: True
-  - ${capitalize(fault_basis)} is not a violation of my lease.: fault.not_violation_of_agreement
+  - The ${capitalize(eviction_detailed_reason)} is not a violation of my lease.: fault.not_violation_of_agreement
     datatype: yesno
     default: True
-  - The ${fault_basis} was the fault of a guest that I had no control over.: fault.no_control_of_guest
+  - The ${eviction_detailed_reason} was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
 section: About Your Tenancy
 

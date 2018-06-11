@@ -73,7 +73,8 @@ code: |
     retaliation.protection_or_prevention_order
     retaliation.domestic_violence
     retaliation.survivor_rights
-    retaliation.other
+    if show_retaliation_other:
+      retaliation.other
     retaliation.within_6_months
 
   if tenant.is_disabled:

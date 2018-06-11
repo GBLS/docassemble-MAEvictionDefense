@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-6-05
+  revision_date: 2018-6-10
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -279,17 +279,42 @@ subquestion: |
   Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), 
   the court will not postpone your hearing. You need to go to court as originally scheduled.
   % endif
-attachment:
+attachment code: |
+  downloads
+section: Conclusion
+allow downloading: True
+---
+code: |
+  downloads = [answer,discovery]
+  if case.status == 'late':
+    downloads.append(late_answer)
+  if not court_is_housing_court and transfer_to_housing_court:
+    downloads.append(transfer_notice)
+---
+attachment: 
+  - name: Motion to file late Answer and Discovery
+    filename: LateAnswerMotion
+    variable name: late_answer
+    docx template file: LateAnswerMotion.docx
+---
+attachments:
   - name: Answer Form
-    filename: Answer.docx
+    filename: Answer
+    variable name: answer
     docx template file: SummaryProcessAnswer.docx
   - name: Request for Discovery
-    filename: Discovery.docx
+    variable name: discovery
+    filename: Discovery
     docx template file: SummaryProcessDiscovery.docx
+---
+attachment:
   - name: Notice of Transfer Form
-    filename: TransferNotice.docx
+    filename: TransferNotice
+    variable name: transfer_notice
     docx template file: TransferNotice.docx
-    show if: transfer_to_housing_court
-allow downloading: True
-section: Conclusion
-
+---
+attachment:
+  - name: Intervene
+    filename: Intervene
+    variable name: intervene_motion
+    docx template file: InterveneMotion.docx

@@ -10,6 +10,7 @@ subquestion: |
   You have the right to transfer your case to ${local_housing_court}.
   Most tenants benefit from transferring their case to the Housing Court.
   Depending on your city or town, the housing court may be more difficult to get to.
+  You should come up with a plan to get to court on time.
 
   Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
   to learn where the ${local_housing_court} sits for your city or town.
@@ -18,11 +19,17 @@ subquestion: |
   1. Access to legal aid and [Lawyer for the Day](https://www.mass.gov/service-details/lawyer-for-the-day-programs) programs.
   2. Access to the [Tenancy Preservation Program](https://www.mass.gov/info-details/tenancy-preservation-program).
   3. Access to social service agencies that may help you pay back rent.
-  4. Judges who are experts in housing law.
+  4. Judges who specialize in housing law.
+
+  Transferring your case may also postpone your first court hearing by a week or more, depending on your court.
 field: transfer_to_housing_court
 buttons:
   - Transfer my case: True
   - Stay in ${court.name}: False
+help: |
+  Transferring is an automatic right. You should check with the clerk in the Housing Court to find out
+  where and what day you should appear in court. You may get a notice in the mail. It will most likely not be
+  the rescheduled trial date that is printed on the Answer form.
 ---
 question: |
   What is your landlord's address?
@@ -37,19 +44,23 @@ fields:
   - zip: landlord.address.zip
   - country: landlord.address.country
     default: 'US'    
+---
+code: |
+  if local_housing_court != "":
+    transfer_court_name = local_housing_court
+  else:
+    transfer_court_name = transfer_court_name_temp # ask
 --- 
-mandatory: true
 question: |
   Which Housing Court are you transferring your case to?
 subquestion: |
-  We think that the correct housing court for your city or town
-  is ${local_housing_court}.
-field: transfer_court_name
+  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  to learn where the court sits for your city or town.
+field: transfer_court_name_temp
 dropdown:
-  - Eastern Housing Court
-  - Central Housing Court
+  - Central Housing Court (formerly Worcester): Central Housing Court
+  - Eastern Housing Court (formerly Boston): Eastern Housing Court
   - Metro South Housing Court  
   - Northeastern Housing Court
   - Southeastern Housing Court
   - Western Housing Court
-default: local_housing_court

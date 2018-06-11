@@ -61,6 +61,7 @@ fields:
       - 72 hour Notice to Quit: seventy_two_hour
       - Notice "until the end of the next rental period" or similar: rental_period
       - I never got a Notice to Quit: no_ntq
+      - I don't know: thirty_day
   - I was behind in rent when I got the 14-day notice.: behind_in_rent
     datatype: yesnoradio
     default: True
@@ -148,6 +149,17 @@ fields:
     datatype: yesnoradio
     default: True
     show if: post_ntq_waiver['rent']
+help: |
+  "Waiver" is the idea that your landlord cannot evict you when they are acting in a way that means that they want you
+  to continue as a tenant. The most straightforward type of waiver is when your landlord asks you to sign a new lease.
+  However: even signing a new lease may not be waiver, if there is specific language in the lease that says the new lease
+  will not waive the past eviction.
+
+  The same idea is true if your landlord accepts rent from you after the eviction starts. However, it is very simple for
+  your landlord to avoid "waiving" your tenancy if they include the magic words "rent will be accepted for use and occupancy only"
+  either in the notice to quit or in a written notice when they accept your check for rent.
+
+  There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
 ---
 sets: initial_defense.new_tenancy
 code: |

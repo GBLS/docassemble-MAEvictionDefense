@@ -3,7 +3,8 @@ question: Protected classes and discrimination
 subquestion: |
   Do you have any reason to believe that your landlord is discriminating against you?
   
-  "Discrimination" means that your landlord is evicting you because of something about you
+  "Discrimination" means that your landlord is evicting you or otherwise treating you unfairly
+  because of something about you
   or your family that is legally protected. Discrimination does not mean your landlord does not like you.
 
   Discrimination may include:
@@ -11,6 +12,7 @@ subquestion: |
   * Not wanting to rent to children (maybe because of lead paint)
   * Not wanting to make changes to rules or the property to help a disabled tenant
   * Not wanting to accept a Section 8 voucher or other rental assistance
+  * Treating someone unfairly because of race, sex, religion, veteran status, or gender or sexuality
 
   If you are unsure, you can select "yes" and see more detailed questions on the next
   screen.
@@ -40,16 +42,15 @@ fields:
       - My sexual orientation
       - My Veteran status
       - My national origin (the country my family comes from)
-      - I have a disability
+      - I have a disability: disability
       - My skin color
-      - Other
     default: 
       code: |
-        dict('I have a disability' == tenant.is_disabled)
+        dict(disability = tenant.is_disabled)
+  - Other: discrimination.show_other
+    datatype: yesno
   - "Other:": discrimination.other
-    show if: 
-      variable: discrimination.protected_classes['Other']
-      is: True
+    show if: discrimination.show_other
 section: Claims and Defenses
 comment: |
   Setting the dictionary of defaults, Disability is a 
@@ -66,7 +67,8 @@ subquestion: |
   Would you like to ask for a reasonable accommodation?
 yesno: disability.request_reasonable_accommodation
 section: Claims and Defenses
-
+help: |
+  See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
 question: |
   Sexual Harassment
