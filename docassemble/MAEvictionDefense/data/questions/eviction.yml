@@ -8,7 +8,7 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-6-10
+  revision_date: 2018-6-11
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -252,6 +252,26 @@ code: |
   date_discovery_due = date_discovery_received.plus(days=10)
   date_motion_to_compel_due = date_discovery_received.plus(days=15)
 ---
+code: |
+  downloads = [answer,discovery]
+  if case.status == 'late':
+    downloads.append(late_answer)
+  if not court_is_housing_court and transfer_to_housing_court:
+    downloads.append(transfer_notice)
+  if show_instructions:
+    downloads.append(instructions)
+
+  # num_downloads = len(downloads) # causes a loop
+---
+code: |
+  num_downloads = 2
+  if case.status == 'late':
+    num_downloads += 1
+  if not court_is_housing_court and transfer_to_housing_court:
+    num_downloads += 1
+  if show_instructions:
+    num_downloads += 1  
+---
 id: download
 mandatory: True
 question: |
@@ -283,13 +303,13 @@ attachment code: |
   downloads
 section: Conclusion
 allow downloading: True
+
 ---
-code: |
-  downloads = [answer,discovery]
-  if case.status == 'late':
-    downloads.append(late_answer)
-  if not court_is_housing_court and transfer_to_housing_court:
-    downloads.append(transfer_notice)
+attachment:
+  - name: Instructions and Next Steps
+    filename: NextSteps
+    variable name: instructions
+    docx template file: NextSteps.docx
 ---
 attachment: 
   - name: Motion to file late Answer and Discovery
