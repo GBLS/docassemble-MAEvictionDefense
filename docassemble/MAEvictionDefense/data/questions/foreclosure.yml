@@ -22,8 +22,6 @@ fields:
     datatype: yesno
   - The plaintiff's service of a Notice to Quit or other actions to force me to vacate the premises without just cause or without a contract for sale on the property violate G.L. c. 186A, §2; c. 186, §14; and c. 93A.: postforeclosure.no_just_cause.ntq_or_other_actions
     datatype: yesno
-  - I am a bona fide tenant. : postforeclosure.notice_provisions.bona_fide_protections
-    datatype: yesno
   - The plaintiff failed to post, deliver, or slide under my door a notice containing contact information and information about who to call for repairs. : postforeclosure.notice_provisions.no_plaintiff_info
     datatype: yesno
   - The plaintiff served me with a Notice to Quit less than 30 days after it posted and delivered the required contact information in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.less_than_30_days

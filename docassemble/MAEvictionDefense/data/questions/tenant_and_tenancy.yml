@@ -21,7 +21,7 @@ subquestion: |
    
   [FILE names_on_summons.png, 100%]
 fields:
-  - The line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}": tenant.name_different_on_summons
+  - Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}"?: tenant.name_different_on_summons
     datatype: yesnoradio
     default: False
   - There are additional names listed. : tenant.more_names_on_summons
@@ -64,6 +64,16 @@ fields:
   - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
     datatype: yesnoradio
     default: True
+  - What address are you being evicted from? (all on one line): premises_alternate_address
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+---
+code: |
+  if facts.tenant_address_is_eviction_address:
+    premises_address = tenant.address.on_one_line()
+  else:
+     premises_address = premises_alternate_address
 ---
 code: |
   tenant.address.geolocate()
@@ -137,14 +147,11 @@ subquestion: |
   Your answers will help us select the right defenses and counterclaims.
   Check all that apply.
 fields: 
-  - I or someone who lives with me has a disability: tenant.is_disabled
+  - I live in public housing, have a housing voucher, or my rent is subsidized.: facts.tenant_has_subsidy
     datatype: yesno
-  - I or someone who lives with me is under the age of 6: tenant.is_under6
-    datatype: yesno
-  - I or someone who lives with me is over the age of 60: tenant.is_over60
-    datatype: yesno
+    default: ${landlord.organization_type == 'public'}
   - English is not my first language.: tenant.is_nonnativespeaker
-    datatype: yesno
+    datatype: yesno    
   - I need an interpreter.: tenant.needs_interpreter
     datatype: yesno
     show if:  tenant.is_nonnativespeaker
@@ -160,13 +167,15 @@ fields:
       - Khmer
       - Mandarin
       - Portuguese
-      - Vietnamese      
+      - Vietnamese          
+  - I or someone who lives with me has a disability: tenant.is_disabled
+    datatype: yesno
+  - I or someone who lives with me is under the age of 6: tenant.is_under6
+    datatype: yesno
+  - I or someone who lives with me is over the age of 60: tenant.is_over60
+    datatype: yesno
+
   - I am a victim of domestic violence.: tenant.is_dvvictim
-    datatype: yesno
-  - I live in public housing, have a housing voucher, or my rent is subsidized.: facts.tenant_has_subsidy
-    datatype: yesno
-    default: ${landlord.organization_type == 'public'}
-  - I am a member of a tenant's union.: tenant.is_inunion
     datatype: yesno
 section: About You
 help: |
@@ -185,7 +194,7 @@ fields:
   - I am or was the owner before the foreclosure.: is_pfc_owner
     datatype: yesno
     show if: postforeclosure.is_foreclosed
-  - ${landlord.name} has tried to lock me out.: bqe.lockout
+  - ${landlord.name} has tried to lock me out.: bqe.locked_out
     datatype: yesno
   - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
     datatype: yesno

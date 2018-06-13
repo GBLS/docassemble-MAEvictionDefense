@@ -21,6 +21,9 @@ code: |
   
   claim_jurytrial
   tenant.name
+  tenant.name_different_on_summons
+  if tenant.name_different_on_summons and tenant.not_named_on_summons:
+    request_right_to_intervene
   defendants_name
   tenant.address
   tenant.address.geolocate()
@@ -30,6 +33,9 @@ code: |
 
   court.county
   court.name
+  if not court_is_housing_court:
+    transfer_to_housing_court
+  
   case.original_date
   if case.original_date < today():
     firstdatepassed
@@ -120,6 +126,7 @@ code: |
     if claims.utilities: 
       bqe.billed_no_agreement
       bqe.billed_for_others
+      other.water_violation
 
     if paid_deposit_or_lmr:
       security_deposit.amount
@@ -133,15 +140,11 @@ code: |
       consumer_protection.nonagreed_rent
       consumer_protection.unlawful_court_fees
       consumer_protection.unlawful_lease_terms
-    other.water_violation
-  
   
   if postforeclosure.is_foreclosed:
     postforeclosure.no_just_cause.bona_fide_protections
     postforeclosure.no_just_cause.no_binding_purchase
     postforeclosure.no_just_cause.ntq_or_other_actions
-    postforeclosure.no_just_cause.possession_and_damages
-    postforeclosure.notice_provisions.bona_fide_protections
     postforeclosure.notice_provisions.no_plaintiff_info
     postforeclosure.notice_provisions.less_than_30_days
     postforeclosure.notice_provisions.no_right_to_court_notice
@@ -170,10 +173,10 @@ code: |
   if tenant.is_disabled:
     disability.request_reasonable_accommodation
   
-  show_instructions
+  #show_instructions # moved to separate sheet-we will always generate now
+  if person_answering == 'attorney':
+    initial_defense.custom_reason_for_dismissal 
+    initial_defense.custom_other
   method_of_service
  
-  if not court_is_housing_court:
-    transfer_to_housing_court
-
   all_answer_variables = True

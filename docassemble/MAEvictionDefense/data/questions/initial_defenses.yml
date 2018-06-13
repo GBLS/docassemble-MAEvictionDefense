@@ -29,12 +29,12 @@ show if: |
 question: |
   Termination of tenancy
 subquestion: |
-    When a landlord wants to evict you, the first thing they must do is give you is some written notice
-    that they plan to evict you. Usually this is called a "notice to quit" or "notice to terminate tenancy"
-    but it could also be included in your lease. If your landlord did not give you the
-    right kind of notice, you may have a defense to being evicted.
+  The Notice to Quit is the first step a landlord must take if they want to evict you.
+  There is no standard form for a notice to quit, but it should include certain information.
+  Also, depending on what kind of tenant you are, they may need to give you a specific amount of
+  time in the notice.
 
-    Below are statements about the notice that you received. Select any that apply to you.
+  Below are statements about the notice that you received. Select any that apply to you.
 fields:
   - The notice to quit has my name on it.: ntq_includes_tenant_name
     datatype: yesnoradio
@@ -88,8 +88,6 @@ fields:
     show if:
       code: |
         showifdef('lease_type') == 'fixed_term'
-  - I paid rent after receiving the notice to quit.: paid_rent
-    datatype: yesno
 help:
   Massachusetts has strict requirements for language in an eviction notice. Language might be required by
   Massachusetts law, your lease, or a federal rule if you are living in subsidized housing.
@@ -106,7 +104,7 @@ code: |
   tenant_type = 'renter'
   if is_pca:
     tenant_type = 'pca'
-  if is_pfc_owner:
+  if postforeclosure.is_foreclosed and is_pfc_owner:
     tenant_type = 'pfc_owner'
 
   initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
@@ -144,8 +142,9 @@ fields:
     datatype: checkboxes
     choices:
       - I paid additional rent after ${format_date(date_received_ntq)}: rent
+        default: ${attempted_cure}
       - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
-  - The notice to quit says "rent will be accepted for use and occupancy only" or similar language.: ntq_contains_reservation
+  - Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language?: ntq_contains_reservation
     datatype: yesnoradio
     default: True
     show if: post_ntq_waiver['rent']
@@ -156,7 +155,7 @@ help: |
   will not waive the past eviction.
 
   The same idea is true if your landlord accepts rent from you after the eviction starts. However, it is very simple for
-  your landlord to avoid "waiving" your tenancy if they include the magic words "rent will be accepted for use and occupancy only"
+  your landlord to avoid "waiving" your tenancy if they include the "magic words" "rent will be accepted for use and occupancy only"
   either in the notice to quit or in a written notice when they accept your check for rent.
 
   There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
@@ -189,10 +188,7 @@ fields:
       - A different amount of rent than listed on the notice: rent
       - The same "fault" reason listed on the notice to quit: same_fault
       - A new "fault" reason or breach of lease, not listed on the notice to quit: new_fault
-  - The summons and complaint has my name on it.: summons_includes_tenant_name
-    datatype: yesnoradio
-    default: True
-  - The summons and complaint includes the names of everyone who signed the lease.: summons_includes_all_tenants
+  - The summons and complaint includes the names of all adult tenants who signed the lease.: summons_includes_all_tenants
     datatype: yesnoradio
     default: True
   - The summons and complaint has my correct address.: summons_includes_correct_address
@@ -239,10 +235,10 @@ fields:
 ---
 sets: initial_defense.defective_summons
 code: |
-  initial_defense.summons_missing_information = summons_includes_tenant_name and summons_includes_all_tenants and summons_includes_correct_address
+  initial_defense.summons_missing_information = (tenant.name_different_on_summons and tenant.not_named_on_summons) or ( not (summons_includes_all_tenants and summons_includes_correct_address))
   initial_defense.defective_summons = (
-        (summons_in_hand or (summons_mailed and summons_last_and_usual))
-        and not initial_defense.summons_missing_information)
+        not (summons_in_hand or (summons_mailed and summons_last_and_usual))
+        or initial_defense.summons_missing_information )
 ---
 sets: 
   - initial_defense.premature_commencement

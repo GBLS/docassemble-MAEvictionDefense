@@ -198,6 +198,7 @@ include:
   - consumer_protection.yml
   - security_deposit_and_prepaid_rent.yml
   - transfer.yml
+  - intervene.yml
   - discovery-logic.yml
 ---
 question: Sign below
@@ -253,15 +254,16 @@ code: |
   date_motion_to_compel_due = date_discovery_received.plus(days=15)
 ---
 code: |
-  downloads = [answer,discovery]
+  downloads_temp = [instructions,answer,discovery]
   if case.status == 'late':
-    downloads.append(late_answer)
+    downloads_temp.append(late_answer)
   if not court_is_housing_court and transfer_to_housing_court:
-    downloads.append(transfer_notice)
-  if show_instructions:
-    downloads.append(instructions)
-
-  # num_downloads = len(downloads) # causes a loop
+    downloads_temp.append(transfer_notice)
+  #if show_instructions:
+  #  downloads_temp.append(instructions)
+  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
+    downloads_temp.append(intervene_motion)
+  downloads = downloads_temp
 ---
 code: |
   num_downloads = 2
@@ -269,8 +271,10 @@ code: |
     num_downloads += 1
   if not court_is_housing_court and transfer_to_housing_court:
     num_downloads += 1
-  if show_instructions:
-    num_downloads += 1  
+  #if show_instructions:
+  #  num_downloads += 1 # skip the instructions when counting number of forms 
+  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
+    num_downloads += 1
 ---
 id: download
 mandatory: True

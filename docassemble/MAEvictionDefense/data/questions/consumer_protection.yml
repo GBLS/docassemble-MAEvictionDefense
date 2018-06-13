@@ -7,7 +7,7 @@ code: |
 ---
 question: Violation of the Consumer Protection Act M.G.L. c. 93A
 subquestion: |
-  The consumer protection law protects tenants. Select all that apply to you. 
+  The consumer protection law protects tenants from unfair or depective actions from their landlord. 
 fields:
   - I was charged illegal late fees. : consumer_protection.late_fees
     datatype: yesno

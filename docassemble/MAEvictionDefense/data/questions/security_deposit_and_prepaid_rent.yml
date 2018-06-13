@@ -5,8 +5,6 @@ subquestion: |
 fields: 
   - Amount of security deposit: security_deposit.amount
     datatype: currency
-  - My landlord violated the Security Deposit law: security_deposit.violated
-    datatype: yesno
   - Violations: security_deposit.violations
     datatype: checkboxes
     choices:
@@ -17,14 +15,33 @@ fields:
       - Failed to provide a statement of conditions
       - Did not take responsibility for the deposit paid to a former landlord
 section: Claims and Defenses
-
+help: |
+  Learn more about the rules for handling a security deposit on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
+---
+code: |
+if (security_deposit.violations.any_true() ):
+  security_deposit.violated = True
+else:
+  security_deposit.violated = False
 ---
 question: Prepaid last month's rent
 subquestion: |
+  "Last-month's rent" means the rent that some landlords take when you first move in as "first, last, and security deposit".
+  It is rent that you paid in advance that can be applied for the month that you move out of the apartment.
+
+  If your landlord took "last month's rent" they need to pay you interest on it once each year.
+
   Did your landlord violate the rules for handling your prepaid last month's rent? Check all that apply.
 fields:
-  - My landlord failed to pay me interest on my pre-paid last month's rent each year on the anniversary of my payment.: last_months_rent.violated
+  - Did you pay pre-paid last month's rent when you first moved in to the apartment?: last_months_rent.prepaid
     datatype: yesno
   - Amount of your prepaid last month's rent: last_months_rent.amount
     datatype: currency
+    required: False
+    show if: last_months_rent.prepaid    
+  - My landlord failed to pay me interest on my pre-paid last month's rent each year on the anniversary of my payment.: last_months_rent.violated
+    datatype: yesno
+    show if: last_months_rent.prepaid
 section: Claims and Defenses
+help: |
+  Learn more about the rules for handling pre-paid last month's rent on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).

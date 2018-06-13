@@ -1,0 +1,15 @@
+---
+question: |
+  Request to Intervene
+subquestion: |
+  Because your name is not on the summons and complaint, you will need permission from the judge if
+  you want to defend against the eviction.
+fields:
+  - Would you like to ask permission to participate in this case? : request_right_to_intervene
+    datatype: yesnoradio
+  - "Briefly explain why you should be allowed to participate:": intervention_reason
+    datatype: area
+    show if: request_right_to_intervene
+  - "Briefly explain why you would be harmed if you are not allowed to participate:" : intervention_harm
+    datatype: area
+    show if: request_right_to_intervene

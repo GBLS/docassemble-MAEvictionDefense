@@ -38,6 +38,8 @@ help: |
   Your landlord may have to pay you the difference between the value of your home in full
   repair and the value of your home with the bad conditions. For very serious problems
   that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
+
+  Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 section: Claims and Defenses
 ---
 need: bad_conditions.conditions
@@ -61,8 +63,12 @@ section: Claims and Defenses
 ---
 question: Breach of Quiet Enjoyment
 subquestion: |
-  Give us some information about how your landlord breached
-  your quiet enjoyment of the premises. Check any that apply.
+  A "breach of quiet enjoyment" happens when your landlord does something or allows something to happen that makes your
+  apartment hard to live in. This can be because of something that happened once (such as a basement flooding or
+  ceiling collapsing) or something that happened over a long period of time, such as renovations to the next-door
+  apartment that happened at unreasonable times of day.
+
+  Think about problems over the last four years and select any that apply below.
 fields:
   - Failed to provide adequate heat: bqe.heat
     datatype: yesno
@@ -74,7 +80,7 @@ fields:
     datatype: yesno
   - Locked me out of my home: bqe.locked_out
     datatype: yesno
-  - Put out my possessions without a court order: bqe.removed_possessions
+  - Took my belongings out of my apartment without a court order: bqe.removed_possessions
     datatype: yesno
   - Allowed bad conditions to exist in my home: bqe.bad_conditions
     datatype: yesno
@@ -86,7 +92,8 @@ fields:
   - Interfered in some other way (specify): bqe.other
     required: False
 section: Claims and Defenses
- 
+help: |
+  Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 ---
 question: |
   Interference with utilities
