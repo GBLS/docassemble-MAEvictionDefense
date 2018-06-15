@@ -37,7 +37,7 @@ code: |
     transfer_to_housing_court
   
   case.original_date
-  if case.original_date < today():
+  if case.answer_date < today():
     firstdatepassed
     case.status = 'late'
   case.rescheduled_date

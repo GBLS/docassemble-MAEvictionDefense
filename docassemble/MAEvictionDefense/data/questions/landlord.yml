@@ -4,6 +4,8 @@ subquestion: |
   To answer this question, look at the Summons and Complaint. Write your landlord's
   name exactly the same way it is written on the line "...defend against the complaint
   of Plaintiff / Landlord / Owner"
+
+  [FILE landlord_name.png, 100%]
 fields:
   - Name: landlord.name.text
 section: About Your Landlord

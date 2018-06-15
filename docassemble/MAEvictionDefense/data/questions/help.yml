@@ -34,3 +34,5 @@ interview help:
     This interview is copyright 2018 Greater Boston Legal Services and open source 
     contributors. It is released under the MIT open source license and code is available
     on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
