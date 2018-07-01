@@ -6,6 +6,8 @@ subquestion: |
   Your landlord will only be liable for problems that they knew about or should have
   known about. For example, they may be liable for problems that existed when you first
   moved in or purchased the building.
+video: |
+  [YOUTUBE DCpIr9ldSsw]
 fields:
   - "Select the conditions you have had": bad_conditions.conditions
     datatype: checkboxes

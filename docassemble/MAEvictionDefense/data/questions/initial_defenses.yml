@@ -221,6 +221,8 @@ subquestion: |
   at the proper time. You may have a defense if this was not done in your case.
 
   Put in the best information you know.
+video: |
+  [YOUTUBE 5gYPl-NHbv0]
 fields:
   - Date I got the notice to quit: date_received_ntq
     datatype: date

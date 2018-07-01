@@ -303,6 +303,8 @@ subquestion: |
   Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), 
   the court will not postpone your hearing. You need to go to court as originally scheduled.
   % endif
+video: |
+  [YOUTUBE mG-JDXOAkJU]
 attachment code: |
   downloads
 section: Conclusion

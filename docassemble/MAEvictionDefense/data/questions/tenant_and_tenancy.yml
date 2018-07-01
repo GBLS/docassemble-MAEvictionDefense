@@ -101,18 +101,18 @@ fields:
         facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
   - My rental agreement is: tenancy_type
     choices:
-      - I have a written lease (even if expired): lease
-      - I pay month-to-month or week-to-week (tenancy at will): taw
-      - I don't have a formal rental agreement: taw
+      - a written lease (even if expired): lease
+      - month-to-month or week-to-week (tenancy at will): taw
+      - I don't have one: taw
       - I don't know: taw
-  - Type of lease: lease_type
+  - When the original lease period is over (usually 1 year), my lease ...: lease_type
     show if:
       variable: tenancy_type
       is: 'lease'
     choices:
-      - My lease ends on a specific day and does not renew: fixed_term
-      - My lease automatically renews for a specific term (usually 1 year): self_extending
-      - My lease changes into a month-to-month tenancy or tenancy at will: renews_as_taw
+      - ends and doesn't renew.: fixed_term
+      - renews for another term .: self_extending
+      - renews month-to-month or week to week.: renews_as_taw
       - I don't know.: unknown
 section: About Your Tenancy
 help: |
@@ -175,7 +175,7 @@ fields:
   - I or someone who lives with me is over the age of 60: tenant.is_over60
     datatype: yesno
 
-  - I am a victim of domestic violence.: tenant.is_dvvictim
+  - I am a survivor of domestic violence.: tenant.is_dvvictim
     datatype: yesno
 section: About You
 help: |
