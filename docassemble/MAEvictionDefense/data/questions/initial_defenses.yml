@@ -210,7 +210,7 @@ sets: initial_defense.inconsistent_reasons
 code: |
   if ntq_matches_summons:
     initial_defense.inconsistent_reasons = False
-  elif summons_eviction_reasons['failure_to_vacate'] or summons_eviction_reasons['rent'] and not (summons_eviction_reasons['new_fault']):
+  elif showifdef("summons_eviction_reasons['failure_to_vacate']") or showifdef("summons_eviction_reasons['rent']") and not (showifdef("summons_eviction_reasons['new_fault']")):
     initial_defense.inconsistent_reasons = False
   else:
     initial_defense.inconsistent_reasons = True

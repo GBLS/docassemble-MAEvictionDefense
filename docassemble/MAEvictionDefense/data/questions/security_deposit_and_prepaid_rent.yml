@@ -18,11 +18,12 @@ section: Claims and Defenses
 help: |
   Learn more about the rules for handling a security deposit on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
 ---
+sets: security_deposit.violated
 code: |
-if (security_deposit.violations.any_true() ):
-  security_deposit.violated = True
-else:
-  security_deposit.violated = False
+  if (security_deposit.violations.any_true() ):
+    security_deposit.violated = True
+  else:
+    security_deposit.violated = False
 ---
 question: Prepaid last month's rent
 subquestion: |
