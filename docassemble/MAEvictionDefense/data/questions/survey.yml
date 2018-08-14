@@ -1,0 +1,86 @@
+---
+mandatory: True
+question: |
+  Feedback about the self-help eviction defense tool
+subquestion: |
+  Congratulations on responding to your landlord's eviction case.
+  
+  This survey is about the self-help eviction defense tool that you used on
+  __DATE__ and what happened afterwards in your court case.
+fields:
+  - Were the advice and paperwork in the guided interview helpful? : user_found_advice_useful
+    datatype: yesnoradio
+  - Would you recommend this service to a friend?: user_would_recommend
+    datatype: yesnoradio
+  - Are you still living in your home? : still_in_home
+    datatype: yesnoradio
+  - Is your case resolved? : case_resolved
+    datatype: yesnoradio
+  - What happened with your case? : case_outcome
+    show if: case_resolved
+    choices:
+      - My case was dismissed by the judge or by agreement.
+      - I reached an agreement to stay in my home and pay back money owed.
+      - I reached an agreement to stay in my home with no money owed or paid to me.
+      - I reached an agreement to stay and my landlord will pay me money. : agreement_with_money
+      - I reached an agreement to move out and my landlord will pay me money or waive back rent. : moveout_with_money
+      - I reached an agreement to move out but my landlord will not pay me anything.
+      - I won a trial and my landlord must pay me money. : trial_with_money
+      - I won a trial but no money from my landlord.
+      - I lost a trial or motion to issue execution.
+  - Are you willing to share demographic information with us? It will be kept private and used only to improve this service. : will_share_demographics
+    datatype: yesnoradio
+  - What is your gender? : gender
+    show if: will_share_demographics
+    datatype: combobox
+    choices:
+      - Female
+      - Male
+      - Non-binary/third-gender
+      - Prefer to self-describe
+      - Prefer not to say
+  - What is your age?: user_age
+    show if: will_share_demographics
+    choices:
+      - Under 18
+      - 18-24 years old
+      - 25-34 years old
+      - 35-44 years old
+      - 45-54 years old
+      - 55-64 years old
+      - 65-74 years old
+      - 75 years or older
+  - What is your ethnicity? : ethnicity
+    show if: will_share_demographics  
+    choices: 
+      - White
+      - Hispanic or Latino
+      - Black or African American
+      - Native American or American Indian
+      - Asian / Pacific Islander
+      - Other
+  - What is the highest level of education you have attained?: education
+    show if: will_share_demographics  
+    choices:   
+      - No schooling completed
+      - Nursery school to 8th grade
+      - Some high school, no diploma
+      - High school graduate, diploma or the equivalent (for example: GED)
+      - Some college credit, no degree
+      - Trade/technical/vocational training
+      - Associate degree
+      - Bachelor’s degree
+      - Master’s degree
+      - Professional degree
+      - Doctorate degree
+  - How can this system be improved? : open_text_feedback
+    datatype: area
+    required: False
+---
+mandatory: True
+question: | 
+  Thank you!
+subquestion: |
+  Thank you for taking the time to respond to this survey.
+  
+  Your answers will be used to help more tenants in the future.

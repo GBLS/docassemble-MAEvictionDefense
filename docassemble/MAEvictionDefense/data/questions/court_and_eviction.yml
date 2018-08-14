@@ -118,6 +118,12 @@ code: |
     case.rescheduled_date = case.original_date
     case.on_time = False
 ---
+code: |
+  if case.on_time:
+    court_date = case.rescheduled_date
+  else:
+    court_date = case.original_date
+---
 question: |
   Defenses for fault eviction
 subquestion: |

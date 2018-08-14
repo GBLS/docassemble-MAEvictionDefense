@@ -1,10 +1,12 @@
 ---
 mandatory: True
 comment: |
-  This block controls the order in which key questions are asked in one place, instead of several mandatory and need
-  statements.
+  This block controls the order in which key questions are asked in one place, 
+  instead of several mandatory and need statements.
 sets: all_answer_variables
 code: |
+  interview_date = today()
+  
   # Overview
   getting_started
   #person_answering

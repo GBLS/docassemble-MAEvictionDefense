@@ -26,7 +26,6 @@ sections:
 ---
 features:
   question help button: True
-#  question back button: True
   progress bar: True
   navigation: True
   default icons: material icons
@@ -72,6 +71,7 @@ objects:
 mandatory: True
 code: |
   multi_user = True
+  allow_cron = True
 ---
 include:
   - interview-order.yml
@@ -82,7 +82,7 @@ question: |
 subquestion: |
   This guided interview will help you respond to an eviction in Massachusetts. It will also allow
   you to get information from your landlord to be better prepared for court. It should take you about 
-  :stopwatch: 25 minutes to finish. And it is free. At the end of the interview, you will need to print 
+  :stopwatch: 25 minutes to finish. And it is free. At the end of the interview, you will need to print :print: 
   and deliver paperwork to the court and to your landlord or their attorney.
 
   Before we start, you should find:
@@ -200,6 +200,7 @@ include:
   - transfer.yml
   - intervene.yml
   - discovery-logic.yml
+  - emails.yml
 ---
 question: Sign below
 subquestion: |
@@ -245,6 +246,54 @@ fields:
     datatype: date
 section: Conclusion
 ---
+question: |
+  Optional follow-up
+subquestion: |
+  If you like, we can send you a reminder :bell: when important
+  dates in your court case are coming up. We would also like to send you a short
+  survey after your court date. The survey will help us improve this service.
+    
+  If you don't want us to contact you again, remove the checkboxes below.
+  
+fields:
+  - Remind me about upcoming deadlines. : remind_user
+    datatype: yesno
+    default: True
+  - Send me a follow-up survey after my first court date.: survey_user
+    datatype: yesno
+    default: True
+  - Mobile phone number for text messaging: user_cell
+    default: ${tenant.phone_number}
+    show if: remind_user
+  - Email address: user_email
+    default: ${tenant.email}
+    show if: remind_user
+  - Share information about my paperwork with non-profit legal aid organizations.* (See Help for more details): share_data
+    datatype: yesno
+    default: True
+help: |
+  If you agree, we can send you a reminder text message and email message when you
+  have a deadline or need to appear in court. *The reminders will only be based on
+  the information you gave us in this interview.* If your court date changes for
+  any reason, keep in mind that the reminder might be for the wrong date. It's important
+  that you still pay attention to the dates that the court tells you about.
+  
+  We can also save information about your case if you choose. Saved information
+  will be used only by a non-profit legal aid organization. It may be used to help
+  you if your case is accepted or full representation, or it may be used to identify
+  trends to help the non-profit legal aid organization bettter decide how to use
+  its resources to prevent evictions.
+  
+  Sharing your information is optional. You can use this service for free whether or not
+  you want your information to be shared.
+---
+event: cron_daily
+code: |
+  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
+    send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
+  if remind_user and task_not_yet_performed('court reminder'):
+    send_email(to=user_email, template=court_reminder_email, task='court_reminder')
+---
 code: |
   date_discovery_received = service_date
   if method_of_service == 'mailed':
@@ -278,6 +327,7 @@ code: |
 ---
 id: download
 mandatory: True
+need: remind_user
 question: |
   Your documents are ready!
 subquestion: |

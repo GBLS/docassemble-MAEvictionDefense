@@ -1,0 +1,35 @@
+---
+template: compel_discovery_email
+subject: |
+  It's time for you to compel discovery (Massachusetts Defense against Eviction)
+content: |
+  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Legal Services.
+  
+  When you used our self-help eviction defense tool on ${interview_date}, you asked
+  your landlord to send you information to be ready for your case.
+  
+  That information should have been sent to you no later than ${date_discovery_due}.
+  
+  To protect your right to information for your case,
+  you need to send a "motion to compel discovery" to
+  % if landlord.has_attorney:
+    ${landlord.attorneys_name}
+  % else:
+    ${landlord.name}
+  % endif
+  . You also need to send a copy of the motion to ${court.name}.
+
+---
+template: court_reminder_email
+subject: |
+  You have a court date on ${court_date}!
+content: |
+  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Legal Services.
+  
+  Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
+  a different date!
+  
+  You are getting this email because you used our self-help eviction tool
+  on ${interview_date}.
