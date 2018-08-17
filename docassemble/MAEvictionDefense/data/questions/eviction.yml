@@ -1,14 +1,21 @@
 metadata:
+  interview_identifier: "MADE: Massachusetts Defense against Eviction"
   title: |
-    Massachusetts Eviction Defense
+    MADE: Massachusetts Defense against Eviction
   short title: |
-    Eviction Defense
+    MADE (Eviction)
   description: |
     This interview helps you complete a summary process answer and request for discovery.
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-07-08
+  error help: |
+    # We ran into a bug.
+    We are very sorry for the inconvenience. You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+  revision_date: 2018-08-17
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -16,7 +23,7 @@ sections:
   - Getting Started
   - Your Right to a Jury Trial
   - About You
-  - Review Answers
+#  - Review Answers
   - About Your Landlord
   - About Your Tenancy
   - Claims and Defenses
@@ -72,19 +79,22 @@ mandatory: True
 code: |
   multi_user = True
   allow_cron = True
+  case.case_id = ""
 ---
 include:
   - interview-order.yml
 ---
 decoration: home
 question: |
-  Massachusetts Eviction Defense
+  MADE: Massachusetts Defense against Eviction
 subquestion: |
-  This guided interview will help you respond to an eviction in Massachusetts. It will also allow
-  you to get information from your landlord to be better prepared for court. It should take you about 
-  :stopwatch: 25 minutes to finish. And it is free. At the end of the interview, you will need to print :print: 
-  and deliver paperwork to the court and to your landlord or their attorney.
-
+  MADE helps tenants defend against an eviction in court.
+  We will create forms that you then need to :print: print and :envelope:
+  deliver to court and to your landlord. It should take you about :stopwatch: 25 minutes to complete.
+  If you get interrupted, you can save your work and come back to it. You can also
+  email yourself the completed forms.
+  This interview is completely free.
+  
   Before we start, you should find:
 
   1. The **Summons and Complaint** and 
@@ -93,9 +103,11 @@ subquestion: |
   If you don't have either document, you can still do your best to answer from your memory.
   
   At any time, click on a {green word} to learn what it means. Click the "[Help]" button to learn more
-  about the interview or a specific question. You can also click "[< Back]" to go back and change your answers to a 
-  question.
-
+  about the interview or a specific question, and "[BACK]" if you want to go back
+  to the previous question.
+help: |
+  This screen doesn't have any help on it, but if it did you could read it now.
+  Click "[Back to question]" to go to the previous screen and continue the interview.
 field: getting_started
 terms: 
   - green word: This is an example. Click it again to hide this definition.
@@ -262,12 +274,20 @@ fields:
   - Send me a follow-up survey after my first court date.: survey_user
     datatype: yesno
     default: True
+  - note: |
+      **Your contact information**
+    show if: remind_user
   - Mobile phone number for text messaging: user_cell
     default: ${tenant.phone_number}
     show if: remind_user
+    required: False
   - Email address: user_email
     default: ${tenant.email}
+    datatype: email
     show if: remind_user
+    required: False
+  - note: |
+      **Optional information sharing**    
   - Share information about my paperwork with non-profit legal aid organizations.* (See Help for more details): share_data
     datatype: yesno
     default: True
@@ -280,7 +300,7 @@ help: |
   
   We can also save information about your case if you choose. Saved information
   will be used only by a non-profit legal aid organization. It may be used to help
-  you if your case is accepted or full representation, or it may be used to identify
+  you if your case is accepted for full representation, or it may be used to identify
   trends to help the non-profit legal aid organization bettter decide how to use
   its resources to prevent evictions.
   
@@ -291,7 +311,7 @@ event: cron_daily
 code: |
   if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
     send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
-  if remind_user and task_not_yet_performed('court reminder'):
+  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days > -1 :
     send_email(to=user_email, template=court_reminder_email, task='court_reminder')
 ---
 code: |
@@ -303,63 +323,81 @@ code: |
   date_motion_to_compel_due = date_discovery_received.plus(days=15)
 ---
 code: |
-  downloads_temp = [instructions,answer,discovery]
+  if show_instructions:
+    downloads_temp = [instructions,answer,discovery]
+  else:
+    downloads_temp = [answer,discovery] 
+    
   if case.status == 'late':
     downloads_temp.append(late_answer)
   if not court_is_housing_court and transfer_to_housing_court:
     downloads_temp.append(transfer_notice)
-  #if show_instructions:
-  #  downloads_temp.append(instructions)
+
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     downloads_temp.append(intervene_motion)
+  
   downloads = downloads_temp
+  
+  downloads_pdf = [i.pdf for i in downloads]
+  downloads_docx = [i.docx for i in downloads]
+  downloads_concat = pdf_concatenate(downloads_pdf)
 ---
 code: |
+  # We can't do this because we include the number of forms in one of the forms...
+  # num_downloads = len(downloads_pdf)
+  
   num_downloads = 2
   if case.status == 'late':
     num_downloads += 1
   if not court_is_housing_court and transfer_to_housing_court:
     num_downloads += 1
-  #if show_instructions:
-  #  num_downloads += 1 # skip the instructions when counting number of forms 
+  if show_instructions:
+    num_downloads += 1 
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     num_downloads += 1
+---
+mandatory: True
+code: |
+  if user_email:
+    background_action(send_email(to=user_email, template=interview_complete_email, attachments=zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")))
 ---
 id: download
 mandatory: True
 need: remind_user
+#decoration: smile
 question: |
-  Your documents are ready!
+  Congratulations! You've reached the end of the interview
 subquestion: |
-  Please download and print 3 copies of each document below. 
   
-  1. Bring one copy to the "Summary Process Clerk" at the ${ court.name }.
-  2. Keep one copy for your personal records.
+  Great work! You've finished the guided interview! But you're not quite done yet.
+  Based on your answers in the interview, we created [:file-pdf: ${nice_number(num_downloads)}
+  forms](${downloads_concat.url_for()}) for you to file in court.
+  You will need to :print: print and :envelope: mail or deliver these on your own.
+  
+  #### Next steps
+  
+  1. :print: Print three (3) copies of [:file-pdf: Your court forms](${downloads_concat.url_for()}).
+     You can remove the cover page which has instructions for you.
+  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
+     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
   % if landlord.has_attorney:
-  3. Deliver the final copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}.
+  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
   % else:
-  3. Deliver the final copy to your landlord ${landlord.name}.
+  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
   %endif
-  
-  % if case.on_time :
-  Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.
-  You will not get any special notice in the mail. The new date is also printed
-  on your paperwork.
+  1. **Show up at the court on ${format_date(court_date)}**.
 
-  According to your earlier answer, you must deliver all copies no later than 
-  **${format_date(case.answer_date)}**. Please note, most Massachusetts courts close at 
-  4:30 PM.
-  % else:
-  Because you are filing your answer after the Answer date (${format_date(case.answer_date)}), 
-  the court will not postpone your hearing. You need to go to court as originally scheduled.
-  % endif
+  #### For your records
+  You can download a copy of all of the individual forms, together with a :file-word: Microsoft
+  Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
+
+  ${answers_response}  
+
 video: |
   [YOUTUBE mG-JDXOAkJU]
-attachment code: |
-  downloads
+  
 section: Conclusion
-allow downloading: True
-
 ---
 attachment:
   - name: Instructions and Next Steps
@@ -394,3 +432,9 @@ attachment:
     filename: Intervene
     variable name: intervene_motion
     docx template file: InterveneMotion.docx
+---
+reconsider: True
+code: |
+  import dt_send_answers
+  answers_response = dt_send_answers.send_answers()
+    

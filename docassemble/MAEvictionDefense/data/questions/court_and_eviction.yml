@@ -103,7 +103,7 @@ help:
   Trial dates are usually on a Thursday in many, but not all courts.
   
   This information helps us figure out if you are answering to the eviction by 
-  the deadline. If you are filing your [Answer] on time, the court will be delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
+  the deadline. If you are filing your [Answer] on time, the court will delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
  
 section: About Your Tenancy
 ---
@@ -123,6 +123,24 @@ code: |
     court_date = case.rescheduled_date
   else:
     court_date = case.original_date
+---
+event: case_is_on_time
+decoration: thumbs-up
+question: |
+  Good news!
+subquestion: |
+  Because you will be filing these forms on-time (no later than ${format_date(case.answer_date)}), your case date will automatically be
+  postponed by two weeks. You do not need to appear in court on ${format_date(case.original_date)}.
+  
+  Instead, you must appear on **${format_date(court_date)}**.
+
+buttons:
+  - Continue: 
+      code: |
+        case_is_on_time = True  
+help: |
+  The two-week delay is automatic if a tenant files their response to the eviction
+  on-time and requests discovery. See [U.S.P.R. 7(b)](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
 ---
 question: |
   Defenses for fault eviction

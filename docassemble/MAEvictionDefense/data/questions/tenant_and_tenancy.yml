@@ -128,7 +128,7 @@ help: |
   does not renew the lease.
   2. A "self-extending" lease automatically gets renewed. Usually, the new term is the same as the original term.
   3. A special kind of self-extending lease automatically gets renewed but is no longer a lease. Instead it converts into
-  a month-to-month tenancy, or tenancy at will.e
+  a month-to-month tenancy, or tenancy at will.
 
   There are slightly different rules for tenants with a lease that is still in effect, versus a tenant-at-will. For example,
   you may get a different amount of time to come up-to-date with your rent.

@@ -43,6 +43,8 @@ code: |
     firstdatepassed
     case.status = 'late'
   case.rescheduled_date
+  if case.on_time:
+    case_is_on_time # Inform the user of postponement
 
   eviction_reason
   set_plead_counterclaims
@@ -61,14 +63,10 @@ code: |
   if facts.tenant_has_subsidy:
     subsidy_type
     subsidized_housing.no_proper_termination
-    #subsidized_housing.no_just_cause
-    #subsidized_housing.no_ntq_to_agency
-    #subsidized_housing.no_hearing_or_conference
-    #subsidized_housing.vawa
-    #subsidized_housing.pha_pays_rent
-    #subsidized_housing.stopped_payment
-    #subsidized_housing.improper_rent_calculation
-    #subsidized_housing.landlord_overcharged
+    if subsidy_type in ['Section 8 voucher', 'MRVP']:
+      subsidized_housing.pha_pays_rent
+      subsidized_housing.no_ntq_to_agency
+      subsidized_housing.stopped_payment
 
   if bad_conditions.have_conditions or tenant.is_dvvictim or claims.harassment: 
     retaliation.is_retaliated = True

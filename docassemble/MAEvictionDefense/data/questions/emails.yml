@@ -33,3 +33,36 @@ content: |
   
   You are getting this email because you used our self-help eviction tool
   on ${interview_date}.
+---
+template: interview_complete_email
+subject: |
+  You finished the eviction interview! Keep this for your records
+content: |
+  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Legal Services.
+
+  Great work! You've finished the interview! But you're not quite done yet.
+  Based on your answers in the interview, we created ${nice_number(num_downloads)}
+  forms for you to file in court.
+  
+  You will need to :print: print and :envelope: mail or deliver these on your own.
+  They are attached to this email.
+   
+  #### Next steps
+  
+  1. :print: Print three copies of :file-pdf: your court forms.
+     You can skip the cover page which has instructions for you.
+  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
+     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
+  % if landlord.has_attorney:
+  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  % else:
+  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
+  %endif
+  1. **Show up at the court on ${format_date(court_date)}**.
+
+  Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
+  has information that can help you be prepared.
+  
+  
