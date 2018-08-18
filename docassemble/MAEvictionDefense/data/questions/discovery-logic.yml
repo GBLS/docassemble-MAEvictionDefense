@@ -122,7 +122,7 @@ subquestion: |
 yesno: other_drq.there_is_another
 ---
 mandatory: |
-  person_answering == 'attorney'
+  person_answering == 'attorney' or tenant_review_discovery
 question: |
   Interrogatories (questions for your landlord)
 subquestion: |
@@ -137,8 +137,42 @@ subquestion: |
 fields: 
   code: ints_fields
 ---
+question: |
+  Discovery: Getting ready for court
+subquestion: |
+  This interview is set up to give you "discovery", or questions for your landlord.
+  Do you want to select them on your own, or stick with the defaults?
+    
+  Because of the answers you've already given,
+  you currently have **${ ints.count_checked() }** questions for your landlord, and 
+  **${ drq.count_checked() }** kinds of documents that you are asking for.
+
+  Most tenants don't need to make any changes here.  
+decoration: |
+  book
+field: tenant_review_discovery
+buttons:
+  - Keep default selections: False
+  - Customize discovery: True
+help: |
+  You have the right to get information from your landlord, or "discovery". The information
+  can help you prepare for court or reach a fair agreement with your landlord.
+  
+  Discovery is governed by [U.S.P.R. 7](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
+  
+  This interview can help you both ask your landlord questions, and ask your landlord
+  to give you copies of documents, like your lease or rent payment records. 
+  You also have the right to ask the landlord for "admissions" (yes no questions)
+  but this interview will not help you ask those.
+  
+  Your landlord will have 10 days to get the information to you. If they don't,
+  you have the right to ask the judge to order them to give it to you.
+  Part of the packet you deliver will include a motion form you can use to ask for
+  discovery if your landlord doesn't give it to you.
+section: Discovery
+---
 mandatory: |
-  person_answering == 'attorney'
+  person_answering == 'attorney' or tenant_review_discovery
 question: |
   Document requests (letters, leases, photos, and other printed information)
 subquestion: |
@@ -153,27 +187,3 @@ fields:
 help: |
   Document requests can be unreadable for non-lawyers. The important thing
   to review is the topic of the request.
----
-question: |
-  Summary of Discovery Selections
-subquestion: |
-  ###The Discovery categories are
-  
-  ${ints['person_answering'].checked}
-   
-  Number selected: ${ len(ints.checked_values()) }
-  
-  ###You've selected ${ len(ints.checked_values()) } interrogatories
-    
-  %for int in ints.checked_values():
-  * ${ints[int].description}  
-  %endfor
-
-  ###You've selected ${ len(drq.checked_values()) } document requests
-    
-  %for d in drq.checked_values():
-  * ${drq[d].description}  
-  %endfor
-section: Discovery
-buttons:
-  - Continue: continue

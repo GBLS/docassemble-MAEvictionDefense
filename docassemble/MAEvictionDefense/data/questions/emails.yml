@@ -1,9 +1,9 @@
 ---
 template: compel_discovery_email
 subject: |
-  It's time for you to compel discovery (Massachusetts Defense against Eviction)
+  It's time for you to compel discovery (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
   When you used our self-help eviction defense tool on ${interview_date}, you asked
@@ -23,9 +23,9 @@ content: |
 ---
 template: court_reminder_email
 subject: |
-  You have a court date on ${court_date}!
+  You have a court date on ${court_date}! (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
   Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
@@ -36,21 +36,28 @@ content: |
 ---
 template: interview_complete_email
 subject: |
-  You finished the eviction interview! Keep this for your records
+  You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense against Eviction) from Greater Boston
+  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
-
-  Great work! You've finished the interview! But you're not quite done yet.
-  Based on your answers in the interview, we created ${nice_number(num_downloads)}
-  forms for you to file in court.
   
-  You will need to :print: print and :envelope: mail or deliver these on your own.
-  They are attached to this email.
+  This is a copy for you of all of the forms you completed today.
+  
+  As a reminder, your court date will be ${format_date(court_date)},
+  unless you hear otherwise from the court.
+  
+  Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
+  has information that can help you be prepared.
+
+  If you haven't filed any paperwork with the court or your landlord yet, 
+  you're not quite done yet. You will need to print and mail or deliver the 
+  ${nice_number(num_downloads)} forms we created for you on your own.
+  They are attached to this email. You can print each form separately, or
+  print the single PDF file that combines all of the forms together.
    
   #### Next steps
   
-  1. :print: Print three copies of :file-pdf: your court forms.
+  1. Print three copies of your court forms.
      You can skip the cover page which has instructions for you.
   1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
      before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
@@ -62,7 +69,5 @@ content: |
   %endif
   1. **Show up at the court on ${format_date(court_date)}**.
 
-  Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
-  has information that can help you be prepared.
   
   

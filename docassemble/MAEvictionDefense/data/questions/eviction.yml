@@ -1,7 +1,7 @@
 metadata:
-  interview_identifier: "MADE: Massachusetts Defense against Eviction"
+  interview_identifier: "MADE: Massachusetts Defense for Eviction"
   title: |
-    MADE: Massachusetts Defense against Eviction
+    MADE: Massachusetts Defense for Eviction
   short title: |
     MADE (Eviction)
   description: |
@@ -15,7 +15,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2018-08-17
+  revision_date: 2018-08-18
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -86,7 +86,7 @@ include:
 ---
 decoration: home
 question: |
-  MADE: Massachusetts Defense against Eviction
+  MADE: Massachusetts Defense for Eviction
 subquestion: |
   MADE helps tenants defend against an eviction in court.
   We will create forms that you then need to :print: print and :envelope:
@@ -359,7 +359,7 @@ code: |
 mandatory: True
 code: |
   if user_email:
-    background_action(send_email(to=user_email, template=interview_complete_email, attachments=zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")))
+    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
 ---
 id: download
 mandatory: True
@@ -376,7 +376,7 @@ subquestion: |
   
   #### Next steps
   
-  1. :print: Print three (3) copies of [:file-pdf: Your court forms](${downloads_concat.url_for()}).
+  1. :print: Print three (3) copies of [:file-pdf: these court forms](${downloads_concat.url_for()}).
      You can remove the cover page which has instructions for you.
   1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
      before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.

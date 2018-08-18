@@ -58,7 +58,11 @@ code: |
 
   date_received_ntq
   ntq_matches_summons
+  has_defense
 
+  if has_defense and task_not_yet_performed('show defense summary'):
+    mark_task_as_performed('show defense summary')
+    show_defense_summary
   
   if facts.tenant_has_subsidy:
     subsidy_type
@@ -122,7 +126,7 @@ code: |
       bqe.bad_conditions
       bqe.entered_without_permission
       bqe.other
-    # if paid utilities (find variable name)
+    # if paid utilities
     if claims.utilities: 
       bqe.billed_no_agreement
       bqe.billed_for_others

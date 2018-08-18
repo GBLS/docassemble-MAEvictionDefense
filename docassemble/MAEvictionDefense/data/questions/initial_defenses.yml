@@ -3,8 +3,7 @@ question: Nonpayment of rent defenses
 fields: 
   - My rent is paid by DTA, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
-section: Claims and Defenses
-  
+section: Claims and Defenses  
 ---
 question: Requested relief
 fields:
@@ -383,4 +382,58 @@ fields:
   - I have other defenses or counterclaims as follows: initial_defense.custom_other
     datatype: area
     required: False
-section: Claims and Defenses 
+section: Claims and Defenses
+---
+code: |
+  has_defense = ( initial_defense.no_ntq or
+                  initial_defense.premature_commencement or
+                  initial_defense.varney or
+                  initial_defense.defective_summons or
+                  (eviction_reason == 'nonpayment' and initial_defense.cure) or
+                  initial_defense.new_tenancy or
+                  initial_defense.inconsistent_reasons or
+                  initial_defense.no_standing or
+                  initial_defense.no_proper_termination
+                  )          
+---
+mandatory: |
+  has_defense
+sets: show_defense_summary
+decoration: thumbs-up
+question: |
+  You may have a defense!
+subquestion: |
+  It looks like your landlord made a mistake with your case. If a judge agrees, 
+  your landlord may need to start their case over again. We will list these defenses
+  on your Answer form.
+  
+  % if initial_defense.no_proper_termination:
+  * Your tenancy was not properly terminated
+  % endif
+  % if initial_defense.no_ntq:
+  * You should have received a notice to quit but you did not
+  % endif
+  % if initial_defense.premature_commencement:
+  * Your landlord started the case too early
+  % endif
+  % if initial_defense.varney:
+  * Your landlord didn't use an attorney but was required to
+  % endif
+  % if initial_defense.defective_summons:
+  * The summons and complaint was not properly served
+  % endif
+  % if (eviction_reason == 'nonpayment' and initial_defense.cure):
+  * You cured any non-payment of rent
+  % endif
+  % if initial_defense.new_tenancy:
+  * Your landlord accidentally created a new tenancy
+  % endif
+  % if initial_defense.inconsistent_reasons:
+  * Your landlord gave a new reason for the eviction without giving you a new notice
+  % endif
+  % if initial_defense.no_standing:
+  * Your landlord may lack standing to evict you
+  % endif
+field: show_defense_summary
+buttons:
+  - Continue: continue

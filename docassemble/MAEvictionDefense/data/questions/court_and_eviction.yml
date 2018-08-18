@@ -212,6 +212,8 @@ code: |
     plead_counterclaims = True
   if (eviction_reason == "nontq"):
     initial_defense.no_ntq = True
+  if eviction_reason == "fault" and eviction_reason == "nonpayment":
+    plead_counterclaims = True
   
   set_plead_counterclaims = True
 ---

@@ -74,8 +74,10 @@ subquestion: |
 fields:
   - Failed to provide adequate heat: bqe.heat
     datatype: yesno
+    default: ${bad_conditions.conditions['not enough heat'] or bad_conditions.conditions['no heat']}
   - Failed to provide adequate hot water: bqe.hot_water
     datatype: yesno
+    default: ${bad_conditions.conditions['not enough hot water'] or bad_conditions.conditions['no hot water']}    
   - Did not pay for utilities that were the landlord's responsibility: bqe.unpaid_utilities
     datatype: yesno
   - Shut off my utilities: bqe.shutoff_utilities
