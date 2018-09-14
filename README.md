@@ -2,11 +2,13 @@
 
 A guided interview for pro se eviction defense in Massachusetts. Generates an Answer form, 
 Request for Discovery, and accompanying forms and motions.
+
 ## Changelog
-2018-08-18 Explain discovery to pro se users, review initial defenses, add detail to answer
-2018-08-17 Email reminders, compact attachments page and wording / help improvements
-2018-07-08 Bug fixes
-2018-07-01 Added videos created by MLRI
+
+* 2018-08-18 Explain discovery to pro se users, review initial defenses, add detail to answer
+* 2018-08-17 Email reminders, compact attachments page and wording / help improvements
+* 2018-07-08 Bug fixes
+* 2018-07-01 Added videos created by MLRI
 
 ## Contributors:
     
