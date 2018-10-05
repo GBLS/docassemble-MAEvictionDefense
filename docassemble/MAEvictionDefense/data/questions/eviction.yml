@@ -359,9 +359,9 @@ code: |
 ---
 mandatory: True
 code: |
-  if user_email:
-    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
-  if user_cell:
+  if user_email  and task_not_yet_performed('interview complete email'):
+    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat], task='interview complete email'))
+  if user_cell and task_not_yet_performed('interview complete text'):
     background_action(send_sms(to=phone_number_in_e164(user_cell), template=interview_complete_text, task='interview complete text'))
 ---
 id: download
