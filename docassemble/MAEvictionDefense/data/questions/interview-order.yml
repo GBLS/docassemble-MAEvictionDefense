@@ -114,7 +114,9 @@ code: |
       bad_conditions.landlord_notified
       other.repair_and_deduct_statute
 
-    paid_deposit_or_lmr
+    paid_deposit
+    paid_lmr
+    
     bqe.violated
     if bqe.violated:
       bqe.heat
@@ -132,10 +134,11 @@ code: |
       bqe.billed_for_others
       other.water_violation
 
-    if paid_deposit_or_lmr:
+    if paid_deposit:
       security_deposit.amount
       security_deposit.violated
       security_deposit.violations
+    if paid_lmr:
       last_months_rent.violated
       last_months_rent.amount
 

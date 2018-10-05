@@ -203,6 +203,9 @@ fields:
     datatype: yesno
   - I pay for one or more utilities.: claims.utilities
     datatype: yesno
-  - "I paid a security deposit or last month's rent when I first moved in.": paid_deposit_or_lmr
+  - "I paid a security deposit.": paid_deposit
     datatype: yesno
+  - "I pre-paid last month's rent when I first moved in.": paid_lmr
+    datatype: yesno
+  
 section: About You

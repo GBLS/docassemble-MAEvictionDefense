@@ -3,7 +3,7 @@ template: compel_discovery_email
 subject: |
   It's time for you to compel discovery (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
   When you used our self-help eviction defense tool on ${interview_date}, you asked
@@ -19,13 +19,15 @@ content: |
     ${landlord.name}
   % endif
   . You also need to send a copy of the motion to ${court.name}.
+  
+  Learn more and get the form here: https://bit.ly/2N0sLxa
 
 ---
 template: court_reminder_email
 subject: |
   You have a court date on ${court_date}! (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
   Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
@@ -34,11 +36,18 @@ content: |
   You are getting this email because you used our self-help eviction tool
   on ${interview_date}.
 ---
+template: interview_complete_text
+content: |
+  Congrats on finishing the interview! Don't forget:
+  File your paperwork and go to court on ${ format_date(court_date) }.
+  Get ready here: https://bit.ly/2ojIERl
+   - MADE from GBLS.
+---
 template: interview_complete_email
 subject: |
   You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction)
 content: |
-  Hi! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
   This is a copy for you of all of the forms you completed today.
@@ -68,6 +77,15 @@ content: |
   1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
   %endif
   1. **Show up at the court on ${format_date(court_date)}**.
-
-  
-  
+---
+template: compel_discovery_text
+content: |
+  Reminder: file a motion to compel discovery
+  in your eviction case TODAY. Form with instructions here: https://bit.ly/2N0sLxa
+   - MADE from GBLS.
+---
+template: attend_court_text
+content: |
+  Reminder: your court date is ${format_date(court_date)} 
+  at ${court.name} at 9 AM. Get ready here: https://bit.ly/2ojIERl
+   - MADE from GBLS.

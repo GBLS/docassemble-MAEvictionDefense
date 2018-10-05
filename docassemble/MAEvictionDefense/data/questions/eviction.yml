@@ -15,7 +15,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2018-08-18
+  revision_date: 2018-10-04
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -23,13 +23,13 @@ sections:
   - Getting Started
   - Your Right to a Jury Trial
   - About You
-#  - Review Answers
   - About Your Landlord
   - About Your Tenancy
   - Claims and Defenses
   - Relief
   - Discovery
   - Conclusion
+#  - Review Answers
 ---
 features:
   question help button: True
@@ -108,12 +108,14 @@ subquestion: |
 help: |
   This screen doesn't have any help on it, but if it did you could read it now.
   Click "[Back to question]" to go to the previous screen and continue the interview.
-field: getting_started
+fields:
+  - I have read and agree to the [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
+    datatype: yesnoradio
+    default: True
+continue button field: getting_started  
+section: Getting Started
 terms: 
   - green word: This is an example. Click it again to hide this definition.
-buttons: 
-  - Continue: continue
-section: Getting Started
 ---
 question: | 
   This site does not give legal advice.
@@ -261,7 +263,7 @@ section: Conclusion
 question: |
   Optional follow-up
 subquestion: |
-  If you like, we can send you a reminder :bell: when important
+  We can send you a reminder :bell: when important
   dates in your court case are coming up. We would also like to send you a short
   survey after your court date. The survey will help us improve this service.
     
@@ -275,7 +277,7 @@ fields:
     datatype: yesno
     default: True
   - note: |
-      **Your contact information**
+      #### Your contact information      
     show if: remind_user
   - Mobile phone number for text messaging: user_cell
     default: ${tenant.phone_number}
@@ -286,11 +288,6 @@ fields:
     datatype: email
     show if: remind_user
     required: False
-  - note: |
-      **Optional information sharing**    
-  - Share information about my paperwork with non-profit legal aid organizations.* (See Help for more details): share_data
-    datatype: yesno
-    default: True
 help: |
   If you agree, we can send you a reminder text message and email message when you
   have a deadline or need to appear in court. *The reminders will only be based on
@@ -309,10 +306,14 @@ help: |
 ---
 event: cron_daily
 code: |
-  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
+  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0 and (date_difference(starting=date_discovery_due).days) < 10:
     send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
-  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days > -1 :
-    send_email(to=user_email, template=court_reminder_email, task='court_reminder')
+    if user_cell:
+      send_sms(to=user_cell, template=compel_discovery_text, task='discovery reminder text')
+  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :
+    send_email(to=user_email, template=court_reminder_email, task='court reminder')
+    if user_cell:
+      send_sms(to=user_cell, template=court_reminder_text, task='court reminder text')
 ---
 code: |
   date_discovery_received = service_date
@@ -360,6 +361,8 @@ mandatory: True
 code: |
   if user_email:
     background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
+  if user_cell:
+    background_action(send_sms(to=user_cell, template=interview_complete_text, task='interview complete text'))
 ---
 id: download
 mandatory: True
