@@ -14,14 +14,21 @@ content: |
   To protect your right to information for your case,
   you need to send a "motion to compel discovery" to
   % if landlord.has_attorney:
-    ${landlord.attorneys_name}
+    ${landlord.attorneys_name}.
   % else:
-    ${landlord.name}
+    ${landlord.name}.
   % endif
-  . You also need to send a copy of the motion to ${court.name}.
+  You also need to send a copy of the motion to ${court.name}.
   
-  Learn more and get the form here: https://bit.ly/2N0sLxa
-
+  Learn more and get the form here: https://gbls.org/tactics/compel
+---
+template: compel_discovery_text
+content: |
+  Reminder: file a motion to compel discovery
+  in your eviction case TODAY. Form with instructions here: 
+  https://gbls.org/tactics/compel
+  
+   - MADE from GBLS.
 ---
 template: court_reminder_email
 subject: |
@@ -36,12 +43,11 @@ content: |
   You are getting this email because you used our self-help eviction tool
   on ${interview_date}.
 ---
-template: interview_complete_text
+template: attend_court_text
 content: |
-  Congrats on finishing the interview! Don't forget:
-  File your paperwork and go to court on ${ format_date(court_date) }.
-  Get ready here: https://bit.ly/2ojIERl
-   - MADE from GBLS.
+  Reminder: your court date is ${format_date(court_date)} 
+  at ${court.name} at 9 AM. Get ready here: https://gbls.org/tactics/12
+   - MADE from GBLS.  
 ---
 template: interview_complete_email
 subject: |
@@ -78,14 +84,9 @@ content: |
   %endif
   1. **Show up at the court on ${format_date(court_date)}**.
 ---
-template: compel_discovery_text
+template: interview_complete_text
 content: |
-  Reminder: file a motion to compel discovery
-  in your eviction case TODAY. Form with instructions here: https://bit.ly/2N0sLxa
-   - MADE from GBLS.
----
-template: attend_court_text
-content: |
-  Reminder: your court date is ${format_date(court_date)} 
-  at ${court.name} at 9 AM. Get ready here: https://bit.ly/2ojIERl
+  Congrats on finishing the interview! Don't forget:
+  File your paperwork and go to court on ${ format_date(court_date) }.
+  Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.
