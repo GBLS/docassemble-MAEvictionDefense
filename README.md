@@ -4,12 +4,12 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
-2018-10-11 Added experimental support for reviewing and editing answers (~ 80% coverage)
-2018-10-04 / 2018-10-05 Bug fixes-security deposit, replace URLs so not blocked by SMS spam measures
-2018-08-18 Explain discovery to pro se users, review initial defenses, add detail to answer
-2018-08-17 Email reminders, compact attachments page and wording / help improvements
-2018-07-08 Bug fixes
-2018-07-01 Added videos created by MLRI
+* 2018-10-11 Added experimental support for reviewing and editing answers (~ 80% coverage)
+* 2018-10-04 / 2018-10-05 Bug fixes-security deposit, replace URLs so not blocked by SMS spam measures
+* 2018-08-18 Explain discovery to pro se users, review initial defenses, add detail to answer
+* 2018-08-17 Email reminders, compact attachments page and wording / help improvements
+* 2018-07-08 Bug fixes
+* 2018-07-01 Added videos created by MLRI
 
 ## Contributors:
     
