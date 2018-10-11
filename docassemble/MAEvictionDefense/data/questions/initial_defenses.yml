@@ -1,7 +1,7 @@
 ---
-question: Nonpayment of rent defenses
+question: Is your rent paid by DTA?
 fields: 
-  - My rent is paid by DTA, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
+  - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
 section: Claims and Defenses  
 ---
@@ -308,6 +308,17 @@ fields:
     datatype: date
     required: False
 help:
+  Paying all rent owed is called "curing" the non-payment of rent and can stop the
+  eviction. The deadline for paying the full amount of rent owed should be 
+  listed on your notice to quit, but this interview will also help you determine what
+  the deadline is. You only have the cure right if you haven't used it to stop an
+  eviction in the last 12 months.
+  
+  If you have a lease you may still be able to cure the non-payment of rent.
+  If you haven't made any payment yet, payment will likely need to include the costs
+  of bringing you to court and serving you notices, about $180-$200, depending on the
+  court.
+  
   See [Chapter 12 of Legal Tactics](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf), 
   the section titled "Paying the Rent Owed" 
   and ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).

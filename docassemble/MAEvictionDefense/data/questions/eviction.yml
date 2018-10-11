@@ -15,21 +15,21 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2018-10-05
+ 
+  revision_date: 2018-10-11
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
 sections:
   - Getting Started
   - Your Right to a Jury Trial
-  - About You
-  - About Your Landlord
-  - About Your Tenancy
-  - Claims and Defenses
-  - Relief
-  - Discovery
+  - review_about_you: About You
+  - review_about_landlord: About Your Landlord
+  - review_about_court: About Your Court Case
+  - review_about_tenancy: About Your Tenancy
+  - review_claims: Claims and Defenses
+  - review_discovery: Discovery
   - Conclusion
-#  - Review Answers
 ---
 features:
   question help button: True
@@ -82,6 +82,7 @@ code: |
   case.case_id = ""
 ---
 include:
+  - review_screens.yml
   - interview-order.yml
 ---
 decoration: home
@@ -90,7 +91,8 @@ question: |
 subquestion: |
   MADE helps tenants defend against an eviction in court.
   We will create forms that you then need to :print: print and :envelope:
-  deliver to court and to your landlord. It should take you about :stopwatch: 25 minutes to complete.
+  deliver to court and to your landlord. It should take you between :stopwatch: 25 
+  minutes and an hour to complete, depending on how complex your case is.
   If you get interrupted, you can save your work and come back to it. You can also
   email yourself the completed forms.
   This interview is completely free.
@@ -108,14 +110,43 @@ subquestion: |
 help: |
   This screen doesn't have any help on it, but if it did you could read it now.
   Click "[Back to question]" to go to the previous screen and continue the interview.
+terms: 
+  - green word: This is an example. Click it again to hide this definition.
+section: Getting Started
 fields:
   - I have read and agree to the [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
     datatype: yesnoradio
     default: True
-continue button field: getting_started  
+continue button field: getting_started
+---
+decoration: info-circle
+question: |
+  How to answer questions in this interview
+subquestion: |
+  This interview asks for facts about you, your landlord, and your eviction case.
+  It's important to answer honestly.
+  
+  You should mark any facts that are true, even 
+  if you do not think they are related to the eviction. _If you are not sure about a 
+  question, usually it is better to mark it than to leave it blank._ It is hard
+  to go back and add more facts later, but you can tell the court if you learn
+  you made a mistake and marked something you shouldn't have. You will also have
+  a chance to get more information from your landlord in this interview that can
+  help prove your case.
+  
+  Your answers may stop your eviction. You may also have the 
+  right to sue your landlord, and if a judge or jury agrees, your landlord may owe 
+  you money.
+  
+  Answering honestly on this interview will not stop you from reaching
+  an agreement with your landlord. Most tenants who complete this interview
+  end up with some kind of agreement in court. Completing this interview can help you
+  and your landlord both understand what your rights are and reach a fair
+  agreement.
+field: how_to_answer  
+buttons: 
+  - I agree to answer honestly and completely: continue
 section: Getting Started
-terms: 
-  - green word: This is an example. Click it again to hide this definition.
 ---
 question: | 
   This site does not give legal advice.
@@ -166,32 +197,43 @@ section: Getting Started
 question: |
   Your right to a jury trial
 subquestion: |
-  Both you and your landlord have the right to have a jury instead of 
-  a judge decide your case. This is *your* only chance to claim your
-  right to a jury (unless you file a separate form before the answer date).
-
-  There is a chance that the judge will ask you to pay rent, or ‘use and occupancy’ while you
-  wait for a jury trial to be scheduled. If you do have a trial, a jury trial will be difficult
-  to do on your own without a lawyer's help.
-
-  #### Why claim your right to a jury trial?
-  1. Members of the jury are your peers. Some may be tenants who can understand your experience.
-  2. Jury trials take time to schedule. You can use this time to try to resolve your case.
-  3. You can change your mind and decide later that you do not want a jury trial. 
-  A jury trial also does not mean you lose the chance to negotiate an agreement.
-  Most tenants, whether they requested a jury trial or not, end up reaching an agreement with their
-  landlord and don't have a trial of any kind.
+  You or your landlord can choose to have a jury
+  decide this case. This is _your_ chance to choose a jury.
+  
+  Choosing a jury does not mean you will stop having to pay rent, or 'use and occupancy'.
+  Jury trials are complicated and if you are unable to reach an agreement with your
+  landlord, it helps most tenants to have a lawyer with them at a jury trial.
+  
+  #### Why keep your right to a jury trial?
+  1. A jury is made up of ordinary people, some of whom may be tenants like you.
+  1. It takes time to schedule a jury trial. You can use the time to try to solve the 
+  problem with your landlord.
+  1. You can always give up your jury right later. But you can't ask for a jury trial
+  after the deadline for filing this paperwork.
+  1. You can still reach an agreement with your landlord. Most cases end up with
+  an agreement, whether the tenant keeps their right to a jury trial or not.
 
 field: claim_jurytrial
 buttons:
-  - Claim a jury trial: True
+  - Keep my jury trial: True
   - Waive my right to a jury: False
 section: Your Right to a Jury Trial
+decoration: users
 help: |
-  In Massachusetts evictions, a jury may be either 6 or 12 people. At least 5/6 jurors
+  Either the landlord or the tenant can choose a jury trial any time up until the
+  answer date which is printed on your Summons and Complaint. You can use this
+  interview to ask for your jury trial, or another form, but it must be
+  before the deadline. If you do think you may want a jury, you should keep your
+  jury right in this interview.
+  
+  A jury trial can be difficult for a tenant to do on their own. However, because
+  most cases end in an agreement, asking for a jury trial now has very low risk.
+  
+  If you do end up having a jury trial, in Massachusetts evictions, a jury may
+  be either 6 or 12 people. At least 5/6 jurors
   must agree to reach a decision in your case. They will reach a separate decision
   about each of your claims and defenses, money owed to the landlord, and whether
-  you get to remain in your apartment.
+  you get to remain in your apartment.  
 ---
 code: |
   last_months_rent_amount = 0
@@ -263,7 +305,7 @@ section: Conclusion
 question: |
   Optional follow-up
 subquestion: |
-  We can send you a reminder :bell: when important
+  If you like, we can send you a reminder :bell: when important
   dates in your court case are coming up. We would also like to send you a short
   survey after your court date. The survey will help us improve this service.
     
@@ -277,7 +319,7 @@ fields:
     datatype: yesno
     default: True
   - note: |
-      #### Your contact information      
+      **Your contact information**
     show if: remind_user
   - Mobile phone number for text messaging: user_cell
     default: ${tenant.phone_number}
@@ -288,6 +330,11 @@ fields:
     datatype: email
     show if: remind_user
     required: False
+  - note: |
+      **Optional information sharing**    
+  - Share information about my paperwork with non-profit legal aid organizations.* (See Help for more details): share_data
+    datatype: yesno
+    default: True
 help: |
   If you agree, we can send you a reminder text message and email message when you
   have a deadline or need to appear in court. *The reminders will only be based on
@@ -306,14 +353,10 @@ help: |
 ---
 event: cron_daily
 code: |
-  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0 and (date_difference(starting=date_discovery_due).days) < 10:
+  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
     send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
-    if user_cell:
-      send_sms(to=phone_number_in_e164(user_cell), template=compel_discovery_text, task='discovery reminder text')
-  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :
-    send_email(to=user_email, template=court_reminder_email, task='court reminder')
-    if user_cell:
-      send_sms(to=phone_number_in_e164(user_cell), template=court_reminder_text, task='court reminder text')
+  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days > -1 :
+    send_email(to=user_email, template=court_reminder_email, task='court_reminder')
 ---
 code: |
   date_discovery_received = service_date
@@ -359,10 +402,8 @@ code: |
 ---
 mandatory: True
 code: |
-  if user_email  and task_not_yet_performed('interview complete email'):
-    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat], task='interview complete email'))
-  if user_cell and task_not_yet_performed('interview complete text'):
-    background_action(send_sms(to=phone_number_in_e164(user_cell), template=interview_complete_text, task='interview complete text'))
+  if user_email:
+    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
 ---
 id: download
 mandatory: True
@@ -376,6 +417,10 @@ subquestion: |
   Based on your answers in the interview, we created [:file-pdf: ${nice_number(num_downloads)}
   forms](${downloads_concat.url_for()}) for you to file in court.
   You will need to :print: print and :envelope: mail or deliver these on your own.
+  
+  If you want to make any changes to your answers on the forms, click one of the 
+  section headings on the left or use the menu to go to "Review Answers" if you are
+  on a mobile device.
   
   #### Next steps
   

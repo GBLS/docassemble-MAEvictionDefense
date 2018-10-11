@@ -91,6 +91,12 @@ fields:
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
     hide if: is_pca
+  - How often is your rent paid?: facts.tenant_rent_frequency
+    choices:
+      - Weekly: week
+      - Monthly: month
+    default: month
+    hide if: is_pca
   - What is the full "contract" or "market" rent? (Skip if unknown): facts.tenant_contract_rent
     datatype: currency
     required: False
@@ -145,8 +151,8 @@ mandatory: True
 question: | 
   Information about you and your family
 subquestion: |
-  Your answers will help us select the right defenses and counterclaims.
-  Check all that apply.
+  Below are statements that apply to some tenants.
+  Read the list below carefully and select all of the facts that apply to you.
 fields: 
   - I live in public housing, have a housing voucher, or my rent is subsidized.: facts.tenant_has_subsidy
     datatype: yesno
@@ -175,18 +181,24 @@ fields:
     datatype: yesno
   - I or someone who lives with me is over the age of 60: tenant.is_over60
     datatype: yesno
-
   - I am a survivor of domestic violence.: tenant.is_dvvictim
     datatype: yesno
 section: About You
 help: |
-  The questions in this section help us decide which possible defenses we need to ask you more
-  information about. Please read them carefully.
+  You may have special defenses depending on facts about you. For example,
+  you have the right to an interpreter if you need one.
+  
+  Answer based on the facts that you know. For example:
+  if someone who lives in your household has a disability, you should mark that choice
+  even if that person is not receiving SSI benefit or has been turned down for those
+  benefits.
 ---
 mandatory: True
 question: Information about ${tenant.address.address}
 subquestion: |
-  Check all that apply.
+  Below are statements that apply to some tenancies.
+  Read the list below carefully and select all of the facts that applied to you during
+  the time that you lived at ${tenant.address.address}.
 fields:
   - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
     datatype: yesno
@@ -203,9 +215,19 @@ fields:
     datatype: yesno
   - I pay for one or more utilities.: claims.utilities
     datatype: yesno
-  - "I paid a security deposit.": paid_deposit
+  - I paid a security deposit.: paid_deposit
     datatype: yesno
   - "I pre-paid last month's rent when I first moved in.": paid_lmr
     datatype: yesno
   
 section: About You
+help: |
+  Even in a simple case, your rights may depend on actions your landlord took or
+  failed to take during the time that you lived in your home.
+  If you owe any rent, your claims may reduce the amount of rent owed, or your
+  landlord may end up owing you money. They may also give you the right to stay in
+  your home.
+  
+  Read this list carefully and check any options that apply to you.
+  
+  

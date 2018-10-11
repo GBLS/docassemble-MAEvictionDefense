@@ -1,22 +1,381 @@
 ---
 mandatory: True
+code: |
+  menu_items = [ action_menu_item('Review Answers', 'road_map') ] 
+---
+event: road_map
 question: |
-  Please review your answers
+  Roadmap
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  Click a section to revisit the answers from that section.
+
+  ${ nav }
+
+  Press "Continue" to resume the
+  interview.
+buttons:
+  Continue: continue
+---
+event: review_about_you
+question: |
+  About You
 subquestion: |   
-  These are the questions you have answered so far. Click to revisit.
+  So far, you have provided the following information about yourself.
 review: 
-  - Your Name: tenant.name
-  - Your Landlord's Name: landlord.name
-  - Eviction Reason: eviction_reason
-  - County: court.county
-  - Court Name: court.name
-  - Notice Type: notice_type
-  - You claimed retaliation: retaliation.is_retaliated
-  - You have bad conditions: bad_conditions.have_conditions
-  - You paid your deposit or last month's rent: paid_deposit_or_lmr
-  - There was a breach of "quiet enjoyment" (your right to undisturbed use and enjoyment of property): bqe.violated
+  - Update name: tenant.name.first
+    button: |
+      You said your name was ${tenant.name}
+  - Update name on Summons: tenant.name_different_on_summons
+    button: |
+      You said your name 
+      ${ 'was' if tenant.name_different_on_summons else 'was not'}
+      different on the Summons and Complaint.
+  - Update address: tenant.address.address
+    button: |
+      You said your address was ${tenant.address.block()}
+  - Edit signature: tenant.signature
+    button: |
+      This is your signature: ${ tenant.signature}
+      
 section: Review Answers
 ---
-mandatory: True
-code: |
-  menu_items = [ action_menu_item('Review Answers', 'review_answers') ] 
+event: review_about_landlord
+question: |
+  About your landlord
+subquestion: |
+  So far, you have provided the following information about your landlord.
+review:
+  - Update name: landlord.name
+    button: |
+      You said your landlord's name was ${landlord.name}.
+  - Update landlord type: landlord.organization_type
+    button: |
+      You said the type of landlord you have is ${landlord.organization_type}.
+  - Update attorney: landlord.has_attorney
+    button: |
+      You said your landlord
+      % if landlord.has_attorney:
+      does have an attorney. You said the attorney's name was
+      ${ landlord.attorneys_name } and address was ${ landlord.attorneys_address }.
+      % else:
+      does not have an attorney.
+      % endif
+---
+event: review_about_court
+question: |
+  About your court case
+subquestion: |
+  So far, you have provided the following information about your court and hearing date.
+review:
+  - Update jury claim: claim_jurytrial
+    button: |
+      You said that you ${'do' if claim_jurytrial else 'do not'}
+      want to claim your right to a jury trial.
+  - Update court: 
+      - court.name
+      - court.county
+      - recompute:
+        - court_is_housing_court
+    button: |
+      You said your case was originally scheduled for ${court.name} in 
+      ${court.county}.
+  - Update transfer: 
+      - transfer_to_housing_court
+      - transfer_court_name
+    button: |
+      You said you ${ 'wanted' if transfer_to_housing_court else 'did not want'}
+      to transfer your case to the ${transfer_court_name}.
+  - Update court date: 
+      - case.original_date
+      - case.answer_date
+      - recompute:
+        - case.on_time
+        - case.rescheduled_date
+        - date_discovery_due
+        - date_discovery_received
+        - date_motion_to_compel_due
+    button: |
+      You said your case was originally scheduled to be heard on ${ case.original_date }
+      with an answer date of ${ case.answer_date }.
+      
+      % if case.on_time:
+      If correct, this makes your rescheduled court date ${ case.rescheduled_date }
+      % endif
+  - Update timing of notices:
+      - date_received_ntq
+      - date_received_summons
+      - summons_in_hand
+      - summons_mailed
+      - summons_last_and_usual
+      - recompute:
+        - initial_defense.defective_summons
+        - initial_defense.premature_commencement
+    button: |
+      You said you received the notice to quit on ${ date_received_ntq} and the
+      summons and complaint on ${ date_received_summons }.
+      The summons ${ 'was' if summons_in_hand else 'was not'} served to you in hand.
+      You ${'did' if summons_mailed else 'did not'} receive the summons by mail.
+      You ${'did' if summons_last_and_usual else 'did not'} receive a copy left at your house.
+  - Update content of notices:
+    - ntq_matches_summons
+    - eviction_all_reasons
+    - recompute:
+      - eviction_reason
+      - eviction_detailed_reason
+      - initial_defense.defective_summons
+    button: |
+      You received a ${ notice_type } notice to quit.
+    
+      You said the reasons given for your eviction on the Notice to Quit 
+      were '${ eviction_detailed_reason }'.
+      
+      You said that the Summons and Complaint ${ 'did' if ntq_matches_summons else 'did not'}
+      match the Notice to Quit.
+      
+      
+---
+event: review_about_tenancy
+question: About your tenancy
+subquestion: |
+  So far, you have provided the following information about your tenancy.
+review:
+  - Update tenancy facts:
+      - facts.tenant_movein
+      - is_pca
+      - facts.tenant_rent_share
+    button: |
+      You said you moved in on ${ facts.tenant_movein}.
+      
+      You ${'are' if is_pca else 'are not'} a PCA or Superintendent.
+      
+      You pay ${currency(facts.tenant_rent_share)} in rent 
+      each ${ facts.tenant_rent_frequency }.
+      
+      % if defined('facts.tenant_contract_rent'):
+      The total rent your landlord receives is ${facts.tenant_contract_rent}.
+      % endif
+      
+      Your rental agreement type is ${tenancy_type}.
+      
+      % if defined('lease_type'):
+      Your lease type is ${lease_type}.
+      % endif
+  - Update public housing: facts.tenant_has_subsidy
+    button: |
+      You said that you ${ 'do' if facts.tenant_has_subsidy else 'do not'} have a
+      rental subsidy.
+  - Update subsidy type: 
+      - subsidy_type
+    button: |
+       The type of subsidy you said you have is ${ subsidy_type }.
+  - Update information about you:
+      - tenant.is_nonnativespeaker
+      - tenant.is_disabled
+      - tenant.is_under6
+      - tenant.is_over60
+      - tenant.is_dvvictim
+    button: |
+      You said that you ${'are not' if tenant.is_nonnativespeaker else 'are'} 
+      a native English speaker.
+       
+      You said you ${'are' if tenant.is_disabled else 'are not'} disabled.
+      
+      You said you ${'do' if tenant.is_under6 else 'do not'} have a household
+      member under the age of 6.
+       
+      You said that you ${'do' if tenant.is_over60 else 'do not'} have a household 
+      member over the age of 60.
+       
+      You said that you ${'are' if tenant.is_dvvictim else 'are not'} a survivor
+      of domestic violence.
+---
+event: review_claims
+question: |
+  Review Claims and Defenses
+subquestion: |
+  So far you have selected the following claims and defenses.
+review:
+  - Update retaliation:
+    - retaliation.is_retaliated
+    button: |
+      You said that your landlord ${ 'is' if retaliation.is_retaliated else 'is not'}
+      retaliating against you.
+      
+      % if retaliation.is_retaliated:
+      Specifically, you said the retaliation included:
+      
+        * Withheld rent due to bad conditions: ${ retaliation.withheld_rent }
+        * Reported bad conditions to a public agency: ${retaliation.badconditions_to_agency}
+        * Reported bad conditions to landlord: ${ retaliation.badconditions_to_landlord }
+        * Brought a claim against landlord: ${ retaliation.brought_claim }
+        * Tried to get protection related to domestic violence: ${ retaliation.domestic_violence}
+        % if defined('retaliation.other'):
+        * Other: ${retaliation.other}
+        % endif
+        * Participated in a tenant's union: ${ retaliation.tenant_union }
+        
+      You said the retaliation ${ 'did' if retaliation.within_6_months else 'did not'} occur in the last 6 months.
+      % endif
+  - Update discrimination:
+    - tenant.is_discriminated
+    - recompute:
+      - discrimination.protected_classes
+    button: |
+      You said that you ${ 'were' if tenant.is_discriminated else 'were not'} 
+      discriminated against by your landlord.
+      
+      You said you were discriminated against because of ${ discrimination.protected_classes }.
+  - Update sexual harassment:
+    - discrimination.sexual_harassment.is_harassed
+    - recompute:
+      - discrimination.sexual_harassment.pressured_sexual_favors
+    button: |
+      You said that you ${'have' if discrimination.sexual_harassment.is_harassed else 'have not'}
+      been sexually harassed by your landlord or their employee.
+      
+      % if discrimination.sexual_harassment.is_harassed:
+      In detail, you said:
+      
+      * You ${ 'were' if discrimination.sexual_harassment.pressured_sexual_favors else 'were not'} 
+      pressured for sexual favors.
+      * You ${'did' if discrimination.sexual_harassment.tenancy_terms_changed else 'did not' } 
+      have your tenancy terms changed.
+      * The harassment ${'did' if discrimination.sexual_harassment.unsafe_or_uncomfortable else 'did not'} 
+      make you feel unsafe or uncomfortable.
+      % endif
+  - Update bad conditions: 
+    - bad_conditions.have_conditions
+    - recompute:
+      - bad_conditions.landlord_notified
+    button: |
+      You said that you ${'did' if bad_conditions.have_conditions else 'did not'} have any bad housing conditions in the last 6 years.
+      
+      % if bad_conditions.have_conditions:
+      Specifically, the bad conditions included ${ bad_conditions.conditions }.
+        % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:
+      
+        You also said you had the other bad condition: ${ bad_conditions.other_condition }.
+        % endif
+
+      Your landlord learned about the problem because: ${bad_conditions.landlord_notified}.
+      
+      % endif
+  - Update Security Deposit: paid_deposit
+    button: |
+      You said you ${'paid' if paid_deposit else 'did not pay'}
+      a security deposit.
+  - Update Security Deposit violations:
+    - security_deposit.amount
+    - security_deposit.violations
+    - recompute:
+      - security_deposit.violated
+    button: |
+      The amount you say you paid as a deposit was ${ security_deposit.amount}.
+      The violations included ${ security_deposit.violations}.
+  - Update Pre-paid Last Month's Rent: paid_lmr
+    button: |
+      You said you ${ 'did' if paid_lmr else 'did not'} pre-pay last month's rent.
+  - Update Pre-paid Last Month's Rent:
+    - last_months_rent.amount
+    button: |
+      You said that you pre-paid last month's rent of ${ last_months_rent.amount }
+      and that your landlord ${'failed to pay' if last_months_rent.violated else 'paid'}
+      you interest on the anniversary of your payment.
+  - Update DTA payment: other.vendor_payments
+    button: |
+      You said that DTA ${'does' if other.vendor_payments else 'does not'} pay your 
+      rent on your behalf.
+  - Update Quiet Enjoyment: 
+    - bqe.violated
+    button: |
+      You said that your quiet enjoyment of the premises 
+      ${ 'was' if bqe.violated else 'was not' }
+      violated by your landlord.
+      
+      % if bqe.violated:
+      Specifically, you said your landlord allowed or caused:
+      
+      * Bad conditions: ${ bqe.bad_conditions }
+      * Entered your home without permission: ${ bqe.entered_without_permission}
+      * No heat: ${ bqe.heat}
+      * No hot water: ${ bqe.hot_water}
+      * Locked you out: ${ bqe.locked_out}
+      * Removed possessions: ${ bqe.removed_possessions}
+      * Other: ${ bqe.other}
+      % endif
+  - Update utilities: claims.utilities
+    button: | 
+      You said you ${ 'did' if claims.utilities else 'did not'} pay for utilities.
+      % if claims.utilities:
+      Specifically, your landlord:
+      
+      * Billed for utilities with no written agreement: ${ bqe.billed_no_agreement}
+      * Billed for others utilities: ${ bqe.billed_for_others}
+      * Shutoff utilities: ${ bqe.shutoff_utilities}
+      * Failed to pay utilities: ${ bqe.unpaid_utilities }
+      % endif
+  - Update subsidized housing defenses: 
+    - subsidized_housing.stopped_payment
+    - subsidized_housing.pha_pays_rent
+    - subsidized_housing.improper_rent_calculation
+    - subsidized_housing.landlord_overcharged
+    button: |
+      You said that a housing authority 
+      ${ 'does' if subsidized_housing.pha_pays_rent else 'does not'} 
+      pay rent to the landlord.
+
+      You said that your housing authority 
+      ${'did' if subsidized_housing.stopped_payment else 'did not'}
+      stop payment to the landlord.
+      
+      You said that the landlord or housing authority
+      ${ 'did' if subsidized_housing.improper_rent_calculation else 'did not'}
+      make a mistake in setting your rent share.
+      
+      You said that the landlord 
+      ${ 'did'  if subsidized_housing.landlord_overcharged else 'did not'}
+      overcharge you for rent.
+  - Update Consumer Protection: 
+    - consumer_protection.late_fees
+    - consumer_protection.nonagreed_rent
+    - consumer_protection.unlawful_court_fees 
+    - consumer_protection.unlawful_lease_terms
+    - consumer_protection.other 
+    button: |
+      You are claiming the consumer protection law.
+      Specifically, you are claiming your landlord acted in the following
+      unfair and deceptive ways:
+      
+      * Unlawful late fees: ${ consumer_protection.late_fees }
+      * Charged a rent you didn't accept: ${ consumer_protection.nonagreed_rent}
+      * Charged unlawful court fees: ${ consumer_protection.unlawful_court_fees }
+      * Used unlawful terms in the lease: ${ consumer_protection.unlawful_lease_terms}
+      * Other: ${ consumer_protection.other }
+---
+event: review_discovery
+question: Review Discovery
+subquestion: |
+  You provided the following information about discovery so far.
+
+#skip undefined: False
+review:
+  - label: Edit
+    field: tenant_review_discovery
+    button: |
+      You ${ 'wanted' if tenant_review_discovery else 'did not want'} to 
+      customize the discovery.
+  - label: Edit
+    field: interrogatory_questions
+    button: |
+      ${ ints.count_checked() } interrogatories are already selected.
+  - label: Edit
+    field: drq_questions
+    button: |
+      You requested ${ drq.count_checked() } kinds of documents.
+    
+    
+    

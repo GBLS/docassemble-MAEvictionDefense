@@ -136,6 +136,7 @@ subquestion: |
   Please select all questions that you would like to ask your landlord.
 fields: 
   code: ints_fields
+continue button field: interrogatory_questions  
 ---
 question: |
   Discovery: Getting ready for court
@@ -187,3 +188,4 @@ fields:
 help: |
   Document requests can be unreadable for non-lawyers. The important thing
   to review is the topic of the request.
+continue button field: drq_questions  

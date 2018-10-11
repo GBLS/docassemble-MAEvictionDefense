@@ -11,9 +11,10 @@ code: |
   getting_started
   #person_answering
   if person_answering == 'tenant':
-    user_understands
-    if not user_understands == "understands":
-      client_kicked_out
+    how_to_answer
+    #user_understands
+    #if not user_understands == "understands":
+    #  client_kicked_out
     overview_video
   #case.status
   if case.status == "onlyntq":
@@ -165,7 +166,9 @@ code: |
     postforeclosure.unfair_notices
     postforeclosure.unfair_loan_based_on_income
   
-  discrimination.sexual_harassment.is_harassed
+  if discrimination.sexual_harassment.is_harassed:
+    discrimination.sexual_harassment.pressured_sexual_favors
+  
   if initial_defense.other:
     initial_defense.other_reason
 
