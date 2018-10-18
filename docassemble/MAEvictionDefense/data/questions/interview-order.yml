@@ -72,7 +72,11 @@ code: |
       subsidized_housing.pha_pays_rent
       subsidized_housing.no_ntq_to_agency
       subsidized_housing.stopped_payment
-
+  
+  if is_condo_conversion:
+    more_than_3_units
+    
+  
   if bad_conditions.have_conditions or tenant.is_dvvictim or claims.harassment: 
     retaliation.is_retaliated = True
   #retaliation.is_retaliated
@@ -166,7 +170,7 @@ code: |
     postforeclosure.unfair_notices
     postforeclosure.unfair_loan_based_on_income
   
-  if discrimination.sexual_harassment.is_harassed:
+  if claims.harassment:
     discrimination.sexual_harassment.pressured_sexual_favors
   
   if initial_defense.other:

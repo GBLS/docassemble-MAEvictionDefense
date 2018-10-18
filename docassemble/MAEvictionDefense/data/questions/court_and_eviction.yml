@@ -251,7 +251,8 @@ fields:
       - Assault on staff or other tenant: assault on staff or other tenant
       - Harassment of staff or other tenant: harassment of staff or other tenant
       - Disturbance of other tenants (like smoking, noise, or odor) coming from your apartment: disturbance of other tenants
-      - Other lease violation: other
+      - Arrest or conviction for a crime: arrest or criminal conviction
+      - Other lease violation: other lease violation
 section: About Your Court Case
 ---
 code: |

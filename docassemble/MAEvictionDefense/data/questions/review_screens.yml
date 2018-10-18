@@ -29,11 +29,26 @@ review:
   - Update name: tenant.name.first
     button: |
       You said your name was ${tenant.name}
-  - Update name on Summons: tenant.name_different_on_summons
+  - Update name on Summons: 
+    - tenant.name_different_on_summons
+    - recompute:
+      - downloads_temp
+      - downloads      
+      - downloads_pdf
+      - downloads_docx
+      - downloads_concat
+      - num_downloads
+      - download_titles_temp
+      - download_titles
     button: |
       You said your name 
       ${ 'was' if tenant.name_different_on_summons else 'was not'}
       different on the Summons and Complaint.
+  - Update motion to intervene:
+    - request_right_to_intervene
+    button: |
+      You said that you ${'do' if request_right_to_intervene else 'do not'}
+      want to request permission to intervene in the case.
   - Update address: tenant.address.address
     button: |
       You said your address was ${tenant.address.block()}
@@ -120,13 +135,17 @@ review:
       The summons ${ 'was' if summons_in_hand else 'was not'} served to you in hand.
       You ${'did' if summons_mailed else 'did not'} receive the summons by mail.
       You ${'did' if summons_last_and_usual else 'did not'} receive a copy left at your house.
-  - Update content of notices:
-    - ntq_matches_summons
-    - eviction_all_reasons
-    - recompute:
-      - eviction_reason
-      - eviction_detailed_reason
-      - initial_defense.defective_summons
+  - label: Update content of notices
+    fields:
+      - ntq_matches_summons
+      - eviction_all_reasons
+      - follow up:
+        - fault_basis
+        - nofault_basis
+      - recompute:
+        - eviction_reason
+        - eviction_detailed_reason
+        - initial_defense.defective_summons
     button: |
       You received a ${ notice_type } notice to quit.
     
@@ -230,14 +249,14 @@ review:
       
       You said you were discriminated against because of ${ discrimination.protected_classes }.
   - Update sexual harassment:
-    - discrimination.sexual_harassment.is_harassed
+    - claims.harassment
     - recompute:
       - discrimination.sexual_harassment.pressured_sexual_favors
     button: |
-      You said that you ${'have' if discrimination.sexual_harassment.is_harassed else 'have not'}
+      You said that you ${'have' if claims.harassment else 'have not'}
       been sexually harassed by your landlord or their employee.
       
-      % if discrimination.sexual_harassment.is_harassed:
+      % if claims.harassment:
       In detail, you said:
       
       * You ${ 'were' if discrimination.sexual_harassment.pressured_sexual_favors else 'were not'} 
@@ -279,6 +298,30 @@ review:
   - Update Pre-paid Last Month's Rent: paid_lmr
     button: |
       You said you ${ 'did' if paid_lmr else 'did not'} pre-pay last month's rent.
+  - label: Update condo conversion
+    fields:
+      - is_condo_conversion
+      - follow up:
+        - more_than_3_units
+    button: |
+      You said that your apartment ${'is' if is_condo_conversion else 'is not'} being 
+      converted to a condo or coop was recently converted to a condo or coop.
+      
+      % if is_condo_conversion:
+        Specific violations included:
+        
+      % if defined('condo_violations') and condo_violations.any_true():
+      % for violation in condo_violations.true_values():
+      * ${violation}
+      % endfor
+      % endif
+      %if defined('condo_local_violations') and condo_local_violations.any_true():
+      % for violation in condo_local_violations.true_values():
+      * ${ violation }
+      % endfor
+      % endif
+        
+      % endif
   - Update Pre-paid Last Month's Rent:
     - last_months_rent.amount
     button: |
@@ -355,6 +398,7 @@ review:
       * Charged unlawful court fees: ${ consumer_protection.unlawful_court_fees }
       * Used unlawful terms in the lease: ${ consumer_protection.unlawful_lease_terms}
       * Other: ${ consumer_protection.other }
+      
 ---
 event: review_discovery
 question: Review Discovery

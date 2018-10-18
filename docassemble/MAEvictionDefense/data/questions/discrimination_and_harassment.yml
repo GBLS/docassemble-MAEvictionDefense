@@ -78,8 +78,6 @@ subquestion: |
   If you faced sexual harassment from your landlord or their employee, you may have a
   defense to the eviction. Check any of the below that apply.
 fields:
-  - My landlord or someone who works for them sexually harassed me or someone in my household. : discrimination.sexual_harassment.is_harassed
-    datatype: yesno
   - My landlord asked/pressured me or someone I live with for sexual favors. : discrimination.sexual_harassment.pressured_sexual_favors
     datatype: yesno
   - My landlord changed the terms of my tenancy because of my response to harassment.: discrimination.sexual_harassment.tenancy_terms_changed

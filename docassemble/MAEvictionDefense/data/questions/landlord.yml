@@ -14,7 +14,7 @@ code: |
   t_landlord_name = str(landlord.name).lower()
   if ("housing authority" in t_landlord_name):
     default_landlord_type = "public"
-  elif ("llc" in t_landlord_name) or ("company" in t_landlord_name):
+  elif ("llc" in t_landlord_name) or ("company" in t_landlord_name) or("inc" in t_landlord_name) or ("lp" in t_landlord_name) or ("corp" in t_landlord_name):
     default_landlord_type = "corporate"
   elif "trust" in t_landlord_name:
     default_landlord_type = "trust"

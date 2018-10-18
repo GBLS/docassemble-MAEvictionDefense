@@ -198,15 +198,19 @@ question: Information about ${tenant.address.address}
 subquestion: |
   Below are statements that apply to some tenancies.
   Read the list below carefully and select all of the facts that applied to you during
-  the time that you lived at ${tenant.address.address}.
+  the time that you lived at ${tenant.address.address}. If you are not sure, click
+  yes.
 fields:
   - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
     datatype: yesno
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
-  - I am or was the owner before the foreclosure.: is_pfc_owner
+    show if:
+      code: |
+        not facts.tenant_has_subsidy      
+  - I am or I was the owner before the foreclosure.: is_pfc_owner
     datatype: yesno
-    show if: postforeclosure.is_foreclosed
+    show if: postforeclosure.is_foreclosed   
   - ${landlord.name} has tried to lock me out.: bqe.locked_out
     datatype: yesno
   - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
@@ -215,6 +219,11 @@ fields:
     datatype: yesno
   - I pay for one or more utilities.: claims.utilities
     datatype: yesno
+  - ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon.: is_condo_conversion
+    datatype: yesno
+    show if:
+      code: |
+        not facts.tenant_has_subsidy
   - I paid a security deposit.: paid_deposit
     datatype: yesno
   - "I pre-paid last month's rent when I first moved in.": paid_lmr

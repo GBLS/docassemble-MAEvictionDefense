@@ -15,8 +15,8 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
- 
-  revision_date: 2018-10-11
+   
+  revision_date: 2018-10-18
 #  logo: |
 #    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
 ---
@@ -108,7 +108,7 @@ subquestion: |
   about the interview or a specific question, and "[BACK]" if you want to go back
   to the previous question.
 help: |
-  This screen doesn't have any help on it, but if it did you could read it now.
+  This is an example help page.
   Click "[Back to question]" to go to the previous screen and continue the interview.
 terms: 
   - green word: This is an example. Click it again to hide this definition.
@@ -124,25 +124,18 @@ question: |
   How to answer questions in this interview
 subquestion: |
   This interview asks for facts about you, your landlord, and your eviction case.
+  The facts will be used to decide who should win your eviction case and whether
+  you or landlord owes the other person any money.
   It's important to answer honestly.
   
   You should mark any facts that are true, even 
   if you do not think they are related to the eviction. _If you are not sure about a 
-  question, usually it is better to mark it than to leave it blank._ It is hard
-  to go back and add more facts later, but you can tell the court if you learn
-  you made a mistake and marked something you shouldn't have. You will also have
-  a chance to get more information from your landlord in this interview that can
-  help prove your case.
-  
-  Your answers may stop your eviction. You may also have the 
-  right to sue your landlord, and if a judge or jury agrees, your landlord may owe 
-  you money.
-  
-  Answering honestly on this interview will not stop you from reaching
-  an agreement with your landlord. Most tenants who complete this interview
-  end up with some kind of agreement in court. Completing this interview can help you
-  and your landlord both understand what your rights are and reach a fair
-  agreement.
+  question, usually it is better to mark it than to leave it blank._
+    
+  Using this interview will not stop you from reaching an agreement with your
+  landlord. It may help you and your landlord better understand your rights
+  and reach a fair agreement.
+
 field: how_to_answer  
 buttons: 
   - I agree to answer honestly and completely: continue
@@ -239,6 +232,7 @@ code: |
   last_months_rent_amount = 0
 ---
 include:
+  - condo_conversion.yml
   - tenant_and_tenancy.yml
   - landlord.yml
   - court_and_eviction.yml
@@ -368,9 +362,9 @@ code: |
 ---
 code: |
   if show_instructions:
-    downloads_temp = [instructions,answer,discovery]
+    downloads_temp = [cover_letter,instructions,answer,discovery]
   else:
-    downloads_temp = [answer,discovery] 
+    downloads_temp = [cover_letter,answer,discovery] 
     
   if case.status == 'late':
     downloads_temp.append(late_answer)
@@ -389,16 +383,22 @@ code: |
 code: |
   # We can't do this because we include the number of forms in one of the forms...
   # num_downloads = len(downloads_pdf)
+  download_titles_temp = ['Answer','Discovery']
   
   num_downloads = 2
   if case.status == 'late':
     num_downloads += 1
+    download_titles_temp.append('Motion to File Late Answer')
   if not court_is_housing_court and transfer_to_housing_court:
     num_downloads += 1
+    download_titles_temp.append('Notice of Transfer')
   if show_instructions:
     num_downloads += 1 
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     num_downloads += 1
+    download_titles_temp.append('Motion to Intervene')
+    
+  download_titles = download_titles_temp
 ---
 mandatory: True
 code: |
@@ -480,6 +480,12 @@ attachment:
     filename: Intervene
     variable name: intervene_motion
     docx template file: InterveneMotion.docx
+---
+attachment: 
+  - name: Cover Letter
+    filename: CoverLetter
+    variable name: cover_letter
+    docx template file: CoverLetter.docx
 ---
 reconsider: True
 code: |
