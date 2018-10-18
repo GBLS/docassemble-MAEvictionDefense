@@ -1,0 +1,42 @@
+---
+question: |
+  Protections for tenants in condo or coop conversions
+subquestion: |
+  If you live in a building that was recently converted to a condominium or 
+  cooperative, or your landlord plans to convert your building to a condominium
+  or cooperative, you may have special protections under state or local law.
+  
+fields: 
+  - My apartment building has more than 3 units.: more_than_3_units
+    datatype: yesno
+  - My landlord failed to follow state condo conversion law as follows: condo_violations
+    show if: more_than_3_units
+    datatype: checkboxes
+    choices:
+      - Failed to provide me with 1 year's notice
+      - Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
+      - Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
+      - Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
+      - Failed to offer me the right to purchase my apartment before listing it for sale
+      - Failed to offer me moving expenses
+  - My landlord failed to follow local condo conversion ordinances as follows: condo_local_violations
+    datatype: checkboxes
+    show if:
+      code: |
+        tenant.address.city in ['Abington','Acton','Amherst','Boston','Brookline','Haverhill','Lexington','Malden','Marlborough','New Bedford','Newburyport','Newton','Somerville']
+    code: |
+      condo_local_options
+help: |
+  See: https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-state-laws
+  and https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-condo-conversion
+  
+  Also https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
+---
+code: |
+  temp = [{'My landlord failed to obtain the proper local permit.':'My landlord failed to obtain the proper local permit.'}]
+  if tenant.address.city == 'Boston':
+    temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.":"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household."})
+    temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).":"My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason)."})
+  temp.append({"My landlord violated another local rule.":"My landlord violated another local rule (see links in help)."})
+
+  condo_local_options = temp
