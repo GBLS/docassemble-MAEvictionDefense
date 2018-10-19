@@ -11,7 +11,11 @@ metadata:
       organization: Greater Boston Legal Services
   error help: |
     # We ran into a bug.
-    We are very sorry for the inconvenience. You can use the paper forms instead.
+    We are very sorry for the inconvenience. 
+    
+    1. Try reloading the screen (use the refresh button) and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
@@ -22,10 +26,9 @@ metadata:
 ---
 sections:
   - Getting Started
-  - Your Right to a Jury Trial
   - review_about_you: About You
   - review_about_landlord: About Your Landlord
-  - review_about_court: About Your Court Case
+  - review_about_court: About Your Court Case 
   - review_about_tenancy: About Your Tenancy
   - review_claims: Claims and Defenses
   - review_discovery: Discovery
@@ -210,7 +213,7 @@ field: claim_jurytrial
 buttons:
   - Keep my jury trial: True
   - Waive my right to a jury: False
-section: Your Right to a Jury Trial
+section: Getting Started
 decoration: users
 help: |
   Either the landlord or the tenant can choose a jury trial any time up until the
@@ -270,6 +273,16 @@ yesno: show_instructions
 #section: Conclusion
 ---
 question: |
+  Almost done!
+subquestion: |
+  You've finished the main interview. Just a few quick questions left!
+  
+  If you need to change anything, click one of the section labels on the left
+  to update your answers.
+field: almost_done
+section: Conclusion
+---
+question: |
   Method of Service
 subquestion: |
   A copy of the paperwork needs to go to your landlord. If your landlord has an attorney,
@@ -296,39 +309,38 @@ fields:
     datatype: date
 section: Conclusion
 ---
+decoration: bell
 question: |
-  Optional follow-up
+  Court Date Reminders
 subquestion: |
-  If you like, we can send you a reminder :bell: when important
-  dates in your court case are coming up. We would also like to send you a short
-  survey after your court date. The survey will help us improve this service.
-    
-  If you don't want us to contact you again, remove the checkboxes below.
+  We can remind you about important dates by text or email.
+  % if tenant.email and tenant.phone_number:
   
+  We can use the contact information you just listed, **${tenant.email}** and
+  **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
+  % endif  
 fields:
-  - Remind me about upcoming deadlines. : remind_user
+  - Remind me about deadlines: remind_user
     datatype: yesno
     default: True
-  - Send me a follow-up survey after my first court date.: survey_user
+  - Send me a survey after my first court date.: survey_user
     datatype: yesno
     default: True
+  - Edit my contact information: edit_contact_info
+    datatype: yesno
+    default: ${ not (tenant.email and tenant.phone_number) }
   - note: |
       **Your contact information**
-    show if: remind_user
-  - Mobile phone number for text messaging: user_cell
+    show if: edit_contact_info
+  - Mobile phone number for text messaging: user_cell_edited
     default: ${tenant.phone_number}
-    show if: remind_user
+    show if: edit_contact_info
     required: False
-  - Email address: user_email
+  - Email address: user_email_edited
     default: ${tenant.email}
     datatype: email
-    show if: remind_user
+    show if: edit_contact_info 
     required: False
-  - note: |
-      **Optional information sharing**    
-  - Share information about my paperwork with non-profit legal aid organizations.* (See Help for more details): share_data
-    datatype: yesno
-    default: True
 help: |
   If you agree, we can send you a reminder text message and email message when you
   have a deadline or need to appear in court. *The reminders will only be based on
@@ -344,6 +356,14 @@ help: |
   
   Sharing your information is optional. You can use this service for free whether or not
   you want your information to be shared.
+---
+code: |
+  if remind_user and (tenant.email and tenant.phone_number):
+    user_cell = tenant.phone_number
+    user_email = tenant.email
+  if edit_contact_info:
+    user_cell = user_cell_edited
+    user_email = user_email_edited
 ---
 event: cron_daily
 code: |
@@ -407,7 +427,6 @@ code: |
 ---
 id: download
 mandatory: True
-need: remind_user
 #decoration: smile
 question: |
   Congratulations! You've reached the end of the interview

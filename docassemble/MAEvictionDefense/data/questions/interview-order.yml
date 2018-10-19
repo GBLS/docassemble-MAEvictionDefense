@@ -6,7 +6,8 @@ comment: |
 sets: all_answer_variables
 code: |
   interview_date = today()
-  
+  show_instructions = True
+
   # Overview
   getting_started
   #person_answering
@@ -30,6 +31,7 @@ code: |
   defendants_name
   tenant.address
   tenant.address.geolocate()
+  remind_user
   landlord.name
   landlord.organization_type
   landlord.has_attorney
@@ -44,12 +46,14 @@ code: |
     firstdatepassed
     case.status = 'late'
   case.rescheduled_date
-  if case.on_time:
+  if case.on_time and person_answering == 'tenant':
     case_is_on_time # Inform the user of postponement
 
   eviction_reason
   set_plead_counterclaims
-
+  if person_answering == 'tenant': 
+    eviction_reason_explanation # Explain 239 s 8A rights
+    
   facts.tenant_movein
   # facts.tenant_rent_share # don't need this if they are a PCA/Super
   if eviction_reason == 'nonpayment':
@@ -60,9 +64,8 @@ code: |
   date_received_ntq
   ntq_matches_summons
   has_defense
-
-  if has_defense and task_not_yet_performed('show defense summary'):
-    mark_task_as_performed('show defense summary')
+  
+  if person_answering == "tenant":
     show_defense_summary
   
   if facts.tenant_has_subsidy:
@@ -77,7 +80,7 @@ code: |
     more_than_3_units
     
   
-  if bad_conditions.have_conditions or tenant.is_dvvictim or claims.harassment: 
+  if (plead_counterclaims and bad_conditions.have_conditions) or tenant.is_dvvictim or claims.harassment: 
     retaliation.is_retaliated = True
   #retaliation.is_retaliated
   if retaliation.is_retaliated:
@@ -111,7 +114,7 @@ code: |
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
   initial_defense.other
-
+  
   if plead_counterclaims:
     bad_conditions.have_conditions
     if bad_conditions.have_conditions:
@@ -181,16 +184,17 @@ code: |
       if bad_conditions.conditions['lead paint']:
         plead_lead_paint
   
-  if claims.utilities or bad_conditions.have_conditions or bqe.violated:
+  if plead_counterclaims and (claims.utilities or bad_conditions.have_conditions or bqe.violated):
     need_rental_value
   tenant.is_disabled
   if tenant.is_disabled:
     disability.request_reasonable_accommodation
   
-  #show_instructions # moved to separate sheet-we will always generate now
   if person_answering == 'attorney':
     initial_defense.custom_reason_for_dismissal 
     initial_defense.custom_other
-  method_of_service
- 
+
+  if person_answering == "tenant":
+    almost_done
+   
   all_answer_variables = True

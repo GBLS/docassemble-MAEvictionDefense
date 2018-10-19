@@ -79,11 +79,9 @@ code: |
 code: |
   tenant.address.geolocate()
 ---
-question: Your tenancy
-subquestion: |
-  Let's answer some questions about your tenancy.
+question: Your rental agreement
 fields:
-  - When did you move in?: facts.tenant_movein
+  - When did you move in? (best date you know): facts.tenant_movein
     datatype: date
     required: False
   - I live in the property as a caretaker (PCA, handyman, or Superintendent) and do not pay rent.: is_pca
@@ -203,6 +201,9 @@ subquestion: |
 fields:
   - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
     datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
     show if:
@@ -213,12 +214,21 @@ fields:
     show if: postforeclosure.is_foreclosed   
   - ${landlord.name} has tried to lock me out.: bqe.locked_out
     datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
   - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
     datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
   - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
     datatype: yesno
   - I pay for one or more utilities.: claims.utilities
     datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
   - ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon.: is_condo_conversion
     datatype: yesno
     show if:
@@ -226,9 +236,14 @@ fields:
         not facts.tenant_has_subsidy
   - I paid a security deposit.: paid_deposit
     datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
   - "I pre-paid last month's rent when I first moved in.": paid_lmr
     datatype: yesno
-  
+    show if:
+      code: |
+        plead_counterclaims  
 section: About You
 help: |
   Even in a simple case, your rights may depend on actions your landlord took or

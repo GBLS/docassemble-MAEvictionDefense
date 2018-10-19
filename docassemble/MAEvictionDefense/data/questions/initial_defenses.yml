@@ -23,17 +23,11 @@ fields:
     datatype: yesno
 section: Relief
 ---
-show if: |
-  interview_mode == 'guided'
 question: |
-  Termination of tenancy
+  Termination notice
 subquestion: |
-  The Notice to Quit is the first step a landlord must take if they want to evict you.
-  There is no standard form for a notice to quit, but it should include certain information.
-  Also, depending on what kind of tenant you are, they may need to give you a specific amount of
-  time in the notice.
-
-  Below are statements about the notice that you received. Select any that apply to you.
+  Below are statements about your eviction notice (notice to quit).
+  Select the answers that match the notice to quit you received.
 fields:
   - The notice to quit has my name on it.: ntq_includes_tenant_name
     datatype: yesnoradio
@@ -54,6 +48,8 @@ fields:
       Answering this question probably requires the help of a lawyer. You can leave it blank if you
       are not sure.
   - Type of termination notice: notice_type
+    default: |
+      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
     choices:
       - 14 day Notice to Quit: fourteen_day
       - 30 day Notice to Quit: thirty_day
@@ -88,6 +84,11 @@ fields:
       code: |
         showifdef('lease_type') == 'fixed_term'
 help:
+  The Notice to Quit is the first step a landlord must take if they want to evict you.
+  There is no standard form for a notice to quit, but it should include certain information.
+  Also, depending on what kind of tenant you are, they may need to give you a specific amount of
+  time in the notice.
+
   Massachusetts has strict requirements for language in an eviction notice. Language might be required by
   Massachusetts law, your lease, or a federal rule if you are living in subsidized housing.
 
@@ -95,6 +96,7 @@ help:
   You can learn more at
   [MassLegalHelp](http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf)
   and if you aren't sure, you can probably talk to a lawyer at the Attorney for the Day table at your local court.
+section: Claims and Defenses  
 ---
 sets: 
   - initial_defense.no_proper_termination
@@ -158,6 +160,7 @@ help: |
   either in the notice to quit or in a written notice when they accept your check for rent.
 
   There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
+section: Claims and Defenses  
 ---
 sets: initial_defense.new_tenancy
 code: |
@@ -204,6 +207,7 @@ help: |
   after a proper notice to quit". It's always OK for the summons and complaint to list
   rent even if rent was not the reason for the notice to quit. The rent amount
   is also likely to change and the summons may list rent due after the original notice.
+section: Claims and Defenses    
 ---
 sets: initial_defense.inconsistent_reasons
 code: |
@@ -233,6 +237,7 @@ fields:
     datatype: yesno
   - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
     datatype: yesno
+section: Claims and Defenses      
 ---
 sets: initial_defense.defective_summons
 code: |
@@ -276,14 +281,6 @@ code: |
         initial_defense.premature_commencement = False 
 ---
 question: |
-  Form of notices
-fields:
-  - The summons and complaint says I did something wrong that was not listed on the notice to quit (other than owing rent). : notice_inconsistent
-    datatype: yesno
-  - I got something like a Notice to Quit but it does not tell me to leave on a certain day.: notice_does_not_terminate
-    datatype: yesno
----
-question: |
   Cure of non-payment
 subquestion: |
   You may have the right to stop the eviction if you paid all money that was owed at the time to the 
@@ -323,6 +320,8 @@ help:
   the section titled "Paying the Rent Owed" 
   and ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).
   Also see [G.L. 186 s. 11](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11).  
+section: Claims and Defenses  
+ 
 ---
 sets: initial_defense.cure
 code: |
@@ -448,3 +447,4 @@ subquestion: |
 field: show_defense_summary
 buttons:
   - Continue: continue
+section: Claims and Defenses    
