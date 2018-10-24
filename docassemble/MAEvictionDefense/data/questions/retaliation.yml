@@ -36,13 +36,13 @@ subquestion: |
 fields:
   - I withheld rent because of bad conditions.: retaliation.withheld_rent
     datatype: yesno
-    default: ${bad_conditions.have_conditions}
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I reported bad conditions in writing to the landlord.: retaliation.badconditions_to_landlord
     datatype: yesno
-    default: ${bad_conditions.have_conditions}
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I reported bad conditions orally or in writing to a public agency.: retaliation.badconditions_to_agency
     datatype: yesno
-    default: ${bad_conditions.have_conditions}
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I am a member of a tenants union or participated in tenant organizing meetings.: retaliation.tenant_union
     datatype: yesno
   - I sued my landlord or brought a claim against my landlord.: retaliation.brought_claim

@@ -13,9 +13,10 @@ interview help:
     1. Transfer to Housing Court (if your case is not in a housing court, you can move it for free)
     1. Intervene (if you are not named in the eviction, you can ask for permission to defend against the eviction in court)
      
-    At the end of this interview, you will have documents that you can file in court. You will also need to 
+    At the end of this interview, you will have documents that you can file in court. 
+    This interview does _not_ file them for you.
+    You need to 
     give a copy of the documents to your landlord or your landlord's attorney.
-    
     
     ### Contributors:
     This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited
@@ -29,6 +30,16 @@ interview help:
     
     ### Feedback, comments, or want to improve this interview?
     View or [submit issues](https://github.com/nonprofittechy/docassemble-MAEvictionDefense/issues) on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    ### Run into a problem?
+    We are very sorry for the inconvenience. 
+    
+    1. Try reloading the screen (use the refresh button) or click "back" and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
     
     ### Copyright Notice
     This interview is copyright 2018 Greater Boston Legal Services and open source 

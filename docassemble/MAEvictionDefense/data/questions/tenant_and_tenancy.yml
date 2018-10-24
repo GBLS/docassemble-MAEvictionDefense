@@ -208,7 +208,7 @@ fields:
     datatype: yesno
     show if:
       code: |
-        not facts.tenant_has_subsidy      
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
   - I am or I was the owner before the foreclosure.: is_pfc_owner
     datatype: yesno
     show if: postforeclosure.is_foreclosed   
@@ -233,7 +233,7 @@ fields:
     datatype: yesno
     show if:
       code: |
-        not facts.tenant_has_subsidy
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
   - I paid a security deposit.: paid_deposit
     datatype: yesno
     show if:

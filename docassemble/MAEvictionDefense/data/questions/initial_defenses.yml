@@ -142,7 +142,7 @@ fields:
   - Did any of the following occur after you received the notice to quit on ${format_date(date_received_ntq)}?: post_ntq_waiver
     datatype: checkboxes
     choices:
-      - I paid additional rent after ${format_date(date_received_ntq)}: rent
+      - I paid rent after ${format_date(date_received_ntq)}: rent
         default: ${attempted_cure}
       - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
   - Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language?: ntq_contains_reservation

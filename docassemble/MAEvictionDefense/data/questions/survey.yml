@@ -7,6 +7,8 @@ subquestion: |
   
   This survey is about the self-help eviction defense tool that you used on
   __DATE__ and what happened afterwards in your court case.
+  
+  The survey is anonymous and will be used to improve the self-help tool.
 fields:
   - Were the advice and paperwork in the guided interview helpful? : user_found_advice_useful
     datatype: yesnoradio
@@ -16,15 +18,35 @@ fields:
     datatype: yesnoradio
   - Is your case resolved? : case_resolved
     datatype: yesnoradio
+  - Can we contact you again in 6 months? : can_followup
+    datatype: yesnoradio
+    show if:
+      variable: case_resolved
+      is: False
   - What happened with your case? : case_outcome
     show if: case_resolved
     choices:
-      - My case was dismissed by the judge or by agreement.
-      - I reached an agreement to stay in my home and pay back money owed.
-      - I reached an agreement to stay in my home with no money owed or paid to me.
-      - I reached an agreement to stay and my landlord will pay me money. : agreement_with_money
-      - I reached an agreement to move out and my landlord will pay me money or waive back rent. : moveout_with_money
-      - I reached an agreement to move out but my landlord will not pay me anything.
+      - My case was dismissed (by judge or agreement)
+      - I reached an agreement with my landlord
+      - I had a trial
+      - I defaulted (did not attend court)
+  - What did the agreement say? : case_agreement_outcome
+    datatype: yesnoradio
+    show if: 
+      variable: case_outcome
+      is: 'I reached an agreement with my landlord'
+    choices:
+      - I can stay in the home if I pay back money owed.
+      - I can stay in the home. Nobody owes any money.
+      - I can stay and my landlord owes me money. : agreement_with_money
+      - I will move out and my landlord will pay me money or forgive rent I owe. : moveout_with_money
+      - I will move out but I will not be paid any money.
+  - What happened at the trial? : case_agreement_outcome
+    datatype: yesnoradio
+    show if: 
+      variable: case_outcome
+      is: 'I had a trial'
+    choices:
       - I won a trial and my landlord must pay me money. : trial_with_money
       - I won a trial but no money from my landlord.
       - I lost a trial or motion to issue execution.

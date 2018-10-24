@@ -1,13 +1,13 @@
 ---
 template: compel_discovery_email
 subject: |
-  It's time for you to compel discovery (Massachusetts Defense for Eviction)
+  It's time for you to compel discovery (Massachusetts Defense for Eviction) in ${landlord} v. ${tenant}
 content: |
   Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
-  When you used our self-help eviction defense tool on ${interview_date}, you asked
-  your landlord to send you information to be ready for your case.
+  When you used our self-help eviction defense tool on ${format_date(start_time())}, you asked
+  your landlord ${landlord} to send you information to be ready for your case.
   
   That information should have been sent to you no later than ${date_discovery_due}.
   
@@ -25,14 +25,14 @@ content: |
 template: compel_discovery_text
 content: |
   Reminder: file a motion to compel discovery
-  in your eviction case TODAY. Form with instructions here: 
+  in your eviction case ${landlord} v. ${tenant} TODAY. Form with instructions here: 
   https://gbls.org/tactics/compel
   
    - MADE from GBLS.
 ---
 template: court_reminder_email
 subject: |
-  You have a court date on ${court_date}! (Massachusetts Defense for Eviction)
+  You have a court date on ${court_date}! (Massachusetts Defense for Eviction) for ${landlord} v. ${tenant}
 content: |
   Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
@@ -41,17 +41,17 @@ content: |
   a different date!
   
   You are getting this email because you used our self-help eviction tool
-  on ${interview_date}.
+  on ${format_date(start_time())}.
 ---
 template: attend_court_text
 content: |
-  Reminder: your court date is ${format_date(court_date)} 
+  Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
   at ${court.name} at 9 AM. Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.  
 ---
 template: interview_complete_email
 subject: |
-  You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction)
+  You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction) for ${landlord} v. ${tenant}
 content: |
   Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.

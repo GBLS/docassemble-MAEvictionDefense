@@ -36,6 +36,8 @@ code: |
   landlord.organization_type
   landlord.has_attorney
 
+  set_title(subtitle=landlord.name.full() + ' v. ' + tenant.name.full())
+
   court.county
   court.name
   if not court_is_housing_court:
@@ -46,8 +48,9 @@ code: |
     firstdatepassed
     case.status = 'late'
   case.rescheduled_date
-  if case.on_time and person_answering == 'tenant':
-    case_is_on_time # Inform the user of postponement
+  if case.on_time:
+    if person_answering == 'tenant':
+      case_is_on_time # Inform the user of postponement
 
   eviction_reason
   set_plead_counterclaims
@@ -71,12 +74,13 @@ code: |
   if facts.tenant_has_subsidy:
     subsidy_type
     subsidized_housing.no_proper_termination
+    subsidized_housing.improper_rent_calculation 
     if subsidy_type in ['Section 8 voucher', 'MRVP']:
       subsidized_housing.pha_pays_rent
       subsidized_housing.no_ntq_to_agency
       subsidized_housing.stopped_payment
   
-  if is_condo_conversion:
+  if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and is_condo_conversion:
     more_than_3_units
     
   
@@ -156,7 +160,7 @@ code: |
       consumer_protection.unlawful_court_fees
       consumer_protection.unlawful_lease_terms
   
-  if postforeclosure.is_foreclosed:
+  if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and postforeclosure.is_foreclosed:
     postforeclosure.no_just_cause.bona_fide_protections
     postforeclosure.no_just_cause.no_binding_purchase
     postforeclosure.no_just_cause.ntq_or_other_actions
