@@ -13,7 +13,7 @@ subquestion: |
 
   Click a section to revisit the answers from that section.
 
-  ${ nav }
+  ${ nav.show_sections(style='inline',show_links=True) }
 
   Press "Continue" to resume the
   interview.

@@ -105,7 +105,7 @@ code: |
   tenant_type = 'renter'
   if is_pca:
     tenant_type = 'pca'
-  if postforeclosure.is_foreclosed and is_pfc_owner:
+  if not facts.tenant_has_subsidy and postforeclosure.is_foreclosed and is_pfc_owner:
     tenant_type = 'pfc_owner'
 
   initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
@@ -120,7 +120,7 @@ code: |
   elif notice_type == 'thirty_day':
     initial_defense.improper_time_given = tenancy_type == 'taw'
   elif notice_type == 'seventy_two_hour':
-    initial_defense.improper_time_given = not (postforeclosure.is_foreclosed and tenant_type == 'pfc_owner')
+    initial_defense.improper_time_given = not (not facts.tenant_has_subsidy and postforeclosure.is_foreclosed and tenant_type == 'pfc_owner')
   elif notice_type == 'rental_period':
     initial_defense.improper_time_given = False
   else:
