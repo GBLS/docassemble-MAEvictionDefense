@@ -1,8 +1,4 @@
 ---
-mandatory: True
-code: |
-  menu_items = [ action_menu_item('Review Answers', 'road_map') ] 
----
 event: road_map
 question: |
   Roadmap
@@ -324,6 +320,8 @@ review:
       % endif
   - Update Pre-paid Last Month's Rent:
     - last_months_rent.amount
+    - recompute:
+      - last_months_rent.violated
     button: |
       You said that you pre-paid last month's rent of ${ last_months_rent.amount }
       and that your landlord ${'failed to pay' if last_months_rent.violated else 'paid'}

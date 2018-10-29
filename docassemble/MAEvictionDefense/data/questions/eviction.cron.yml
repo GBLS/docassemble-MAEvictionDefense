@@ -1,0 +1,13 @@
+---
+code: |
+  if user_email:
+    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
+  send_user_email = True
+---
+event: cron_daily
+code: |
+  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
+    send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
+    compel_discovery_needed = True
+  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days > -1 :
+    send_email(to=user_email, template=court_reminder_email, task='court_reminder')

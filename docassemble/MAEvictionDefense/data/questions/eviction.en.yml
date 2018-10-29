@@ -1,0 +1,1971 @@
+---
+default language: en
+---
+comment: |
+  Overview screens
+---
+sections:
+  - Getting Started
+  - review_about_you: About You
+  - review_about_landlord: About Your Landlord
+  - review_about_court: About Your Court Case 
+  - review_about_tenancy: About Your Tenancy
+  - review_claims: Claims and Defenses
+  - review_discovery: Discovery
+  - Conclusion
+---
+id: intro screen
+decoration: home
+question: |
+  MADE: Massachusetts Defense for Eviction
+subquestion: |
+  MADE helps tenants defend against an eviction in court.
+  We will create forms that you then need to :print: print and :envelope:
+  deliver to court and to your landlord. It should take you between :stopwatch: 25 
+  minutes and an hour to complete, depending on how complex your case is.
+  If you get interrupted, you can save your work and come back to it. You can also
+  email yourself the completed forms.
+  This interview is completely free.
+  
+  Before we start, you should find:
+
+  1. The **Summons and Complaint** and 
+  2. the **Notice to Quit** you got from your landlord.
+  
+  If you don't have either document, you can still do your best to answer from your memory.
+  
+  At any time, click on a {green word} to learn what it means. Click the "[Help]" button to learn more
+  about the interview or a specific question, and "[BACK]" if you want to go back
+  to the previous question.
+help: |
+  This is an example help page.
+  Click "[Back to question]" to go to the previous screen and continue the interview.
+terms: 
+  - green word: This is an example. Click it again to hide this definition.
+section: Getting Started
+fields:
+  - Language / Idioma: user_language
+    default: en
+    choices:
+      - English: en
+      - Español: es
+  - I have read and agree to the [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
+    datatype: yesnoradio
+    default: True
+continue button field: getting_started
+---
+id: how to answer
+decoration: info-circle
+question: |
+  How to answer questions in this interview
+subquestion: |
+  This interview asks for facts about you, your landlord, and your eviction case.
+  The facts will be used to decide who should win your eviction case and whether
+  you or landlord owes the other person any money.
+  It's important to answer honestly.
+  
+  You should mark any facts that are true, even 
+  if you do not think they are related to the eviction. _If you are not sure about a 
+  question, usually it is better to mark it than to leave it blank._
+    
+  Using this interview will not stop you from reaching an agreement with your
+  landlord. It may help you and your landlord better understand your rights
+  and reach a fair agreement.
+
+field: how_to_answer  
+buttons: 
+  - I agree to answer honestly and completely: continue
+section: Getting Started
+---
+question: |
+  Who is completing this interview?
+field: person_answering
+buttons:
+  - Tenant or helper: tenant
+  - Attorney or paralegal: attorney
+---
+question: Your tenant rights in Massachusetts
+subquestion: | 
+  Watch the video below to learn a little more about the eviction process.
+  You can also visit the [MassLegalHelp](http://www.masslegalhelp.org/housing/evictions) website.
+video: "[YOUTUBE TSaTw0Y5OFA]"
+field: overview_video
+---
+question: |
+  Upcoming court dates
+subquestion: |
+  Do you have a court date coming up for your case?
+field: case.status
+choices: 
+  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
+  - I have a court date scheduled: summons
+  - I signed an agreement in this case already. I have a new court date coming up.: afj
+  - I missed my first court date.: late
+default: summons
+help:
+  We need to know how far along in the court process you are so we can choose the right forms.
+  
+  If your first court date has passed, you may be able to use a special form called a 
+  "Motion to File Late Answer." This interview will help you decide. 
+section: Getting Started
+---
+event: onlyhasntq
+progress: 100
+question: Sorry, this is not the right interview for you.
+subquestion: |
+  This interview helps you fill out paperwork for court. You do not have a court date yet.
+
+  Come back to this interview when you have a court date scheduled.  
+
+  If you owe money to your landlord see [Rent](https://www.masslegalhelp.org/housing/private-housing/ch19/rent) on MassLegalHelp. 
+  If you are having trouble getting your landlord to make repairs See [Getting Repairs Made](https://www.masslegalhelp.org/housing/lt1-chapter-8-getting-repairs-made.pdf) on MassLegalHelp.
+  Try the [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to
+  find a legal services agency near you.
+buttons:
+  Exit: exit
+  Restart: restart
+---
+question: This may not be the right interview for you.
+subquestion: |
+  This interview is meant to help you respond to your landlord's original eviction case.
+  You said that you have already been to court for this case or you missed your first
+  court date.
+  
+  Click "Keep Going" if you would like to ask for permission from the judge to file a
+  late response. Your court date will not be postponed.
+  
+  If you already filed a response in court or signed an agreement, you should exit this
+  interview now.
+
+sets: firstdatepassed
+buttons:
+  - Keep going:
+      code: |
+        firstdatepassed = True  
+  - Restart: restart
+  - Exit: exit
+    url: https://www.gbls.org/  
+---
+question: |
+  Your right to a jury trial
+subquestion: |
+  You or your landlord can choose to have a jury
+  decide this case. This is _your_ chance to choose a jury.
+  
+  Choosing a jury does not mean you will stop having to pay rent, or 'use and occupancy'.
+  Jury trials are complicated and if you are unable to reach an agreement with your
+  landlord, it helps most tenants to have a lawyer with them at a jury trial.
+  
+  #### Why keep your right to a jury trial?
+  1. A jury is made up of ordinary people, some of whom may be tenants like you.
+  1. It takes time to schedule a jury trial. You can use the time to try to solve the 
+  problem with your landlord.
+  1. You can always give up your jury right later. But you can't ask for a jury trial
+  after the deadline for filing this paperwork.
+  1. You can still reach an agreement with your landlord. Most cases end up with
+  an agreement, whether the tenant keeps their right to a jury trial or not.
+
+field: claim_jurytrial
+buttons:
+  - Keep my jury trial: True
+  - Waive my right to a jury: False
+section: Getting Started
+decoration: users
+help: |
+  Either the landlord or the tenant can choose a jury trial any time up until the
+  answer date which is printed on your Summons and Complaint. You can use this
+  interview to ask for your jury trial, or another form, but it must be
+  before the deadline. If you do think you may want a jury, you should keep your
+  jury right in this interview.
+  
+  A jury trial can be difficult for a tenant to do on their own. However, because
+  most cases end in an agreement, asking for a jury trial now has very low risk.
+  
+  If you do end up having a jury trial, in Massachusetts evictions, a jury may
+  be either 6 or 12 people. At least 5/6 jurors
+  must agree to reach a decision in your case. They will reach a separate decision
+  about each of your claims and defenses, money owed to the landlord, and whether
+  you get to remain in your apartment.  
+---
+decoration: bell
+question: |
+  Court Date Reminders
+subquestion: |
+  We can remind you about important dates by text or email.
+  % if tenant.email and tenant.phone_number:
+  
+  We can use the contact information you just listed, **${tenant.email}** and
+  **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
+  % endif  
+fields:
+  - Remind me about deadlines: remind_user
+    datatype: yesno
+    default: True
+  - Send me a survey after my first court date.: survey_user
+    datatype: yesno
+    default: True
+  - Edit my contact information: edit_contact_info
+    datatype: yesno
+    default: ${ not (tenant.email and tenant.phone_number) }
+  - note: |
+      **Your contact information**
+    show if: edit_contact_info
+  - Mobile phone number for text messaging: user_cell_edited
+    default: ${tenant.phone_number}
+    show if: edit_contact_info
+    required: False
+  - Email address: user_email_edited
+    default: ${tenant.email}
+    datatype: email
+    show if: edit_contact_info 
+    required: False
+help: |
+  If you agree, we can send you a reminder text message and email message when you
+  have a deadline or need to appear in court. *The reminders will only be based on
+  the information you gave us in this interview.* If your court date changes for
+  any reason, keep in mind that the reminder might be for the wrong date. It's important
+  that you still pay attention to the dates that the court tells you about.
+  
+  We can also save information about your case if you choose. Saved information
+  will be used only by a non-profit legal aid organization. It may be used to help
+  you if your case is accepted for full representation, or it may be used to identify
+  trends to help the non-profit legal aid organization bettter decide how to use
+  its resources to prevent evictions.
+  
+  Sharing your information is optional. You can use this service for free whether or not
+  you want your information to be shared.
+---
+question: Sign below
+subquestion: |
+  When you sign these forms, you are saying that your answers to the questions
+  in this interview are true as far as you know.
+  
+signature: tenant.signature
+under: |
+  ${ tenant.name }
+---
+question: |
+  Almost done!
+subquestion: |
+  You've finished the main interview. Just a few quick questions left!
+  
+  If you need to change anything, click one of the section labels on the left
+  to update your answers.
+field: almost_done
+section: Conclusion
+progress: 95
+---
+question: |
+  Getting paperwork to your landlord
+subquestion: |
+
+  Your landlord or their attorney needs to get a copy of the forms
+  we are working on today. They need the copy no later than 
+  ${format_date(case.answer_date)}. Deliver it to the address they listed
+  on the summons and complaint.
+
+  Some landlords will agree to get paperwork by fax or email. If you want to
+  fax or email the forms, you need permission in advance. Every landlord
+  must accept it if you deliver it in-person or by regular mail.
+
+  % if format_date(case.answer_date) == format_date(today()):
+  Because today is the deadline for you, _you can't mail the paperwork._
+  Either hand-deliver it, or call ahead to get permission to get it to them
+  some other way.
+  % endif
+
+  When and how will you bring the paperwork to your landlord or their attorney?
+fields: 
+  - Delivery method: method_of_service
+    choices:
+      - Mail: mailed
+      - Delivering by hand: delivered in-hand
+      - Email (with permission of my landlord): emailed
+      - Fax (with permission of my landlord): faxed
+  - Date of delivery: service_date
+    datatype: date
+section: Conclusion
+---
+id: download
+event: download_forms
+question: |
+  Congratulations! You've reached the end of the interview
+subquestion: |
+  
+  Great work! You've finished the guided interview! But you're not quite done yet.
+  Based on your answers in the interview, we created [:file-pdf: ${nice_number(num_downloads)}
+  forms](${downloads_concat.url_for()}) for you to file in court.
+  You will need to :print: print and :envelope: mail or deliver these on your own.
+  
+  If you want to make any changes to your answers on the forms, click one of the 
+  section headings on the left or use the menu to go to "Review Answers" if you are
+  on a mobile device.
+  
+  #### Next steps
+  
+  1. :print: Print three (3) copies of [:file-pdf: these court forms](${downloads_concat.url_for()}).
+     You can remove the cover page which has instructions for you.
+  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
+     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
+  % if landlord.has_attorney:
+  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  % else:
+  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
+  %endif
+  1. **Show up at the court on ${format_date(court_date)}**.
+
+  #### For your records
+  You can download a copy of all of the individual forms, together with a :file-word: Microsoft
+  Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
+
+  ${answers_response}  
+
+video: |
+  [YOUTUBE mG-JDXOAkJU]
+progress: 100  
+section: Conclusion
+---
+comment: |
+  Questions about Tenant
+---
+question: What is your name?
+fields:
+  - First Name: tenant.name.first
+    default: ${user_info().first_name}
+  - Middle Name: tenant.name.middle
+    required: False
+  - Last Name: tenant.name.last
+    default: ${user_info().last_name}
+  - Suffix: tenant.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: About You
+---
+question: |
+  How are you named on the court summons?
+subquestion: |
+  Look at the Summons and Complaint when answering this question. Find the line labeled
+   "To Defendants / Tenants / Occupants"
+   
+  [FILE names_on_summons.png, 100%]
+fields:
+  - Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}"?: tenant.name_different_on_summons
+    datatype: yesnoradio
+    default: False
+  - There are additional names listed. : tenant.more_names_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - My name is misspelled on the summons.: tenant.name_misspelled
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - My name is missing from the summons.: tenant.not_named_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - Exact contents of the line "To Defendants / Tenants / Occupants": defendant_name_as_listed_on_summons
+    show if: tenant.name_different_on_summons
+---
+question: |
+  What is your current address?
+fields:
+  - address: tenant.address.address
+    address autocomplete: True
+  - unit: tenant.address.unit
+    required: False
+  - city: tenant.address.city
+  - state: tenant.address.state
+    code: |
+      states_list()
+    default: "MA"
+  - zip: tenant.address.zip
+  - county: tenant.address.county
+    required: False
+  - Phone number: tenant.phone_number
+    required: False
+  - Email address: tenant.email
+    datatype: email
+    required: False
+  - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
+    datatype: yesnoradio
+    default: True
+  - What address are you being evicted from? (all on one line): premises_alternate_address
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+---
+question: Your rental agreement
+fields:
+  - When did you move in? (best date you know): facts.tenant_movein
+    datatype: date
+    required: False
+  - I live in the property as a caretaker (PCA, handyman, or Superintendent) and do not pay rent.: is_pca
+    datatype: yesno
+  - What do you pay for rent?: facts.tenant_rent_share
+    datatype: currency
+    hide if: is_pca
+  - How often is your rent paid?: facts.tenant_rent_frequency
+    choices:
+      - Weekly: week
+      - Monthly: month
+    default: month
+    hide if: is_pca
+  - What is the full "contract" or "market" rent? (Skip if unknown): facts.tenant_contract_rent
+    datatype: currency
+    required: False
+    help: |
+      Enter the full amount of money your landlord is paid for the apartment,
+      or the best number that you know.
+    show if: 
+      code: |
+        facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
+  - My rental agreement is: tenancy_type
+    choices:
+      - a written lease (even if expired): lease
+      - month-to-month or week-to-week (tenancy at will): taw
+      - I don't have one: taw
+      - I don't know: taw
+  - When the original lease period is over (usually 1 year), my lease ...: lease_type
+    show if:
+      variable: tenancy_type
+      is: 'lease'
+    choices:
+      - ends and doesn't renew.: fixed_term
+      - renews for another term .: self_extending
+      - renews month-to-month or week to week.: renews_as_taw
+      - I don't know.: unknown
+section: About Your Tenancy
+help: |
+  Your tenancy situation and the type of agreement you have to live at your address
+  may affect your rights. For example, a live in aide or caretaker is entitled
+  to different notice rights than a tenant paying rent or an owner or former owner
+  after foreclosure.
+
+  There are three common kinds of *leases*:
+  
+  1. A "fixed term" lease states that it ends on a specific day, usually one year
+  from the date it is signed. A tenant with a fixed term lease does not always get a notice to quit if the landlord
+  does not renew the lease.
+  2. A "self-extending" lease automatically gets renewed. Usually, the new term is the same as the original term.
+  3. A special kind of self-extending lease automatically gets renewed but is no longer a lease. Instead it converts into
+  a month-to-month tenancy, or tenancy at will.
+
+  There are slightly different rules for tenants with a lease that is still in effect, versus a tenant-at-will. For example,
+  you may get a different amount of time to come up-to-date with your rent.
+  The default
+  is that every tenant without a lease has the same rights as a tenant-at-will.
+
+  You can learn more from [Legal Tactics, Chapter 4: Tenancies](https://www.masslegalhelp.org/housing/lt1-chapter-4-tenancies.pdf)
+
+--- 
+question: | 
+  Information about you and your family
+subquestion: |
+  Below are statements that apply to some tenants.
+  Read the list below carefully and select all of the facts that apply to you.
+fields: 
+  - I live in public housing, have a housing voucher, or my rent is subsidized.: facts.tenant_has_subsidy
+    datatype: yesno
+    default: ${landlord.organization_type == 'public'}
+  - English is not my first language.: tenant.is_nonnativespeaker
+    datatype: yesno    
+  - I need an interpreter.: tenant.needs_interpreter
+    datatype: yesno
+    show if:  tenant.is_nonnativespeaker
+  - "I need an interpreter who speaks:" : tenant.preferred_language
+    datatype: combobox
+    show if:  tenant.needs_interpreter
+    choices:
+      - Spanish
+      - Cantonese
+      - Cape Verdean Creole
+      - French
+      - Haitian Creole
+      - Khmer
+      - Mandarin
+      - Portuguese
+      - Vietnamese          
+  - I or someone who lives with me has a disability: tenant.is_disabled
+    datatype: yesno
+  - I or someone who lives with me is under the age of 6: tenant.is_under6
+    datatype: yesno
+  - I or someone who lives with me is over the age of 60: tenant.is_over60
+    datatype: yesno
+  - I am a survivor of domestic violence.: tenant.is_dvvictim
+    datatype: yesno
+section: About You
+help: |
+  You may have special defenses depending on facts about you. For example,
+  you have the right to an interpreter if you need one.
+  
+  Answer based on the facts that you know. For example:
+  if someone who lives in your household has a disability, you should mark that choice
+  even if that person is not receiving SSI benefit or has been turned down for those
+  benefits.  
+---
+question: Information about ${tenant.address.address}
+subquestion: |
+  Below are statements that apply to some tenancies.
+  Read the list below carefully and select all of the facts that applied to you during
+  the time that you lived at ${tenant.address.address}. If you are not sure, click
+  yes.
+fields:
+  - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims
+  - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
+    datatype: yesno
+    show if:
+      code: |
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
+  - I am or I was the owner before the foreclosure.: is_pfc_owner
+    datatype: yesno
+    show if: postforeclosure.is_foreclosed   
+  - ${landlord.name} has tried to lock me out.: bqe.locked_out
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${landlord.name} or their employee has sexually harassed me.: claims.harassment
+    datatype: yesno
+  - I pay for one or more utilities.: claims.utilities
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon.: is_condo_conversion
+    datatype: yesno
+    show if:
+      code: |
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
+  - I paid a security deposit.: paid_deposit
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - "I pre-paid last month's rent when I first moved in.": paid_lmr
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims  
+section: About You
+help: |
+  Even in a simple case, your rights may depend on actions your landlord took or
+  failed to take during the time that you lived in your home.
+  If you owe any rent, your claims may reduce the amount of rent owed, or your
+  landlord may end up owing you money. They may also give you the right to stay in
+  your home.
+  
+  Read this list carefully and check any options that apply to you.
+
+---
+comment: |
+  Questions about court / eviction
+---
+question: |
+  What court is your case being heard in?
+subquestion: |
+  Look at the upper-right-hand corner of the Summons and Complaint form. Pick the name of the court from the list(s) below.  
+  
+  [FILE court_and_county.png, 100%]
+fields: 
+  - Court name: court.name
+    default: ${local_housing_court}
+    code: |
+      ma_courts_list()
+  - County: court.county
+    default: ${tenant.address.county}
+    choices:
+      - Barnstable County
+      - Berkshire County
+      - Bristol County
+      - Dukes County
+      - Essex County
+      - Franklin County
+      - Hampden County
+      - Hampshire County
+      - Middlesex County
+      - Nantucket County
+      - Norfolk County
+      - Plymouth County
+      - Suffolk County
+      - Worcester County
+section: About Your Court Case
+
+---
+question: |
+  Transfer to Housing Court
+subquestion: |
+  You said that your case is currently scheduled in ${court.name}.
+
+  You have the right to transfer your case to ${local_housing_court}.
+  Most tenants benefit from transferring their case to the Housing Court.
+  Depending on your city or town, the housing court may be more difficult to get to.
+  You should come up with a plan to get to court on time.
+
+  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  to learn where the ${local_housing_court} sits for your city or town.
+
+  #### Why transfer your case to housing court? 
+  1. Access to legal aid and [Lawyer for the Day](https://www.mass.gov/service-details/lawyer-for-the-day-programs) programs.
+  2. Access to the [Tenancy Preservation Program](https://www.mass.gov/info-details/tenancy-preservation-program).
+  3. Access to social service agencies that may help you pay back rent.
+  4. Judges who specialize in housing law.
+
+  Transferring your case may also postpone your first court hearing by a week or more, depending on your court.
+field: transfer_to_housing_court
+buttons:
+  - Transfer my case: True
+  - Stay in ${court.name}: False
+help: |
+  Transferring is an automatic right. You should check with the clerk in the Housing Court to find out
+  where and what day you should appear in court. You may get a notice in the mail. It will most likely not be
+  the rescheduled trial date that is printed on the Answer form.
+---
+question: |
+  Request to Intervene
+subquestion: |
+  Because your name is not on the summons and complaint, you will need permission from the judge if
+  you want to defend against the eviction.
+fields:
+  - Would you like to ask permission to participate in this case? : request_right_to_intervene
+    datatype: yesnoradio
+  - "Briefly explain why you should be allowed to participate:": intervention_reason
+    datatype: area
+    show if: request_right_to_intervene
+  - "Briefly explain why you would be harmed if you are not allowed to participate:" : intervention_harm
+    datatype: area
+    show if: request_right_to_intervene
+---
+question: |
+  What is your landlord's address?
+  Look on the summons and complaint if you are not sure.
+fields:
+  - address: landlord.address.address
+    address autocomplete: True
+  - unit: landlord.address.unit
+    required: False
+  - city: landlord.address.city
+  - state: landlord.address.state
+  - zip: landlord.address.zip
+  - country: landlord.address.country
+    default: 'US'    
+--- 
+question: |
+  Which Housing Court are you transferring your case to?
+subquestion: |
+  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  to learn where the court sits for your city or town.
+field: transfer_court_name_temp
+dropdown:
+  - Central Housing Court (formerly Worcester): Central Housing Court
+  - Eastern Housing Court (formerly Boston): Eastern Housing Court
+  - Metro South Housing Court  
+  - Northeastern Housing Court
+  - Southeastern Housing Court
+  - Western Housing Court
+---
+question: |
+  Court Date
+subquestion: |
+  To answer this question, please take a look at your Summons and Complaint. 
+  Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
+  
+  [FILE dates.png, 100%]
+  
+fields:
+  - What is the date of your first court hearing?: case.original_date
+    datatype: date
+    hint: Often a Thursday.
+  - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
+    datatype: date
+    hint: Usually a Monday
+help:
+  Trial dates are usually on a Thursday in many, but not all courts.
+  
+  This information helps us figure out if you are answering to the eviction by 
+  the deadline. If you are filing your [Answer] on time, the court will delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
+ 
+section: About Your Court Case
+---
+event: case_is_on_time
+decoration: thumbs-up
+question: |
+  Good news!
+subquestion: |
+  Because you will be filing these forms on-time (no later than ${format_date(case.answer_date)}), your case date will automatically be
+  postponed by two weeks. You do not need to appear in court on ${format_date(case.original_date)}.
+  
+  Instead, you must appear on **${format_date(court_date)}**.
+
+buttons:
+  - Continue: 
+      code: |
+        case_is_on_time = True  
+help: |
+  The two-week delay is automatic if a tenant files their response to the eviction
+  on-time and requests discovery. See [U.S.P.R. 7(b)](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
+section: About Your Court Case
+---
+question: |
+  Defenses for fault eviction
+subquestion: |
+  If you do not agree with the landlord's allegation of ${eviction_detailed_reason}, you may have a defense.
+  Select all that apply below.
+fields:
+  - I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong): fault.did_not_occur
+    datatype: yesno
+    default: True
+  - The ${capitalize(eviction_detailed_reason)} is not a violation of my lease.: fault.not_violation_of_agreement
+    datatype: yesno
+    default: True
+  - The ${eviction_detailed_reason} was the fault of a guest that I had no control over.: fault.no_control_of_guest
+    datatype: yesno
+section: Claims and Defenses
+---
+question: Reason for eviction
+subquestion: |
+  Look at your Notice to Quit. 
+  
+  What does your Notice to Quit say is the reason you are being evicted?
+  
+fields: 
+  - Choose all reasons listed on your Notice to Quit that apply. : eviction_all_reasons
+    datatype: checkboxes
+    none of the above: False
+    choices:
+      - My landlord says I owe rent.: nonpayment
+      - My landlord says I did something wrong other than owe rent. For example, a noise complaint or damage to the apartment.: fault  
+      - My landlord does not want to rent to me any longer but it's not because of something I did. (For example, my landlord wants to rent to a family member.): nofault
+      - I never got a Notice to Quit.: nontq
+      - I don't know. : unsure
+help: |
+  Look carefully at your notice to quit or notice to terminate tenancy. Choose the 
+  best answer you can from the information on the notice. There is no special
+  language that your landlord must use when telling you the reason for the eviction.
+  It can sometimes be written in a confusing or unclear way.
+section: About Your Court Case
+---
+question: | 
+  Basis for no-fault eviction
+subquestion: |
+  What does the landlord say is the reason they want you to move out?  
+fields: 
+  - Select all that apply: nofault_basis
+    datatype: checkboxes
+    choices:
+      - I refused to pay a higher rent: refusal of rent increase
+      - They want to renovate: desire to renovate
+      - They want the apartment for a family member: moving in a family member
+      - My landlord did not give a reason: no reason
+      - Other: other
+section: About Your Court Case
+---
+question: | 
+  Basis for fault eviction
+subquestion: |
+  What does your landlord say is the reason they are evicting you?
+ 
+  **Remember, you are telling the court what your landlord says. You are not agreeing with the landlord.**
+fields: 
+  - Select all that apply: fault_basis
+    datatype: checkboxes
+    choices: 
+      - Chronic late payment of rent: chronic late payment of rent
+      - Overcrowding: overcrowding
+      - Unauthorized occupants: unauthorized occupants
+      - Excessive foot traffic: excessive foot traffic
+      - Clutter or hoarding: clutter or hoarding
+      - Destruction of property: destruction of property
+      - Assault on staff or other tenant: assault on staff or other tenant
+      - Harassment of staff or other tenant: harassment of staff or other tenant
+      - Disturbance of other tenants (like smoking, noise, or odor) coming from your apartment: disturbance of other tenants
+      - Arrest or conviction for a crime: arrest or criminal conviction
+      - Other lease violation: other lease violation
+section: About Your Court Case
+---
+decoration: info-circle
+question: |
+  Defenses for your case
+subquestion: |
+  The main reason your landlord says they are
+  evicting you is '${eviction_detailed_reason}'.
+  
+  % if eviction_reason == "fault":
+  That means you won't be allowed to counter-sue your landlord for money to win (stop
+  the eviction) in this case.
+  %if plead_counterclaims:
+  Your landlord also says you owe money. You can still sue your landlord
+  for money to offset (lower) the amount of rent owed.
+  % endif  
+  
+  Your landlord still must prove that '${eviction_detailed_reason}' is a good
+  reason for evicting you. They also must prove that you did what they say you
+  did.
+  
+  You may have other defenses that can stop the eviction. Common defenses include
+  disability, mistakes by the landlord, and an eviction for a bad (illegal) reason.  
+  
+  
+  % else:
+  In a case like yours, you can win (stop the eviction) if you prove you have at least
+  $1 in claims against your landlord. This is because of a law sometimes called the 
+  "rent withholding" statute. The most common claim is for bad housing conditions.
+  The rest of this interview will help you find if you can use this defense.
+  % endif    
+field: eviction_reason_explanation
+help: |
+  A very common defense in Massachusetts evictions is 
+  [G.L. 239 s. 8A](https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section8A).
+  It gives a tenant a defense to the eviction in any case brought "without fault"
+  of the tenant, or if the case is brought for "non-payment of rent".
+  
+  If the tenant in a non-fault or non-payment case can prove at least $1 in damages, 
+  they have 7 days from the date of the
+  trial to pay any balance that is still owed to the landlord and they get to stay
+  in the apartment. In practice, this often means that the landlord will not be able
+  to file a new eviction case for 6 months, but it is not guaranteed.
+  
+  This defense does _not_ apply if the eviction is brought "with fault" of the tenant.
+  For example, you can't use this defense if the landlord says you broke your lease.
+  
+  [Learn more about defenses to an eviction.](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims)
+
+---
+comment: |
+  Questions about landlord
+---
+question: What is your Landlord's name?
+subquestion: |
+  To answer this question, look at the Summons and Complaint. Write your landlord's
+  name exactly the same way it is written on the line "...defend against the complaint
+  of Plaintiff / Landlord / Owner"
+
+  [FILE landlord_name.png, 100%]
+fields:
+  - Name: landlord.name.text
+section: About Your Landlord
+---
+question: |
+  Information about ${landlord.name}.
+subquestion: |
+  Look at your summons and complaint while answering this question.
+fields: 
+  - What type of landlord do you have?: landlord.organization_type
+    datatype: radio
+    default: ${default_landlord_type}
+    choices:
+    - My landlord is a company, corporation, or LLC.: corporate
+      help: |
+        Might include "LLC" in the name. Many landlords, except very 
+        small landlords, are companies or agencies.
+    - My landlord is a housing authority or city/governmental agency.: public
+    - My landlord lives in the building with me.: livesinbuilding
+    - My landlord is a trust.: trust
+      help: |
+        Might include "Realty Trust" in the name. Common for investors
+        who may buy property to resell.
+    - None of the above or I don't know.: other
+  - My landlord has changed since I first moved in.: landlord.is_new
+    datatype: yesno
+    default: False
+help: |
+  Some defenses and claims only apply to certain types of landlords.
+  Your responses on this page will help us learn if your landlord is subject 
+  to consumer protection laws and also whether they are required to use a lawyer
+  to file their case.
+  If your landlord has changed since you first moved in, we will also ask
+  them different questions to help you prepare for court.
+section: About Your Landlord
+---
+question: |
+  Does ${landlord.name} have an attorney for this case?
+
+subquestion: |
+  Look at your summons and complaint to answer this question.
+  Look at the line labeled "Printed name of Plaintiff or Attorney" and
+  the line opposite that reads "address of Plaintiff or Attorney".
+  
+  If the signer is an attorney, their name may include:
+  
+  * Esq
+  * A BBO # (usually 6 digits)
+  * The address might include "LLC" or "Associates" or
+    "Law Offices"
+
+fields: 
+  - My landlord has an attorney.: landlord.has_attorney
+    datatype: yesnoradio
+    default: False
+  - Attorney's name: landlord.attorneys_name
+    show if: landlord.has_attorney
+    required: False
+  - Attorney's address (all on one line): landlord.attorneys_address
+    show if: landlord.has_attorney
+    required: False
+
+---
+comment: |
+  Initial defenses
+---
+question: Is your rent paid by DTA?
+fields: 
+  - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
+    datatype: yesno
+section: Claims and Defenses  
+---
+question: |
+  Termination notice
+subquestion: |
+  Below are statements about your eviction notice (notice to quit).
+  Select the answers that match the notice to quit you received.
+fields:
+  - The notice to quit has my name on it.: ntq_includes_tenant_name
+    datatype: yesnoradio
+    default: True
+  - The notice to quit includes the names of everyone who signed the lease.: ntq_includes_all_tenants
+    datatype: yesnoradio
+    default: True
+  - The notice to quit has my correct address.: ntq_includes_correct_address
+    datatype: yesnoradio
+    default: True
+  - My lease requires a 30-day notice even for non-payment of rent.: lease_requires_30_day_notice
+    datatype: yesno
+    default: False
+  - The notice to quit leaves out language that is required by my lease, by law, or by the requirements of a subsidy program.: ntq_leaves_off_required_language
+    datatype: yesno
+    default: False
+    help: |
+      Answering this question probably requires the help of a lawyer. You can leave it blank if you
+      are not sure.
+  - Type of termination notice: notice_type
+    default: |
+      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
+    choices:
+      - 14 day Notice to Quit: fourteen_day
+      - 30 day Notice to Quit: thirty_day
+      - 72 hour Notice to Quit: seventy_two_hour
+      - Notice "until the end of the next rental period" or similar: rental_period
+      - I never got a Notice to Quit: no_ntq
+      - I don't know: thirty_day
+  - I was behind in rent when I got the 14-day notice.: behind_in_rent
+    datatype: yesnoradio
+    default: True
+    show if: 
+      variable: notice_type
+      is: 'fourteen_day'
+  - I never agreed to pay the amount of rent the landlord put in the 14-day notice: refused_rent_increase
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - I paid the full amount of money I owed.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - I offered to pay the full amount of money I owed.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - Date my lease ends: lease_end_date
+    datatype: date
+    show if:
+      code: |
+        showifdef('lease_type') == 'fixed_term'
+help:
+  The Notice to Quit is the first step a landlord must take if they want to evict you.
+  There is no standard form for a notice to quit, but it should include certain information.
+  Also, depending on what kind of tenant you are, they may need to give you a specific amount of
+  time in the notice.
+
+  Massachusetts has strict requirements for language in an eviction notice. Language might be required by
+  Massachusetts law, your lease, or a federal rule if you are living in subsidized housing.
+
+  If you are not a lawyer, it may be hard to figure out that certain language is required in your notice.
+  You can learn more at
+  [MassLegalHelp](http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf)
+  and if you aren't sure, you can probably talk to a lawyer at the Attorney for the Day table at your local court.
+section: Claims and Defenses  
+---
+question: |
+  Waiver / creation of a new tenancy
+subquestion: |
+  In some cases actions you or your landlord take can make the notice to quit invalid, or "waive" it. Look at your notice to quit
+  to answer this question.
+  
+  Think about the time period after you first received a notice to quit, on
+  ${format_date(date_received_ntq)}. Check any statements below that apply to you.
+fields:
+  - Did any of the following occur after you received the notice to quit on ${format_date(date_received_ntq)}?: post_ntq_waiver
+    datatype: checkboxes
+    choices:
+      - I paid rent after ${format_date(date_received_ntq)}: rent
+        default: ${attempted_cure}
+      - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
+  - Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language?: ntq_contains_reservation
+    datatype: yesnoradio
+    default: True
+    show if: post_ntq_waiver['rent']
+help: |
+  "Waiver" is the idea that your landlord cannot evict you when they are acting in a way that means that they want you
+  to continue as a tenant. The most straightforward type of waiver is when your landlord asks you to sign a new lease.
+  However: even signing a new lease may not be waiver, if there is specific language in the lease that says the new lease
+  will not waive the past eviction.
+
+  The same idea is true if your landlord accepts rent from you after the eviction starts. However, it is very simple for
+  your landlord to avoid "waiving" your tenancy if they include the "magic words" "rent will be accepted for use and occupancy only"
+  either in the notice to quit or in a written notice when they accept your check for rent.
+
+  There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
+section: Claims and Defenses  
+---
+question: |
+  Summons and Complaint
+subquestion: |
+  Find the line on your summons and complaint that begins with "because:"
+  
+  What does your summons and complaint say is the reason for the eviction?
+fields:
+  - It matches the notice to quit. : ntq_matches_summons
+    default: True
+    datatype: yesnoradio
+  - Select all reasons listed on the summons and complaint that are not listed on the notice to quit.: summons_eviction_reasons
+    hide if: ntq_matches_summons
+    datatype: checkboxes
+    choices:
+      - Failure to vacate after a valid notice (or similar): failure_to_vacate
+      - Non-payment of rent: rent
+      - A different amount of rent than listed on the notice: rent
+      - The same "fault" reason listed on the notice to quit: same_fault
+      - A new "fault" reason or breach of lease, not listed on the notice to quit: new_fault
+  - The summons and complaint includes the names of all adult tenants who signed the lease.: summons_includes_all_tenants
+    datatype: yesnoradio
+    default: True
+  - The summons and complaint has my correct address.: summons_includes_correct_address
+    datatype: yesnoradio
+    default: True
+    
+help: |
+  Before you can be evicted, you need fair notice of the reason for the eviction
+  and a chance to fix the problem, if it can be fixed.
+  
+  Because of this, the reason listed on the court notice (Summons and Complaint) should
+  be a close match to the notice to quit. It's common and acceptable for the language
+  to be slightly different if it has the same basic meaning. Sometimes the court summons will only say "failure to vacate
+  after a proper notice to quit". It's always OK for the summons and complaint to list
+  rent even if rent was not the reason for the notice to quit. The rent amount
+  is also likely to change and the summons may list rent due after the original notice.
+section: Claims and Defenses    
+---
+question: Timing of notices
+subquestion: |
+  It is important for your landlord to file your eviction case and pre-eviction notice
+  at the proper time. You may have a defense if this was not done in your case.
+
+  Put in the best information you know.
+video: |
+  [YOUTUBE 5gYPl-NHbv0]
+fields:
+  - Date I got the notice to quit: date_received_ntq
+    datatype: date
+  - Date I got the notice to appear in court (Summons and Complaint).: date_received_summons
+    datatype: date
+  - I got the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
+    datatype: yesno
+  - The summons and complaint was mailed to me.: summons_mailed
+    datatype: yesno
+  - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
+    datatype: yesno
+section: Claims and Defenses      
+---
+question: |
+  Cure of non-payment
+subquestion: |
+  You may have the right to stop the eviction if you paid all money that was owed at the time to the 
+  landlord, even if you owe a new amount of money now.
+  
+  The proper time payment is due depends on whether you have a lease or a tenancy at will. You said
+  earlier that you have a ${tenancy_type.replace('taw','tenancy at will or were unsure')}.
+  % if tenancy_type == 'lease':
+  You have until the answer date, ${case.answer_date}, to pay the full amount due.
+  % else:
+  You likely have or had until 10 days after you received the notice to quit,
+  ${date_received_ntq.plus(days=10)}, to pay the full amount due.
+  % endif
+fields: 
+  - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
+    datatype: yesno
+  - My payment included the cost of filing in court and a constable (typically about $200).: paid_court_fees
+    datatype: yesno
+  - This was the first notice to quit for non-payment of rent I received in the past 12 months.: no_ntq_in_12_months
+    datatype: yesno
+  - Date of payment to the landlord: cure_date
+    datatype: date
+    required: False
+help:
+  Paying all rent owed is called "curing" the non-payment of rent and can stop the
+  eviction. The deadline for paying the full amount of rent owed should be 
+  listed on your notice to quit, but this interview will also help you determine what
+  the deadline is. You only have the cure right if you haven't used it to stop an
+  eviction in the last 12 months.
+  
+  If you have a lease you may still be able to cure the non-payment of rent.
+  If you haven't made any payment yet, payment will likely need to include the costs
+  of bringing you to court and serving you notices, about $180-$200, depending on the
+  court.
+  
+  See [Chapter 12 of Legal Tactics](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf), 
+  the section titled "Paying the Rent Owed" 
+  and ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).
+  Also see [G.L. 186 s. 11](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11).  
+section: Claims and Defenses  
+ 
+---
+question: |
+  Change in ownership
+fields:
+  - Why do you have a new landlord? : new_landlord_reason
+    choices:
+      - My landlord died
+      - My landlord sold the building
+      - I don't know who owns the building now but there is new management
+  - The building was sold after I received the notice to quit: building_sold_after_ntq
+    datatype: yesno
+    show if:
+      variable: new_landlord_reason
+      is: 'My landlord sold the building'
+help: |
+  We want to know about the new ownership of the building to understand if your new
+  landlord has the right (standing) to evict you.
+---
+question: Custom Defenses
+subquestion: |
+  You can customize your response to the eviction by adding additional
+  defenses or reasons for the case to be dismissed.
+  You should normally only do this if you were advised by a lawyer. 
+  If you would like to add a custom defense, complete the sentences below:
+fields: 
+  - The Landlord's case should be dismissed because: initial_defense.custom_reason_for_dismissal 
+    datatype: area
+    required: False
+  - I have other defenses or counterclaims as follows: initial_defense.custom_other
+    datatype: area
+    required: False
+section: Claims and Defenses
+---
+sets: show_defense_summary
+decoration: thumbs-up
+question: |
+  You may have a defense!
+subquestion: |
+  It looks like your landlord made a mistake with your case. If a judge agrees, 
+  your landlord may need to start their case over again. We will list these defenses
+  on your Answer form.
+  
+  % if initial_defense.no_proper_termination:
+  * Your tenancy was not properly terminated
+  % endif
+  % if initial_defense.no_ntq:
+  * You should have received a notice to quit but you did not
+  % endif
+  % if initial_defense.premature_commencement:
+  * Your landlord started the case too early
+  % endif
+  % if initial_defense.varney:
+  * Your landlord didn't use an attorney but was required to
+  % endif
+  % if initial_defense.defective_summons:
+  * The summons and complaint was not properly served
+  % endif
+  % if (eviction_reason == 'nonpayment' and initial_defense.cure):
+  * You cured any non-payment of rent
+  % endif
+  % if initial_defense.new_tenancy:
+  * Your landlord accidentally created a new tenancy
+  % endif
+  % if initial_defense.inconsistent_reasons:
+  * Your landlord gave a new reason for the eviction without giving you a new notice
+  % endif
+  % if initial_defense.no_standing:
+  * Your landlord may lack standing to evict you
+  % endif
+field: show_defense_summary
+buttons:
+  - Continue: continue  
+section: Claims and Defenses
+---
+question: |
+  Protections for tenants in condo or coop conversions
+subquestion: |
+  If you live in a building that was recently converted to a condominium or 
+  cooperative, or your landlord plans to convert your building to a condominium
+  or cooperative, you may have special protections under state or local law.
+  
+fields: 
+  - My apartment building has more than 3 units.: more_than_3_units
+    datatype: yesno
+  - My landlord failed to follow state condo conversion law as follows: condo_violations
+    show if: more_than_3_units
+    datatype: checkboxes
+    choices:
+      - Failed to provide me with 1 year's notice
+      - Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
+      - Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
+      - Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
+      - Failed to offer me the right to purchase my apartment before listing it for sale
+      - Failed to offer me moving expenses
+  - My landlord failed to follow local condo conversion ordinances as follows: condo_local_violations
+    datatype: checkboxes
+    show if:
+      code: |
+        tenant.address.city in ['Abington','Acton','Amherst','Boston','Brookline','Haverhill','Lexington','Malden','Marlborough','New Bedford','Newburyport','Newton','Somerville']
+    code: |
+      condo_local_options
+help: |
+  See: https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-state-laws
+  and https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-condo-conversion
+  
+  Also https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
+---
+code: |
+  temp = [{'My landlord failed to obtain the proper local permit.':'My landlord failed to obtain the proper local permit.'}]
+  if tenant.address.city == 'Boston':
+    temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.":"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household."})
+    temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).":"My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason)."})
+  temp.append({"My landlord violated another local rule.":"My landlord violated another local rule (see links in help)."})
+
+  condo_local_options = temp
+---
+comment: |
+  Bad housing conditions
+---
+question: Bad Housing Conditions
+subquestion: | 
+  List any problems with the apartment you live in now. Think about problems over the last
+  6 years, whether they are currently repaired or not.
+  Your landlord will only be liable for problems that they knew about or should have
+  known about. For example, they may be liable for problems that existed when you first
+  moved in or purchased the building.
+video: |
+  [YOUTUBE DCpIr9ldSsw]
+fields:
+  - "Select the conditions you have had": bad_conditions.conditions
+    datatype: checkboxes
+    choices:
+      - insects
+      - cockroaches
+      - mice or rats
+      - water leaks or other plumbing problems
+      - electrical problems
+      - lead paint
+      - defective or leaky windows
+      - defective ceilings, walls, or floors
+      - no heat
+      - no hot water
+      - not enough heat
+      - not enough hot water
+      - defective locks
+      - security problems
+      - other
+  - Other conditions: bad_conditions.other_condition
+    datatype: area
+    show if: bad_conditions.conditions['other']
+  - I made repairs and deducted the cost from my rent pursuant to (G.L. c. 111, §127L).: other.repair_and_deduct_statute
+    datatype: yesno
+help: |
+  You may have a claim against your landlord for problems in your home over the last
+  6 years, whether they are currently repaired or not. For certain problems, you may only
+  have a claim for the last 4 years.
+  
+  Your landlord may have to pay you the difference between the value of your home in full
+  repair and the value of your home with the bad conditions. For very serious problems
+  that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
+
+  Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
+section: Claims and Defenses
+---
+need: bad_conditions.conditions
+question: Notification of landlord
+subquestion: |
+  How did you notify your landlord of the bad housing conditions?
+fields:
+  - How did you notify your landlord of the bad housing conditions?: bad_conditions.landlord_notified
+    datatype: checkboxes
+    choices:
+      - I told the landlord orally.
+      - I told the landlord in writing.
+      - The landlord was notified by Inspectional Services, Board of Health, housing agency, or someone else.
+      - All or some of the conditions existed when I moved in.
+      - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
+      - All or some of these conditions exist in common areas that the landlord has access to.
+  - Other: bad_conditions.other
+    required: False
+section: Claims and Defenses
+
+---
+question: Breach of Quiet Enjoyment
+subquestion: |
+  A "breach of quiet enjoyment" happens when your landlord does something or allows something to happen that makes your
+  apartment hard to live in. This can be because of something that happened once (such as a basement flooding or
+  ceiling collapsing) or something that happened over a long period of time, such as renovations to the next-door
+  apartment that happened at unreasonable times of day.
+
+  Think about problems over the last four years and select any that apply below.
+fields:
+  - Failed to provide adequate heat: bqe.heat
+    datatype: yesno
+    default: ${bad_conditions.conditions['not enough heat'] or bad_conditions.conditions['no heat']}
+  - Failed to provide adequate hot water: bqe.hot_water
+    datatype: yesno
+    default: ${bad_conditions.conditions['not enough hot water'] or bad_conditions.conditions['no hot water']}    
+  - Did not pay for utilities that were the landlord's responsibility: bqe.unpaid_utilities
+    datatype: yesno
+  - Shut off my utilities: bqe.shutoff_utilities
+    datatype: yesno
+  - Locked me out of my home: bqe.locked_out
+    datatype: yesno
+  - Took my belongings out of my apartment without a court order: bqe.removed_possessions
+    datatype: yesno
+  - Allowed bad conditions to exist in my home: bqe.bad_conditions
+    datatype: yesno
+    default: 
+      code: |
+        bad_conditions.have_conditions
+  - Entered my home without permission or notice: bqe.entered_without_permission
+    datatype: yesno
+  - Interfered in some other way (specify): bqe.other
+    required: False
+section: Claims and Defenses
+help: |
+  Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
+---
+question: |
+  Interference with utilities
+subquestion: |
+  You may have claims against your landlord for improper handling of your utilities.
+  Select any that apply.
+fields:
+  - I have been billed for heat, hot water, electricity or gas without an agreement in writing.: bqe.billed_no_agreement
+    datatype: yesno
+  - I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring).: bqe.billed_for_others
+    datatype: yesno
+  - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
+    datatype: yesno
+section: Claims and Defenses
+---
+comment: |
+  Foreclosure defenses
+---
+question: Foreclosure related defenses for owners and tenants
+fields:
+  - The foreclosure is void due to violations of the power of sale in the mortgage; statutory or regulatory foreclosure requirements; or requirements for note holding or transfer requirements. : postforeclosure.failure_to_comply
+    datatype: yesno 
+    default: True
+  - I was treated unfairly with respect to loan modification and/or alternatives to foreclosure. : postforeclosure.unfair_loan_mod
+    datatype: yesno
+  - I was treated unfairly with respect to pre-foreclosure notices. : postforeclosure.unfair_notices
+    datatype: yesno
+  - My loan was predatory, unfair, and/or was unaffordable based on my income.  : postforeclosure.unfair_loan_based_on_income
+    datatype: yesno
+section: Claims and Defenses
+
+---
+question: |
+  Foreclosure related defenses for tenants
+fields:
+  - I am a bona fide tenant entitled to the protections of G.L. c. 186A. : postforeclosure.no_just_cause.bona_fide_protections
+    datatype: yesno
+  - Because the plaintiff does not have just cause to evict me and there is no binding purchase and sale agreement on the property as required by G.L. c. 186A, §2, this case should be dismissed. : postforeclosure.no_just_cause.no_binding_purchase
+    datatype: yesno
+  - The plaintiff's service of a Notice to Quit or other actions to force me to vacate the premises without just cause or without a contract for sale on the property violate G.L. c. 186A, §2; c. 186, §14; and c. 93A.: postforeclosure.no_just_cause.ntq_or_other_actions
+    datatype: yesno
+  - The plaintiff failed to post, deliver, or slide under my door a notice containing contact information and information about who to call for repairs. : postforeclosure.notice_provisions.no_plaintiff_info
+    datatype: yesno
+  - The plaintiff served me with a Notice to Quit less than 30 days after it posted and delivered the required contact information in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.less_than_30_days
+    datatype: yesno
+  - The plaintiff did not provide me with a written notice about my right to a court hearing in violation of G.L. c. 186A, §§3 and 4.  : postforeclosure.notice_provisions.no_right_to_court_notice
+    datatype: yesno
+  - The plaintiff did not give me written notice claiming that I had substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : postforeclosure.notice_provisions.no_written_notice_of_violations
+    datatype: yesno
+  - The plaintiff did not give me 30 days to cure the claim that I substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    datatype: yesno
+  - The plaintiff did not inform me of the amount of monthly rent it claims and to whom the rent should be paid in violation of G.L. c. 186A, §§3 and 4. : postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    datatype: yesno
+  - Because the plaintiff did not comply with the notice requirements of G.L. c. 186A, §§3 and 4, this case should be dismissed.  : postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    datatype: yesno
+  - The plaintiff's case should be dismissed because it does not have proper title to the property and therefore it cannot prove a superior right to possession of the property and the foreclosure is void. Wayne Inv. Corp. v. Abbott, 350 Mass. 775 (1966) (title defects can be raised as defense in summary process); G.L. c. 239, §1 (summary process available to plaintiff only if foreclosure carried out according to law). : postforeclosure.no_standing
+    datatype: yesno
+  - I ask the court to declare the foreclosure void. : relief.void_foreclosure
+    datatype: yesno
+section: Claims and Defenses
+---
+comment: |
+  Subsidized tenancy
+---
+question: |
+  What type of subsidy do you have?
+subquestion: |
+  What is the best description of the public housing program or program that lowers your rent?
+field: subsidy_type
+choices:
+  - Section 8 voucher (portable voucher): Section 8 voucher
+    help: |
+      A Federal portable voucher used with a private landlord. Rent is usually set to 30% of your income.
+  - MRVP (Massachusetts Rental Voucher Program): MRVP
+    help: |
+      A State portable voucher used with a private landlord. Rent is usually set to 40% of your income.      
+  - Public housing (my landlord is a housing authority): public housing
+    default: ${default_landlord_type == "public"}
+    help: |
+      If part of your landlord's name is "Housing Authority" this is the type of housing you
+      have. Rent is usually set to 30% of your income.
+  - HUD housing run by a private landlord: HUD multi-family
+    help: |
+      Usually rent is 30% of income. The most common type is HUD multi-family housing.
+  - Tax credit: tax credit
+    help: |
+      There may be an income limit but rent does not change if income changes.
+  - Other or I don't know: other
+---
+question: Subsidized Housing Defenses
+fields:
+  - A portion of my rent is paid for by a public housing authority. : subsidized_housing.pha_pays_rent
+    datatype: yesno
+    default:
+      code: |
+        subsidy_type in ["Section 8 voucher","MRVP"]
+  - The public housing authority stopped payment to the landlord due to bad conditions.: subsidized_housing.stopped_payment
+    datatype: yesno
+  - My landlord or the housing authority improperly calculated my rent share.: subsidized_housing.improper_rent_calculation
+    datatype: yesno
+  - My landlord charged me more rent than allowed by the housing authority (side payments). : subsidized_housing.landlord_overcharged
+    datatype: yesno
+section: Claims and Defenses
+---
+question: Subsidized Housing Defenses
+subquestion: |
+  Common defenses related to subsidized housing
+fields: 
+  - My landlord failed to follow the rules for my subsidy program.: subsidized_housing.no_proper_termination
+    datatype: yesnoradio
+    default: True
+  - My landlord does not have good cause to evict me. : subsidized_housing.no_just_cause
+    datatype: yesnoradio
+    default: True
+  - The landlord did not send a copy of the notice to quit to my housing authority at the same time as they sent it to me. : subsidized_housing.no_ntq_to_agency
+    datatype: yesnoradio
+    show if: 
+      code: |
+        facts.tenant_has_subsidy and subsidy_type == "Section 8 voucher"
+  - I was never offered a chance to discuss the eviction with my landlord in a "private conference" or "grievance hearing".: subsidized_housing.no_hearing_or_conference
+    datatype: yesnoradio
+    default: True
+    show if:
+      code: |
+        not subsidy_type == "Section 8 voucher"
+  - I have a defense under the Violence Against Women Act. : subsidized_housing.vawa
+    datatype: yesnoradio
+    default: ${claims.harassment or tenant.is_dvvictim}
+section: Claims and Defenses
+---
+comment: |
+  Retaliation
+---
+question: Retaliation
+subquestion: |
+  Do you have any reason to believe that the landlord is not evicting you due 
+  to "${eviction_detailed_reason}", and is instead is evicting you because of something you 
+  have a legal right to do?
+
+  Examples include reporting bad conditions; withholding rent; suing your landlord, or getting protection
+  against domestic violence. If you are unsure, you can select "yes" and see more detailed questions on the next
+  screen.
+video: |
+  [YOUTUBE Bs-aVV5K-oo]
+yesno: retaliation.is_retaliated
+section: Claims and Defenses
+help: |
+  Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)
+
+  You can also see 
+  [Mass. Gen. Laws c. 239, §2A](https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section2A): Reprisal for reporting violations of law, for tenant's union activity, 
+  or actions taken pursuant to laws protecting tenants who are victims of domestic violence, rape, sexual 
+  assault or stalking; defense; presumption
+  and 
+  [Mass. Gen. Laws c. 186, §18](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section18): 
+  Reprisal for reporting violations of law or for tenant's union activity; 
+  damages and costs; notice of termination, presumption; waiver in leases or other rental agreements prohibited
+---
+question: Retaliation
+subquestion: |
+  "Retaliation" means that your landlord is evicting you for something you had
+  a right to do. A common situation is making a legally protected complaint, for example, about
+  bad housing conditions. You may have a defense of retaliation even if your
+  landlord had more than one reason for evicting you.
+
+  Did you take any of the following actions that you believe are the true
+  reason that the landlord is evicting you? Check all that apply.
+fields:
+  - I withheld rent because of bad conditions.: retaliation.withheld_rent
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - I reported bad conditions in writing to the landlord.: retaliation.badconditions_to_landlord
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - I reported bad conditions orally or in writing to a public agency.: retaliation.badconditions_to_agency
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - I am a member of a tenants union or participated in tenant organizing meetings.: retaliation.tenant_union
+    datatype: yesno
+  - I sued my landlord or brought a claim against my landlord.: retaliation.brought_claim
+    datatype: yesno
+  - I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E).: retaliation.protection_or_prevention_order
+    datatype: yesno
+  - I or someone in my household reported an incident of domestic violance, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
+    datatype: yesno
+  - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons.: retaliation.survivor_rights
+    datatype: yesno
+  - Other: show_retaliation_other
+    datatype: yesno
+  - Other: retaliation.other
+    required: False
+    show if: show_retaliation_other
+  - One or more of the above happened in the last 6 months.: retaliation.within_6_months
+    datatype: yesnoradio
+    required: False
+    default: True
+section: Claims and Defenses
+help: |
+  Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)  
+---
+comment: |
+  Discrimination
+---
+question: Protected classes and discrimination
+subquestion: |
+  Do you have any reason to believe that your landlord is discriminating against you?
+  
+  "Discrimination" means that your landlord is evicting you or otherwise treating you unfairly
+  because of something about you
+  or your family that is legally protected. Discrimination does not mean your landlord does not like you.
+
+  Discrimination may include:
+
+  * Not wanting to rent to children (maybe because of lead paint)
+  * Not wanting to make changes to rules or the property to help a disabled tenant
+  * Not wanting to accept a Section 8 voucher or other rental assistance
+  * Treating someone unfairly because of race, sex, religion, veteran status, or gender or sexuality
+
+  If you are unsure, you can select "yes" and see more detailed questions on the next
+  screen.
+video: |
+  [YOUTUBE Yxry8Zbmcgs]
+yesno: tenant.is_discriminated
+section: Claims and Defenses
+help: |
+  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: |
+  Protected classes and discrimination
+subquestion: |
+  It is illegal for your landlord to unfairly treat you or someone in your family or to try to evict you 
+  because you are like a certain group of people.
+fields:
+  - Select the protected class that you believe is the reason for your landlord's discrimination. Select if the class applies to you or someone else in your family.: discrimination.protected_classes
+    datatype: checkboxes
+    choices:
+      - I have children: Family status
+      - My age
+      - I am on benefits
+      - I get rental assistance
+      - My gender
+      - My gender identity
+      - My marital status
+      - My race
+      - My religion
+      - My sexual orientation
+      - My Veteran status
+      - My national origin (the country my family comes from)
+      - I have a disability: disability
+      - My skin color
+    default: 
+      code: |
+        dict(disability = tenant.is_disabled)
+  - Other: discrimination.show_other
+    datatype: yesno
+  - "Other:": discrimination.other
+    show if: discrimination.show_other
+section: Claims and Defenses
+comment: |
+  Setting the dictionary of defaults, Disability is a 
+  default if tenant.is_disabled is true, and false if it is false.
+help: |
+  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: | 
+  Discrimination on basis of disability
+subquestion: |
+  If you are disabled and there is a connection between your disability and the eviction,
+  you may have the right to a "reasonable accommodation" from your landlord. This may be
+  a defense to the eviction.
+  Would you like to ask for a reasonable accommodation?
+yesno: disability.request_reasonable_accommodation
+section: Claims and Defenses
+help: |
+  See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: |
+  Sexual Harassment
+subquestion: |
+  If you faced sexual harassment from your landlord or their employee, you may have a
+  defense to the eviction. Check any of the below that apply.
+fields:
+  - My landlord asked/pressured me or someone I live with for sexual favors. : discrimination.sexual_harassment.pressured_sexual_favors
+    datatype: yesno
+  - My landlord changed the terms of my tenancy because of my response to harassment.: discrimination.sexual_harassment.tenancy_terms_changed
+    datatype: yesno
+  - The harassment made me feel unsafe or uncomfortable. : discrimination.sexual_harassment.unsafe_or_uncomfortable
+    datatype: yesno
+   
+section: Claims and Defenses
+
+---
+question: Violation of the Consumer Protection Act M.G.L. c. 93A
+subquestion: |
+  The consumer protection law protects tenants from unfair or depective actions from their landlord. 
+fields:
+  - I was charged illegal late fees (unreasonably high, or before rent was 30 days late). : consumer_protection.late_fees
+    datatype: yesno
+  - I was charged an amount of rent that I never agreed to pay. : consumer_protection.nonagreed_rent
+    datatype: yesno
+  - I was charged court fees or constable fees unlawfully.: consumer_protection.unlawful_court_fees
+    datatype: yesno
+  - There are unlawful terms in my lease. : consumer_protection.unlawful_lease_terms
+    datatype: yesno
+  - Other : consumer_protection.other
+    datatype: yesno
+  - Other violation: consumer_protection.other_reason
+    show if: consumer_protection.other
+section: Claims and Defenses
+help: |
+  The Massachusetts Consumer Protection law, [G.L. c. 93A](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXV/Chapter93A),
+  protects tenants from violations of local, state and federal law.
+  It allows tenants who win their case to get attorneys' fees and extra damages (additional
+  money if they win).
+  
+  Consumer protection applies to landlords who are "in the businsess" of being a landlord.
+  It doesn't apply to a government agency, such as a housing authority, or to a 
+  homeowner who rents out a room or second unit in a small building of less than 4 units.
+  
+---
+question: Security Deposit
+subquestion: |
+  Check any security deposit violations that apply below
+fields: 
+  - Amount of security deposit: security_deposit.amount
+    datatype: currency
+  - Violations: security_deposit.violations
+    datatype: checkboxes
+    choices:
+      - Accepted a deposit for more than one month's rent
+      - Failed to keep the deposit in a separate bank account
+      - Failed to provide required receipts
+      - Failed to pay interest on each anniversary of your deposit
+      - Failed to provide a statement of conditions
+      - Did not take responsibility for the deposit paid to a former landlord
+section: Claims and Defenses
+help: |
+  Learn more about the rules for handling a security deposit on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
+---
+question: Prepaid last month's rent
+subquestion: |
+  "Last-month's rent" means the rent that some landlords take when you first move in as "first, last, and security deposit".
+  It is rent that you paid in advance that can be applied for the month that you move out of the apartment.
+
+  If your landlord took "last month's rent" they need to pay you interest on it once each year.
+
+  Did your landlord violate the rules for handling your prepaid last month's rent? Check all that apply.
+fields:    
+  - Amount of your prepaid last month's rent: last_months_rent.amount
+    datatype: currency
+    required: False
+  - Was the payment to your current or former landlord?:    last_months_rent.to_whom
+    datatype: radio
+    default: current
+    choices:
+      - Current landlord: current
+      - Former landlord: former
+  - Have you lived in the apartment for longer than 1 year?: last_months_rent.over_a_year
+    datatype: yesno
+  - Did your landlord pay you interest each year for your prepaid rent?: last_months_rent.paid_interest
+    datatype: yesno
+    show if: last_months_rent.over_a_year
+section: Claims and Defenses
+help: |
+  Learn more about the rules for handling pre-paid last month's rent on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
+---
+question: |
+  Interrogatories (questions for your landlord)
+subquestion: |
+  You can ask your landlord up to 30 questions, so long as they are related
+  to your case. We may have recommended some for you automatically and some
+  will always be asked.
+  
+  ${ ints.count_checked() } interrogatories are already selected. 
+  
+  Below is a short summary of the topic of each question.
+  Please select all questions that you would like to ask your landlord.
+fields: 
+  code: ints_fields
+continue button field: interrogatory_questions  
+---
+question: |
+  Discovery: Getting ready for court
+subquestion: |
+  This interview is set up to give you "discovery", or questions for your landlord.
+  Do you want to select them on your own, or stick with the defaults?
+    
+  Because of the answers you've already given,
+  you currently have **${ ints.count_checked() }** questions for your landlord, and 
+  **${ drq.count_checked() }** kinds of documents that you are asking for.
+
+  Most tenants don't need to make any changes here.  
+decoration: |
+  book
+field: tenant_review_discovery
+buttons:
+  - Keep default selections: False
+  - Customize discovery: True
+help: |
+  You have the right to get information from your landlord, or "discovery". The information
+  can help you prepare for court or reach a fair agreement with your landlord.
+  
+  Discovery is governed by [U.S.P.R. 7](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
+  
+  This interview can help you both ask your landlord questions, and ask your landlord
+  to give you copies of documents, like your lease or rent payment records. 
+  You also have the right to ask the landlord for "admissions" (yes no questions)
+  but this interview will not help you ask those.
+  
+  Your landlord will have 10 days to get the information to you. If they don't,
+  you have the right to ask the judge to order them to give it to you.
+  Part of the packet you deliver will include a motion form you can use to ask for
+  discovery if your landlord doesn't give it to you.
+section: Discovery
+---
+question: |
+  Document requests (letters, leases, photos, and other printed information)
+subquestion: |
+  There is no limit to the number of documents you can ask your landlord
+  to provide to you, so long as they are related to your case. We may have 
+  recommended some for you automatically and some will always be asked.
+
+  Below is a short summary sentence for each pre-written question available.
+  Select the documents you would like your landlord to give you.
+fields: 
+  code: drq_fields
+help: |
+  Document requests can be unreadable for non-lawyers. The important thing
+  to review is the topic of the request.
+continue button field: drq_questions
+---
+template: compel_discovery_email
+subject: |
+  It's time for you to compel discovery (Massachusetts Defense for Eviction) in ${landlord} v. ${tenant}
+content: |
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Legal Services.
+  
+  When you used our self-help eviction defense tool on ${format_date(start_time())}, you asked
+  your landlord ${landlord} to send you information to be ready for your case.
+  
+  That information should have been sent to you no later than ${date_discovery_due}.
+  
+  To protect your right to information for your case,
+  you need to send a "motion to compel discovery" to
+  % if landlord.has_attorney:
+    ${landlord.attorneys_name}.
+  % else:
+    ${landlord.name}.
+  % endif
+  You also need to send a copy of the motion to ${court.name}.
+  
+  Learn more and get the form here: https://gbls.org/tactics/compel
+---
+template: compel_discovery_text
+content: |
+  Reminder: file a motion to compel discovery
+  in your eviction case ${landlord} v. ${tenant} TODAY. Form with instructions here: 
+  https://gbls.org/tactics/compel
+  
+   - MADE from GBLS.
+---
+template: court_reminder_email
+subject: |
+  You have a court date on ${court_date}! (Massachusetts Defense for Eviction) for ${landlord} v. ${tenant}
+content: |
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Legal Services.
+  
+  Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
+  a different date!
+  
+  You are getting this email because you used our self-help eviction tool
+  on ${format_date(start_time())}.
+---
+template: attend_court_text
+content: |
+  Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
+  at ${court.name} at 9 AM. Get ready here: https://gbls.org/tactics/12
+   - MADE from GBLS.  
+---
+template: interview_complete_email
+subject: |
+  You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction) for ${landlord} v. ${tenant}
+content: |
+  Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
+  Legal Services.
+  
+  This is a copy for you of all of the forms you completed today.
+  
+  As a reminder, your court date will be ${format_date(court_date)},
+  unless you hear otherwise from the court.
+  
+  Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
+  has information that can help you be prepared.
+
+  If you haven't filed any paperwork with the court or your landlord yet, 
+  you're not quite done yet. You will need to print and mail or deliver the 
+  ${nice_number(num_downloads)} forms we created for you on your own.
+  They are attached to this email. You can print each form separately, or
+  print the single PDF file that combines all of the forms together.
+   
+  #### Next steps
+  
+  1. Print three copies of your court forms.
+     You can skip the cover page which has instructions for you.
+  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
+     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
+  % if landlord.has_attorney:
+  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  % else:
+  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
+  %endif
+  1. **Show up at the court on ${format_date(court_date)}**.
+---
+template: interview_complete_text
+content: |
+  Congrats on finishing the interview! Don't forget:
+  File your paperwork and go to court on ${ format_date(court_date) }.
+  Get ready here: https://gbls.org/tactics/12
+   - MADE from GBLS.
+---
+interview help:
+  heading: |
+    About this interview
+  content: |
+    This interview is meant to help Massachusetts residents respond to an eviction.
+
+    There are 5 forms available in this interview:
+    
+    1. Answer (your response to the eviction)
+    1. Request for Discovery (your chance to get information to be prepared for court)
+    1. Late Answer request
+    1. Transfer to Housing Court (if your case is not in a housing court, you can move it for free)
+    1. Intervene (if you are not named in the eviction, you can ask for permission to defend against the eviction in court)
+     
+    At the end of this interview, you will have documents that you can file in court. 
+    This interview does _not_ file them for you.
+    You need to 
+    give a copy of the documents to your landlord or your landlord's attorney.
+    
+    ### Contributors:
+    This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited
+    by [Massachusetts Law Reform Institute](https://www.mlri.org), with additional assistance and videos
+    funded by Massachusetts Law Reform Institute.
+
+    1. Quinten Steenhuis, Esq. ([Greater Boston Legal Services](https://www.gbls.org))
+    1. Rina Padua ([Greater Boston Legal Services](https://www.gbls.org) and Harvard University [Phillips Brooks House](http://pbha.org/))
+    1. Caroline Robinson ([Massachusetts Law Reform Institute](http://www.mlri.org))
+    1. Mariah Jennings-Rampsi, Esq. ([Volunteer Lawyer's Project](https://www.vlpnet.org/))
+    
+    ### Feedback, comments, or want to improve this interview?
+    View or [submit issues](https://github.com/nonprofittechy/docassemble-MAEvictionDefense/issues) on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    ### Run into a problem?
+    We are very sorry for the inconvenience. 
+    
+    1. Try reloading the screen (use the refresh button) or click "back" and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+    
+    ### Copyright Notice
+    This interview is copyright 2018 Greater Boston Legal Services and open source 
+    contributors. It is released under the MIT open source license and code is available
+    on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
+---
+auto terms:
+  notice to quit: |
+    A written notice from your landlord that tells you why your landlord 
+    is ending your tenancy. Other names: notice to terminate tenancy.
+    [FILE notice-to-quit-14.png, 100%]
+  summons and complaint: |
+    A written notice about your eviction case that tells you to go to court
+    on a certain date.
+    [FILE summons_and_complaint.png, 100%]
+  summary process: |
+    Summary process is the legal term for evictions in Massachusetts.
+  plaintiff: |
+    The person who starts a case. In an eviction, this is normally the landlord.
+  defendant: |
+    The person who is on the defensive in a case.  In an eviction, this is normally the tenant.
+  tenancy at will: |
+    An agreement to rent an apartment or house from month-to-month. It automatically 
+    renews unless it is ended by a written notice.
+    
+    A tenancy by lease can convert into a tenancy at will when the lease has ended.
+  subsidized tenancy: |
+    A tenancy where the tenant pays something less than market rent, and a housing
+    authority or HUD pays the difference. Often the tenant's rent is fixed at 30 or 40% of
+    their income.
+  G.L. c. 93A: |
+    Referred to as the Consumer Protection Act. Enables legal action against unfair or deceptive conduct in the marketplace
+  demand letter: |
+    Under the consumer protection law, G.L. c. 93A, a consumer (or tenant) may send a
+    "demand letter" explaining what the seller (or landlord) did wrong and requesting payment. 
+    If the landlord fails to respond with a reasonable settlement offer, it may be liable for double
+    or triple damages.
+  disabled: |
+    Legally, a person who is limited in one more areas of essential life activities.
+    A disability may be physical or mental.
+  reasonable accommodation: |
+    A change in a landlord's rules, policies, or practices that would allow the tenant to 
+    remain in the leased apartment. A tenant who is disabled and whose disability is
+    related to the basis for the eviction may be legally entitled to such a change.
+  protected class: |
+    Protected class is a legal term to describe persons who are protected from discrimination.
+    For example, you are protected from discrimination on account of (but not limited to) 
+    race, gender, family status (having children), disability, and gender identity or 
+    sexual orientation.
+  use and occupancy: |
+    The special legal name for **rent** due to the landlord after the landlord starts the
+    eviction process.
+  docket number: |
+    The Docket Number is the number the court has assigned to your case. Sometimes it has not yet been assigned to your case, so it will not be on the Summons and Complaint. You may ask the court for this number, or leave it blank
+    
+           

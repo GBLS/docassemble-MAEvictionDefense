@@ -21,18 +21,6 @@ metadata:
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
    
   revision_date: 2018-10-24
-#  logo: |
-#    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
----
-sections:
-  - Getting Started
-  - review_about_you: About You
-  - review_about_landlord: About Your Landlord
-  - review_about_court: About Your Court Case 
-  - review_about_tenancy: About Your Tenancy
-  - review_claims: Claims and Defenses
-  - review_discovery: Discovery
-  - Conclusion
 ---
 features:
   question help button: True
@@ -43,6 +31,8 @@ features:
 modules:
   - docassemble.base.util
   - docassemble.base.legal
+  - .macourts
+  - .discovery
 ---
 objects:
   - tenant: Individual
@@ -78,444 +68,56 @@ objects:
   - other_drq: DiscoveryList
   - review_answers: DAObject
 ---
+initial: True
+code: |
+  set_language(user_language)
+---
+include:
+  - review_screens.yml
+  - eviction.en.yml
+  - eviction.es.yml
+  - eviction.code.yml
+  - eviction.cron.yml
+  - eviction.attachments.yml
+  - interview-order.yml
+#  - help.yml
+  - discovery-logic.yml
+  - compel_discovery.yml
+---
+comment: |
+  This block controls the overall interview flow.
+  interview-order.yml contains questions which set the logical order of the main Answer form
+  which must be completed before discovery is generated.
+  Then we load discovery defaults from a CSV file or Google Sheets.
+  Finally, we display the final interview screens.
 mandatory: True
 code: |
   multi_user = True
   allow_cron = True
-  case.case_id = ""
----
-include:
-  - review_screens.yml
-  - interview-order.yml
----
-decoration: home
-question: |
-  MADE: Massachusetts Defense for Eviction
-subquestion: |
-  MADE helps tenants defend against an eviction in court.
-  We will create forms that you then need to :print: print and :envelope:
-  deliver to court and to your landlord. It should take you between :stopwatch: 25 
-  minutes and an hour to complete, depending on how complex your case is.
-  If you get interrupted, you can save your work and come back to it. You can also
-  email yourself the completed forms.
-  This interview is completely free.
-  
-  Before we start, you should find:
+  menu_items = [ action_menu_item('Review Answers', 'road_map') ]
 
-  1. The **Summons and Complaint** and 
-  2. the **Notice to Quit** you got from your landlord.
+  # Warn about Spanish translation
+  if user_language == 'es':
+    warn_spanish
   
-  If you don't have either document, you can still do your best to answer from your memory.
+  all_answer_variables
+  loaded_discovery
+  if person_answering == 'attorney' or tenant_review_discovery:
+    interrogatory_questions
+    drq_questions
   
-  At any time, click on a {green word} to learn what it means. Click the "[Help]" button to learn more
-  about the interview or a specific question, and "[BACK]" if you want to go back
-  to the previous question.
-help: |
-  This is an example help page.
-  Click "[Back to question]" to go to the previous screen and continue the interview.
-terms: 
-  - green word: This is an example. Click it again to hide this definition.
-section: Getting Started
-fields:
-  - I have read and agree to the [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
-    datatype: yesnoradio
-    default: True
-continue button field: getting_started
----
-decoration: info-circle
-question: |
-  How to answer questions in this interview
-subquestion: |
-  This interview asks for facts about you, your landlord, and your eviction case.
-  The facts will be used to decide who should win your eviction case and whether
-  you or landlord owes the other person any money.
-  It's important to answer honestly.
-  
-  You should mark any facts that are true, even 
-  if you do not think they are related to the eviction. _If you are not sure about a 
-  question, usually it is better to mark it than to leave it blank._
-    
-  Using this interview will not stop you from reaching an agreement with your
-  landlord. It may help you and your landlord better understand your rights
-  and reach a fair agreement.
+  send_user_email
 
-field: how_to_answer  
-buttons: 
-  - I agree to answer honestly and completely: continue
-section: Getting Started
----
-question: | 
-  This site does not give legal advice.
-subquestion: |
-  This interview does not take the place of a lawyer. Do
-  you understand that?
-  
-  If you would like a lawyer, you may qualify for help from legal aid. You can use the
-  [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to find out.
-field: user_understands
-buttons:
-  - "I understand": understands
-  - code: |
-      [{'does not understand':"I do not understand"}, {'unsure':"I'm not sure"}]
----
-question: |
-  Who is completing this interview?
-field: person_answering
-buttons:
-  - Tenant or helper: tenant
-  - Attorney or paralegal: attorney
----
-question: Overview of Tenant's Rights in Evictions in Massachusetts
-subquestion: | 
-  Watch the video below to learn a little more about the eviction process.
-  You can also visit the [MassLegalHelp](http://www.masslegalhelp.org/housing/evictions) website.
-video: "[YOUTUBE TSaTw0Y5OFA]"
-field: overview_video
----
-question: |
-  Upcoming court dates
-subquestion: |
-  Do you have a court date coming up for your case?
-field: case.status
-choices: 
-  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - I have a court date scheduled: summons
-  - I signed an agreement in this case already. I have a new court date coming up.: afj
-  - I missed my first court date.: late
-default: summons
-help:
-  We need to know how far along in the court process you are so we can choose the right forms.
-  
-  If your first court date has passed, you may be able to use a special form called a 
-  "Motion to File Late Answer." This interview will help you decide. 
-section: Getting Started
----
-question: |
-  Your right to a jury trial
-subquestion: |
-  You or your landlord can choose to have a jury
-  decide this case. This is _your_ chance to choose a jury.
-  
-  Choosing a jury does not mean you will stop having to pay rent, or 'use and occupancy'.
-  Jury trials are complicated and if you are unable to reach an agreement with your
-  landlord, it helps most tenants to have a lawyer with them at a jury trial.
-  
-  #### Why keep your right to a jury trial?
-  1. A jury is made up of ordinary people, some of whom may be tenants like you.
-  1. It takes time to schedule a jury trial. You can use the time to try to solve the 
-  problem with your landlord.
-  1. You can always give up your jury right later. But you can't ask for a jury trial
-  after the deadline for filing this paperwork.
-  1. You can still reach an agreement with your landlord. Most cases end up with
-  an agreement, whether the tenant keeps their right to a jury trial or not.
-
-field: claim_jurytrial
-buttons:
-  - Keep my jury trial: True
-  - Waive my right to a jury: False
-section: Getting Started
-decoration: users
-help: |
-  Either the landlord or the tenant can choose a jury trial any time up until the
-  answer date which is printed on your Summons and Complaint. You can use this
-  interview to ask for your jury trial, or another form, but it must be
-  before the deadline. If you do think you may want a jury, you should keep your
-  jury right in this interview.
-  
-  A jury trial can be difficult for a tenant to do on their own. However, because
-  most cases end in an agreement, asking for a jury trial now has very low risk.
-  
-  If you do end up having a jury trial, in Massachusetts evictions, a jury may
-  be either 6 or 12 people. At least 5/6 jurors
-  must agree to reach a decision in your case. They will reach a separate decision
-  about each of your claims and defenses, money owed to the landlord, and whether
-  you get to remain in your apartment.  
----
-code: |
-  last_months_rent_amount = 0
----
-include:
-  - condo_conversion.yml
-  - tenant_and_tenancy.yml
-  - landlord.yml
-  - court_and_eviction.yml
-  - help.yml
-  - glossary.yml
-  - endpoints.yml
-  - initial_defenses.yml
-  - conditions.yml
-  - foreclosure.yml
-  - subsidized_tenancy.yml
-  - retaliation.yml
-  - discrimination_and_harassment.yml
-  - consumer_protection.yml
-  - security_deposit_and_prepaid_rent.yml
-  - transfer.yml
-  - intervene.yml
-  - discovery-logic.yml
-  - emails.yml
-  - compel_discovery.yml
----
-question: Sign below
-subquestion: |
-  When you sign these forms, you are saying that your answers to the questions
-  in this interview are true as far as you know.
-  
-signature: tenant.signature
-under: |
-  ${ tenant.name }
----
-question: |
-  Printed Instructions
-subquestion: |
-  Should we include printed instructions about delivering the forms 
-  in the documents for you to print?
-yesno: show_instructions
-#section: Conclusion
----
-question: |
-  Almost done!
-subquestion: |
-  You've finished the main interview. Just a few quick questions left!
-  
-  If you need to change anything, click one of the section labels on the left
-  to update your answers.
-field: almost_done
-section: Conclusion
-progress: 95
----
-question: |
-  Method of Service
-subquestion: |
-  A copy of the paperwork needs to go to your landlord. If your landlord has an attorney,
-  you need to bring it to their attorney. The address is written on your Summons and
-  Complaint.
-  
-  % if format_date(case.answer_date) == format_date(today()):
-  You must deliver the paperwork in person today. You cannot mail it.
-  % endif
-
-  Some landlords or landlord's attorneys will allow you to deliver the paperwork
-  by fax or email. However, you must call and confirm with your landlord before
-  faxing or emailing. The landlord has to agree to get the paperwork this way.
-
-  When and how will you bring the paperwork to your landlord or their attorney?
-fields: 
-  - Delivery method: method_of_service
-    choices:
-      - Mail: mailed
-      - Delivering by hand: delivered in-hand
-      - Email (with permission of my landlord): emailed
-      - Fax (with permission of my landlord): faxed
-  - Date of delivery: service_date
-    datatype: date
-section: Conclusion
----
-decoration: bell
-question: |
-  Court Date Reminders
-subquestion: |
-  We can remind you about important dates by text or email.
-  % if tenant.email and tenant.phone_number:
-  
-  We can use the contact information you just listed, **${tenant.email}** and
-  **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
-  % endif  
-fields:
-  - Remind me about deadlines: remind_user
-    datatype: yesno
-    default: True
-  - Send me a survey after my first court date.: survey_user
-    datatype: yesno
-    default: True
-  - Edit my contact information: edit_contact_info
-    datatype: yesno
-    default: ${ not (tenant.email and tenant.phone_number) }
-  - note: |
-      **Your contact information**
-    show if: edit_contact_info
-  - Mobile phone number for text messaging: user_cell_edited
-    default: ${tenant.phone_number}
-    show if: edit_contact_info
-    required: False
-  - Email address: user_email_edited
-    default: ${tenant.email}
-    datatype: email
-    show if: edit_contact_info 
-    required: False
-help: |
-  If you agree, we can send you a reminder text message and email message when you
-  have a deadline or need to appear in court. *The reminders will only be based on
-  the information you gave us in this interview.* If your court date changes for
-  any reason, keep in mind that the reminder might be for the wrong date. It's important
-  that you still pay attention to the dates that the court tells you about.
-  
-  We can also save information about your case if you choose. Saved information
-  will be used only by a non-profit legal aid organization. It may be used to help
-  you if your case is accepted for full representation, or it may be used to identify
-  trends to help the non-profit legal aid organization bettter decide how to use
-  its resources to prevent evictions.
-  
-  Sharing your information is optional. You can use this service for free whether or not
-  you want your information to be shared.
----
-code: |
-  if remind_user and (tenant.email and tenant.phone_number):
-    user_cell = tenant.phone_number
-    user_email = tenant.email
-    if edit_contact_info:
-      user_cell = user_cell_edited
-      user_email = user_email_edited
-  elif edit_contact_info:
-    user_cell = user_cell_edited
-    user_email = user_email_edited
+  if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
+    compel_discovery_motion
   else:
-    user_cell = tenant.phone_number
-    user_email = tenant.email
+    download_forms
 ---
-event: cron_daily
-code: |
-  if remind_user and task_not_yet_performed('discovery reminder') and (date_difference(starting=date_discovery_due).days) > 0:
-    send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
-  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days > -1 :
-    send_email(to=user_email, template=court_reminder_email, task='court_reminder')
----
-code: |
-  date_discovery_received = service_date
-  if method_of_service == 'mailed':
-    date_discovery_received = date_discovery_received.plus(days=1)
-
-  date_discovery_due = date_discovery_received.plus(days=10)
-  date_motion_to_compel_due = date_discovery_received.plus(days=15)
----
-code: |
-  if show_instructions:
-    downloads_temp = [cover_letter,instructions,answer,discovery]
-  else:
-    downloads_temp = [cover_letter,answer,discovery] 
-    
-  if case.status == 'late':
-    downloads_temp.append(late_answer)
-  if not court_is_housing_court and transfer_to_housing_court:
-    downloads_temp.append(transfer_notice)
-
-  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
-    downloads_temp.append(intervene_motion)
-  
-  downloads = downloads_temp
-  
-  downloads_pdf = [i.pdf for i in downloads]
-  downloads_docx = [i.docx for i in downloads]
-  downloads_concat = pdf_concatenate(downloads_pdf)
----
-code: |
-  # We can't do this because we include the number of forms in one of the forms...
-  # num_downloads = len(downloads_pdf)
-  download_titles_temp = ['Answer','Discovery']
-  
-  num_downloads = 2
-  if case.status == 'late':
-    num_downloads += 1
-    download_titles_temp.append('Motion to File Late Answer')
-  if not court_is_housing_court and transfer_to_housing_court:
-    num_downloads += 1
-    download_titles_temp.append('Notice of Transfer')
-  if show_instructions:
-    num_downloads += 1 
-  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
-    num_downloads += 1
-    download_titles_temp.append('Motion to Intervene')
-    
-  download_titles = download_titles_temp
----
-mandatory: True
-code: |
-  if user_email:
-    background_action(send_email(to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat]))
----
-id: download
-mandatory: True
-#decoration: smile
 question: |
-  Congratulations! You've reached the end of the interview
+  Advertencia
 subquestion: |
+  Esta traducción no está completa / This translation is not complete.
+field: warn_spanish  
   
-  Great work! You've finished the guided interview! But you're not quite done yet.
-  Based on your answers in the interview, we created [:file-pdf: ${nice_number(num_downloads)}
-  forms](${downloads_concat.url_for()}) for you to file in court.
-  You will need to :print: print and :envelope: mail or deliver these on your own.
   
-  If you want to make any changes to your answers on the forms, click one of the 
-  section headings on the left or use the menu to go to "Review Answers" if you are
-  on a mobile device.
   
-  #### Next steps
-  
-  1. :print: Print three (3) copies of [:file-pdf: these court forms](${downloads_concat.url_for()}).
-     You can remove the cover page which has instructions for you.
-  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
-     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
-  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
-  % if landlord.has_attorney:
-  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
-  % else:
-  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
-  %endif
-  1. **Show up at the court on ${format_date(court_date)}**.
-
-  #### For your records
-  You can download a copy of all of the individual forms, together with a :file-word: Microsoft
-  Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
-
-  ${answers_response}  
-
-video: |
-  [YOUTUBE mG-JDXOAkJU]
-progress: 100  
-section: Conclusion
----
-attachment:
-  - name: Instructions and Next Steps
-    filename: NextSteps
-    variable name: instructions
-    docx template file: NextSteps.docx
----
-attachment: 
-  - name: Motion to file late Answer and Discovery
-    filename: LateAnswerMotion
-    variable name: late_answer
-    docx template file: LateAnswerMotion.docx
----
-attachments:
-  - name: Answer Form
-    filename: Answer
-    variable name: answer
-    docx template file: SummaryProcessAnswer.docx
-  - name: Request for Discovery
-    variable name: discovery
-    filename: Discovery
-    docx template file: SummaryProcessDiscovery.docx
----
-attachment:
-  - name: Notice of Transfer Form
-    filename: TransferNotice
-    variable name: transfer_notice
-    docx template file: TransferNotice.docx
----
-attachment:
-  - name: Intervene
-    filename: Intervene
-    variable name: intervene_motion
-    docx template file: InterveneMotion.docx
----
-attachment: 
-  - name: Cover Letter
-    filename: CoverLetter
-    variable name: cover_letter
-    docx template file: CoverLetter.docx
----
-reconsider: True
-code: |
-  import dt_send_answers
-  answers_response = dt_send_answers.send_answers()
-    

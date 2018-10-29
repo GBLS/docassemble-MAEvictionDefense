@@ -4,6 +4,7 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
+* 2018-10-29 Began groundwork for Spanish translation; bugfixes and major reorganization
 * 2018-10-24 Bugfix (additional fields required but hidden)
 * 2018-10-24 Bugfix (foreclosure field required). Groundwork for separate motion to compel
 * 2018-10-19 Worked on interview flow and hid more irrelevant questions

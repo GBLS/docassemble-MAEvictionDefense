@@ -1,0 +1,47 @@
+---
+attachment:
+  - name: Instructions and Next Steps
+    language: en
+    filename: NextSteps
+    variable name: instructions
+    docx template file: NextSteps.docx
+---
+attachment: 
+  - name: Motion to file late Answer and Discovery
+    language: en
+    filename: LateAnswerMotion
+    variable name: late_answer
+    docx template file: LateAnswerMotion.docx
+---
+attachments:
+  - name: Answer Form
+    language: en
+    filename: Answer
+    variable name: answer
+    docx template file: SummaryProcessAnswer.docx
+  - name: Request for Discovery
+    language: en
+    variable name: discovery
+    filename: Discovery
+    docx template file: SummaryProcessDiscovery.docx
+---
+attachment:
+  - name: Notice of Transfer Form
+    language: en
+    filename: TransferNotice
+    variable name: transfer_notice
+    docx template file: TransferNotice.docx
+---
+attachment:
+  - name: Intervene
+    language: en
+    filename: Intervene
+    variable name: intervene_motion
+    docx template file: InterveneMotion.docx
+---
+attachment: 
+  - name: Cover Letter
+    language: en
+    filename: CoverLetter
+    variable name: cover_letter
+    docx template file: CoverLetter.docx    

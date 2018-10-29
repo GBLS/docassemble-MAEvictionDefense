@@ -50,7 +50,7 @@ fields:
       - I won a trial and my landlord must pay me money. : trial_with_money
       - I won a trial but no money from my landlord.
       - I lost a trial or motion to issue execution.
-  - Are you willing to share demographic information with us? It will be kept private and used only to improve this service. : will_share_demographics
+  - Are you willing to share demographic information with us? : will_share_demographics
     datatype: yesnoradio
   - What is your gender? : gender
     show if: will_share_demographics

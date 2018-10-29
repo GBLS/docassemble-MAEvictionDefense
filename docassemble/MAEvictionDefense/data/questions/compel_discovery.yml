@@ -43,11 +43,6 @@ fields:
     datatype: yesno
     show if: objected
 ---
-code: |
-  compel_relief_options = 1
-    
-    
----
 question: |
   What do you want the court to do?
 fields:
@@ -61,8 +56,7 @@ fields:
         ["Granting the Tenant any other relief that may be just and necessary.","Granting the Tenant any other relief that may be just and necessary.",True]
       ]
 ---
-mandatory: |
-  'compel_discovery' in url_args
+event: compel_discovery_motion
 question: |
   Here is your motion
 subquestion: |
