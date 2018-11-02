@@ -20,13 +20,14 @@ content: |
   % endif
   You also need to send a copy of the motion to ${court.name}.
   
-  Learn more and get the form here: https://gbls.org/tactics/compel
+  You can fill out the form online [here](${interview_url()}).  
 ---
 template: compel_discovery_text
 content: |
   Reminder: file a motion to compel discovery
-  in your eviction case ${landlord} v. ${tenant} TODAY. Form with instructions here: 
-  https://gbls.org/tactics/compel
+  in your eviction case ${landlord} v. ${tenant} TODAY. 
+  Jump back into your interview here: 
+  ${interview_url()}
   
    - MADE from GBLS.
 ---

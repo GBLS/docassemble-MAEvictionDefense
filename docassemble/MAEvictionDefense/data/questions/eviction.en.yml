@@ -468,13 +468,15 @@ fields:
     datatype: yesno
     default: ${landlord.organization_type == 'public'}
   - English is not my first language.: tenant.is_nonnativespeaker
-    datatype: yesno    
+    datatype: yesno
+    default: ${default_lang != ''}
   - I need an interpreter.: tenant.needs_interpreter
     datatype: yesno
     show if:  tenant.is_nonnativespeaker
   - "I need an interpreter who speaks:" : tenant.preferred_language
     datatype: combobox
     show if:  tenant.needs_interpreter
+    default: default_lang
     choices:
       - Spanish
       - Cantonese
@@ -1110,7 +1112,7 @@ fields:
     datatype: yesno
   - Date of payment to the landlord: cure_date
     datatype: date
-    required: False
+    show if: paid_rent_owed
 help:
   Paying all rent owed is called "curing" the non-payment of rent and can stop the
   eviction. The deadline for paying the full amount of rent owed should be 
