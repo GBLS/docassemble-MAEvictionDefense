@@ -272,6 +272,13 @@ subquestion: |
   Because today is the deadline for you, _you can't mail the paperwork._
   Either hand-deliver it, or call ahead to get permission to get it to them
   some other way.
+  
+  % endif
+
+  % if answer_date_is_holiday:
+  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  Usually you can deliver your answer the day after a holiday and it will still be on
+  time.
   % endif
 
   When and how will you bring the paperwork to your landlord or their attorney?
@@ -307,19 +314,40 @@ subquestion: |
      You can remove the cover page which has instructions for you.
   1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
      before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+    % if answer_date_is_holiday:
+    It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+    Usually you can deliver your answer the day after a holiday and it will still be on
+    time.
+    % endif
+
   1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
   % if landlord.has_attorney:
   1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  Usually you can deliver your answer the day after a holiday and it will still be on
+  time.
+  % endif
   % else:
   1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  Usually you can deliver your answer the day after a holiday and it will still be on
+  time.
+  % endif
+
   %endif
+  
   1. **Show up at the court on ${format_date(court_date)}**.
+  % if court_date_is_holiday:
+  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}. 
+  If you didn't get a notice from the court, you may want to call to find out
+  when your case will be heard.
+  % endif
 
   #### For your records
   You can download a copy of all of the individual forms, together with a :file-word: Microsoft
   Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
-
-  ${answers_response}  
 
 video: |
   [YOUTUBE mG-JDXOAkJU]
@@ -704,8 +732,19 @@ question: |
 subquestion: |
   Because you will be filing these forms on-time (no later than ${format_date(case.answer_date)}), your case date will automatically be
   postponed by two weeks. You do not need to appear in court on ${format_date(case.original_date)}.
+  % if answer_date_is_holiday:
+  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  Usually you can deliver your answer the day after a holiday and it will still be on
+  time.
+  % endif
   
+  % if court_date_is_holiday:
+  The date you should appear is ${court_date}. However, it looks like
+  ${court_date} is a holiday, ${ma_holidays.get(court_date)}. You should ask the court what they do about
+  cases scheduled on this holiday.
+  % else:
   Instead, you must appear on **${format_date(court_date)}**.
+  % endif
 
 buttons:
   - Continue: 
@@ -1821,13 +1860,24 @@ content: |
   Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
   a different date!
   
+  % if court_date_is_holiday:
+  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}. 
+  If you didn't get a notice from the court, you may want to call to find out
+  when your case will be heard.
+  % endif
+
   You are getting this email because you used our self-help eviction tool
   on ${format_date(start_time())}.
 ---
 template: attend_court_text
 content: |
   Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
-  at ${court.name} at 9 AM. Get ready here: https://gbls.org/tactics/12
+  at ${court.name} at 9 AM.   
+  % if court_date_is_holiday:
+  ${court_date} is ${ma_holidays.get(court_date)} so your date may have been
+  postponed. If the court didn't tell you the new date, call the court to find out.
+  % endif
+Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.  
 ---
 template: interview_complete_email
@@ -1841,7 +1891,12 @@ content: |
   
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
-  
+  % if court_date_is_holiday:
+  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}.
+  If you didn't get a notice from the court, you may want to call to find out
+  when your case will be heard.
+  % endif
+
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
   has information that can help you be prepared.
 
@@ -1857,18 +1912,31 @@ content: |
      You can skip the cover page which has instructions for you.
   1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
      before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  Usually you can deliver your answer the day after a holiday and it will still be on
+  time.
+  % endif
+
   1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
   % if landlord.has_attorney:
   1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
   % else:
   1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
   %endif
-  1. **Show up at the court on ${format_date(court_date)}**.
+  1. **Show up at the court on ${format_date(court_date)}** or the date the court
+  tells you to appear.
+  
 ---
 template: interview_complete_text
 content: |
   Congrats on finishing the interview! Don't forget:
   File your paperwork and go to court on ${ format_date(court_date) }.
+  % if court_date_is_holiday:
+  Because ${court_date} is a holiday, ${ma_holidays.get(court_date)},
+  ask the court what date to appear.
+  % endif
+
   Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.
 ---

@@ -1,10 +1,10 @@
 ---
-comment: |
-  Send interview responses to community.lawyer
-reconsider: True
-code: |
-  import dt_send_answers
-  answers_response = dt_send_answers.send_answers()
+#comment: |
+#  Send interview responses to community.lawyer
+#reconsider: True
+#code: |
+#  import dt_send_answers
+#  answers_response = dt_send_answers.send_answers()
 ---
 code: |
   if remind_user and (tenant.email and tenant.phone_number):
@@ -30,7 +30,7 @@ code: |
 ---
 code: |
   if show_instructions:
-    downloads_temp = [cover_letter,instructions,answer,discovery]
+    downloads_temp = [instructions,cover_letter,answer,discovery]
   else:
     downloads_temp = [cover_letter,answer,discovery] 
     
@@ -58,8 +58,6 @@ code: |
   if not court_is_housing_court and transfer_to_housing_court:
     num_downloads += 1
     download_titles_temp.append('Notice of Transfer')
-  if show_instructions:
-    num_downloads += 1 
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     num_downloads += 1
     download_titles_temp.append('Motion to Intervene')
@@ -373,3 +371,8 @@ code: |
 ---
 code: |
   last_months_rent.violated = last_months_rent.over_a_year and (not last_months_rent.paid_interest)
+---
+code: |
+  ma_holidays = holidays.US(state='MA')
+  answer_date_is_holiday = case.answer_date in ma_holidays
+  court_date_is_holiday = court_date in ma_holidays

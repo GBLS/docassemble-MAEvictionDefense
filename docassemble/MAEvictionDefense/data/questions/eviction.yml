@@ -34,6 +34,9 @@ modules:
   - .macourts
   - .discovery
 ---
+imports:
+  - holidays
+---
 objects:
   - tenant: Individual
   - landlord: Person
