@@ -4,6 +4,7 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
+* 2018-11-04 Remove Evacuation Day -- not observed by courts
 * 2018-11-03 Account for holidays. New cover sheet designed by Rina
 * 2018-11-01 Fixed regression: restored SMS messaging, bug on nonpayment of rent cure
 * 2018-10-29 Began groundwork for Spanish translation; bugfixes and major reorganization

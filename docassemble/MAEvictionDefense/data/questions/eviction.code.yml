@@ -374,5 +374,6 @@ code: |
 ---
 code: |
   ma_holidays = holidays.US(state='MA')
-  answer_date_is_holiday = case.answer_date in ma_holidays
-  court_date_is_holiday = court_date in ma_holidays
+  answer_date_is_holiday = case.answer_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(case.answer_date))
+  court_date_is_holiday = court_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(court_date))
+  
