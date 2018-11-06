@@ -97,7 +97,9 @@ mandatory: True
 code: |
   multi_user = True
   allow_cron = True
-  menu_items = [ action_menu_item('Review Answers', 'road_map') ]
+  menu_items = [action_menu_item('Review Answers', 'road_map')]
+  menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
+
 
   # Warn about Spanish translation
   if user_language == 'es':
@@ -106,18 +108,41 @@ code: |
   else:
     default_lang = ''
   
-  all_answer_variables
+  all_answer_variables # refers to variables listed in interview-order.yml
   loaded_discovery
   if person_answering == 'attorney' or tenant_review_discovery:
     interrogatory_questions
     drq_questions
   
-  send_user_email
-
+  saw_signature_choice
+  if defined('signature_choice') and signature_choice =='this device':
+    tenant.signature
+  elif defined('signature_choice') and signature_choice == 'phone':    
+    if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
+      send_sms(task='send signature link', to=link_cell,template=interview_link)
+    signature_wait_screen
+    tenant.signature
+    
+  method_of_service
+  
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
     compel_discovery_motion
   else:
+    send_user_email
     download_forms
+---
+code: |
+  if share_email:
+    if share_attachments and defined('downloads_concat'):
+      sent_sharing_email = send_email(to=share_email,template=sharing_email_template,attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+    else:
+      sent_sharing_email = send_email(to=share_email,template=sharing_email_template)
+  else:
+    sent_sharing_email = False
+  if share_cell:
+    sent_sharing_text = send_sms(to=share_cell,template=interview_link)
+  else: 
+    sent_sharing_text = False
 ---
 question: |
   Advertencia

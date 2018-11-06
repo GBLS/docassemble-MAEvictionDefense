@@ -195,7 +195,6 @@ code: |
     initial_defense.custom_reason_for_dismissal 
     initial_defense.custom_other
 
-  if person_answering == "tenant":
-    almost_done
+  almost_done
    
   all_answer_variables = True

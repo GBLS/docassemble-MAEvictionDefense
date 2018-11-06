@@ -235,14 +235,109 @@ help: |
   Sharing your information is optional. You can use this service for free whether or not
   you want your information to be shared.
 ---
+decoration: share
+question: |
+  Share this interview
+subquestion: |
+  You can continue this interview on another device, or share it with 
+  someone who will help you finish it. Choose any of the options below to share
+  the interview.
+  
+  Right-click and copy [this link](${interview_url()}).
+  
+  % if not device().is_mobile:
+  Use your phone's camera to point at this barcode. Click the link that appears
+  in the camera's viewfinder.
+  <center>
+  ${interview_url_as_qr()}
+  </center>  
+  % endif
+fields: 
+  - Text a link to this phone number: share_cell
+    required: false
+  - Email a link to this address: share_email
+    required: false
+  - Attach the completed forms: share_attachments
+    required: false
+    datatype: yesno
+    default: True    
+continue button field: share_fields
+---
+need:
+  - sent_sharing_email
+  - sent_sharing_text
+question: |
+  Sharing links sent
+subquestion: |
+  We sent a link to the interview to the phone number or email address
+  you gave us. It may take several seconds to arrive.
+field: share_success  
+---
+question: |
+  Signature
+subquestion: |
+  Before you deliver them to the court, you need to sign each form.
+fields:
+  - Where do you want to sign?: signature_choice
+    input type: radio
+    default: phone
+    choices:
+      - Sign on this device: this device
+      - Sign on paper after I print the forms: paper
+      - Sign on my phone: phone
+    show if: 
+      code: |
+        device().is_pc      
+  - note: |
+      To sign on your phone, point your phone camera at this barcode and click the 
+      barcode or link icon that appears in the camera view. Click continue on your 
+      phone.
+      
+      <center>
+      ${interview_url_as_qr()}
+      </center>
+
+    show if: 
+      code: |
+        device().is_pc    
+  - Or, text me a link at this phone number: link_cell
+    show if: 
+      code: |
+        device().is_pc        
+    required: false
+  - note: |
+      Once this screen has loaded on your mobile device, click continue.
+    show if: 
+      code: |
+        not device().is_pc            
+continue button field: saw_signature_choice
+help: |
+  Many smartphones will automatically find the link on this screen. The link
+  may "float" up from the screen into a small icon you can click.
+  If your phone does not do this, use the text option instead.
+  
+---
+question: Sign on your phone
+subquestion: |
+  % if device().is_pc:
+  Click continue on this screen once you have finished signing on your phone.
+  % else:
+  Click continue on this screen when you're ready to sign.
+  % endif
+  
+field: signature_wait_screen  
+---
 question: Sign below
 subquestion: |
-  When you sign these forms, you are saying that your answers to the questions
-  in this interview are true as far as you know.
-  
 signature: tenant.signature
 under: |
   ${ tenant.name }
+---
+template: interview_link
+content: |
+  This is MADE from GBLS.
+  Click the link below to continue the interview on your phone.
+  ${interview_url()}
 ---
 question: |
   Almost done!
@@ -1879,6 +1974,15 @@ content: |
   % endif
 Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.  
+---
+template: sharing_email_template
+subject: |
+  You were sent the link for an interview in ${landlord} v. ${tenant}
+content: |
+  Someone who was completing an interview using Massachusetts Defense for
+  Eviction (MADE) sent you this link.
+  
+  Click [here](${interview_url()}) to keep working on the interview.
 ---
 template: interview_complete_email
 subject: |
