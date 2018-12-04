@@ -82,7 +82,7 @@ question: |
 field: person_answering
 buttons:
   - Tenant or helper: tenant
-  - Attorney or paralegal: attorney
+  - Attorney: attorney
 ---
 question: Your tenant rights in Massachusetts
 subquestion: | 
@@ -158,8 +158,7 @@ subquestion: |
   
   #### Why keep your right to a jury trial?
   1. A jury is made up of ordinary people, some of whom may be tenants like you.
-  1. It takes time to schedule a jury trial. You can use the time to try to solve the 
-  problem with your landlord.
+  1. You may have more time to find a lawyer to represent you if you ask for a jury trial.
   1. You can always give up your jury right later. But you can't ask for a jury trial
   after the deadline for filing this paperwork.
   1. You can still reach an agreement with your landlord. Most cases end up with
@@ -192,6 +191,7 @@ question: |
   Court Date Reminders
 subquestion: |
   We can remind you about important dates by text or email.
+  Uncheck any options that you do not want.
   % if tenant.email and tenant.phone_number:
   
   We can use the contact information you just listed, **${tenant.email}** and
@@ -276,15 +276,16 @@ field: share_success
 question: |
   Signature
 subquestion: |
-  Before you deliver them to the court, you need to sign each form.
+  We are almost ready to print your forms. You will need to sign them before
+  delivering them.
 fields:
-  - Where do you want to sign?: signature_choice
+  - How do you want to sign?: signature_choice
     input type: radio
     default: phone
     choices:
-      - Sign on this device: this device
-      - Sign on paper after I print the forms: paper
-      - Sign on my phone: phone
+      - Sign on this computer (using the computer's mouse): this device
+      - Print the forms and sign on paper: paper
+      - Send a link to my phone and sign on my phone's touchscreen: phone
     show if: 
       code: |
         device().is_pc      
@@ -317,15 +318,31 @@ help: |
   If your phone does not do this, use the text option instead.
   
 ---
-question: Sign on your phone
+question: |
+  % if defined('tenant.signature'):
+  Thank you for signing.
+  % else:
+  Sign on your phone
+  % endif
 subquestion: |
   % if device().is_pc:
+  % if defined('tenant.signature'):
+  Click continue.
+  % else:
   Click continue on this screen once you have finished signing on your phone.
+  % endif
   % else:
   Click continue on this screen when you're ready to sign.
   % endif
   
-field: signature_wait_screen  
+field: signature_wait_screen
+---
+question: |
+  Continue on the device you started the interview on
+subquestion: |
+  Thank you for signing. You can close this browser on your phone.
+  Keep going on the computer you started the interview on.
+field: signature_phone_followup  
 ---
 question: Sign below
 subquestion: |
@@ -358,6 +375,8 @@ subquestion: |
   we are working on today. They need the copy no later than 
   ${format_date(case.answer_date)}. Deliver it to the address they listed
   on the summons and complaint.
+  
+  We recommend that you deliver it in-person to avoid problems with late mail.
 
   Some landlords will agree to get paperwork by fax or email. If you want to
   fax or email the forms, you need permission in advance. Every landlord
@@ -417,7 +436,7 @@ subquestion: |
 
   1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
   % if landlord.has_attorney:
-  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  1. Deliver the third copy to your landlord's attorney, ${landlords_attorney.name}, at ${landlords_attorney.address.on_one_line() }, no later than **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
   Usually you can deliver your answer the day after a holiday and it will still be on
@@ -443,6 +462,8 @@ subquestion: |
   #### For your records
   You can download a copy of all of the individual forms, together with a :file-word: Microsoft
   Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
+
+  ${ answers_response }
 
 video: |
   [YOUTUBE mG-JDXOAkJU]
@@ -544,19 +565,10 @@ fields:
         facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
   - My rental agreement is: tenancy_type
     choices:
-      - a written lease (even if expired): lease
-      - month-to-month or week-to-week (tenancy at will): taw
+      - a lease (even if expired): lease
+      - month-to-month or week-to-week (tenancy at will, written or oral): taw
       - I don't have one: taw
       - I don't know: taw
-  - When the original lease period is over (usually 1 year), my lease ...: lease_type
-    show if:
-      variable: tenancy_type
-      is: 'lease'
-    choices:
-      - ends and doesn't renew.: fixed_term
-      - renews for another term .: self_extending
-      - renews month-to-month or week to week.: renews_as_taw
-      - I don't know.: unknown
 section: About Your Tenancy
 help: |
   Your tenancy situation and the type of agreement you have to live at your address
@@ -579,7 +591,25 @@ help: |
   is that every tenant without a lease has the same rights as a tenant-at-will.
 
   You can learn more from [Legal Tactics, Chapter 4: Tenancies](https://www.masslegalhelp.org/housing/lt1-chapter-4-tenancies.pdf)
-
+---
+question: |
+  Type of lease
+subquestion: |
+  The kind of lease you have can determine the kind of notice your landlord
+  needs to give you.
+fields:  
+  - When the original lease period is over (usually 1 year), my lease ...: lease_type
+    choices:
+      - ends and doesn't renew.: fixed_term
+      - renews for another term .: self_extending
+      - renews month-to-month or week to week.: renews_as_taw
+      - I don't know.: unknown
+  - Date my lease ends: lease_end_date
+    datatype: date
+    show if:
+      variable: lease_type
+      is: fixed_term
+       
 --- 
 question: | 
   Information about you and your family
@@ -635,11 +665,6 @@ subquestion: |
   the time that you lived at ${tenant.address.address}. If you are not sure, click
   yes.
 fields:
-  - I have had bad housing conditions in the last 6 years while I lived at ${tenant.address.address}. For example, mice or insects, water damage, or another disturbance (such as a strong odor or noise).: bad_conditions.have_conditions
-    datatype: yesno
-    show if:
-      code: |
-        plead_counterclaims
   - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
     show if:
@@ -653,7 +678,7 @@ fields:
     show if:
       code: |
         plead_counterclaims    
-  - ${landlord.name} or an employee has entered my home without permission.: bqe.entered_without_permission
+  - ${landlord.name} or an employee has entered my home without permission or without advance notice.: bqe.entered_without_permission
     datatype: yesno
     show if:
       code: |
@@ -870,7 +895,8 @@ question: Reason for eviction
 subquestion: |
   Look at your Notice to Quit. 
   
-  What does your Notice to Quit say is the reason you are being evicted?
+  What does your Notice to Quit say is the reason you are being evicted? Put the
+  answer that is closest to what you see on the Notice to Quit.
   
 fields: 
   - Choose all reasons listed on your Notice to Quit that apply. : eviction_all_reasons
@@ -981,12 +1007,12 @@ comment: |
 question: What is your Landlord's name?
 subquestion: |
   To answer this question, look at the Summons and Complaint. Write your landlord's
-  name exactly the same way it is written on the line "...defend against the complaint
+  name _exactly_ the same way it is written on the line "...defend against the complaint
   of Plaintiff / Landlord / Owner"
 
   [FILE landlord_name.png, 100%]
 fields:
-  - Name: landlord.name.text
+  - Landlord's name (as written on the Summons): landlord.name.text
 section: About Your Landlord
 ---
 question: |
@@ -1040,57 +1066,32 @@ fields:
   - My landlord has an attorney.: landlord.has_attorney
     datatype: yesnoradio
     default: False
-  - Attorney's name: landlord.attorneys_name
+  - Attorney's name: landlords_attorney.name.text
     show if: landlord.has_attorney
     required: False
-  - Attorney's address (all on one line): landlord.attorneys_address
+  - Address: landlords_attorney.address.address
     show if: landlord.has_attorney
     required: False
-
+    address autocomplete: True
+  - Suite or Unit: landlords_attorney.address.unit
+    show if: landlord.has_attorney
+    required: False
+  - City: landlords_attorney.address.city
+    show if: landlord.has_attorney
+    required: False
+  - State: landlords_attorney.address.state
+    show if: landlord.has_attorney
+    required: False  
+  - Zip code:  landlords_attorney.address.zip
+    show if: landlord.has_attorney
+    required: False
 ---
 comment: |
   Initial defenses
 ---
-question: Is your rent paid by DTA?
-fields: 
-  - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
-    datatype: yesno
-section: Claims and Defenses  
----
 question: |
-  Termination notice
-subquestion: |
-  Below are statements about your eviction notice (notice to quit).
-  Select the answers that match the notice to quit you received.
-fields:
-  - The notice to quit has my name on it.: ntq_includes_tenant_name
-    datatype: yesnoradio
-    default: True
-  - The notice to quit includes the names of everyone who signed the lease.: ntq_includes_all_tenants
-    datatype: yesnoradio
-    default: True
-  - The notice to quit has my correct address.: ntq_includes_correct_address
-    datatype: yesnoradio
-    default: True
-  - My lease requires a 30-day notice even for non-payment of rent.: lease_requires_30_day_notice
-    datatype: yesno
-    default: False
-  - The notice to quit leaves out language that is required by my lease, by law, or by the requirements of a subsidy program.: ntq_leaves_off_required_language
-    datatype: yesno
-    default: False
-    help: |
-      Answering this question probably requires the help of a lawyer. You can leave it blank if you
-      are not sure.
-  - Type of termination notice: notice_type
-    default: |
-      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
-    choices:
-      - 14 day Notice to Quit: fourteen_day
-      - 30 day Notice to Quit: thirty_day
-      - 72 hour Notice to Quit: seventy_two_hour
-      - Notice "until the end of the next rental period" or similar: rental_period
-      - I never got a Notice to Quit: no_ntq
-      - I don't know: thirty_day
+  Non-payment of rent defenses
+fields: 
   - I was behind in rent when I got the 14-day notice.: behind_in_rent
     datatype: yesnoradio
     default: True
@@ -1112,11 +1113,44 @@ fields:
     show if:
       variable: notice_type
       is: 'fourteen_day'
-  - Date my lease ends: lease_end_date
-    datatype: date
-    show if:
-      code: |
-        showifdef('lease_type') == 'fixed_term'
+  - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
+    datatype: yesno
+section: Claims and Defenses  
+---
+question: |
+  Notice to Quit
+subquestion: |
+  Below are statements about your eviction notice (notice to quit).
+  Select the answers that match the notice to quit you got.
+fields:
+  - Kind of notice to quit: notice_type
+    default: |
+      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
+    choices:
+      - 14 day Notice to Quit: fourteen_day
+      - 30 day Notice to Quit: thirty_day
+      - 72 hour Notice to Quit: seventy_two_hour
+      - Notice "until the end of the next rental period" or similar: rental_period
+      - I never got a Notice to Quit: no_ntq
+      - I don't know: thirty_day
+  - The notice to quit has my name on it.: ntq_includes_tenant_name
+    datatype: yesnoradio
+    default: True
+  - The notice to quit includes the names of everyone who signed the lease.: ntq_includes_all_tenants
+    datatype: yesnoradio
+    default: True
+  - The notice to quit has my correct address.: ntq_includes_correct_address
+    datatype: yesnoradio
+    default: True
+  - My lease requires a 30-day notice even for non-payment of rent.: lease_requires_30_day_notice
+    datatype: yesno
+    default: False
+  - The notice to quit leaves out language that is required by my lease, by law, or by the requirements of a subsidy program.: ntq_leaves_off_required_language
+    datatype: yesno
+    default: False
+    help: |
+      Answering this question probably requires the help of a lawyer. You can leave it blank if you
+      are not sure.
 help:
   The Notice to Quit is the first step a landlord must take if they want to evict you.
   There is no standard form for a notice to quit, but it should include certain information.
@@ -1138,13 +1172,19 @@ subquestion: |
   In some cases actions you or your landlord take can make the notice to quit invalid, or "waive" it. Look at your notice to quit
   to answer this question.
   
-  Think about the time period after you first received a notice to quit, on
-  ${format_date(date_received_ntq)}. Check any statements below that apply to you.
+  Think about the time period after you first got a notice to quit
+  % if (defined('date_received_ntq') and date_received_ntq) :
+  , on
+  ${format_date(date_received_ntq)}.
+  % else:
+  .
+  % endif
+  Check any statements below that apply to you.
 fields:
-  - Did any of the following occur after you received the notice to quit on ${format_date(date_received_ntq)}?: post_ntq_waiver
+  - Did any of the following happen after you got the notice to quit${' on ' + format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else ''}?: post_ntq_waiver
     datatype: checkboxes
     choices:
-      - I paid rent after ${format_date(date_received_ntq)}: rent
+      - I paid rent after ${format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else 'I received the notice to quit'}: rent
         default: ${attempted_cure}
       - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
   - Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language?: ntq_contains_reservation
@@ -1178,7 +1218,7 @@ fields:
     hide if: ntq_matches_summons
     datatype: checkboxes
     choices:
-      - Failure to vacate after a valid notice (or similar): failure_to_vacate
+      - Failure to vacate after a valid notice or notice to quit has expired (or similar): failure_to_vacate
       - Non-payment of rent: rent
       - A different amount of rent than listed on the notice: rent
       - The same "fault" reason listed on the notice to quit: same_fault
@@ -1193,6 +1233,10 @@ fields:
 help: |
   Before you can be evicted, you need fair notice of the reason for the eviction
   and a chance to fix the problem, if it can be fixed.
+  
+  The Summons and Complaint should be specific, but sometimes it will only say 
+  something like "Failure to vacate after a valid notice". It's important that it
+  not add something completely new that the tenant had no notice of.
   
   Because of this, the reason listed on the court notice (Summons and Complaint) should
   be a close match to the notice to quit. It's common and acceptable for the language
@@ -1213,7 +1257,11 @@ video: |
 fields:
   - Date I got the notice to quit: date_received_ntq
     datatype: date
-  - Date I got the notice to appear in court (Summons and Complaint).: date_received_summons
+    required: False
+    hide if: 
+      code: |
+        notice_type == 'no_ntq'
+  - Date I got the notice to go to court (Summons and Complaint).: date_received_summons
     datatype: date
   - I got the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
     datatype: yesno
@@ -1234,7 +1282,7 @@ subquestion: |
   % if tenancy_type == 'lease':
   You have until the answer date, ${case.answer_date}, to pay the full amount due.
   % else:
-  You likely have or had until 10 days after you received the notice to quit,
+  You likely have or had until 10 days after you got the notice to quit,
   ${date_received_ntq.plus(days=10)}, to pay the full amount due.
   % endif
 fields: 
@@ -1242,7 +1290,7 @@ fields:
     datatype: yesno
   - My payment included the cost of filing in court and a constable (typically about $200).: paid_court_fees
     datatype: yesno
-  - This was the first notice to quit for non-payment of rent I received in the past 12 months.: no_ntq_in_12_months
+  - This was the first notice to quit for non-payment of rent I got in the past 12 months.: no_ntq_in_12_months
     datatype: yesno
   - Date of payment to the landlord: cure_date
     datatype: date
@@ -1274,7 +1322,7 @@ fields:
       - My landlord died
       - My landlord sold the building
       - I don't know who owns the building now but there is new management
-  - The building was sold after I received the notice to quit: building_sold_after_ntq
+  - The building was sold after I got the notice to quit: building_sold_after_ntq
     datatype: yesno
     show if:
       variable: new_landlord_reason
@@ -1303,7 +1351,8 @@ decoration: thumbs-up
 question: |
   You may have a defense!
 subquestion: |
-  It looks like your landlord made a mistake with your case. If a judge agrees, 
+  It looks like your landlord may have made a mistake with your case. 
+  If a judge agrees, 
   your landlord may need to start their case over again. We will list these defenses
   on your Answer form.
   
@@ -1311,7 +1360,7 @@ subquestion: |
   * Your tenancy was not properly terminated
   % endif
   % if initial_defense.no_ntq:
-  * You should have received a notice to quit but you did not
+  * You should have got a notice to quit but you did not
   % endif
   % if initial_defense.premature_commencement:
   * Your landlord started the case too early
@@ -1394,7 +1443,7 @@ subquestion: |
 video: |
   [YOUTUBE DCpIr9ldSsw]
 fields:
-  - "Select the conditions you have had": bad_conditions.conditions
+  - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
     datatype: checkboxes
     choices:
       - insects
@@ -1415,34 +1464,63 @@ fields:
   - Other conditions: bad_conditions.other_condition
     datatype: area
     show if: bad_conditions.conditions['other']
-  - I made repairs and deducted the cost from my rent pursuant to (G.L. c. 111, §127L).: other.repair_and_deduct_statute
-    datatype: yesno
 help: |
   You may have a claim against your landlord for problems in your home over the last
   6 years, whether they are currently repaired or not. For certain problems, you may only
   have a claim for the last 4 years.
   
-  Your landlord may have to pay you the difference between the value of your home in full
-  repair and the value of your home with the bad conditions. For very serious problems
+  If this is a no-fault or nonpayment of rent case, having bad conditions may stop
+  the eviction (be a defense).
+  
+  Your landlord may also have to pay you the difference between the value of your home in full
+  repair and the value of your home with the bad conditions for each month that you
+  had bad conditions. For very serious problems
   that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
 
   Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 section: Claims and Defenses
 ---
-need: bad_conditions.conditions
-question: Notification of landlord
+question: |
+  Repair and deduct
 subquestion: |
-  How did you notify your landlord of the bad housing conditions?
+  In some cases, if you made your own repairs to the apartment, the landlord
+  may be liable for the cost of those repairs.
+  Check any true statements below.
 fields:
-  - How did you notify your landlord of the bad housing conditions?: bad_conditions.landlord_notified
+  - I paid for repairs to the bad conditions at my own cost.: other.tenant_repaired
+    datatype: yesno
+  - Before I made repairs, the Board of Health or Inspectional Services Division gave the landlord a certified report about bad housing conditions.: other.certified_report
+    datatype: yesno
+    show if: other.tenant_repaired
+  - The landlord did not make or contract to make the repairs that they were ordered to make in a reasonable amount of time (14 days, or less if ordered by ISD or Board of Health).: other.no_timely_repairs
+    datatype: yesno
+    show if: other.tenant_repaired   
+  - I deducted the cost of repairs from my rent.: other.deducted_repair_cost
+    datatype: yesno
+    show if: other.tenant_repaired   
+  - The total amount I deducted for repairs was less than four months of rent.: other.repair_less_than_4_months
+    datatype: yesno
+    show if: other.tenant_repaired    
+help: |
+  The Repair and Deduct statute gives a tenant a limited way to fix bad housing conditions
+  that the landlord was told about by a city agency that enforces the housing code.
+  
+  See [G.L. c. 111, §127L](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVI/Chapter111/Section127L)
+---
+need: bad_conditions.conditions
+question: Notice to your landlord
+subquestion: |
+  How did you tell your landlord about the bad housing conditions?
+fields:
+  - How did you tell your landlord about the bad housing conditions?: bad_conditions.landlord_notified
     datatype: checkboxes
     choices:
-      - I told the landlord orally.
-      - I told the landlord in writing.
-      - The landlord was notified by Inspectional Services, Board of Health, housing agency, or someone else.
+      - I told the landlord in person or on the phone.
+      - I told the landlord in writing (by text, email, letter, or written note).
+      - The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told my landlord about the problems.
       - All or some of the conditions existed when I moved in.
       - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
-      - All or some of these conditions exist in common areas that the landlord has access to.
+      - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
   - Other: bad_conditions.other
     required: False
 section: Claims and Defenses
@@ -1777,7 +1855,8 @@ section: Claims and Defenses
 ---
 question: Violation of the Consumer Protection Act M.G.L. c. 93A
 subquestion: |
-  The consumer protection law protects tenants from unfair or depective actions from their landlord. 
+  Check any true statements below. You may have an extra defense under the Consumer
+  Protection law if you have defenses listed anywhere else on this interview.
 fields:
   - I was charged illegal late fees (unreasonably high, or before rent was 30 days late). : consumer_protection.late_fees
     datatype: yesno
@@ -1798,7 +1877,7 @@ help: |
   It allows tenants who win their case to get attorneys' fees and extra damages (additional
   money if they win).
   
-  Consumer protection applies to landlords who are "in the businsess" of being a landlord.
+  Consumer protection applies to landlords who are "in the business" of being a landlord.
   It doesn't apply to a government agency, such as a housing authority, or to a 
   homeowner who rents out a room or second unit in a small building of less than 4 units.
   
@@ -1815,7 +1894,7 @@ fields:
       - Accepted a deposit for more than one month's rent
       - Failed to keep the deposit in a separate bank account
       - Failed to provide required receipts
-      - Failed to pay interest on each anniversary of your deposit
+      - Failed to pay interest on each anniversary of your deposit or give me a credit on my rent
       - Failed to provide a statement of conditions
       - Did not take responsibility for the deposit paid to a former landlord
 section: Claims and Defenses
@@ -1929,7 +2008,7 @@ content: |
   To protect your right to information for your case,
   you need to send a "motion to compel discovery" to
   % if landlord.has_attorney:
-    ${landlord.attorneys_name}.
+    ${landlords_attorney.name}.
   % else:
     ${landlord.name}.
   % endif
@@ -2024,12 +2103,13 @@ content: |
 
   1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
   % if landlord.has_attorney:
-  1. Deliver the third copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}, no later than **${format_date(case.answer_date)}**.
+  1. Deliver the third copy to your landlord's attorney, ${landlords_attorney.name}, at ${landlords_attorney.address.on_one_line()}, no later than **${format_date(case.answer_date)}**.
   % else:
   1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
   %endif
   1. **Show up at the court on ${format_date(court_date)}** or the date the court
   tells you to appear.
+  
   
 ---
 template: interview_complete_text

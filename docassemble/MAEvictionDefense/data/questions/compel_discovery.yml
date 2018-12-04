@@ -26,7 +26,7 @@ subquestion: |
   ${ drq.count_checked() } kinds of documents from your landlord.
   
   Here's what the discovery form looked like:
-  ${ discovery }
+  ${ discovery.pdf.show() }
 
   You should look over your landlord's response carefully. Pay attention to any 
   questions you asked that your landlord ignored or did not answer

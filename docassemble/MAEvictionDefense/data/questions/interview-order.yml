@@ -5,8 +5,6 @@ comment: |
   We want this to run before generating discovery selections
 sets: all_answer_variables
 code: |
-  case.case_id = "" # Needed for dt-sendanswers
-
   show_instructions = True
 
   # Overview
@@ -60,8 +58,10 @@ code: |
 
   facts.tenant_has_lease
 
-  date_received_ntq
-  ntq_matches_summons
+  if initial_defense.need_ntq:
+    date_received_ntq
+    ntq_matches_summons
+    
   has_defense
   
   if person_answering == "tenant":
@@ -78,7 +78,13 @@ code: |
   
   if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and is_condo_conversion:
     more_than_3_units
-    
+
+  if plead_counterclaims:
+    bad_conditions.have_conditions
+    if bad_conditions.have_conditions:
+      bad_conditions.conditions
+      bad_conditions.landlord_notified
+      other.repair_and_deduct_statute
   
   if (plead_counterclaims and bad_conditions.have_conditions) or tenant.is_dvvictim or claims.harassment: 
     retaliation.is_retaliated = True
@@ -116,12 +122,6 @@ code: |
   initial_defense.other
   
   if plead_counterclaims:
-    bad_conditions.have_conditions
-    if bad_conditions.have_conditions:
-      bad_conditions.conditions
-      bad_conditions.landlord_notified
-      other.repair_and_deduct_statute
-
     paid_deposit
     if paid_lmr:
       last_months_rent.violated 

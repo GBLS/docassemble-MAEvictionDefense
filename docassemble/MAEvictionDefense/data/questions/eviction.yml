@@ -20,7 +20,7 @@ metadata:
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
    
-  revision_date: 2018-11-04
+  revision_date: 2018-12-04
 ---
 features:
   question help button: True
@@ -40,6 +40,7 @@ imports:
 objects:
   - tenant: Individual
   - landlord: Person
+  - landlords_attorney: Person
   - court: Court
   - case: Case
   - eviction: DAObject
@@ -97,9 +98,13 @@ mandatory: True
 code: |
   multi_user = True
   allow_cron = True
+  speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
-
+  
+  # We get a unicode error if we try to enable text to speech in Spanish
+  #if user_language == 'en':
+  #  speak_text = True
 
   # Warn about Spanish translation
   if user_language == 'es':
@@ -122,7 +127,13 @@ code: |
       send_sms(task='send signature link', to=link_cell,template=interview_link)
     signature_wait_screen
     tenant.signature
-    
+    if device().is_mobile:
+      signature_phone_followup
+  # Handle situation where someone uses the QR code    
+  if saw_signature_choice and not defined('signature_choice'):
+    tenant.signature
+    signature_phone_followup
+
   method_of_service
   
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:

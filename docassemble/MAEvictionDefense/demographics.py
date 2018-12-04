@@ -43,3 +43,21 @@ def education_list():
         ['professional','Professional degree'],
         ['doctorate','Doctorate degree']
     ]
+
+def relationship_list():
+    return {
+        'child': 'Child',
+        'cousin': 'Cousin',
+        'foster child': 'Foster Child',
+        'grandchild': 'Grand Child',
+        'grandparent': 'Grandparent',
+        'guardian': 'Guardian',
+        'parent': 'Parent',
+        'sibling': 'Sibling',
+        'spouse': 'Spouse',
+        'domestic partner': 'Domestic Partner',
+        'step child': 'Step Child',
+        'step parent': 'Step Parent',
+        'unmarried partner': 'Unmarried Partner'
+        'other': 'Other',
+    }    

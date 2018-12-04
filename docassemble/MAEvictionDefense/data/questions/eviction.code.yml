@@ -1,10 +1,16 @@
 ---
-#comment: |
-#  Send interview responses to community.lawyer
-#reconsider: True
-#code: |
-#  import dt_send_answers
-#  answers_response = dt_send_answers.send_answers()
+comment: |
+  Send interview responses to community.lawyer
+reconsider: True
+code: |
+  import dt_send_answers
+
+  # Workarounds for dt_send_answers
+  case.case_id = "" # Needed for dt-sendanswers
+  if not landlord.has_attorney:
+    landlords_attorney.name.text = ''
+
+  answers_response = dt_send_answers.send_answers()
 ---
 code: |
   if remind_user and (tenant.email and tenant.phone_number):
@@ -42,6 +48,9 @@ code: |
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     downloads_temp.append(intervene_motion)
   
+  if tenant.is_nonnativespeaker and tenant.needs_interpreter:
+    downloads_temp.append(interpreter_notice)
+  
   downloads = downloads_temp
   
   downloads_pdf = [i.pdf for i in downloads]
@@ -61,6 +70,9 @@ code: |
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
     num_downloads += 1
     download_titles_temp.append('Motion to Intervene')
+  if tenant.is_nonnativespeaker and tenant.needs_interpreter:
+    num_downloads += 1
+    download_titles_temp.append('Notice of Interpreter Request')
     
   download_titles = download_titles_temp
 ---
@@ -207,10 +219,11 @@ code: |
     tenant_type = 'pfc_owner'
 
   initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
-  initial_defense.need_ntq = True
   
   if tenant_type == 'renter' and tenancy_type == 'lease':
     initial_defense.need_ntq = not (lease_type == 'fixed_term' and lease_end_date <= date_received_summons) and not (tenancy_type == 'pca')
+  else:
+    initial_defense.need_ntq = True
 
   # Check to see if the right type of notice was used to match the type of tenancy and basis for termination
   if notice_type == 'fourteen_day':
@@ -262,10 +275,10 @@ code: |
     required_notice_time = 30
   elif notice_type == "seventy_two_hour":
     required_notice_time = 3
-  if defined('required_notice_time'):
+  if defined('required_notice_time') and defined('date_received_ntq'):
     initial_defense.premature_commencement = (date_received_ntq + date_interval(days=required_notice_time) ) <= date_received_summons
   else:
-    if notice_type == "rental_period":
+    if notice_type == "rental_period" and defined('date_received_ntq'):
       month_part = date_received_ntq.month
       year_part = date_received_ntq.year
       month_that_begins_next = month_part + 1
@@ -346,6 +359,12 @@ code: |
     bqe.violated = True
   else:
     bqe.violated = False
+---
+code: |
+  bad_conditions.have_conditions = bad_conditions.conditions.any_true()
+---
+code: |
+  other.repair_and_deduct_statute = other.tenant_repaired and other.certified_report and other.no_timely_repairs and other.deducted_repair_cost and other.repair_less_than_4_months
 ---
 code: |
   if tenant.is_discriminated:

@@ -1,5 +1,12 @@
 ---
 attachment:
+  - name: Notice of Interpreter Request
+    language: en
+    filename: InterpreterNotice
+    variable name: interpreter_notice
+    docx template file: InterpreterNotice.docx
+---
+attachment:
   - name: Instructions and Next Steps
     language: en
     filename: NextSteps
