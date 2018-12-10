@@ -1068,11 +1068,9 @@ fields:
     default: False
   - Attorney's name: landlords_attorney.name.text
     show if: landlord.has_attorney
-    required: False
   - Address: landlords_attorney.address.address
     show if: landlord.has_attorney
     required: False
-    address autocomplete: True
   - Suite or Unit: landlords_attorney.address.unit
     show if: landlord.has_attorney
     required: False

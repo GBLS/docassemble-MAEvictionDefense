@@ -62,7 +62,7 @@ objects:
   - subsidized_housing: DAObject
   - discrimination: DAObject
   - relief: DAObject
-  - relief.stay: DAObject
+  - relief.stay: DAObject 
   - consumer_protection: DAObject
   - discrimination.sexual_harassment: DAObject
   - county: DAObject
