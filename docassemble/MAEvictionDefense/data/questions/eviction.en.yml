@@ -1123,7 +1123,7 @@ subquestion: |
 fields:
   - Kind of notice to quit: notice_type
     default: |
-      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
+      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else 'no_ntq' if eviction_reason == 'nontq' else ''}
     choices:
       - 14 day Notice to Quit: fourteen_day
       - 30 day Notice to Quit: thirty_day
@@ -1258,7 +1258,7 @@ fields:
     required: False
     hide if: 
       code: |
-        notice_type == 'no_ntq'
+        (eviction_reason == 'nontq') or (notice_type == 'no_ntq')
   - Date I got the notice to go to court (Summons and Complaint).: date_received_summons
     datatype: date
   - I got the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
