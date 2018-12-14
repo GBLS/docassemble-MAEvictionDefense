@@ -9,6 +9,8 @@ code: |
 
   # Overview
   getting_started
+  person_answering
+  prepared_with_aoc
   if person_answering == 'tenant':
     how_to_answer
     overview_video

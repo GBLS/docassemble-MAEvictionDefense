@@ -370,39 +370,33 @@ progress: 95
 question: |
   Getting paperwork to your landlord
 subquestion: |
-
-  Your landlord or their attorney needs to get a copy of the forms
-  we are working on today. They need the copy no later than 
-  ${format_date(case.answer_date)}. Deliver it to the address they listed
-  on the summons and complaint.
-  
-  We recommend that you deliver it in-person to avoid problems with late mail.
-
-  Some landlords will agree to get paperwork by fax or email. If you want to
-  fax or email the forms, you need permission in advance. Every landlord
-  must accept it if you deliver it in-person or by regular mail.
-
-  % if format_date(case.answer_date) == format_date(today()):
-  Because today is the deadline for you, _you can't mail the paperwork._
-  Either hand-deliver it, or call ahead to get permission to get it to them
-  some other way.
-  
-  % endif
-
+  You must give a copy of the forms we are working on to your landlord or their 
+  attorney. They need to _get_ the forms no later than 
+  **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
-  Usually you can deliver your answer the day after a holiday and it will still be on
-  time.
+  Because ${case.answer_date} is ${ma_holidays.get(case.answer_date)}, you can
+  deliver it the next weekday after ${ma_holidays.get(case.answer_date)}.
   % endif
 
-  When and how will you bring the paperwork to your landlord or their attorney?
+  Deliver it in person
+  if you can. Your landlord may agree to get the paperwork by fax or email,
+  but you need to get their permission first. 
+  % if format_date(case.answer_date) == format_date(today()):
+  It's too late to mail the paperwork.
+  % else:
+  Only mail it if you know
+  your landlord will get it before ${format_date(case.answer_date)}.
+  % endif
 fields: 
   - Delivery method: method_of_service
-    choices:
-      - Mail: mailed
-      - Delivering by hand: delivered in-hand
-      - Email (with permission of my landlord): emailed
-      - Fax (with permission of my landlord): faxed
+    code: |
+      [{"delivered in-hand": "Delivering by hand" },
+            {"emailed":"Email (with permission of my landlord)"},
+            {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
+            {"Delivering by hand":"delivered in-hand"},
+            {"emailed": "Email (with permission of my landlord)"},
+            {"faxed":"Fax (with permission of my landlord)"}]
+        
   - Date of delivery: service_date
     datatype: date
 section: Conclusion
@@ -1255,7 +1249,6 @@ video: |
 fields:
   - Date I got the notice to quit: date_received_ntq
     datatype: date
-    required: False
     hide if: 
       code: |
         (eviction_reason == 'nontq') or (notice_type == 'no_ntq')

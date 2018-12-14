@@ -1,4 +1,7 @@
 ---
+code: |
+  prepared_with_aoc = url_args.get('clinic',False) == 'GBLS' or person_answering == 'attorney'
+---
 comment: |
   Send interview responses to community.lawyer
 reconsider: True
@@ -279,7 +282,7 @@ code: |
     required_notice_time = 30
   elif notice_type == "seventy_two_hour":
     required_notice_time = 3
-  if defined('required_notice_time') and defined('date_received_ntq'):
+  if defined('required_notice_time') and defined('date_received_ntq') and date_received_ntq != '':
     initial_defense.premature_commencement = (date_received_ntq + date_interval(days=required_notice_time) ) <= date_received_summons
   else:
     if notice_type == "rental_period" and defined('date_received_ntq'):
