@@ -102,10 +102,6 @@ code: |
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
   
-  # We get a unicode error if we try to enable text to speech in Spanish
-  #if user_language == 'en':
-  #  speak_text = True
-
   # Warn about Spanish translation
   if user_language == 'es':
     default_lang = 'Spanish'
@@ -141,19 +137,8 @@ code: |
   else:
     send_user_email
     download_forms
----
-code: |
-  if share_email:
-    if share_attachments and defined('downloads_concat'):
-      sent_sharing_email = send_email(to=share_email,template=sharing_email_template,attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
-    else:
-      sent_sharing_email = send_email(to=share_email,template=sharing_email_template)
-  else:
-    sent_sharing_email = False
-  if share_cell:
-    sent_sharing_text = send_sms(to=share_cell,template=interview_link)
-  else: 
-    sent_sharing_text = False
+    if not interface() == 'cron':
+      answers_response
 ---
 question: |
   Advertencia

@@ -19,24 +19,20 @@ decoration: home
 question: |
   MADE: Massachusetts Defense for Eviction
 subquestion: |
-  MADE helps tenants defend against an eviction in court.
-  We will create forms that you then need to :print: print and :envelope:
-  deliver to court and to your landlord. It should take you between :stopwatch: 25 
-  minutes and an hour to complete, depending on how complex your case is.
-  If you get interrupted, you can save your work and come back to it. You can also
-  email yourself the completed forms.
-  This interview is completely free.
+  MADE is a free tool to help tenants defend against an eviction in court.
+  When you finish, you need to print and deliver paperwork to
+  court and to your landlord or their attorney.
   
-  Before we start, you should find:
+  You can click on a {green word} to learn what it means. Click "Help" to to learn
+  more about a question. Click "Back" or on one of the section headings to change
+  an earlier answer.
+  
+  Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
+  to return to later. We recommend that before you start you find:
 
   1. The **Summons and Complaint** and 
   2. the **Notice to Quit** you got from your landlord.
   
-  If you don't have either document, you can still do your best to answer from your memory.
-  
-  At any time, click on a {green word} to learn what it means. Click the "[Help]" button to learn more
-  about the interview or a specific question, and "[BACK]" if you want to go back
-  to the previous question.
 help: |
   This is an example help page.
   Click "[Back to question]" to go to the previous screen and continue the interview.
@@ -61,7 +57,7 @@ question: |
 subquestion: |
   This interview asks for facts about you, your landlord, and your eviction case.
   The facts will be used to decide who should win your eviction case and whether
-  you or landlord owes the other person any money.
+  you or your landlord owes the other person any money.
   It's important to answer honestly.
   
   You should mark any facts that are true, even 
@@ -385,7 +381,7 @@ subquestion: |
   It's too late to mail the paperwork.
   % else:
   Only mail it if you know
-  your landlord will get it before ${format_date(case.answer_date)}.
+  your landlord will get it on or before ${format_date(case.answer_date)}.
   % endif
 fields: 
   - Delivery method: method_of_service
@@ -402,62 +398,83 @@ fields:
 section: Conclusion
 ---
 id: download
+decoration: check-circle
 event: download_forms
 question: |
-  Congratulations! You've reached the end of the interview
+  Congratulations! You finished the interview!
 subquestion: |
-  
-  Great work! You've finished the guided interview! But you're not quite done yet.
-  Based on your answers in the interview, we created [:file-pdf: ${nice_number(num_downloads)}
-  forms](${downloads_concat.url_for()}) for you to file in court.
-  You will need to :print: print and :envelope: mail or deliver these on your own.
-  
-  If you want to make any changes to your answers on the forms, click one of the 
-  section headings on the left or use the menu to go to "Review Answers" if you are
-  on a mobile device.
-  
-  #### Next steps
-  
-  1. :print: Print three (3) copies of [:file-pdf: these court forms](${downloads_concat.url_for()}).
-     You can remove the cover page which has instructions for you.
-  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
-     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
-    % if answer_date_is_holiday:
-    It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
-    Usually you can deliver your answer the day after a holiday and it will still be on
-    time.
-    % endif
-
-  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
-  % if landlord.has_attorney:
-  1. Deliver the third copy to your landlord's attorney, ${landlords_attorney.name}, at ${landlords_attorney.address.on_one_line() }, no later than **${format_date(case.answer_date)}**.
-  % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
-  Usually you can deliver your answer the day after a holiday and it will still be on
-  time.
+  Great work! Now you need to print, deliver, and go to court.
+  <div class="custom-counter">
+  <ol class="custom-counter">
+  <li>
+    Download and print three copies of the :file-pdf: PDF below. We created ${nice_number(num_downloads)} forms, combined into one PDF: ${comma_and_list(download_titles)}.
+  </li>
+  <li> 
+    Deliver a copy to your
+     ${("landlord's attorney, " + landlords_attorney.name.text) if landlord.has_attorney else ('landlord, ' + landlord.name.text) }, 
+     at ${landlords_attorney.address.on_one_line() if landlord.has_attorney else 'their address' }, 
+     no later than ${format_date(case.answer_date)}. Deliver a second copy to the ${ court.name }. Keep
+     one copy for yourself.
+  </li>
+  <li>
+  Your landlord should give you {discovery} by ${date_discovery_due}. File a 
+  {motion to compel discovery} if needed on ${date_motion_to_compel_due} 
+  % if remind_user:
+  (we will send you a reminder).
   % endif
-  % else:
-  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
-  % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
-  Usually you can deliver your answer the day after a holiday and it will still be on
-  time.
-  % endif
-
-  %endif
-  
-  1. **Show up at the court on ${format_date(court_date)}**.
+  </li>
+  <li>
+  <b>Get ready for court and show up on ${court_date}.</b>
   % if court_date_is_holiday:
-  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}. 
-  If you didn't get a notice from the court, you may want to call to find out
-  when your case will be heard.
+  ${court_date} is a holiday (${ma_holidays.get(court_date)}), so ask the court
+  when your case will be postponed until.
   % endif
 
-  #### For your records
-  You can download a copy of all of the individual forms, together with a :file-word: Microsoft
-  Word copy of the forms that you can edit and make additional changes to. :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
+  </li>
+  </ol>
+  </div>
+  
+  ### Your Forms (${comma_and_list(download_titles)})
+  <ul style="list-style-type:none">
+  <li> [:file-pdf: Forms to print and file today](${downloads_concat.url_for()})</li>
+  % if not remind_user:
+  <li> [:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due})](${compel_discovery_with_instructions.pdf.url_for()})</li>
+  % endif
+  <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip").url_for()})</li>
+  </ul>
+terms: 
+  discovery: |
+    Discovery is the list of questions we helped you ask your landlord. Your landlord
+    has 10 days to answer your questions and get you copies of documents about
+    your tenancy.
+  motion to compel discovery: |
+    A Motion to Compel Discovery is a form that tells the court your landlord
+    didn't answer your questions. You can send it to the court and your landlord
+    after the discovery is due (~ 10 days from today).
+css: |
+  <style>
+    .custom-counter ol {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    }
 
-  ${ answers_response }
+    .custom-counter li {
+    counter-increment: step-counter;
+    margin-bottom: 10px;
+    }
+
+    .custom-counter li::before {
+    content: counter(step-counter);
+    margin-right: 5px;
+    font-size: 80%;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 50%;
+    }
+  </style>  
 
 video: |
   [YOUTUBE mG-JDXOAkJU]
@@ -972,7 +989,8 @@ subquestion: |
   
   % else:
   In a case like yours, you can win (stop the eviction) if you prove you have at least
-  $1 in claims against your landlord. This is because of a law sometimes called the 
+  $1 in claims against your landlord and you pay the landlord the difference. This is 
+  because of a law sometimes called the 
   "rent withholding" statute. The most common claim is for bad housing conditions.
   The rest of this interview will help you find if you can use this defense.
   % endif    
@@ -1342,10 +1360,13 @@ decoration: thumbs-up
 question: |
   You may have a defense!
 subquestion: |
-  It looks like your landlord may have made a mistake with your case. 
-  If a judge agrees, 
-  your landlord may need to start their case over again. We will list these defenses
-  on your Answer form.
+  It looks like your landlord may have made a mistake with your case.
+  Only a judge can decide. In some cases, the landlord may have a chance to fix
+  a mistake. In other cases, the judge may ask your landlord to start the case
+  over again.
+  
+  To persuade a judge, you will need to bring proof with you to court.
+  You may get more proof when the landlord answers your discovery request.
   
   % if initial_defense.no_proper_termination:
   * Your tenancy was not properly terminated
@@ -1911,9 +1932,9 @@ fields:
       - Current landlord: current
       - Former landlord: former
   - Have you lived in the apartment for longer than 1 year?: last_months_rent.over_a_year
-    datatype: yesno
+    datatype: yesnoradio
   - Did your landlord pay you interest each year for your prepaid rent?: last_months_rent.paid_interest
-    datatype: yesno
+    datatype: yesnoradio
     show if: last_months_rent.over_a_year
 section: Claims and Defenses
 help: |
@@ -2063,6 +2084,8 @@ content: |
   
   This is a copy for you of all of the forms you completed today.
   
+  If you want to go back to your interview, click here ${interview_url()}.
+  
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
   % if court_date_is_holiday:
@@ -2072,36 +2095,7 @@ content: |
   % endif
 
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
-  has information that can help you be prepared.
-
-  If you haven't filed any paperwork with the court or your landlord yet, 
-  you're not quite done yet. You will need to print and mail or deliver the 
-  ${nice_number(num_downloads)} forms we created for you on your own.
-  They are attached to this email. You can print each form separately, or
-  print the single PDF file that combines all of the forms together.
-   
-  #### Next steps
-  
-  1. Print three copies of your court forms.
-     You can skip the cover page which has instructions for you.
-  1. Deliver one copy to the "Summary Process Clerk" at the ${ court.name }, 
-     before the court closes for the day (usually 4:30 PM) on **${format_date(case.answer_date)}**.
-  % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
-  Usually you can deliver your answer the day after a holiday and it will still be on
-  time.
-  % endif
-
-  1. Keep one copy for your personal records. Read it over. You can also bring this copy with you to court.
-  % if landlord.has_attorney:
-  1. Deliver the third copy to your landlord's attorney, ${landlords_attorney.name}, at ${landlords_attorney.address.on_one_line()}, no later than **${format_date(case.answer_date)}**.
-  % else:
-  1. Deliver the third copy to your landlord ${landlord.name}, no later than **${format_date(case.answer_date)}**.
-  %endif
-  1. **Show up at the court on ${format_date(court_date)}** or the date the court
-  tells you to appear.
-  
-  
+  has information that can help you be prepared.  
 ---
 template: interview_complete_text
 content: |
@@ -2169,6 +2163,7 @@ auto terms:
     A written notice from your landlord that tells you why your landlord 
     is ending your tenancy. Other names: notice to terminate tenancy.
     [FILE notice-to-quit-14.png, 100%]
+    _sample only: your notice may look different_
   summons and complaint: |
     A written notice about your eviction case that tells you to go to court
     on a certain date.

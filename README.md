@@ -4,6 +4,7 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
+* 2018-12-15 Improved language, handle compel discovery form better if user is not going to return to online interview
 * 2018-12-13 Added clinic feature, slight language cleanup and require date_received_ntq if it is known
 * 2018-12-10 Fix bug w/ landlord's attorney's name
 * 2018-12-04 Many improvements to language and workflow suggested by attorney/advocate feedback. New interpreter notice
