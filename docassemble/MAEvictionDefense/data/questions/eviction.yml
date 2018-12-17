@@ -36,6 +36,7 @@ modules:
 ---
 imports:
   - holidays
+  - re
 ---
 objects:
   - tenant: Individual

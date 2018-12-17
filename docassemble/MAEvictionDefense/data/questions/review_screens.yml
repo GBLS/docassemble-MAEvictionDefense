@@ -60,7 +60,7 @@ question: |
 subquestion: |
   So far, you have provided the following information about your landlord.
 review:
-  - Update name: landlord.name
+  - Update name: landlord.name.text
     button: |
       You said your landlord's name was ${landlord.name}.
   - Update landlord type: landlord.organization_type

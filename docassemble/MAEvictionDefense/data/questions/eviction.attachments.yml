@@ -1,5 +1,14 @@
 ---
 reconsider: True
+comment: |
+  Clean up the filename so that you can download a file.
+code: |
+  orig_filename = case_title + '.pdf'
+  s = str(orig_filename).strip().replace(' ', '_')
+  s = re.sub(r'(?u)[^-\w.]', '', s)
+  safe_filename = s
+---
+reconsider: True
 code: |
   if show_instructions:
     downloads_temp = [instructions,cover_letter,answer,discovery]
@@ -21,7 +30,7 @@ code: |
   
   downloads_pdf = [i.pdf for i in downloads]
   downloads_docx = [i.docx for i in downloads]
-  downloads_concat = pdf_concatenate(downloads_pdf,filename=case_title + '.pdf')
+  downloads_concat = pdf_concatenate(downloads_pdf,filename=safe_filename)
 ---
 reconsider: True
 code: |
