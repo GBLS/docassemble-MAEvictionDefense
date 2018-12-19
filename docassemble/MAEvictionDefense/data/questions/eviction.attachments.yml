@@ -8,31 +8,34 @@ code: |
   s = re.sub(r'(?u)[^-\w.]', '', s)
   safe_filename = s
 ---
-reconsider: True
 code: |
+  reconsider('instructions', 'cover_letter', 'answer', 'discovery')
   if show_instructions:
-    downloads_temp = [instructions,cover_letter,answer,discovery]
+    downloads = [instructions,cover_letter,answer,discovery]
   else:
-    downloads_temp = [cover_letter,answer,discovery] 
+    downloads = [reconsider(cover_letter),reconsider(answer),reconsider(discovery)] 
     
   if case.status == 'late':
-    downloads_temp.append(late_answer)
+    downloads.append(late_answer)
   if not court_is_housing_court and transfer_to_housing_court:
-    downloads_temp.append(transfer_notice)
+    reconsider('transfer_notice')
+    downloads.append(transfer_notice)
 
   if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
-    downloads_temp.append(intervene_motion)
+    reconsider('intervene_motion')
+    downloads.append(intervene_motion)
   
   if tenant.is_nonnativespeaker and tenant.needs_interpreter:
-    downloads_temp.append(interpreter_notice)
+    reconsider('interpreter_notice')
+    downloads.append(interpreter_notice)
   
-  downloads = downloads_temp
+  # downloads = downloads_temp
   
   downloads_pdf = [i.pdf for i in downloads]
   downloads_docx = [i.docx for i in downloads]
   downloads_concat = pdf_concatenate(downloads_pdf,filename=safe_filename)
+  downloads_zip = zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")
 ---
-reconsider: True
 code: |
   download_titles_temp = ['Answer','Discovery']
   

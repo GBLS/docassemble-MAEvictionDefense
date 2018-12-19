@@ -28,7 +28,6 @@ review:
   - Update name on Summons: 
     - tenant.name_different_on_summons
     - recompute:
-      - downloads_temp
       - downloads      
       - downloads_pdf
       - downloads_docx
@@ -109,6 +108,7 @@ review:
         - date_discovery_due
         - date_discovery_received
         - date_motion_to_compel_due
+        - court_date
     button: |
       You said your case was originally scheduled to be heard on ${ case.original_date }
       with an answer date of ${ case.answer_date }.
@@ -263,18 +263,19 @@ review:
       make you feel unsafe or uncomfortable.
       % endif
   - Update bad conditions: 
-    - bad_conditions.have_conditions
+    - bad_conditions.conditions
+    - bad_conditions.other_condition
     - recompute:
+      - bad_conditions.have_conditions
       - bad_conditions.landlord_notified
     button: |
       You said that you ${'did' if bad_conditions.have_conditions else 'did not'} have any bad housing conditions in the last 6 years.
-      
       % if bad_conditions.have_conditions:
       Specifically, the bad conditions included ${ bad_conditions.conditions.true_values() }.
-        % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:
+      % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:
       
-        You also said you had the other bad condition: ${ bad_conditions.other_condition }.
-        % endif
+      You also said you had the other bad condition: ${ bad_conditions.other_condition }.
+      % endif
 
       Your landlord learned about the problem because: ${bad_conditions.landlord_notified}.
       

@@ -416,6 +416,9 @@ fields:
     datatype: date
 section: Conclusion
 ---
+reconsider: 
+  - downloads_zip
+  - download_titles
 id: download
 decoration: check-circle
 event: download_forms
@@ -459,7 +462,7 @@ subquestion: |
   % if not remind_user or didnt_provide_contact_info:
   <li> [:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due})](${compel_discovery_with_instructions.pdf.url_for()})</li>
   % endif
-  <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip").url_for()})</li>
+  <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${downloads_zip.url_for()})</li>
   </ul>
 terms: 
   discovery: |
