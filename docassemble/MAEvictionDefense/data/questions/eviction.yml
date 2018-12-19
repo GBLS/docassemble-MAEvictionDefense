@@ -20,7 +20,7 @@ metadata:
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
    
-  revision_date: 2018-12-13
+  revision_date: 2018-12-19
 ---
 features:
   question help button: True
@@ -102,7 +102,8 @@ code: |
   speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
-  
+  started_on_phone # check to see what the starting device is
+
   # Warn about Spanish translation
   if user_language == 'es':
     default_lang = 'Spanish'
@@ -116,20 +117,27 @@ code: |
     interrogatory_questions
     drq_questions
   
-  saw_signature_choice
-  if defined('signature_choice') and signature_choice =='this device':
+  if started_on_phone:
+    saw_signature_choice = True
     tenant.signature
-  elif defined('signature_choice') and signature_choice == 'phone':    
-    if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
-      send_sms(task='send signature link', to=link_cell,template=interview_link)
-    signature_wait_screen
-    tenant.signature
-    if device().is_mobile:
+  else: 
+    saw_signature_choice
+    if defined('signature_choice') and signature_choice =='this device':
+      tenant.signature
+    elif defined('signature_choice') and signature_choice == 'phone':
+      if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
+        send_sms(task='send signature link', to=link_cell,template=interview_link)
+        signature_wait_screen
+        tenant.signature
+        if device().is_mobile:
+          signature_phone_followup
+      else:
+        tenant.signature
+    # Handle situation where someone uses the QR code    
+    if saw_signature_choice and not defined('signature_choice'):
+      tenant.signature
       signature_phone_followup
-  # Handle situation where someone uses the QR code    
-  if saw_signature_choice and not defined('signature_choice'):
-    tenant.signature
-    signature_phone_followup
+      signature_choice = 'phone'
 
   method_of_service
   

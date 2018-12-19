@@ -1,5 +1,4 @@
 ---
-reconsider: True
 code: |
   case_title = landlord.name.full() + ' v. ' + tenant.name.full()
 ---
@@ -24,18 +23,24 @@ code: |
     landlords_attorney.name.text = ''
 ---
 code: |
-  if remind_user and (tenant.email and tenant.phone_number):
+  started_on_phone = device().is_mobile
+---
+code: |
+  if remind_user and (tenant.email or tenant.phone_number):
     user_cell = tenant.phone_number
     user_email = tenant.email
     if edit_contact_info:
       user_cell = user_cell_edited
       user_email = user_email_edited
-  elif edit_contact_info:
+    didnt_provide_contact_info = False      
+  elif edit_contact_info and (user_cell_edited or user_email_edited):
     user_cell = user_cell_edited
     user_email = user_email_edited
+    didnt_provide_contact_info = False   
   else:
     user_cell = tenant.phone_number
     user_email = tenant.email
+    didnt_provide_contact_info = True
 ---
 code: |
   date_discovery_received = service_date
@@ -230,44 +235,46 @@ code: |
 ---
 sets: initial_defense.defective_summons
 code: |
+
+  case.entry_date = case.answer_date.plus(days=-7) # The Entry date should be 1 week before the Answer date--don't make the Tenant enter this information
+
+  initial_defense.summons_served_at_wrong_time = not (case.entry_date >= date_received_ntq.plus(days=7) and case.entry_date <= date_received_ntq.plus(days=30))
+
   initial_defense.summons_missing_information = (tenant.name_different_on_summons and tenant.not_named_on_summons) or ( not (summons_includes_all_tenants and summons_includes_correct_address))
   initial_defense.defective_summons = (
         not (summons_in_hand or (summons_mailed and summons_last_and_usual))
-        or initial_defense.summons_missing_information )
+        or initial_defense.summons_missing_information 
+        or initial_defense.summons_served_at_wrong_time)
 ---
+comment: |
+  A notice can be 14 day, 30 day, 72 hour, or rental period (a full month).
+  A rental period notice must be at least 30 days and must end on a rent day.
+  We don't need a notice if the tenancy is by lease and the lease has expired.
 sets: 
   - initial_defense.premature_commencement
 code: |
-  if notice_type == "fourteen_day":
-    required_notice_time = 14
-  elif notice_type == "thirty_day":
-    required_notice_time = 30
-  elif notice_type == "seventy_two_hour":
-    required_notice_time = 3
-  if defined('required_notice_time') and defined('date_received_ntq') and date_received_ntq != '':
-    initial_defense.premature_commencement = (date_received_ntq + date_interval(days=required_notice_time) ) <= date_received_summons
+  if eviction_all_reasons == 'nontq' or notice_type == 'no_ntq':
+    initial_defense.premature_commencement = not (tenant_type == 'renter' and tenancy_type =='lease' and lease_type == 'fixed_term' and lease_end_date < date_received_summons)
+    premature_commencement_test = 'No notice required for fixed term lease but is for all other tenancy types'
   else:
-    if notice_type == "rental_period" and defined('date_received_ntq'):
-      month_part = date_received_ntq.month
-      year_part = date_received_ntq.year
-      month_that_begins_next = month_part + 1
-      # Handle end of year notices
-      if month_that_begins_next + 1 <= 12:
-        next_month_plus1 = as_datetime(str(year_part) + '-' + str(month_that_begins_next + 1) + '-01')
-        initial_defense.premature_commencement = (date_received_ntq < next_month_plus1) and (date_difference(starting=date_received_ntq,ending=next_month_plus1).days > 30)
-      else:
-        next_month_plus1 = as_datetime(str(year_part+1) + '-' + str((month_that_begins_next + 1) % 12 ) + '-01')
-        initial_defense.premature_commencement = (date_received_ntq < next_month_plus1) and (date_difference(starting=date_received_ntq,ending=next_month_plus1).days > 30)
+    if notice_type in ['fourteen_day','thirty_day','seventy_two_hour']:
+      premature_commencement_test = 'Notice is required for a fixed number of days'
+      if notice_type == 'fourteen_day':
+        required_notice_time = 14
+      elif notice_type == "thirty_day":
+        required_notice_time = 30
+      elif notice_type == "seventy_two_hour":
+        required_notice_time = 3
+      date_notice_should_be_received_after = date_received_ntq.plus(days=required_notice_time)        
+      initial_defense.premature_commencement = not (date_received_summons >= date_notice_should_be_received_after)
     else:
-      if tenant_type == 'renter' and tenancy_type == 'lease' and showifdef('lease_type') == 'fixed_term':
-        if lease_end_date < date_received_summons:
-          initial_defense.premature_commencement = True
-        else:
-          initial_defense.premature_commencement = False
-      elif tenant_type == 'pfc_owner':
-        initial_defense.premature_commencement = True
-      else:
-        initial_defense.premature_commencement = False 
+      premature_commencement_test = 'Rental period notice is required'
+      # We don't know what the rent day is but perhaps this should be checked by a lawyer?
+      # Check for the date exactly 2 months after the first day of the month the NTQ was received.
+
+      month_that_begins_next = date_received_ntq.replace(day=1).plus(months=2)
+      notice_greater_than_30_days = ((month_that_begins_next - date_received_ntq).days >= 30)
+      initial_defense.premature_commencement = not (notice_greater_than_30_days and month_that_begins_next <= date_received_summons)
 ---
 sets: initial_defense.cure
 code: |
@@ -279,10 +286,10 @@ code: |
     else:
       initial_defense.cure = False
   else:
-    if no_ntq_in_12_months and paid_rent_owed and cure_date <= as_datetime(date_received_ntq + date_interval(days=10)):
+    if no_ntq_in_12_months and paid_rent_owed and cure_date <= date_received_ntq.plus(days=10):
       initial_defense.cure = True
     else:
-      initial_defense.cure = True
+      initial_defense.cure = False
 ---
 sets: initial_defense.no_standing
 code: |

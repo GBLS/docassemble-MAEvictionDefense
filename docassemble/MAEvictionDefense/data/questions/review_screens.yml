@@ -243,7 +243,7 @@ review:
       You said that you ${ 'were' if tenant.is_discriminated else 'were not'} 
       discriminated against by your landlord.
       
-      You said you were discriminated against because of ${ discrimination.protected_classes }.
+      You said you were discriminated against because of ${ discrimination.protected_classes.true_values() }.
   - Update sexual harassment:
     - claims.harassment
     - recompute:
@@ -270,7 +270,7 @@ review:
       You said that you ${'did' if bad_conditions.have_conditions else 'did not'} have any bad housing conditions in the last 6 years.
       
       % if bad_conditions.have_conditions:
-      Specifically, the bad conditions included ${ bad_conditions.conditions }.
+      Specifically, the bad conditions included ${ bad_conditions.conditions.true_values() }.
         % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:
       
         You also said you had the other bad condition: ${ bad_conditions.other_condition }.
@@ -290,7 +290,7 @@ review:
       - security_deposit.violated
     button: |
       The amount you say you paid as a deposit was ${ security_deposit.amount}.
-      The violations included ${ security_deposit.violations}.
+      The violations included ${ security_deposit.violations.true_values()}.
   - Update Pre-paid Last Month's Rent: paid_lmr
     button: |
       You said you ${ 'did' if paid_lmr else 'did not'} pre-pay last month's rent.

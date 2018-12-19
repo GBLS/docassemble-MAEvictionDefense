@@ -14,6 +14,25 @@ sections:
   - review_discovery: Discovery
   - Conclusion
 ---
+question: |
+  Requesting Time to Move
+subquestion: |
+  We don't know yet who will win your case. If your case goes to a trial, the judge or jury can decide in favor
+  of you or your landlord.
+
+  If the judge does decide that your landlord has the right to the apartment, the judge can give you more time to move.
+  The judge will likely expect that you continue to pay rent while you stay in the apartment.
+  
+  The judge will consider your disability and whether anyone who lives with you is over the age of 60.
+  Use your own words to explain any special circumstances about _your_ situation and why you need more time than
+  a typical tenant. For example, if you need more time to find an accessible apartment or if your child has an IEP 
+  in the local school district.
+fields:
+  - Explain in your own words why you need more time to move.: needs_time_because
+    required: False
+    datatype: area
+    maxlength: 500
+---
 id: intro screen
 decoration: home
 question: |
@@ -419,7 +438,7 @@ subquestion: |
   <li>
   Your landlord should give you {discovery} by ${date_discovery_due}. File a 
   {motion to compel discovery} if needed on ${date_motion_to_compel_due} 
-  % if remind_user:
+  % if remind_user and not didnt_provide_contact_info:
   (we will send you a reminder).
   % endif
   </li>
@@ -437,7 +456,7 @@ subquestion: |
   ### Your Forms (${comma_and_list(download_titles)})
   <ul style="list-style-type:none">
   <li> [:file-pdf: Forms to print and file today](${downloads_concat.url_for()})</li>
-  % if not remind_user:
+  % if not remind_user or didnt_provide_contact_info:
   <li> [:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due})](${compel_discovery_with_instructions.pdf.url_for()})</li>
   % endif
   <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip").url_for()})</li>
@@ -733,8 +752,11 @@ comment: |
 question: |
   What court is your case being heard in?
 subquestion: |
-  Look at the upper-right-hand corner of the Summons and Complaint form. Pick the name of the court from the list(s) below.  
-  
+  We already filled in the name of the county you live in and the name of the Housing Court for your county.
+
+  Look at the upper-right-hand corner of the Summons and Complaint form. If the information doesn't match,
+  change the court name and county to match the information on your Summons and Complaint.
+
   [FILE court_and_county.png, 100%]
 fields: 
   - Court name: court.name
@@ -1105,24 +1127,24 @@ fields:
   - I was behind in rent when I got the 14-day notice.: behind_in_rent
     datatype: yesnoradio
     default: True
-    show if: 
-      variable: notice_type
-      is: 'fourteen_day'
+    show if:
+      code: |
+        notice_type == 'fourteen_day'
   - I never agreed to pay the amount of rent the landlord put in the 14-day notice: refused_rent_increase
     datatype: yesno
     show if:
-      variable: notice_type
-      is: 'fourteen_day'
-  - I paid the full amount of money I owed.: attempted_cure
+      code: |
+        notice_type == 'fourteen_day'
+  - I gave the landlord the full amount of money I owed.: attempted_cure
     datatype: yesno
     show if:
-      variable: notice_type
-      is: 'fourteen_day'
+      code: |
+        notice_type == 'fourteen_day'
   - I offered to pay the full amount of money I owed.: attempted_cure
     datatype: yesno
     show if:
-      variable: notice_type
-      is: 'fourteen_day'
+      code: |
+        notice_type == 'fourteen_day'
   - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
 section: Claims and Defenses  
@@ -1358,7 +1380,7 @@ section: Claims and Defenses
 sets: show_defense_summary
 decoration: thumbs-up
 question: |
-  You may have a defense!
+  You may have a defense
 subquestion: |
   It looks like your landlord may have made a mistake with your case.
   Only a judge can decide. In some cases, the landlord may have a chance to fix
@@ -1369,25 +1391,25 @@ subquestion: |
   You may get more proof when the landlord answers your discovery request.
   
   % if initial_defense.no_proper_termination:
-  * Your tenancy was not properly terminated
+  * Your tenancy may not have been properly terminated
   % endif
   % if initial_defense.no_ntq:
-  * You should have got a notice to quit but you did not
+  * Your landlord should have given you a notice to quit but you did not get one
   % endif
   % if initial_defense.premature_commencement:
-  * Your landlord started the case too early
+  * Your landlord may have started the case too early
   % endif
   % if initial_defense.varney:
-  * Your landlord didn't use an attorney but was required to
+  * Your landlord didn't use an attorney but may have been required to
   % endif
   % if initial_defense.defective_summons:
-  * The summons and complaint was not properly served
+  * The summons and complaint may not have been properly served
   % endif
   % if (eviction_reason == 'nonpayment' and initial_defense.cure):
-  * You cured any non-payment of rent
+  * You may have cured any non-payment of rent
   % endif
   % if initial_defense.new_tenancy:
-  * Your landlord accidentally created a new tenancy
+  * Your landlord may have accidentally created a new tenancy
   % endif
   % if initial_defense.inconsistent_reasons:
   * Your landlord gave a new reason for the eviction without giving you a new notice
@@ -1399,6 +1421,8 @@ field: show_defense_summary
 buttons:
   - Continue: continue  
 section: Claims and Defenses
+help: |
+  Please see [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims) for more information.
 ---
 question: |
   Protections for tenants in condo or coop conversions
