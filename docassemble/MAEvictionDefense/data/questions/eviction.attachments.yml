@@ -1,5 +1,4 @@
 ---
-reconsider: True
 comment: |
   Clean up the filename so that you can download a file.
 code: |
@@ -9,13 +8,11 @@ code: |
   safe_filename = s
 ---
 code: |
-  reconsider('instructions', 'cover_letter', 'answer', 'discovery')
-  if show_instructions:
-    downloads = [instructions,cover_letter,answer,discovery]
-  else:
-    downloads = [reconsider(cover_letter),reconsider(answer),reconsider(discovery)] 
-    
+  reconsider('instructions', 'cover_letter', 'answer', 'discovery','safe_filename')
+  downloads = [instructions,cover_letter,answer,discovery]
+      
   if case.status == 'late':
+    reconsider('late_answer')
     downloads.append(late_answer)
   if not court_is_housing_court and transfer_to_housing_court:
     reconsider('transfer_notice')
