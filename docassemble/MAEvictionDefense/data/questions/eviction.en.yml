@@ -416,9 +416,9 @@ fields:
     datatype: date
 section: Conclusion
 ---
-#reconsider: 
-#  - downloads_zip
-#  - download_titles
+reconsider: 
+  - downloads_zip
+  - download_titles
 id: download
 decoration: check-circle
 event: download_forms

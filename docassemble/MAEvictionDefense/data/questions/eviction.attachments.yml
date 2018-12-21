@@ -1,11 +1,13 @@
 ---
+reconsider: case_title
 comment: |
   Clean up the filename so that you can download a file.
 code: |
   orig_filename = case_title + '.pdf'
-  s = str(orig_filename).strip().replace(' ', '_')
-  s = re.sub(r'(?u)[^-\w.]', '', s)
-  safe_filename = s
+  #s = str(orig_filename).strip().replace(' ', '_')
+  #s = re.sub(r'(?u)[^-\w.]', '', s)
+  #safe_filename = s
+  safe_filename = space_to_underscore(orig_filename)
 ---
 code: |
   reconsider('instructions', 'cover_letter', 'answer', 'discovery','safe_filename')
