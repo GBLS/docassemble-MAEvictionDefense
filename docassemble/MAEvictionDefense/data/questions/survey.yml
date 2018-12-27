@@ -1,22 +1,62 @@
 ---
+metadata:
+  interview_identifier: "MADE: Usage Survey"
+  title: |
+    MADE Follow-up Survey
+  short title: |
+    Survey
+  description: |
+    This is a survey about MADE
+  authors:
+    - name: Quinten Steenhuis
+      organization: Greater Boston Legal Services
+  revision_date: 2018-12-26
+---
+code: |
+  interview_date = url_args.get('interview_date',None)
+  zip = url_args.get('interview_zip', None)
+---
+imports:
+  - dt_send_answers
+---
 mandatory: True
+code: |
+  interview_date
+  zip
+  survey_questions
+  sent_answers
+  thanks
+---
+code: |
+  dt_send_answers.send_answers()
+  sent_answers = True
+---
+decoration: clipboard-list
 question: |
-  Feedback about the self-help eviction defense tool
+  Please share your experience using MADE
 subquestion: |
-  Congratulations on responding to your landlord's eviction case.
-  
   This survey is about the self-help eviction defense tool that you used on
-  __DATE__ and what happened afterwards in your court case.
+  ${interview_date} and what happened afterwards in your court case. The tool you used
+  is called MADE.
   
-  The survey is anonymous and will be used to improve the self-help tool.
-fields:
+  This survey is completely anonymous. It will be used to improve this system for
+  other tenants.
+fields:    
   - Were the advice and paperwork in the guided interview helpful? : user_found_advice_useful
     datatype: yesnoradio
   - Would you recommend this service to a friend?: user_would_recommend
     datatype: yesnoradio
+  - Where did you use the guided interview?: interview_setting
+    input type: radio
+    choices:
+      - In a legal aid clinic with a lawyer supervising
+      - At an agency where I went to get help with my rent
+      - At the courthouse Court Service Center
+      - At home or on my own
+      - Somewhere else with someone helping me
   - Are you still living in your home? : still_in_home
     datatype: yesnoradio
-  - Is your case resolved? : case_resolved
+  - Is your case finished?: case_resolved
     datatype: yesnoradio
   - Can we contact you again in 6 months? : can_followup
     datatype: yesnoradio
@@ -40,7 +80,7 @@ fields:
       - I can stay in the home. Nobody owes any money.
       - I can stay and my landlord owes me money. : agreement_with_money
       - I will move out and my landlord will pay me money or forgive rent I owe. : moveout_with_money
-      - I will move out but I will not be paid any money.
+      - I will move out but I will not be paid any money.      
   - What happened at the trial? : case_agreement_outcome
     datatype: yesnoradio
     show if: 
@@ -95,11 +135,12 @@ fields:
       - Master’s degree
       - Professional degree
       - Doctorate degree
-  - How can this system be improved? : open_text_feedback
+  - How can MADE be improved? : open_text_feedback
     datatype: area
-    required: False
+    required: False    
+continue button field: survey_questions
 ---
-mandatory: True
+event: thanks
 question: | 
   Thank you!
 subquestion: |

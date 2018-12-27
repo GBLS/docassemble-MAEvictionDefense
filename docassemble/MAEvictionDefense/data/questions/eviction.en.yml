@@ -1294,7 +1294,7 @@ fields:
     datatype: date
     hide if: 
       code: |
-        (eviction_reason == 'nontq') or (notice_type == 'no_ntq')
+        (eviction_reason == 'nontq') and (notice_type == 'no_ntq')
   - Date I got the notice to go to court (Summons and Complaint).: date_received_summons
     datatype: date
   - I got the summons and complaint by someone handing it to me or an adult in my household.: summons_in_hand
@@ -2134,7 +2134,18 @@ content: |
   % endif
 
   Get ready here: https://gbls.org/tactics/12
+  
    - MADE from GBLS.
+---
+template: survey_email
+subject: |
+  We'd like to know what you thought about using MADE
+content: |
+  Thanks for your recent use of MADE, Massachusetts Defense Against Eviction.
+  
+  Can you help us help more tenants by taking this [short survey](${interview_url(i='docassemble.MAEvictionDefense:data/questions/survey.yml',interview_date=start_time(),interview_zip=showifdef('tenant.address.zip'))})?
+  
+    - MADE from GBLS
 ---
 interview help:
   heading: |
@@ -2184,6 +2195,8 @@ interview help:
     on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
     
     *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
+    
+    [Take a survey](${interview_url(i='docassemble.MAEvictionDefense:data/questions/survey.yml',interview_date=start_time(),interview_zip=showifdef('tenant.address.zip'))}).
 ---
 auto terms:
   notice to quit: |

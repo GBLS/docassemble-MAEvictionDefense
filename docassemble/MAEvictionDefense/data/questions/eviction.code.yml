@@ -5,16 +5,6 @@ code: |
 code: |
   prepared_with_aoc = url_args.get('clinic',False) == 'GBLS' or person_answering == 'attorney'
 ---
-comment: |
-  Send interview responses to community.lawyer
-reconsider: True
-code: |
-  import dt_send_answers
-
-  # Workarounds for dt_send_answers
-  case.case_id = "" # Needed for dt-sendanswers
-  answers_response = dt_send_answers.send_answers(['landlords_attorney'])
----
 sets: 
   - landlords_attorney.name.text
   - landlords_attorney.name
@@ -238,8 +228,11 @@ code: |
 
   case.entry_date = case.answer_date.plus(days=-7) # The Entry date should be 1 week before the Answer date--don't make the Tenant enter this information
 
-  initial_defense.summons_served_at_wrong_time = not (case.entry_date >= date_received_ntq.plus(days=7) and case.entry_date <= date_received_ntq.plus(days=30))
-
+  if defined('date_received_ntq'):
+    initial_defense.summons_served_at_wrong_time = not (case.entry_date >= date_received_ntq.plus(days=7) and case.entry_date <= date_received_ntq.plus(days=30))
+  else:
+    initial_defense.summons_served_at_wrong_time = True
+  
   initial_defense.summons_missing_information = (tenant.name_different_on_summons and tenant.not_named_on_summons) or ( not (summons_includes_all_tenants and summons_includes_correct_address))
   initial_defense.defective_summons = (
         not (summons_in_hand or (summons_mailed and summons_last_and_usual))

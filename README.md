@@ -4,6 +4,7 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
+* 2018-12-26 Bug fixes. Added survey email
 * 2018-12-19 Bug fixes / language improvements suggested by court staff
 * 2018-12-16 urgent bug fix with illegal characters in download filename
 * 2018-12-15 Improved language, handle compel discovery form better if user is not going to return to online interview

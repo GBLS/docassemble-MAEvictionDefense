@@ -1,5 +1,5 @@
 metadata:
-  interview_identifier: "MADE: Massachusetts Defense for Eviction"
+  interview_identifier: "MADE: Massachusetts Defense for Eviction (Launch)"
   title: |
     MADE: Massachusetts Defense for Eviction
   short title: |
@@ -20,7 +20,7 @@ metadata:
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
    
-  revision_date: 2018-12-21
+  revision_date: 2018-12-26
 ---
 features:
   question help button: True
@@ -36,6 +36,7 @@ modules:
 ---
 imports:
   - holidays
+  - dt_send_answers  
   #- re
 ---
 objects:
@@ -102,6 +103,7 @@ code: |
   speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
+  
   started_on_phone # check to see what the starting device is
 
   # Warn about Spanish translation
@@ -146,8 +148,23 @@ code: |
   else:
     send_user_email
     download_forms
-    if not interface() == 'cron':
-      answers_response
+    # Only send responses from the live site
+    if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
+      sent_answers # will only send once, so doesn't account for revisions
+---
+code: |
+  dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
+  sent_answers = True
+---
+comment: |
+  Send interview responses to community.lawyer
+reconsider: True
+code: |
+  # import dt_send_answers
+
+  # Workarounds for dt_send_answers
+  #case.case_id = "" # Needed for dt-sendanswers
+  answers_response = ''
 ---
 question: |
   Advertencia

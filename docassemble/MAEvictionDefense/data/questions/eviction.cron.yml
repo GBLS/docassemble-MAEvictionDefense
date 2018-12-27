@@ -19,3 +19,8 @@ code: |
     send_email(to=user_email, template=court_reminder_email, task='court reminder')
     if user_cell and task_not_yet_performed('court reminder text'):
       send_sms(to=phone_number_in_e164(user_cell), template=attend_court_text, task='court reminder text')
+
+  if survey_user and task_not_yet_performed('survey link') and today >= court_date.plus(days=30):
+    send_email(to=user_email, template=survey_email,task='survey link')
+    if user_cell and task_not_yet_performed('survey text'):
+      send_sms(to=phone_number_in_e164(user_cell), template=survey_email, task='survey text')
