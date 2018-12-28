@@ -109,7 +109,7 @@ code: |
   # Warn about Spanish translation
   if user_language == 'es':
     default_lang = 'Spanish'
-    warn_spanish
+    # warn_spanish
   else:
     default_lang = ''
   
