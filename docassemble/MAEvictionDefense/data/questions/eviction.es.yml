@@ -4,7 +4,8 @@ default language: es
 comment: |
   Overview screens
 ---
-sections:
+comment: |
+  sections:
   - Comenzando
   - review_about_you: Información sobre Usted
   - review_about_landlord: Información sobre su Propietario o arrendador
