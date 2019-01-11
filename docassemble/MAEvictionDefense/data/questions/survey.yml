@@ -28,7 +28,7 @@ code: |
   thanks
 ---
 code: |
-  dt_send_answers.send_answers()
+  dt_send_answers.send_answers(include_logged_in_user=False)
   sent_answers = True
 ---
 decoration: clipboard-list

@@ -94,7 +94,7 @@ code: |
   case.entry_date = case.answer_date + date_interval(days=-7)
 ---
 code: |
-  if today() >= case.answer_date: # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
+  if case.answer_date <= today(): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
     case.rescheduled_date = case.original_date.plus(days=14)
     case.on_time = True
   else:

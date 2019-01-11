@@ -38,6 +38,9 @@ decoration: home
 question: |
   MADE: Massachusetts Defense for Eviction
 subquestion: |
+  
+  I speak/yo hablo [FIELD user_language].
+
   MADE is a free tool to help tenants defend against an eviction in court.
   When you finish, you need to print and deliver paperwork to
   court and to your landlord or their attorney.
@@ -60,6 +63,7 @@ terms:
 section: Getting Started
 fields:
   - Language / Idioma: user_language
+    input type: radio
     default: en
     choices:
       - English: en
