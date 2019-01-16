@@ -1172,7 +1172,7 @@ subquestion: |
   Ud. tiene hasta la fecha de respuesta, el ${case.answer_date}, para pagar toda la cantidad debida.
   % else:
   Probablemente tiene o tenía hasta 10 días después de que recibiera la orden de desalojo, 
-  ${date_received_ntq.plus(days=10)}, para pagar toda la cantidad debida.
+  ${date_received_ntq.plus(days=10) if defined('date_received_ntq') else ''}, para pagar toda la cantidad debida.
   % endif
 fields: 
   - Pagué toda la renta que le debía al arrendador, u ofrecí pagar la cantidad entera: paid_rent_owed

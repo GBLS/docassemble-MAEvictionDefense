@@ -1321,7 +1321,8 @@ subquestion: |
   You have until the answer date, ${case.answer_date}, to pay the full amount due.
   % else:
   You likely have or had until 10 days after you got the notice to quit,
-  ${date_received_ntq.plus(days=10)}, to pay the full amount due.
+  ${date_received_ntq.plus(days=10) if (defined('date_received_ntq') and date_received_ntq != '') else ''}
+  ,to pay the full amount due.
   % endif
 fields: 
   - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
