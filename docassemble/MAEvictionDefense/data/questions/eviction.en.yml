@@ -79,9 +79,10 @@ question: |
   How to answer questions in this interview
 subquestion: |
   This interview asks for facts about you, your landlord, and your eviction case.
-  The facts will be used to decide who should win your eviction case and whether
-  you or your landlord owes the other person any money.
-  It's important to answer honestly.
+  Your answers to the questions will create a legal document that you will sign 
+  and file with the court. Your answers will help the court get your side of the
+  story.  Your answers also may show that your landlord does not have a case to
+  evict you. So, be sure to answer every question fully and truthfully.
   
   You should mark any facts that are true, even 
   if you do not think they are related to the eviction. _If you are not sure about a 
@@ -93,7 +94,7 @@ subquestion: |
 
 field: how_to_answer  
 buttons: 
-  - I agree to answer honestly and completely: continue
+  - I agree: continue
 section: Getting Started
 ---
 question: |
@@ -168,25 +169,27 @@ buttons:
 question: |
   Your right to a jury trial
 subquestion: |
-  You or your landlord can choose to have a jury
-  decide this case. This is _your_ chance to choose a jury.
+  Do you want a jury trial?
   
-  Choosing a jury does not mean you will stop having to pay rent, or 'use and occupancy'.
-  Jury trials are complicated and if you are unable to reach an agreement with your
-  landlord, it helps most tenants to have a lawyer with them at a jury trial.
-  
-  #### Why keep your right to a jury trial?
-  1. A jury is made up of ordinary people, some of whom may be tenants like you.
-  1. You may have more time to find a lawyer to represent you if you ask for a jury trial.
-  1. You can always give up your jury right later. But you can't ask for a jury trial
-  after the deadline for filing this paperwork.
-  1. You can still reach an agreement with your landlord. Most cases end up with
-  an agreement, whether the tenant keeps their right to a jury trial or not.
+  You have a right to a jury trial and you must ask for it now.
+
+  ### What is a jury trial? 
+
+  * In a jury trial the jury decides who wins the case.
+  * The other option is a trial with a judge and the judge decides who wins the case.
+  * A jury is made up of ordinary people, some of whom may be tenants like you.
+  * Jury trials are complicated and it helps to have a lawyer represent you in a jury trial.
+
+  ### Should I keep my right to a jury trial?
+  * You may have more time to find a lawyer if you ask for a jury trial.
+  * You can always give up your jury right later. But you can't ask for a jury trial after the deadline for filing this paperwork.
+  * You can still reach an agreement with your landlord. Most cases end up with an agreement, whether the tenant keeps their right to a jury trial or not.
+  * Choosing a jury does not mean you will stop having to pay rent, or 'use and occupancy.'
 
 field: claim_jurytrial
 buttons:
   - Keep my jury trial: True
-  - Waive my right to a jury: False
+  - Give up my right to a jury: False
 section: Getting Started
 decoration: users
 help: |
@@ -1001,27 +1004,25 @@ subquestion: |
   evicting you is '${eviction_detailed_reason}'.
   
   % if eviction_reason == "fault":
-  That means you won't be allowed to counter-sue your landlord for money to win (stop
-  the eviction) in this case.
+  That means you won't be allowed to counter-sue your landlord for money to win in this case.
   %if plead_counterclaims:
   Your landlord also says you owe money. You can still sue your landlord
   for money to offset (lower) the amount of rent owed.
   % endif  
   
-  Your landlord still must prove that '${eviction_detailed_reason}' is a good
+  Your landlord must prove that '${eviction_detailed_reason}' is a good
   reason for evicting you. They also must prove that you did what they say you
   did.
   
   You may have other defenses that can stop the eviction. Common defenses include
   disability, mistakes by the landlord, and an eviction for a bad (illegal) reason.  
   
-  
   % else:
-  In a case like yours, you can win (stop the eviction) if you prove you have at least
-  $1 in claims against your landlord and you pay the landlord the difference. This is 
-  because of a law sometimes called the 
-  "rent withholding" statute. The most common claim is for bad housing conditions.
-  The rest of this interview will help you find if you can use this defense.
+  In a case like yours, you may win your case if you have at least one claim against your
+  landlord. This is because of a law that protects tenants who withhold rent from a landlord
+  who did not follow the law. For example, it can protect tenants from a landlord who did not
+  repair bad housing conditions that they knew about before the tenant fell behind in the
+  rent. It will be up to the judge or jury to decide if you qualify for this defense.
   % endif    
 field: eviction_reason_explanation
 help: |
@@ -1033,7 +1034,9 @@ help: |
   If the tenant in a non-fault or non-payment case can prove at least $1 in damages, 
   they have 7 days from the date of the
   trial to pay any balance that is still owed to the landlord and they get to stay
-  in the apartment. In practice, this often means that the landlord will not be able
+  in the apartment. 
+  Tenants are also protected against a landlord who retaliates against them for winning a case.
+  In practice, this often means that the landlord will not be able
   to file a new eviction case for 6 months, but it is not guaranteed.
   
   This defense does _not_ apply if the eviction is brought "with fault" of the tenant.
@@ -1310,28 +1313,25 @@ fields:
 section: Claims and Defenses      
 ---
 question: |
-  Cure of non-payment
+  Paying the money owed
 subquestion: |
-  You may have the right to stop the eviction if you paid all money that was owed at the time to the 
-  landlord, even if you owe a new amount of money now.
-  
-  The proper time payment is due depends on whether you have a lease or a tenancy at will. You said
-  earlier that you have a ${tenancy_type.replace('taw','tenancy at will or were unsure')}.
+  You may have the right to stop the eviction if you paid all of the money that you owed the landlord
+  no later than  
   % if tenancy_type == 'lease':
-  You have until the answer date, ${case.answer_date}, to pay the full amount due.
+  the answer date, ${case.answer_date}.
   % else:
-  You likely have or had until 10 days after you got the notice to quit,
-  ${date_received_ntq.plus(days=10) if (defined('date_received_ntq') and date_received_ntq != '') else ''}
-  ,to pay the full amount due.
+  10 days after you got the notice to quit
+  ${', ' + str(date_received_ntq.plus(days=10)) if (defined('date_received_ntq') and date_received_ntq != '') else ''}
   % endif
+  .
 fields: 
-  - I paid all rent owed to the landlord, or offered to pay the full amount.: paid_rent_owed
+  - I paid all of the rent that I owed my landlord, or I offered to pay it and they refused to accept it.: paid_rent_owed
     datatype: yesno
-  - My payment included the cost of filing in court and a constable (typically about $200).: paid_court_fees
+  - I also paid the court costs (typically between $180-$200).: paid_court_fees
     datatype: yesno
-  - This was the first notice to quit for non-payment of rent I got in the past 12 months.: no_ntq_in_12_months
+  - In the last twelve months, this was the first or only time I received a notice to quit.: no_ntq_in_12_months
     datatype: yesno
-  - Date of payment to the landlord: cure_date
+  - The date I paid my landlord was: cure_date
     datatype: date
     show if: paid_rent_owed
 help:
@@ -1390,16 +1390,17 @@ decoration: thumbs-up
 question: |
   You may have a defense
 subquestion: |
-  It looks like your landlord may have made a mistake with your case.
+  Your landlord might not have followed all of the technical steps to
+  legally evict you.
   Only a judge can decide. In some cases, the landlord may have a chance to fix
   a mistake. In other cases, the judge may ask your landlord to start the case
   over again.
-  
-  To persuade a judge, you will need to bring proof with you to court.
-  You may get more proof when the landlord answers your discovery request.
-  
+
+  Bring information with you to court about each possible defense listed below. You may
+  get more information when your landlord answers your discovery request.
+
   % if initial_defense.no_proper_termination:
-  * Your tenancy may not have been properly terminated
+  * Your landlord may not have properly ended your tenancy before starting the eviction case
   % endif
   % if initial_defense.no_ntq:
   * Your landlord should have given you a notice to quit but you did not get one
@@ -1411,19 +1412,19 @@ subquestion: |
   * Your landlord didn't use an attorney but may have been required to
   % endif
   % if initial_defense.defective_summons:
-  * The summons and complaint may not have been properly served
+  * The summons and complaint may not have been delivered to you the right way
   % endif
   % if (eviction_reason == 'nonpayment' and initial_defense.cure):
-  * You may have cured any non-payment of rent
+  * You may have paid all of the rent owed at the right time
   % endif
   % if initial_defense.new_tenancy:
-  * Your landlord may have accidentally created a new tenancy
+  * Your landlord may have created a new tenancy by accepting rent or signing a new lease
   % endif
   % if initial_defense.inconsistent_reasons:
   * Your landlord gave a new reason for the eviction without giving you a new notice
   % endif
   % if initial_defense.no_standing:
-  * Your landlord may lack standing to evict you
+  * Your landlord may not be the right person to evict you
   % endif
 field: show_defense_summary
 buttons:
@@ -1738,12 +1739,13 @@ section: Claims and Defenses
 comment: |
   Retaliation
 ---
-question: Retaliation
+question: |
+  Retaliation
 subquestion: |
-  Do you have any reason to believe that the landlord is not evicting you due 
-  to "${eviction_detailed_reason}", and is instead is evicting you because of something you 
-  have a legal right to do?
+  "Retaliation" means that your landlord is evicting you for something you had a right to do. 
 
+  Do you believe that the landlord is evicting you because of something you have a legal right to do?
+  
   Examples include reporting bad conditions; withholding rent; suing your landlord, or getting protection
   against domestic violence. If you are unsure, you can select "yes" and see more detailed questions on the next
   screen.
@@ -1819,7 +1821,7 @@ subquestion: |
   Discrimination may include:
 
   * Not wanting to rent to children (maybe because of lead paint)
-  * Not wanting to make changes to rules or the property to help a disabled tenant
+  * Not wanting to make changes to rules or the property to help a tenant with a disability
   * Not wanting to accept a Section 8 voucher or other rental assistance
   * Treating someone unfairly because of race, sex, religion, veteran status, or gender or sexuality
 
@@ -1897,9 +1899,10 @@ fields:
 section: Claims and Defenses
 
 ---
-question: Violation of the Consumer Protection Act M.G.L. c. 93A
+question: |
+  Consumer Protection Law
 subquestion: |
-  Check any true statements below. You may have an extra defense under the Consumer
+  Check any true statements below. You may also have a defense under the Consumer
   Protection law if you have defenses listed anywhere else on this interview.
 fields:
   - I was charged illegal late fees (unreasonably high, or before rent was 30 days late). : consumer_protection.late_fees
@@ -2164,18 +2167,23 @@ interview help:
   content: |
     This interview is meant to help Massachusetts residents respond to an eviction.
 
-    There are 5 forms available in this interview:
+    There are 7 forms available in this interview:
     
     1. Answer (your response to the eviction)
     1. Request for Discovery (your chance to get information to be prepared for court)
+    1. Motion to compel discovery
     1. Late Answer request
     1. Transfer to Housing Court (if your case is not in a housing court, you can move it for free)
     1. Intervene (if you are not named in the eviction, you can ask for permission to defend against the eviction in court)
+    1. Interpreter notice (if you do not speak English, you have the right to an interpreter)
      
     At the end of this interview, you will have documents that you can file in court. 
     This interview does _not_ file them for you.
     You need to 
     give a copy of the documents to your landlord or your landlord's attorney.
+    
+    ### Documentation
+    You can read more detailed instructions about how to use this interview [here](https://www.gbls.org/MADE/documentation).
     
     ### Contributors:
     This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited

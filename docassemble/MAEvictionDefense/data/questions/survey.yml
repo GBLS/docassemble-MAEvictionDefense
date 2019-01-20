@@ -11,6 +11,7 @@ metadata:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
   revision_date: 2018-12-26
+
 ---
 code: |
   interview_date = url_args.get('interview_date',None)
@@ -25,6 +26,7 @@ code: |
   zip
   survey_questions
   sent_answers
+  missing_var
   thanks
 ---
 code: |

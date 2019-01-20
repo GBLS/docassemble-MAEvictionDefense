@@ -19,8 +19,12 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-   
-  revision_date: 2018-12-26
+  revision_date: 2019-01-20
+  post: |
+    <div style="text-align: right; padding: 2em">
+    Feedback, suggestions, or comments? 
+    <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
+    </div>
 ---
 features:
   question help button: True
