@@ -70,7 +70,7 @@ review:
       You said your landlord
       % if landlord.has_attorney:
       does have an attorney. You said the attorney's name was
-      ${ landlord.attorneys_name } and address was ${ landlord.attorneys_address }.
+      ${ landlords_attorney } and address was ${ landlords_attorney.address.on_one_line() }.
       % else:
       does not have an attorney.
       % endif

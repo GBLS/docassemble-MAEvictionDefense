@@ -408,7 +408,7 @@ subquestion: |
 
   1. Mantenga una copia en sus archivos personales. Léalo. También pudiera traer esta copia consigo al tribunal
   % if landlord.has_attorney:
-  1. Entregue la tercera copia al abogado de su arrendador ${landlord.attorneys_name}, en ${landlord.attorneys_address}, no más tarde que **${format_date(case.answer_date)}**.
+  1. Entregue la tercera copia al abogado de su arrendador ${landlords_attorney}, en ${landlords_attorney.address.on_one_line()}, no más tarde que **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   Parece que el ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
   Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
@@ -1822,7 +1822,7 @@ template: compel_discovery_email
 subject: |
   Es hora de obligar el descubrimiento (Massachusetts Defensa para el Desalojo) en ${landlord} v. ${tenant}
 content: |
-  Hola ${ tenant.name.first }! Este esMADE (Massachusetts Defense for Eviction) de Greater Boston Legal Services.
+  Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defense for Eviction) de Greater Boston Legal Services.
   
   Cuando usted usó nuestra herramienta autoayuda para defensa contra el desalojo en${format_date(start_time())}, usted le pidió a su 
   Arrendador ${landlord} que le enviase información para prepararse para su caso.
@@ -1831,7 +1831,7 @@ content: |
   
   Para proteger su derecho a obtener información para su caso, necesita enviar una "moción para obligar descubrimiento" a 
   % if landlord.has_attorney:
-    ${landlord.attorneys_name}.
+    ${landlords_attorney}.
   % else:
     ${landlord.name}.
   % endif
@@ -1914,7 +1914,7 @@ content: |
 
   1. Mantenga una copia para sus records personales. Léala. También puede traer esta copia con usted a la corte.
   % if landlord.has_attorney:
-  1. Entregue la tercera copia al abogado de su arrendador, ${landlord.attorneys_name}, en ${landlord.attorneys_address}, a más tardar el **${format_date(case.answer_date)}**.
+  1. Entregue la tercera copia al abogado de su arrendador, ${landlords_attorney}, en ${landlords_attorney.address.on_one_line()}, a más tardar el **${format_date(case.answer_date)}**.
   % else:
   1. . Entregue la tercera copia a su arrendador ${landlord.name}, a más tardar el **${format_date(case.answer_date)}**.
   %endif
