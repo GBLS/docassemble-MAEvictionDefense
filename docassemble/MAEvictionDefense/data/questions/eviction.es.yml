@@ -399,7 +399,7 @@ subquestion: |
   
   1. :print: Imprime tres (3) copias of [:file-pdf: estos formularios](${downloads_concat.url_for()}).
      . Puede remover la portada que tiene instrucciones para Ud.
-  1. Entregue una copia al "Secretario del Tribunal para Acciónes Judiciales Sumarias" al ${ court.name },  antes de que cierre la corte (típicamente a las 4:30 PM) el **${format_date(case.answer_date)}**.
+  1. Entregue una copia al "Secretario del Tribunal para Acciónes Judiciales Sumarias" al ${ court },  antes de que cierre la corte (típicamente a las 4:30 PM) el **${format_date(case.answer_date)}**.
     % if answer_date_is_holiday:
     Parece que el ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
   
@@ -676,11 +676,11 @@ subquestion: |
   
   [FILE court_and_county.png, 100%]
 fields: 
-  - Nombre de la Corte: court.name
+  - Nombre de la Corte: court
     default: ${local_housing_court}
     code: |
       ma_courts_list()
-  - Condado: court.county
+  - Condado: court.address.county
     default: ${tenant.address.county}
     choices:
       - Barnstable County
@@ -703,7 +703,7 @@ section: About Your Court Case
 question: |
   Trasladado al Tribunal de VIvienda
 subquestion: |
-  Ud. indicó que actualmente su caso tendrá lugar en ${court.name}.
+  Ud. indicó que actualmente su caso tendrá lugar en ${court}.
 
   Ud. tiene el derecho de trasladar su caso a ${local_housing_court}.
   La mayoría de los inquilinos benefician del traslado de su caso al Tribunal de Vivienda. Dependiendo de su ciudad o pueblo, puede que sea más difícil llegar al tribunal de vivienda. Debería preparar arreglos para llegar a la corte a tiempo.
@@ -721,7 +721,7 @@ subquestion: |
 field: transfer_to_housing_court
 buttons:
   - Trasladar mi caso: True
-  - Permanecer en ${court.name}: False
+  - Permanecer en ${court}: False
 help: |
   Trasladar su caso es un derecho automático. Debería chequear con el secretario del Tribunal de Vivienda para averiguar la fecha que debería presentarse en el tribunal. Puede que reciba la notificación en el correo. Es muy probable que no  sea la fecha nueva de audiencia imprimida en la planilla de Respuesta.
 ---
@@ -755,18 +755,15 @@ fields:
     default: 'US'    
 --- 
 question: |
-  ¿A cuál Tribunal de VIvienda está trasladando su caso?
+  ¿A cuál Tribunal de Vivienda está trasladando su caso?
 subquestion: |
   Revise la página de internet de [Tribunal de Vivienda Para Todos](http://www.housingcourt4all.org/where-the-housing-court-sits.html) 
   para aprender dónde se encuentra el tribunal para su ciudad o pueblo.
-field: transfer_court_name_temp
-dropdown:
-  - Central Housing Court (formerly Worcester): Central Housing Court
-  - Eastern Housing Court (formerly Boston): Eastern Housing Court
-  - Metro South Housing Court  
-  - Northeastern Housing Court
-  - Southeastern Housing Court
-  - Western Housing Court
+fields: 
+  - no label: transfer_court_name_temp
+    datatype: object
+    choices: |
+      [x for x in macourts if "housing court" in x.name.lower()]  
 ---
 question: |
   Fecha de Vista en Corte
@@ -1835,7 +1832,7 @@ content: |
   % else:
     ${landlord.name}.
   % endif
-  También necesita enviar una copia de la moción a ${court.name}.
+  También necesita enviar una copia de la moción a ${court}.
   
   Aprenda más y obtenga el formulario aquí: https://gbls.org/tactics/compel
 ---
@@ -1853,7 +1850,7 @@ subject: |
 content: |
   Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defense for Eviction) de Greater Boston Legal Services.
   
-  No se olvide de estar en ${court.name} el ${court_date} (a menos que la corte le dijo una fecha diferente!)
+  No se olvide de estar en ${court} el ${court_date} (a menos que la corte le dijo una fecha diferente!)
   
   % if court_date_is_holiday:
   Parece que ${court_date}  es un día de fiesta, ${ma_holidays.get(court_date)}. 
@@ -1865,7 +1862,7 @@ content: |
 template: attend_court_text
 content: |
  Recordatorio: su fecha en corte para ${landlord} v. ${tenant} es ${format_date(court_date)} 
-  en ${court.name} a las 9 AM.   
+  en ${court} a las 9 AM.   
   % if court_date_is_holiday:
   ${court_date} es ${ma_holidays.get(court_date)} así que su fecha puede que haya sido pospuesta. Si la corte no le mencionó la fecha nueva, llame a la corte para averiguarla. 
   % endif
@@ -1905,7 +1902,7 @@ content: |
   #### Próximos pasos
   
   1. Imprima tres copias de los formularios de la corte. Puede saltar la primera página que tiene las instrucciones para usted. 
-  1. Entregue una copia al "Secretario del Tribunal de Proceso Judicial Sumario" en la ${ court.name }, 
+  1. Entregue una copia al "Secretario del Tribunal de Proceso Judicial Sumario" en la ${ court }, 
      Antes de que la corte cierre al final del día (normalmente las 4:30 PM) en **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   Parece que ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 

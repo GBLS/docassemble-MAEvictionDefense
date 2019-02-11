@@ -86,13 +86,12 @@ review:
       You said that you ${'do' if claim_jurytrial else 'do not'}
       want to claim your right to a jury trial.
   - Update court: 
-      - court.name
-      - court.county
+      - court
       - recompute:
         - court_is_housing_court
     button: |
-      You said your case was originally scheduled for ${court.name} in 
-      ${court.county}.
+      You said your case was originally scheduled for ${court} in 
+      ${court.address.county}.
   - Update transfer: 
       - transfer_to_housing_court
       - transfer_court_name

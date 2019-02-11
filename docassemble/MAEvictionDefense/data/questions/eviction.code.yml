@@ -68,27 +68,14 @@ code: |
   court_is_housing_court = "housing court" in court.name.lower()
 ---
 code: |
-  if local_housing_court != "":
+  if not local_housing_court is None and local_housing_court != "":
     transfer_court_name = local_housing_court
   else:
     transfer_court_name = transfer_court_name_temp # ask
 
 ---
 code: |
-  if (tenant.address.county == "Suffolk County") or (tenant.address.city in ["Arlington","Belmont","Cambridge","Medford","Newton","Somerville","Brookline"]):
-    local_housing_court = "Eastern Housing Court"
-  elif tenant.address.county in ["Berkshire County","Franklin County","Hampden County","Hampshire County"]:
-    local_housing_court = "Western Housing Court"
-  elif (tenant.address.county == "Worcester County") or (tenant.address.city in ["Ashland","Framingham","Holliston","Hopkinton","Hudson","Marlborough","Natick","Sherborn","Sudbury","Wayland"]):
-    local_housing_court = "Central Housing Court"
-  elif (tenant.address.county == "Norfolk" and tenant.address.city != "Brookline") or (tenant.address.city in ["Abington","Bridgewater","Brockton","East Bridgewater","West Bridgewater","Whitman"]): 
-    local_housing_court = "Metro South Housing Court"
-  elif (tenant.address.county == "Essex County") or (tenant.address.county == "Middlesex County" and tenant.address.city not in ["Arlington","Belmont","Cambridge","Medford","Newton","Somerville","Ashland","Framingham","Holliston","Hopkinton","Hudson","Marlborough","Natick","Sherborn","Sudbury","Wayland"]):
-    local_housing_court = "Northeast Housing Court"
-  elif (tenant.address.county in ["Barnstable County","Bristol County","Dukes County","Nantucket County"]) or (tenant.address.county == "Plymouth County" and tenant.address.city not in ["Abington","Bridgewater","Brockton","East Bridgewater","West Bridgewater","Whitman"]):
-    local_housing_court = "Southeast Housing Court"
-  else:
-    local_housing_court = ""
+  local_housing_court = macourts.matching_housing_court(tenant.address)
 ---
 code: |
   case.entry_date = case.answer_date + date_interval(days=-7)

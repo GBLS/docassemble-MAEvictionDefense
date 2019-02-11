@@ -37,29 +37,13 @@ id: intro screen
 decoration: home
 question: |
   MADE: Massachusetts Defense for Eviction
-subquestion: |
-  
-  I speak/yo hablo [FIELD user_language].
-
-  MADE is a free tool to help tenants defend against an eviction in court.
-  When you finish, you need to print and deliver paperwork to
-  court and to your landlord or their attorney.
-  
-  You can click on a {green word} to learn what it means. Click "Help" to learn
-  more about a question. Click "Back" or on one of the section headings to change
-  an earlier answer.
-  
-  Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
-  to return to later. We recommend that before you start you find:
-
-  1. The **Summons and Complaint** and 
-  2. the **Notice to Quit** you got from your landlord.
-  
 help: |
   This is an example help page.
   Click "[Back to question]" to go to the previous screen and continue the interview.
 terms: 
   - green word: This is an example. Click it again to hide this definition.
+  - palabra en verde: |
+      Esto es un ejemplo. Haga clic para esconder esta definición.  
 section: Getting Started
 fields:
   - Language / Idioma: user_language
@@ -68,10 +52,51 @@ fields:
     choices:
       - English: en
       - Español: es
-  - I have read and agree to the [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
-    datatype: yesnoradio
-    default: True
-continue button field: getting_started
+  - note: |
+      MADE is a free tool to help tenants defend against an eviction in court.
+      When you finish, you need to print and deliver paperwork to
+      court and to your landlord or their attorney.
+    
+      You can click on a {green word} to learn what it means. Click "Help" to learn
+      more about a question. Click "Back" or on one of the section headings to change
+      an earlier answer.
+  
+      Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
+      to return to later. We recommend that before you start you find:
+
+      1. The **Summons and Complaint** and 
+      2. the **Notice to Quit** you got from your landlord.
+    show if:
+      variable: user_language
+      is: "en"
+  - note: |
+      MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
+      Prepararemos los formularios que usted necesita :print: imprimir y :envelope:
+      Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
+      Si es interrumpido, puede guardar su trabajo en la computadora y regresar a él después. También puede enviárse los formularios ya llenados a si mismo vía correo electrónico.
+      Esta entrevista es completamente gratis.
+  
+      Antes de comenzar, necesita buscar:
+
+      1. La **Notificación y Demanda** y
+      2. La **Notificación de Desalojo** que recibió de su arrendador.
+    
+      Si no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
+  
+      En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
+      Acerca de la entrevista o una pregunta específica, y "[ATRAS]" si quiere regresar
+      A la pregunta anterior.
+    show if:
+      variable: user_language
+      is: "es"
+  - no label: acknowledged_information_use
+    datatype: checkboxes
+    minlength: 1
+    choices:
+      - I have read and agree to / He leido y estoy de acuerdo con las [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).
+    validation messages:
+      minlength: |
+        You cannot continue unless you agree to the terms of service.      
 ---
 id: how to answer
 decoration: info-circle
@@ -442,7 +467,7 @@ subquestion: |
     Deliver a copy to your
      ${("landlord's attorney, " + landlords_attorney.name.text) if landlord.has_attorney else ('landlord, ' + landlord.name.text) }, 
      at ${landlords_attorney.address.on_one_line() if landlord.has_attorney else 'their address' }, 
-     no later than ${format_date(case.answer_date)}. Deliver a second copy to the ${ court.name }. Keep
+     no later than ${format_date(case.answer_date)}. Deliver a second copy to the ${ court }. Keep
      one copy for yourself.
   </li>
   <li>
@@ -762,41 +787,23 @@ comment: |
 question: |
   What court is your case being heard in?
 subquestion: |
-  We already filled in the name of the county you live in and the name of the Housing Court for your county.
+  We have tried to fill in the name of the Housing Court that serves your address.
 
   Look at the upper-right-hand corner of the Summons and Complaint form. If the information doesn't match,
-  change the court name and county to match the information on your Summons and Complaint.
+  change the court name to match the information on your Summons and Complaint.
 
   [FILE court_and_county.png, 100%]
-fields: 
-  - Court name: court.name
-    default: ${local_housing_court}
-    code: |
-      ma_courts_list()
-  - County: court.county
-    default: ${tenant.address.county}
-    choices:
-      - Barnstable County
-      - Berkshire County
-      - Bristol County
-      - Dukes County
-      - Essex County
-      - Franklin County
-      - Hampden County
-      - Hampshire County
-      - Middlesex County
-      - Nantucket County
-      - Norfolk County
-      - Plymouth County
-      - Suffolk County
-      - Worcester County
+fields:
+  - Court name: court
+    datatype: object
+    default: local_housing_court
+    choices: macourts
 section: About Your Court Case
-
 ---
 question: |
   Transfer to Housing Court
 subquestion: |
-  You said that your case is currently scheduled in ${court.name}.
+  You said that your case is currently scheduled in ${court}.
 
   You have the right to transfer your case to ${local_housing_court}.
   Most tenants benefit from transferring their case to the Housing Court.
@@ -816,7 +823,7 @@ subquestion: |
 field: transfer_to_housing_court
 buttons:
   - Transfer my case: True
-  - Stay in ${court.name}: False
+  - Stay in ${court}: False
 help: |
   Transferring is an automatic right. You should check with the clerk in the Housing Court to find out
   where and what day you should appear in court. You may get a notice in the mail. It will most likely not be
@@ -856,14 +863,11 @@ question: |
 subquestion: |
   Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
   to learn where the court sits for your city or town.
-field: transfer_court_name_temp
-dropdown:
-  - Central Housing Court (formerly Worcester): Central Housing Court
-  - Eastern Housing Court (formerly Boston): Eastern Housing Court
-  - Metro South Housing Court  
-  - Northeastern Housing Court
-  - Southeastern Housing Court
-  - Western Housing Court
+fields: 
+  - no label: transfer_court_name_temp
+    datatype: object
+    choices: |
+      [x for x in macourts if "housing court" in x.name.lower()]  
 ---
 question: |
   Court Date
@@ -2062,7 +2066,7 @@ content: |
   % else:
     ${landlord.name}.
   % endif
-  You also need to send a copy of the motion to ${court.name}.
+  You also need to send a copy of the motion to ${court}.
   
   Learn more and continue the form online [here](${interview_url()}) or download
   the PDF here: https://gbls.org/tactics/compel.
@@ -2084,7 +2088,7 @@ content: |
   Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
-  Don't forget to be at ${court.name} on ${court_date} (unless the court told you about
+  Don't forget to be at ${court} on ${court_date} (unless the court told you about
   a different date!
   
   % if court_date_is_holiday:
@@ -2099,7 +2103,7 @@ content: |
 template: attend_court_text
 content: |
   Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
-  at ${court.name} at 9 AM.   
+  at ${court} at 9 AM.   
   % if court_date_is_holiday:
   ${court_date} is ${ma_holidays.get(court_date)} so your date may have been
   postponed. If the court didn't tell you the new date, call the court to find out.

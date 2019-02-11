@@ -8,7 +8,6 @@ code: |
   show_instructions = True
 
   # Overview
-  getting_started
   person_answering
   prepared_with_aoc
   if person_answering == 'tenant':
@@ -34,10 +33,11 @@ code: |
 
   set_title(subtitle=case_title)
 
-  court.county
-  court.name
+  court
   if not court_is_housing_court:
     transfer_to_housing_court
+    if transfer_to_housing_court:
+      transfer_court_name
   
   case.original_date
   if today() > case.answer_date :

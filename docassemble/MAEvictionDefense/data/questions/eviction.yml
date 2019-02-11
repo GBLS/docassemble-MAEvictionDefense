@@ -19,7 +19,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2019-02-01
+  revision_date: 2019-02-10
   post: |
     <div style="text-align: right; padding: 2em">
     Feedback, suggestions, or comments? 
@@ -35,7 +35,7 @@ features:
 modules:
   - docassemble.base.util
   - docassemble.base.legal
-  - .macourts
+  - docassemble.MACourts.macourts
   - .discovery
 ---
 imports:
@@ -47,7 +47,7 @@ objects:
   - tenant: Individual
   - landlord: Person
   - landlords_attorney: Person
-  - court: Court
+  - court: MACourt
   - case: Case
   - eviction: DAObject
   - tenancy: DAObject
@@ -77,6 +77,7 @@ objects:
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
   - review_answers: DAObject
+  - macourts: MACourtList.using(courts=True)
 ---
 initial: True
 code: |
@@ -104,19 +105,19 @@ mandatory: True
 code: |
   multi_user = True
   allow_cron = True
-  speak_text = True
+  #speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
   
   started_on_phone # check to see what the starting device is
 
-  # Warn about Spanish translation
+  acknowledged_information_use
+
   if user_language == 'es':
     default_lang = 'Spanish'
-    # warn_spanish
   else:
     default_lang = ''
-  
+
   all_answer_variables # refers to variables listed in interview-order.yml
   loaded_discovery
   if person_answering == 'attorney' or tenant_review_discovery:
