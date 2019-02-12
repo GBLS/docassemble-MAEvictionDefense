@@ -89,14 +89,32 @@ fields:
     show if:
       variable: user_language
       is: "es"
-  - no label: acknowledged_information_use
+  - I accept the [terms of use](https://www.gbls.org/self-help/eviction/terms-of-use): acknowledged_information_use
+    show if:
+      variable: user_language
+      is: "en"
     datatype: checkboxes
+    none of the above: False    
+    default: "I accept."
     minlength: 1
     choices:
-      - I have read and agree to / He leido y estoy de acuerdo con las [terms of use and data use policy](https://www.gbls.org/self-help/eviction/terms-of-use).
+      - I accept.
     validation messages:
       minlength: |
         You cannot continue unless you agree to the terms of service.      
+  - Estoy de acuerdo con las [condiciones de uso](https://www.gbls.org/self-help/eviction/terms-of-use) : acknowledged_information_use
+    datatype: checkboxes
+    default: "Acepto."
+    minlength: 1
+    none of the above: False
+    choices:
+      - Acepto.
+    show if:
+      variable: user_language
+      is: "es"
+    validation messages:
+      minlength: |
+        No puede continuar a menos que acepte los términos del servicio.
 ---
 id: how to answer
 decoration: info-circle
