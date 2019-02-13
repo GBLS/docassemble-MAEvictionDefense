@@ -1,0 +1,11 @@
+body > .container {
+    margin-right: auto;
+    margin-left: 300px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.navbar-inverse { 
+    background-image: #ff7f50;
+    background-repeat: repeat-x;
+}

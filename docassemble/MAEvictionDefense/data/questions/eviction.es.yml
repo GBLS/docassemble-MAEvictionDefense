@@ -1,0 +1,2017 @@
+---
+default language: es
+---
+comment: |
+  Overview screens
+---
+comment: |
+  sections:
+  - Comenzando
+  - review_about_you: Información sobre Usted
+  - review_about_landlord: Información sobre su Propietario o arrendador
+  - review_about_court: Información sobre su caso en corte 
+  - review_about_tenancy: Información sobre su término de alquiler
+  - review_claims: Alegaciones y Defensas
+  - review_discovery: Revelación de hechos
+  - Conclusión
+---
+id: intro screen
+decoration: home
+question: |
+  MADE: Defensa contra desalojo en Massachusetts
+subquestion: |
+  MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
+  Prepararemos los formularios que usted necesita:print: imprimir y:envelope:
+  Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
+  Si es interrumpido, puede guardar su trabajo en la computadora y regresar a él después. También puede enviárse los formularios ya llenados a si mismo vía correo electrónico.
+  Esta entrevista es completamente gratis.
+  
+  Antes de comenzar, necesita buscar:
+
+  1. La **Notificación y Demanda** y
+  2. La **Notificación de Desalojo** que recibió de su arrendador.
+  
+  SI no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
+  
+  En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
+  Acerca de la entrevista o una pregunta específica, y"[ATRAS]" si quiere regresar
+  A la pregunta anterior.
+help: |
+  Esta es un ejemplo de una página de ayuda.
+  Haga clic "[Regrese a la pregunta]" para ir a la pantalla anterior y continuar la entrevista.
+terms: 
+  - palabra en verde: |
+      Esto es un ejemplo. Haga clic para esconder esta definición.
+section: Comenzando
+fields:
+  - Lenguage / Idioma: user_language
+    default: en
+    choices:
+      - Inglés: en
+      - Español: es
+  - He leido y estoy de acuerdo con las [condiciones de uso y política de uso de la información](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
+    datatype: yesnoradio
+    default: True
+continue button field: getting_started
+---
+id: how to answer
+decoration: info-circle
+question: |
+  Como contestar las preguntas en esta entrevista
+subquestion: |
+  Esta entrevista pide información sobre usted, su arrendador, y su caso de desalojo.
+  Esta información se usará para decidir quien ganaría su caso de desalojo y si
+  usted o su arrendador le debe dinero a la otra persona.
+  Es importante contestar honestamente.
+  
+  Debería incluir toda información que sea verdad, aún
+  Si no es relevante al desalojo. _ Si no está seguro sobre alguna pregunta, 
+  casi siempre es mejor contestarla que dejarla en blanco._
+    
+  El utilizar esta entrevista no le prohibe llegar a un acuerdo con su
+  arrendador.  Quizás pueda ser de ayuda para que usted y su arrendador entiendan mejor sus
+  derechos y lleguen a un acuerdo justo.
+
+field: how_to_answer  
+buttons: 
+  - Estoy de acuerdo con contestar honesta y completamente: continue
+section: Getting Started
+---
+question: |
+  Quien está llenando esta entrevista?
+field: person_answering
+buttons:
+  - Inquilino o su ayudante: tenant
+  - Abogado: attorney
+---
+question: |
+  Sus derechos de inquilino en Massachusetts
+subquestion: | 
+  Mire el video para saber un poco más sobre el proceso de desalojo. También puede visitar la página web de [AyudaLegal en Mass](http://www.masslegalhelp.org/housing/evictions) website.
+video: "[YOUTUBE TSaTw0Y5OFA]"
+field: overview_video
+---
+question: |
+  Próximas fechas de vistas en corte
+subquestion: |
+  Tiene una cita en corte pronto relacionada con su caso?
+field: case.status
+choices: 
+  - Tengo una notificación de mi arrendador, pero no tengo programada cita en corte todavía.: onlyntq
+  - Tengo una cita programada en corte: summons
+  - Ya firmé un acuerdo en este caso. Tengo una fecha nueva para una cita en corteI.: afj
+  - No fui a mi primera cita en corte.: late
+default: summons
+help: |
+  Necesitamos saber en donde está en el proceso en la corte para poder escoger los formularios apropiados.
+  
+  Si la fecha de su primer cita en corte ya pasó, tal vez pueda utilizar un formulario especial llamado "Moción para Radicar Respuesta Tardía." Esta entrevista le ayidará a decidir.
+section: Getting Started
+---
+event: onlyhasntq
+progress: 100
+question: Esta puede no ser la entrevista adecuada para usted.
+subquestion: |
+  Esta entrevista le ayuda a completar el papeleo necesario para la corte. Usted no tiene fecha de ir a corte todavía.
+
+  Regrese a esta entrevista cuando tenga programada la fecha de una cita en corte.  
+
+  Si le debe dinero a su arendador vea [Renta](https://www.masslegalhelp.org/housing/private-housing/ch19/rent) en MassLegalHelp. 
+  SI está teniendo problemas con que su arrendador haga reparaciones en la vivienda vea [Consiguiendo que se hagan reparaciones](https://www.masslegalhelp.org/housing/lt1-chapter-8-getting-repairs-made.pdf) en MassLegalHelp.
+  Trate el [Busca de Recursos Legales](https://www.masslegalservices.org/FindLegalAid) para encontrar una agencia de servicios legales cerca de usted.
+buttons:
+  Salir: exit
+  Recomenzar: restart
+---
+question: Esta puede no ser la entrevista adecuada para usted.
+subquestion: |
+  Estsa entrevista está diseñada para ayudarle a responder al caso original de desalojo de su arrrendador. Usted dijo que ya ha ido a corte sobre este caso o que no asistió a su primera cita en corte.
+  
+  Haga clic en "Siga" si desea pedirle al juez permiso para radicar una respuesta tardía. Su fecha en corte no será pospuesta
+  
+  Si ya radicó una respuesta en corte o firmó un acuerdo, debería parar con esta entrevista ahora
+
+field: firstdatepassed
+buttons:
+  - Continúe:
+      code: |
+        primerafechapasó = CIerto  
+  - Recomenzar: restart
+  - Salir: exit
+    url: https://www.gbls.org/  
+---
+question: |
+  Su derecho a un juicio con jurado
+subquestion: |
+  Usted o su arrendador pueden escoger que un jurado decida este caso. Esta es _su_ oportunidad de escoger un jurado.
+  
+  Escoger un jurado no quiere decir que parará de tener que pagar la renta, o "uso y ocupación". 
+  Los juicios con jurado son complicados y si no puede llegar a un acuerdo con su arrendador, le ayuda a muchos inquilinos el tener un abogado con ellos en un juicio con jurado.
+  
+  #### Porque mantener su derecho a un juicio con jurado?
+  1. Un jurado está compuesto por personas comúnes y corrientes, algunos de los cuales puede que sean inquilinos como usted.
+  1. Puede que tenga más tiempo para escoger un abogado para representarle si pide un juicio con jurado.
+  1. Siempre puede ceder su derecho de tener un jurado después. Pero no puede pedir un juicio con jurado después de la fecha límite para llenar el papeleo.
+  1. Siempre puede llegar a un acuerdo con su arrendador. La mayoría de los casos terminan con un acuerdo, mantenga o no el inquilino su derecho a un juicio por por jurado.
+
+field: claim_jurytrial
+buttons:
+  - Mantengo my derecho a juicio con jurado: True
+  - Cedo mi derecho a tener un jurado: False
+section: Getting Started
+decoration: users
+help: |
+  Ambos el arrendador o el inquilino puede escoger un juicio con jurado en cualquier momento hasta la fecha para responder que está impresa en su Notificación y Demanda. Puede usar esta entrevista para pedir su juicio con jurado, u otro formulario, pero tiene que hacerlo antes de la fecha límite. Si usted piensa que posiblemente quiera un jurado, debería mantener su derecho a juicio con jurado en esta entrevista.
+  
+  Para un inquilino, por su propia cuenta y solo, un juicio con jurado puede ser difícil.
+  
+  Si acaba teniendo un juicio con jurado, en desalojos en Massachusetts, un jurado puede ser de 6 o 12 personas. Por lo menos 5 de los 6 miembros del jurado tienen que estar de acuerdo para llegar a una decisión en su caso.  Llegarán a una decisión separada para cada uno de las querellas y sus defensas, dinero que se le debe al arrrendador, y si usted puede permanecer en su apartamento.
+---
+question: |
+  Solicitando tiempo para moverse
+subquestion: |
+
+  Aún no sabemos quién ganará su caso. Si su caso va a un juicio, el juez o el jurado pueden decidir a favor
+  de usted o su propietario.
+
+  Si el juez decide que su arrendador tiene derecho al apartamento, el juez puede darle más tiempo para mudarse.
+  Es probable que el juez espere que usted continúe pagando la renta mientras permanezca en el apartamento.
+  
+  El juez considerará su discapacidad y si la persona que vive con usted es mayor de 60 años.
+  Use sus propias palabras para explicar cualquier circunstancia especial sobre su situación y por qué necesita más tiempo que
+  un típico inquilino Por ejemplo, si necesita más tiempo para encontrar un apartamento accesible o si su hijo tiene un IEP
+  en el distrito escolar local.
+fields:
+  - Explique en sus propias palabras por qué necesita más tiempo para moverse.: needs_time_because
+    required: False
+    datatype: area
+    maxlength: 500
+---
+decoration: bell
+question: |
+  Recordatorios de Fechas de Corte
+subquestion: |
+  Podemos recordarle de fechas importantes por texto o email.
+  Quítele las marcas a las opciones que no desea.
+  % if tenant.email and tenant.phone_number:
+  
+  Podemos usar la información de contacto que acaba de proporcionar, **${tenant.email}** y
+  **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
+  % endif  
+fields:
+  - Recuérdeme de las fechas límites: remind_user
+    datatype: yesno
+    default: True
+  - Envíeme una encuesta después de mi primera fecha en corte.: survey_user
+    datatype: yesno
+    default: True
+  - Edite mi información de contacto: edit_contact_info
+    datatype: yesno
+    default: ${ not (tenant.email and tenant.phone_number) }
+  - note: |
+      **Su información de contacto**
+    show if: edit_contact_info
+  - Número de teléfono movil para mensajes de texto: user_cell_edited
+    default: ${tenant.phone_number}
+    show if: edit_contact_info
+    required: False
+  - Dirección de Email: user_email_edited
+    default: ${tenant.email}
+    datatype: email
+    show if: edit_contact_info 
+    required: False
+help: |
+  Si está de acuerdo, podemos enviarle un mensaje de texto y Email para recordarle cuando tiene una fecha límite o necesita aprecer en corte. *Los recordatorios estarán basados solo en la información que usted nos proporcionó en esta entrevista. * Si su fecha de corte cambia por cualquier razón, tenga en mente que el mensaje recordatorio puede ser para una fecha errónea. Es importante que usted le ponga atención a las fechas que la corte le mencione.
+  
+  También podemos guardar información sobre su caso si usted desea. La información guardada será utilizada solamente por una organización, sin fines de lucro, de asistencia legal, o puede que sea utilizada para identificar tendencias que ayuden a la organización, sin fines de lucro, de asistencia legal, a decidir como utilizar sus recursos mejor para prevenir los desalojos.
+  
+  Compartir su información es opcional. Puede utilizar este servicio gratis aún si quiere o no quiere que se comparta su información
+---
+decoration: share
+question: |
+  Comparta esta entrevista
+subquestion: |
+  Puede continuar esta entrevista en otro equipo electrónico, o compartirla con alguien que le ayude a completarla. Escoja cualquiera de las opcciones que siguen para compartir la entrevista
+  
+  Haga clic-derecho y copie [este link](${interview_url()}).
+  
+  % if not device().is_mobile:
+  Use la cámara de su teléfono para apuntar a este código de barra. Haga clic en el link que aparece en el visor de la cámara.
+  <center>
+  ${interview_url_as_qr()}
+  </center>  
+  % endif
+fields: 
+  - Envie un texto del link a este teléfono: share_cell
+    required: false
+  - Envíe un email del link a esta dirección: share_email
+    required: false
+  - Incluya los formularios completados: share_attachments
+    required: false
+    datatype: yesno
+    default: True    
+continue button field: share_fields
+---
+need:
+  - sent_sharing_email
+  - sent_sharing_text
+question: |
+  Compartiendo los links enviados
+subquestion: |
+  Enviamos un link a la entrevista al número de teléfono o dirección de email que usted nos dio. Puede tardarse varios segundos en llegar.
+field: share_success  
+---
+question: |
+  Firma
+subquestion: |
+  Estamos casi listos para imprimir sus formularios. Necesitará firmarlos antes de entregarlos.
+fields:
+  - Como quiere firmar?: signature_choice
+    input type: radio
+    default: phone
+    choices:
+      - Firme en esta computadora (usando el mouse de la computadora): this device
+      - Imprima los formularios y fírmelos en papel: paper
+      - Envie un link a mi teléfono y fírmelos en la pantalla de mi teléfono: phone
+    show if: 
+      code: |
+        device().is_pc      
+  - note: |
+      Para firmar en su teléfono, apunte su cámara hacia este código de barra y haga clic en el Código o ícono que aparece en la pantalla de la cámara. Cliquée continuar en su teléfono.
+      
+      <center>
+      ${interview_url_as_qr()}
+      </center>
+
+    show if: 
+      code: |
+        device().is_pc    
+  - O, envíeme vía texto un link a este número de teléfono: link_cell
+    show if: 
+      code: |
+        device().is_pc        
+    required: false
+  - note: |
+      Una vez esta pantalla esté montada en su movil, cliquée continuar.
+    show if: 
+      code: |
+        not device().is_pc            
+continue button field: saw_signature_choice
+help: |
+  Muchos smartphones automaticamente encuentran el link que se ve en esta pantalla. El link puede que "flote" de la pantalla a un ícono pequeño sobre el cual puede hacer clic. O use la opción de mensaje de texto si su teléfono no hace esto.
+  
+---
+question: |
+  % if defined('tenant.signature'):
+  Gracias por firmar.
+  % else:
+  Firme en su teléfono
+  % endif
+subquestion: |
+  % if device().is_pc:
+  % if defined('tenant.signature'):
+  Cliquée continuar.
+  % else:
+  Cliquée continuar en esta pantalla una vez haya terminado de firmar en su teléfono.
+  % endif
+  % else:
+  Cliquée continuar en esta pantalla cuando esté listo para firmar.
+  % endif
+  
+field: signature_wait_screen
+---
+question: |
+  Continúe en el equipo en el cual comenzó la entrevista
+subquestion: |
+  Gracias por firmar. Puede cerrar este browser en su teléfono.
+  Siga trabajando en la computadora en la cual comenzó la entrevista.
+field: signature_phone_followup  
+---
+question: Sign below
+subquestion: |
+signature: tenant.signature
+under: |
+  ${ tenant.name }
+---
+template: interview_link
+content: |
+  Este es MADE de GBLS.
+  Haga clic en el link siguiente para continuar la entrevista en su teléfono.
+  ${interview_url()}
+---
+question: |
+  Casi terminado!
+subquestion: |
+  Acabó la entrevista principal. Tan solo quedan unas breves preguntas!
+  
+  Si necesita cambiar algo haga clic en una de las etiquetas de la sección a la izquierda para actualizar sus respuestas.
+field: almost_done
+section: Conclusion
+progress: 95
+---
+question: |
+  
+  Haciendo que su arrendador reciba los formularios
+subquestion: |
+
+  Su arrendador o su abogado necesita recibir una copia de los formularios que estamos preparando hoy. Tiene que recibir una copia de los formularios antes de   
+  ${format_date(case.answer_date)}. Envíesela a la dirección que aparace en la notificación y demanda.
+
+  
+  Algunos arrendadores aceptan recibir los formularios por fax o email (correo electrónico). Si desea enviar los formularios a través de fax o email, tiene que recibir permiso con anticipación. Todos los arrendadores están obligados a recibirla si se la entrega en persona o por el correo tradicional.
+
+  % if format_date(case.answer_date) == format_date(today()):
+  
+  Cómo hoy es la fecha límite en su caso, _no puede enviar los formularios por el correo._ O entrégueselo en persona, o llame con anticipación para pedir permiso para entregárselos en otra manera.
+  
+  % endif
+
+  % if answer_date_is_holiday:
+  Parece que  ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+  Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
+  % endif
+
+  ¿Cuándo y cómo le traerá los formularios al arrendador o a su abogado?
+fields: 
+  - Método de entrega: method_of_service
+    choices:
+      - Por correo: mailed
+      - En persona: delivered in-hand
+      - Email (correo electrónico) (con el permiso de mi arrendador): emailed
+      - Fax (con el permiso de mi arrendador): faxed
+  - Fecha de entrega: service_date
+    datatype: date
+section: Conclusion
+---
+id: download
+event: download_forms
+question: |
+  ¡Felicidades! Ha llegado al final de la entrevista
+subquestion: |
+  
+  ¡Buen trabajo! Pero no precisamente ha acabado. Según sus respuestas en la entrevista, hemos creado 
+  [:file-pdf: ${nice_number(num_downloads)} formularios](${downloads_concat.url_for()}) Para que Ud. las entregue a la corte.
+  Tendrá que :print: y :envelope: enviar o entregarlas Ud. mismo. 
+  
+  Si desea cambiar sus respuestas en las planillas, haga clic en una da las cabeceras a mano izquierda o use el menu y seleccione "Revisar Respuestas" si está utilizando un dispositivo móvil.
+  
+  #### Next steps
+  
+  1. :print: Imprime tres (3) copias of [:file-pdf: estos formularios](${downloads_concat.url_for()}).
+     . Puede remover la portada que tiene instrucciones para Ud.
+  1. Entregue una copia al "Secretario del Tribunal para Acciónes Judiciales Sumarias" al ${ court },  antes de que cierre la corte (típicamente a las 4:30 PM) el **${format_date(case.answer_date)}**.
+    % if answer_date_is_holiday:
+    Parece que el ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+  
+    Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
+    % endif
+
+  1. Mantenga una copia en sus archivos personales. Léalo. También pudiera traer esta copia consigo al tribunal
+  % if landlord.has_attorney:
+  1. Entregue la tercera copia al abogado de su arrendador ${landlords_attorney}, en ${landlords_attorney.address.on_one_line()}, no más tarde que **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  Parece que el ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
+  % endif
+  % else:
+  1. Entregue la tercera copia a su arrendador ${landlord.name}, no más tarde que **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  Parece que el ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+  Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
+  % endif
+
+  % endif
+  
+  1. ** Preséntese en la corte el ${format_date(court_date)}**.
+  % if court_date_is_holiday:
+  Parece que el ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  Si no recibió una noticia de la corte, debería llamar para averiguar cuando su audiencia tendrá lugar.
+  % endif
+
+  #### F Para sus archivos
+  Se puede recibir una copia de todas las planillas individuales, juntas con un archivo :file-word: de Microsoft Word que puede editar y hacerle cambios adicionales.
+  :file-archive: ${zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")}
+
+video: |
+  [YOUTUBE mG-JDXOAkJU]
+progress: 100  
+section: Conclusion
+---
+comment: |
+  Questions about Tenant 
+---
+question: | 
+  ¿Cuál es su nombre?
+fields:
+  - Nombre: tenant.name.first
+    default: ${user_info().first_name}
+  - Segundo Nombre: tenant.name.middle
+    required: False
+  - Apellido: tenant.name.last
+    default: ${user_info().last_name}
+  - Sufijo: tenant.name.suffix
+    required: False
+    code: |
+      name_suffix()
+section: About You.
+---
+question: |
+  ¿Cómo aparece su nombre en la notificación de la corte?
+subquestion: |
+  Mire la Notificación y Demanda para responder a esta pregunta. Busque la línea marcada
+  "To Defendants / Tenants / Occupants"
+   
+  [FILE names_on_summons.png, 100%]
+fields:
+  - ¿La línea marcada "To Defendants / Tenants / Occupants contiene algo en adición a o distinto de "${tenant.name}"?: tenant.name_different_on_summons
+    datatype: yesnoradio
+    default: False
+  - Hay nombres adicionales indicados. : tenant.more_names_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - Mi nombre está escrito mal en la notificación.: tenant.name_misspelled
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - Mi nombre no aparece en la notificación.: tenant.not_named_on_summons
+    datatype: yesno
+    show if: tenant.name_different_on_summons
+  - Contenido exacto de la linea "To Defendants / Tenants / Occupants": defendant_name_as_listed_on_summons
+    show if: tenant.name_different_on_summons
+---
+question: |
+  ¿Cuál es su direccion actual?
+fields:
+  - dirección: tenant.address.address
+    address autocomplete: True
+  - apartamento: tenant.address.unit
+    required: False
+  - ciudad: tenant.address.city
+  - estado: tenant.address.state
+    code: |
+      states_list()
+    default: "MA"
+  - código zip: tenant.address.zip
+  - condado: tenant.address.county
+    required: False
+  - Número de teléfono: tenant.phone_number
+    required: False
+  - Correo electrónico: tenant.email
+    datatype: email
+    required: False
+  - Está también es la dirección de la cual me están desalojando: facts.tenant_address_is_eviction_address
+    datatype: yesnoradio
+    default: True
+  - ¿Cuál es la dirección de la cual lo están desalojando? (todo en una sola linea): premises_alternate_address
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+---
+question: |
+  Su contrato de alquiler 
+fields:
+  - ¿Cuándo Ud. se instaló? (La fecha más precisa que sepa): facts.tenant_movein
+    datatype: date
+    required: False
+  - Vivo en la propiedad como cuidador (PCA, handyman / milusos, o superintendente) y no pago la renta. : is_pca
+    datatype: yesno
+  - ¿Cuánto paga de renta?: facts.tenant_rent_share
+    datatype: currency
+    hide if: is_pca
+  - ¿Con qué frecuencia paga la renta?: facts.tenant_rent_frequency
+    choices:
+      - Semanal: week
+      - Mensual: month
+    default: month
+    hide if: is_pca
+  - ¿Cuál es la renta plena "contractual" o del "Mercado"? (Sáltelo si no sabe): facts.tenant_contract_rent
+    datatype: currency
+    required: False
+    help: |
+      Indique la suma de dinero que el arrendador recibe por el apartamento, o la suma más precisa que sepa.
+    show if: 
+      code: |
+        facts.tenant_has_subsidy and subsidy_type in ["Section 8 voucher","MRVP","HUD multi-family"]
+  - Mi acuerdo de arrendamiento es:  tenancy_type
+    choices:
+      - un contrato de alquiler (aúnque se haya vencido): lease
+      - mensual o semanal (arrendamiento sin plazo fijo de duración, escrito u oral) : taw
+      - No lo tengo: taw
+      - No lo sé: taw
+section: About Your Tenancy
+help: |
+  Los particulares de su arrendamiento y la clase de acuerdo que tiene para alojarse en su dirección pueden tener implicaciones para sus derechos. Por ejemplo un cuidador que se aloja en casa tiene derechos distintos de notificación que un inquilino que paga renta o un dueño o dueño anterior después de la ejecución de hipoteca.
+
+  Hay tres clases communes de *acuerdo de alquiler*:
+  
+  1. Un acuerdo de "plazo fijo de alquiler" indica que se vence en una fecha particular, típicamente un año después de la fecha que se firmó. Un inquilino con un acuerdo de plazo fijo no siempre recibe una notificación de salir del apartamento si el dueño no renueva el acuerdo de alquiler
+  2. Un acuerdo "extendido por sí" se renueva automáticamente. Típicamente el plazo nuevo es el mismo que el plazo original.
+  3. Una clase especial de acuerdo extendido por sí se renueva automáticamente pero no sigue siendo un acuerdo de alquiler. En lugar se convierte en un inquilinato mensual, o un inquilinato sin plazo fijo de duración.
+
+  
+  Las reglas son un poco distintas para los inquilinos cuyo acuerdo todavía está en efecto, en contra que para los inquilinos sin plazo fijo de duración. Por ejemplo, puede que reciba un plazo distinto para ponerse al día con la renta. A menos que haya otra cosa todos los inquilinos sin un acuerdo tienen los mismos derechos que tiene un inquilino sin plazo fijo.
+
+  Puede aprender más en [Legal Tactics, Chapter 4: Tenancies](https://www.masslegalhelp.org/housing/lt1-chapter-4-tenancies.pdf)
+---
+question: |
+  Clase de acuerdo de alquiler
+subquestion: |
+  La clase de acuerdo de alquiler que tiene puede determinar el tipo de notificación que el arrendador tiene que darle.
+fields:  
+  - Cuando el plazo de duración original (típicamente un año) acaba, el acuerdo de alquiler que tengo … : lease_type
+    choices:
+      - se vence sin renovarse: fixed_term
+      - Se renueva con el mismo plazo de duración .: self_extending
+      - se renueva con un plazo de duración mensual o semanal.: renews_as_taw
+      - No sé. : unknown
+  - La fecha que se vence mi acuerdo de alquiler: lease_end_date
+    datatype: date
+    show if:
+      variable: lease_type
+      is: fixed_term
+       
+---
+question: | 
+  Información acerca de Ud. y su familia
+subquestion: |
+  Más abajo hay declaraciones que aplican a algunos inquilinos. Léase el resumen que sigue con cuidado y seleccione todos los hechos que aplican a su caso.
+fields: 
+  - Vivo en vivienda pública, tengo un cupón de alojamiento, o recibo ayuda económica para el alquiler: facts.tenant_has_subsidy
+    datatype: yesno
+    default: ${landlord.organization_type == 'public'}
+  - El Inglés no es mi primer idioma.: tenant.is_nonnativespeaker
+    datatype: yesno
+    default: True
+  - Necesito un intérprete.:  tenant.needs_interpreter
+    datatype: yesno
+    default: True
+    show if:  tenant.is_nonnativespeaker
+  - "Necesito un intérprete que habla:" : tenant.preferred_language
+    datatype: combobox
+    show if:  tenant.needs_interpreter
+    default: Spanish
+    choices:
+      - Spanish
+      - Cantonese
+      - Cape Verdean Creole
+      - French
+      - Haitian Creole
+      - Khmer
+      - Mandarin
+      - Portuguese
+      - Vietnamese
+  - Yo o alguien que vive conmigo tiene una descapacidad: tenant.is_disabled
+    datatype: yesno
+  - Yo o alguien que vive conmigo tiene menos de 6 años de edad: tenant.is_under6
+    datatype: yesno
+  - Yo o alguien que vive conmigo tiene más de 60 años de edad : tenant.is_over60
+    datatype: yesno
+  - Soy un sobreviviente de violencia doméstica: tenant.is_dvvictim
+    datatype: yesno
+section: About You
+help: |
+  Puede que tenga defensas particulares dependiendo de los hechos acerca de Ud. Por ejemplo, tiene derecho a un intérprete si lo necesita.
+  
+  Responda según lo mejor que sabe con los datos que tiene. Por ejemplo: si alguien alojado en su domicilio tiene una descapacidad, debiera indicarlo aún si esa persona no recibe beneficios de SSI (beneficios de Seguro Social) o le han denegado esos beneficios.
+---
+question: |
+  Información acerca de ${tenant.address.address}
+subquestion: |
+  Más abajo hay declaraciones que se aplican a ciertos inquilinatos. Leáse el resumen que sigue e indique todos los hechos que se aplicaban a Ud durante el plazo que vivía en ${tenant.address.address}. 
+  Si no está seguro, cliquée Sí
+fields:
+  - ${tenant.address.address} fue ejecutado en una acción hipotecaria.: postforeclosure.is_foreclosed
+    datatype: yesno
+    show if:
+      code: |
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
+  - Yo soy o era el dueño antes de la ejecución: is_pfc_owner
+    datatype: yesno
+    show if: postforeclosure.is_foreclosed   
+  - ${landlord.name} h a intentado no permitirme entrar : bqe.locked_out
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${landlord.name} o un empleado ha entrado en mi hogar sin mi permiso o dar notificación con anticipación.: bqe.entered_without_permission
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${landlord.name} o su empleado me hostigó sexualmente.: claims.harassment
+    datatype: yesno
+  - Yo pago uno o más de los servicios públicos.: claims.utilities
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - ${tenant.address.address} recientemente se convirtió en condominio o cooperativa, o se convertirá pronto: is_condo_conversion
+    datatype: yesno
+    show if:
+      code: |
+        not (facts.tenant_has_subsidy and subsidy_type == 'public housing')
+  - Pagué un depósito de seguridad.: paid_deposit
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims    
+  - "Yo pagué el alquiler del ultimo mes con anticipación cuando primero me instalé": paid_lmr
+    datatype: yesno
+    show if:
+      code: |
+        plead_counterclaims  
+section: About You
+help: |
+  Aún en un caso sencillo, sus derechos puedan que dependen de las acciones que el arrendador tomó o falló tomar durante el tiempo que Ud. vivió en su hogar. Si debe algún pago de renta, sus reclamos podrían reducir la cantidad de renta que se debe, o posiblemente su arrendador puede terminar debiendo pagarle algún dinero a Ud. Posiblemente le puedan otorgar el derecho de quedarse en su hogar.
+  
+  Lea este listado con cuidado e indique cada opción que se aplica a su caso.
+
+---
+comment: |
+  Questions about court / eviction
+---
+question: |
+  ¿En cuál tribunal tendrá su caso la audiencia?
+subquestion: |
+  Vea la esquina superior de mano derecha de la planilla de Notificación y Demanda. Escoja el nombre de la corte en la(s) lista(s) que sigue:
+  
+  [FILE court_and_county.png, 100%]
+fields: 
+  - Nombre de la Corte: court
+    default: ${local_housing_court}
+    code: |
+      ma_courts_list()
+  - Condado: court.address.county
+    default: ${tenant.address.county}
+    choices:
+      - Barnstable County
+      - Berkshire County
+      - Bristol County
+      - Dukes County
+      - Essex County
+      - Franklin County
+      - Hampden County
+      - Hampshire County
+      - Middlesex County
+      - Nantucket County
+      - Norfolk County
+      - Plymouth County
+      - Suffolk County
+      - Worcester County
+section: About Your Court Case
+
+---
+question: |
+  Trasladado al Tribunal de VIvienda
+subquestion: |
+  Ud. indicó que actualmente su caso tendrá lugar en ${court}.
+
+  Ud. tiene el derecho de trasladar su caso a ${local_housing_court}.
+  La mayoría de los inquilinos benefician del traslado de su caso al Tribunal de Vivienda. Dependiendo de su ciudad o pueblo, puede que sea más difícil llegar al tribunal de vivienda. Debería preparar arreglos para llegar a la corte a tiempo.
+
+  Revise la página de internet de [Tribunal de Vivienda par Todos](http://www.housingcourt4all.org/where-the-housing-court-sits.html) 
+  para aprender dónde ${local_housing_court} está en su ciudad o pueblo.
+
+  ####¿Por qué trasladar su caso al tribunal de vivienda?
+  1. Acceso a apoyo legal y programas del [Abogado del Día](https://www.mass.gov/service-details/lawyer-for-the-day-programs) 
+  2. \Acceso al [Programa de Preservación Inquilinato](https://www.mass.gov/info-details/tenancy-preservation-program).
+  3. Acceso a agencias de servicio social que posiblemente podrían ayudarle pagar renta pasada.
+  4. Jueces con su especialidad en el derecho de vivienda.
+
+  Trasladar su caso también podría demorar su primera audiencia por una semana o más, dependiendo del tribunal.
+field: transfer_to_housing_court
+buttons:
+  - Trasladar mi caso: True
+  - Permanecer en ${court}: False
+help: |
+  Trasladar su caso es un derecho automático. Debería chequear con el secretario del Tribunal de Vivienda para averiguar la fecha que debería presentarse en el tribunal. Puede que reciba la notificación en el correo. Es muy probable que no  sea la fecha nueva de audiencia imprimida en la planilla de Respuesta.
+---
+question: |
+  Solicitud para intervenir
+subquestion: |
+  Cómo su nombre no aparece en la Notificación y Demanda, tendrá que recibir permiso del juez si quiere hacer una defensa en contra del desalojo.
+fields:
+  - ¿Desearía pedir permiso para participar en este caso?: request_right_to_intervene
+    datatype: yesnoradio
+  - "Explique brevemente porque a Ud. Se le debería permitir participar:" : intervention_reason
+    datatype: area
+    show if: request_right_to_intervene
+  - "Explique brevemente por qué sufriría un daño si no se le permite participar:" : intervention_harm
+    datatype: area
+    show if: request_right_to_intervene
+---
+question: |
+   ¿Cuál es la dirección de su arrendador?
+subquestion: |   
+  Vea la notificación y demanda si no está seguro.
+fields:
+  - dirección: landlord.address.address
+    address autocomplete: True
+  - Apartamento: landlord.address.unit
+    required: False
+  - ciudad: landlord.address.city
+  - estado: landlord.address.state
+  - código zip: landlord.address.zip
+  - país: landlord.address.country
+    default: 'US'    
+--- 
+question: |
+  ¿A cuál Tribunal de Vivienda está trasladando su caso?
+subquestion: |
+  Revise la página de internet de [Tribunal de Vivienda Para Todos](http://www.housingcourt4all.org/where-the-housing-court-sits.html) 
+  para aprender dónde se encuentra el tribunal para su ciudad o pueblo.
+fields: 
+  - no label: transfer_court_name_temp
+    datatype: object
+    choices: |
+      [x for x in macourts if "housing court" in x.name.lower()]  
+---
+question: |
+  Fecha de Vista en Corte
+subquestion: |
+  Para responder a esta pregunta, por favor revise su Notificación y Demanda. Busque la linea que empiece con NOTICE TO EACH DEFENDANT/TENANT.
+  
+  [FILE dates.png, 100%]
+  
+fields:
+  - ¿Cuál es la fecha de su primera audiencia en corte?: case.original_date
+    datatype: date
+    hint: Often a Thursday.
+  - ¿Cuál es la fecha en que el tribunal tiene que recibir su Respuesta? (Típicamente es un lunes): case.answer_date
+    datatype: date
+    hint: Usually a Monday
+help:
+  Típicamente los juicios tienen lugar los jueves en muchas, pero no todas, de las cortes.
+  
+  Esta información nos ayuda determinar si Ud. está respondiendo al desalojo antes de la fecha límite. Si está entregando su [Respuesta] a tiempo, la corte demorará la audiencia por 2 semanas. También nos ayudará a averiguar cuando Ud. tiene que presentarse en la corte.
+ 
+section: About Your Court Case
+---
+decoration: thumbs-up
+question: |
+  ¡Buenas Noticias!
+subquestion: |
+  Porque estará entregando  los formularios con tiempo (no más tarde que ${format_date(case.answer_date)}), su audiencia se pospondrá automáticamente por dos semanas. Ud. no tiene que presentarse en la corte el ${format_date(case.original_date)}.
+  % if answer_date_is_holiday:
+  Parece que el ${case.answer_date}  es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Típicamente se puede entregar la respuesta el día después de un día de fiesta y todavía estar a tiempo.
+  % endif
+  
+  % if court_date_is_holiday:
+  La fecha que debería presentarse es el ${court_date}. Sin embargo, parece que el 
+  ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  Debería preguntar en la corte que hacen cuando los casos están programados para este día de fiesta.
+  % else:
+  En lugar, debiera presentarse el **${format_date(court_date)}**.
+  % endif
+field:  case_is_on_time 
+help: |
+  La demora de dos semanas es automática si el inquilino entrega su respuesta al desalojo con tiempo y pide revelación de pruebas. Vea [U.S.P.R. 7(b)](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
+section: About Your Court Case
+---
+question: |
+  Defensas contra el desalojo por culpa
+subquestion: |
+  Si no está de acuerdo con las alegaciones de su arrendador que ${eviction_detailed_reason},. es posible que tenga una defensa.
+  Seleccione todos los que se aplican de los siguientes.
+fields:
+  - Yo niego la alegación del arrendador que ${eviction_detailed_reason}. (Mi arrendador no tiene la razón): fault.did_not_occur
+    datatype: yesno
+    default: True
+  - El ${capitalize(eviction_detailed_reason)} no es una violación de mi acuerdo de alquiler.: fault.not_violation_of_agreement
+    datatype: yesno
+    default: True
+  - El ${eviction_detailed_reason} fue la culpa de un huesped sobre la cual yo no tenia control.: fault.no_control_of_guest
+    datatype: yesno
+section: Claims and Defenses
+---
+question: Reason for eviction
+subquestion: |
+  Mire a su Orden de Desalojo.
+  
+  ¿Cuál es la razón indicada en su Orden de Desalojo para su desalojo?
+  
+fields: 
+  - Elija todas las razones indicadas en su Orden de Desalojo que se aplican. : eviction_all_reasons
+    datatype: checkboxes
+    none of the above: False
+    choices:
+      - Mi arrendador dice que le debo renta.: nonpayment
+      - Mi arrendador dice que comiti algún otro error que deberle renta. Por ejemplo, una queja de ruido o algún daño al apartamento.: fault  
+      - El arrendador no quiere alquilarme a mi más pero no es por algo que hice yo. (Por ejemplo, mi arrendador quiere alquilarle a un pariente.): nofault
+      - Nunca recibí una Orden de Desalojo: nontq
+      - No sé : unsure
+help: |
+  Revise con cuidado la Orden de Desalojo o la Notificación de Fin de Inquilinato. Elija la mejor respuesta posible usando la información en la notificación. No hay lenguaje particular que el arrendador tiene que usar para informarle el motivo para el desalojo. A veces se escribe en una manera confusa o poco clara.
+section: About Your Court Case
+---
+question: | 
+  Base para el desalojo sin culpa
+subquestion: |
+  ¿Cuál es la razón por la que el arrendador dice que quiere que Ud. se mude?
+fields: 
+  - Seleccione todos los que se aplican: nofault_basis
+    datatype: checkboxes
+    choices:
+      - Rehusé pagar una renta más alta: refusal of rent increase
+      - Desea hacer renovaciones: desire to renovate
+      - Quiere el apartamento para un pariente: moving in a family member
+      - Mi arrendador no indicó ninguna razón: no reason
+      - Otro: other
+section: About Your Court Case
+---
+question: | 
+  Base para el desalojo por culpa
+subquestion: |
+  ¿Que dice su arrendador es la razón por la cual le está desalojando?
+ 
+  ** Recuerde, le está contando a la corte lo que dice su arrendador. No está afirmando la posición de su arrendador.**
+fields: 
+  - Seleccione todos los que se aplican: fault_basis
+    datatype: checkboxes
+    choices: 
+      - Pago tarde crónico de la renta : chronic late payment of rent
+      - Demasiadas personas: overcrowding
+      - Ocupantes no autorizados: unauthorized occupants
+      - Tráfico peatonal excesivo: excessive foot traffic
+      - Desorden o acaparamiento: clutter or hoarding
+      - Destrucción de propiedad: destruction of property
+      - Agresión contra el personal u otro inquilino: assault on staff or other tenant
+      - El acoso del personal u otro inquilino: harassment of staff or other tenant
+      - Molestia para otros inquilinos (como fumar, ruido, u olor) originando en su apartamento: disturbance of other tenants
+      - Arresto o convicción por un crimen: arrest or criminal conviction
+      - Otra violación del acuerdo de alquiler: other lease violation
+section: About Your Court Case
+---
+decoration: info-circle
+question: |
+  Defensas para su caso
+subquestion: |
+ La razón principal por la que su arrendador dice que le está desalojando es'${eviction_detailed_reason}'.
+  
+  % if eviction_reason == "fault":
+  Eso significa que no le permitirán una contrademanda de dinero contra su arrendador para ganar (poner fin al desalojo) este caso.
+  %if plead_counterclaims:
+  Su arrendador también dice que le debe dinero. Todavía puede demandar a su arrendador para disminuir la cantidad de renta que se debe.
+  % endif  
+  
+  Su arrendador también tiene que comprobar que '${eviction_detailed_reason}' 
+  es una buena razón para desalojarle. También tiene que comprobar que Ud. hizo lo que el dice que hizo.
+  
+  Es possible que tenga otras defensas que pueden poner fin al desalojo. Defensas comunes incluyen descapacidad, errores por el arrendador, y un desalojo por una razón mala (illegal).
+  
+  
+  % else:
+  En un caso como el suyo, puede ganar (parar el desalojo) si puede comprobar que tiene por lo menos $1 en reclamos contra su arrendador. Esto se debe a la ley conocida como la ley de "retener la renta." El reclamo más común es por condiciones malas de alojamiento.
+  El resto de esta entrevista le ayudará a determinar si puede usar esta defensa.
+  % endif    
+field: eviction_reason_explanation
+help: |
+  Una defensa muy común contra los desalojos en Massachuesetts es
+  [G.L. 239 s. 8A](https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section8A).
+  Le da al inquilino una defensa contra el desalojo en cualquier caso traído "sin tener culpa" el inquilino, o si el caso se trajo por "no pagar la renta".
+
+  Si el inquilino en un caso sin culpa o de no pagar puede comprobar un mínimo de $1 en daños, tiene 7 días desde la fecha de la audiencia para pagar el saldo que todavía se le debe al arrendador y se puede quedar en el apartamento. En la práctica, muchas veces esto significa que el arrendador no puede traer un caso nuevo de desalojo por 6 meses, pero no es garantizado.
+  
+  Esta defensa _no _ aplica si el desalojo se trajo "por la culpa" del inquilino. Por ejemplo, no puede utilizar esta defensa si el arrendador dice que violó los términos del acuerdo de alquiler.
+  
+  [Aprenda más acerca de las defensas contra un desalojo.](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims)
+
+---
+comment: |
+  Questions about landlord
+---
+question: |
+  ¿Cuál es el nombre de su arrendador?
+subquestion: |
+  
+  Para responder a esta pregunta, mire la Notificación y Demanda. Escriba el nombre de su arrendador _exactamente_ en la misma manera que está escrito en la linea "…defend against the complaint of Plaintiff / Landlord / Owner"
+
+  [FILE landlord_name.png, 100%]
+fields:
+  - Nombre del arrendador (cómo aparece en la Notificación): landlord.name.text
+section: About Your Landlord
+---
+question: |
+  Información acerca de ${landlord.name}.
+subquestion: |
+  Mire la Notificación y Demanda cuando da su respuesta a esta pregunta.
+fields: 
+  - ¿Qué clase de arrendador tiene?: landlord.organization_type
+    datatype: radio
+    default: ${default_landlord_type}
+    choices:
+    - Mi arrendador es una empresa, una corporación, o LLC.: corporate
+      help: |
+        Podría incluir "LLC" en el nombre. Muchos arrendadores, exceptuando los arrendadores muy pequeños son empresas o agencias.
+    - Mi arrendador es una autoridad de vivienda o una agencia municipal/gubernamental: public
+    - Mi arrendador vive en el edificio conmigo: livesinbuilding
+    - Mi arrendador es un fideicomiso: trust
+      help: |
+        Podría incluir "Realty Trust" en el nombre. Es común para inversores que compran propiedades para la reventa.
+    - Ningunos de los anteriores o no sé.: other
+  - Mi arrendador ha cambiado desde que me instalé: landlord.is_new
+    datatype: yesno
+    default: False
+help: |
+  Algunas defensas y reclamos solamente se aplican a ciertas clases de arrendadores. Sus respuestas en esta página nos ayudarán a averiguar si las leyes de protección del consumidor se aplican a su arrendador y también si él tiene que usar un abogado para radicar su caso. Si su arrendador ha cambiado desde que se instaló, también le haremos a ellos diferentes preguntas para ayudarle a Ud. a prepararse para el tribunal.
+section: About Your Landlord
+---
+question: |
+  ¿${landlord.name} tiene un abogado en este caso?
+
+subquestion: |
+  
+  Mire la notificación y demanda para responder a esta pregunta. Vea la linea nombrada "Nombre Impreso del Demandante o Abogado" y la linea opuesta donde dice "dirección del Demandante o Abogado".
+  
+  Si el que firma es un abogado, su nombre podría incluir:
+  
+  * Esq
+  * Un número de BBO (típicamente 6 dígitos)
+  * La dirección podría incluir "LLC" o "Associates" o "Law Offices"
+
+fields: 
+  - Mi arrendador tiene un abogado.: landlord.has_attorney
+    datatype: yesnoradio
+    default: False
+  - Nombre del abogado: landlords_attorney.name.text
+    show if: landlord.has_attorney
+    required: False
+  - Dirección: landlords_attorney.address.address
+    show if: landlord.has_attorney
+    required: False
+    address autocomplete: True
+  - Suite o Apartamento: landlords_attorney.address.unit
+    show if: landlord.has_attorney
+    required: False
+  - Ciudad: landlords_attorney.address.city
+    show if: landlord.has_attorney
+    required: False
+  - Estado: landlords_attorney.address.state
+    show if: landlord.has_attorney
+    required: False  
+  - Código Zipcode:  landlords_attorney.address.zip
+    show if: landlord.has_attorney
+    required: False
+---
+comment: |
+  Initial defenses
+---
+question: |
+  Defensas para la falta de pago de la renta
+fields: 
+  - Estaba retrasado en la renta cuando recibí la notificación de 14 días.: behind_in_rent
+    datatype: yesnoradio
+    default: True
+    show if: 
+      variable: notice_type
+      is: 'fourteen_day'
+  - Nunca acepté pagar la cantidad de renta que el arrendador puso en la notificación de 14 días: refused_rent_increase
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - Pagué la cantidad entera que debía.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - Ofrecí pagar la cantidad entera de dinero que debía.: attempted_cure
+    datatype: yesno
+    show if:
+      variable: notice_type
+      is: 'fourteen_day'
+  - El Departamento de Asistencia Transicional paga mi renta, y el DTA no hizo los pagos sin ninguna culpa de mi parte.: other.vendor_payments
+    datatype: yesno
+section: Claims and Defenses  
+---
+question: |
+  Orden de Desalojo
+subquestion: |
+  Más abajo hay declaraciones acerca de su orden de desalojo (notice to quit). Seleccione las respuestas que coinciden con la orden de desalojo que recibió.
+fields:
+  - Orden de desalojo: notice_type
+    default: |
+      ${ 'fourteen_day' if eviction_all_reasons['nonpayment'] else ''}
+    choices:
+      - Orden de Desalojo de 14 Días: fourteen_day
+      - Orden de Desalojo de 30 Días: thirty_day
+      - Orden de Desalojo de 72 Horas: seventy_two_hour
+      - Notificación "hasta el final del siguiente plazo de alquiler" o algo parecido: rental_period
+      - Nunca recibí una Orden de Desalojo: no_ntq
+      - No lo sé: thirty_day
+  - La orden de desalojo incluye mi nombre: ntq_includes_tenant_name
+    datatype: yesnoradio
+    default: True
+  - La orden de desalojo incluye los nombres de todos los  que firmaron el acuerdo de alquiler: ntq_includes_all_tenants
+    datatype: yesnoradio
+    default: True
+  - La orden de desalojo tiene mi dirección correcta: ntq_includes_correct_address
+    datatype: yesnoradio
+    default: True
+  - Mi acuerdo de alquiler require notificación con 30 días de anticipación aún en al caso de no haber pagado la renta: lease_requires_30_day_notice
+    datatype: yesno
+    default: False
+  - La orden de desalojo dejó afuera lenguaje requirido por mi acuerdo de alquiler, por la ley, o por los requisitos de un programa de asistencia económica: ntq_leaves_off_required_language
+    datatype: yesno
+    default: False
+    help: |
+      Para responder a esta pregunta probablemente necesitará la ayuda de un abogado. La puede dejar en blanco si no está cierto.
+help: |
+  La Orden de Desalojo es el primer paso que el arrendador debe tomar si desea desalojarle. No hay una forma estandar para una orden de desalojo pero debe incluir ciertos datos. Además, dependiendo de que clase de inquilino es, es possible que tengan que darle cierta cantidad de información en la orden.
+
+  Massachusetts tiene requisitos estrictos para el lenguaje incluido en una orden de desalojo. Es posible que este lenguage sea requisito según las leyes de Massachusetts, según su acuerdo de alquiler, o según una regla federal si vive en alojamiento con asisistencia económica.
+
+  Si no es un abogado, podría ser difícil entender que la orden requiere cierto lenguaje.
+  Puede aprender más en
+  [MassLegalHelp](http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf)
+  Y si no está seguro, probablemente pueda hablar con un abogado en la mesa del Abogado del Día en su corte local.
+section: Claims and Defenses  
+---
+question: |
+  La renuncia / creación de un inquilinato nuevo
+subquestion: |
+  En algunos casos acciones que Ud. o su arrendador tomen podrían hacer que la orden de desalojo sea inválida, o que se "renuncie" a ella. Vea su orden de desalojo para responder a esta pregunta.
+  
+  Considere el periodo de tiempo después que recibió un orden de desalojo por primera vez
+  % if (defined('date_received_ntq') and date_received_ntq) :
+  , en el
+  ${format_date(date_received_ntq)}.
+  % else:
+  .
+  % endif
+  Indique cualquiera de las siguientes declaraciones que se aplica a su caso.
+fields:
+  - ¿Pasó alguna de las siguientes cosas después de que recibiera la orden de desalojo${' on ' + format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else ''}?: post_ntq_waiver
+    datatype: checkboxes
+    choices:
+      - Pagué la renta depués de${format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else 'I received the notice to quit'}: rent
+        default: ${attempted_cure}
+      - Firmé un acuerdo de alquiler nuevo (no incluya el trámite annual de recertificación de ingresos si vive en vivienda con asistencia económica). : lease
+  - ¿La orden de desalojo dice "Renta será aceptada solamente por uso y ocupación o algo parecido? : ntq_contains_reservation
+    datatype: yesnoradio
+    default: True
+    show if: post_ntq_waiver['rent']
+help: |
+ "Renuncia" es la idea que su arrendador no le puede desalojar cuando se comporta en una manera que indica que desea que siga como inquilino. La forma más franca de renuncia es cuando su arrendador le pide que firme un acuerdo de alquiler nuevo.
+  
+  Sin embargo, aunque firme un acuerdo de alquiler nuevo, es posible que no sirva como renuncia, si el acuerdo incluye lenguaje particular que dice que el acuerdo nuevo no será una renuncia del desalojo anterior.
+
+  Es la misma situación si su arrendador acepta renta de su parte después de que empezó el desalojo. Sin embargo, es muy fácil para el arrendador evitar "renunciar" de su inquilinato simplemente incluyendo "las palabras mágicas" "Renta será aceptada solamente por uso y ocupación" o en la orden de desalojo o en una notificación escrita cuando acepta el cheque para su renta.
+
+  Hay una breve discusión acerca de la renuncia en [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
+section: Claims and Defenses  
+---
+question: |
+  Notificación y Demanda
+subquestion: |
+  Busque la linea en su notificación y demanda que empiece con "because:"
+  
+  ¿Qué dice su notificación y demanda es la razón por el desalojo?
+fields:
+  - Coincide con la orden de desalojo : ntq_matches_summons
+    default: True
+    datatype: yesnoradio
+  - Seleccione todas las razones indicadas en la notificación y demanda que no aparecen en la orden de desalojo: summons_eviction_reasons
+    show if: ntq_matches_summons
+    datatype: checkboxes
+    choices:
+      - Falta de desalojar después que una notificación válida u orden de desalojo ha vencido (o similar): failure_to_vacate
+      - No pagar la renta: rent
+      - Una cantidad de renta distinta de la que está en la orden: rent
+      - La misma razón de "culpa" que se indicó en la orden de desalojo: same_fault
+      - Una nueva "culpa" o violación del acuerdo que no salió en la orden de desalojo: new_fault
+  - La notificación y demanda incluye los nombres de todos los inquilinos adultos que firmaron el acuerdo de alquiler: summons_includes_all_tenants
+    datatype: yesnoradio
+    default: True
+  - La notificación y demanda tiene mi dirección correcta.: summons_includes_correct_address
+    datatype: yesnoradio
+    default: True
+    
+help: |
+  Antes de que le desalojen hay que recibir una notificación justa del motivo para el desalojo y una oportunidad para arreglar el problema, si es algo que se pueda arreglar.
+
+  La Notificación y Demanda debe ser específica, pero a veces solamente dice algo vago como "falta de desalojar después de una orden válida". Es importante que no incluya algo completamente nuevo del cual el inquilino no recibió ninguna notificación anteriormente.
+  
+  Por esto, la razón que se mencione en la notificación de la corte (la Notificación y Demanda) debería coincidir con la orden de desalojo. Es común y acceptable si el lenguaje varía un poco si tiene el mismo entendimiento básico. A veces la notificación solamente indicará "falló de no salir después de una notificación apropiada para salir". Siempre está bien si la notificación y demanda menciona la renta, aún si la renta no fue el motivo por la orden de desalojo. Es fácil que el valor de la renta cambie y la notificación puede que mencione la renta que se debe después de la orden original.
+section: Claims and Defenses    
+---
+question: Timing of notices
+subquestion: |
+  Es importante que su arrendador entregue su caso de desalojo y la notificación de pre-desalojo en el tiempo apropiado. Es posible que Ud. tenga una defensa si no se hizo así en su caso.
+
+  Ponga la mejor información que sabe.
+video: |
+  [YOUTUBE 5gYPl-NHbv0]
+fields:
+  - Fecha que recibí la orden de desalojo: date_received_ntq
+    datatype: date
+    required: False
+    hide if: 
+      code: |
+        notice_type == 'no_ntq'
+  - Fecha que recibí la notificación de presentarme antes el tribunal (Notificación y Demanda).: date_received_summons
+    datatype: date
+  - Recibí la notificación y demanda por alguien entregándomela por mano a mí o a otro miembro adulto de mi hogar: summons_in_hand
+    datatype: yesno
+  - Recibí la notificación y demanda en el correo: summons_mailed
+    datatype: yesno
+  - La notificación y demanda se dejó en mi apartamento (típicamente fijada en la puerta): summons_last_and_usual
+    datatype: yesno
+section: Claims and Defenses      
+---
+question: |
+  Cura de falta de pago
+subquestion: |
+  Posiblemente tenga el derecho de terminar el desalojo si pagó todo el dinero que debía en aquel momento al arrendador, aún si debe una nueva cantidad de dinero ahora.
+  
+  La fecha apropiada en que se debe pagar depende de si tiene un acuerdo de alquiler o un inquilinato sin plazo de duración fijo. Ud. indico anteriormente que tiene un ${tenancy_type.replace('taw','tenancy at will or were unsure')}.
+  % if tenancy_type == 'lease':
+  Ud. tiene hasta la fecha de respuesta, el ${case.answer_date}, para pagar toda la cantidad debida.
+  % else:
+  Probablemente tiene o tenía hasta 10 días después de que recibiera la orden de desalojo, 
+  ${date_received_ntq.plus(days=10) if defined('date_received_ntq') else ''}, para pagar toda la cantidad debida.
+  % endif
+fields: 
+  - Pagué toda la renta que le debía al arrendador, u ofrecí pagar la cantidad entera: paid_rent_owed
+    datatype: yesno
+  - Mi pago incluyó los gastos de la radicación en la corte y un agente de policía (típicamente más o menos $200).: paid_court_fees
+    datatype: yesno
+  - Este fue la primera orden de desalojo por falta de pagar la renta que recibí en los últimos 12 meses.: no_ntq_in_12_months
+    datatype: yesno
+  - Fecha de pago al arrendador: cure_date
+    datatype: date
+    show if: paid_rent_owed
+help: |
+  
+  El pago de toda la renta debida se llama "curando" la falta de pago de renta y puede poner fin al desalojo. La fecha límite para pagar la cantidad entera de renta que se debe debería estar indicada en la orden de desalojo, pero esta entrevista le ayudará a averiguar cuál es la fecha límite. Solamente tiene el derecho de curar si no lo ha utilizado para interrumpir un desalojo en los últimos 12 meses.
+  
+  Si tiene un acuerdo de alquiler es possible que todavía pueda curar la falta de pago de la renta. Si aún no ha hecho ningún pago, el pago más probable tendrá que incluir los gastos de radicar en el tribunal y servirle con las notificaciones, aproximadamente $180-200, dependiendo de la corte.
+  
+   Vea [Chapter 12 of Legal Tactics](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf), 
+  la sección titulada "Paying the Rent Owed" y ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).
+  También vea [G.L. 186 s. 11](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11).  
+section: Claims and Defenses  
+---
+question: |
+  Cambio de dueño de la propiedad
+fields:
+  - ¿Porqué tiene un arrendador nuevo?: new_landlord_reason
+    choices:
+      - Mi arrendador falleció
+      - Mi arrendador vendió el edificio
+      - No sé quién es dueño del edificio hoy en día pero hay nueva gerencia.
+  - El edificio se vendió después de que recibiera la orden de desalojo: building_sold_after_ntq
+    datatype: yesno
+    show if:
+      variable: new_landlord_reason
+      is: 'My landlord sold the building'
+help: |
+  Queremos saber más acerca del nuevo propietario del edificio para entender si su nuevo arrendador tiene el derecho (incumbencia) de desalojarle
+---
+question: Custom Defenses
+subquestion: |
+Puede personalizar su respuesta al desalojo añadiendo defensas adicionales o razones por las cuales se debiera descartar. Normalmente solamente debiera hacerlo con el consejo de un abogado. Si desea añadir una defensa particular, termine las siguientes frases:
+fields: 
+  - El caso del arrendador se debiera descartar porque : initial_defense.custom_reason_for_dismissal 
+    datatype: area
+    required: False
+  - Tengo otras defensas o contrareclamos, que son : initial_defense.custom_other
+    datatype: area
+    required: False
+section: Claims and Defenses
+---
+decoration: thumbs-up
+question: |
+  ¡Puede ser que tenga una defensa!
+subquestion: |
+  Parece que su arrendador cometió un error con su caso. Si un juez está de acuerdo, es possible que su arrendador tenga que empezar con su caso de nuevo. Indicarémos estas defensas en su formulario de Respuesta.
+  
+  % if initial_defense.no_proper_termination:
+  * Su inquilinato no fue terminado en la manera apropiada
+  % endif
+  % if initial_defense.no_ntq:
+  * Ud. debió de haber recibido una orden de desalojo, pero nunca la recibió.
+  % endif
+  % if initial_defense.premature_commencement:
+  * Su arrendador inició el caso demasiado temprano
+  % endif
+  % if initial_defense.varney:
+  * Su arrendador no utilizó un abogado pero era obligado a usar uno 
+  % endif
+  % if initial_defense.defective_summons:
+  * La notificación y demanda no se sirvió apropiadamente
+  % endif
+  % if (eviction_reason == 'nonpayment' and initial_defense.cure):
+  * Ud. curó cualquier falta de pago de renta
+  % endif
+  % if initial_defense.new_tenancy:
+  * Su arrendador estableció un inquilinato nuevo por accidente
+  % endif
+  % if initial_defense.inconsistent_reasons:
+  * Su arrendador dió una nueva razón por el desalojo sin darle una notificación nueva
+  % endif
+  % if initial_defense.no_standing:
+  * A su arrendador le falta el derecho de desalojarle
+  % endif
+field: show_defense_summary
+section: Claims and Defenses
+---
+question: |
+  Protecciones para inquilinos en conversiones a condominios o cooperativas
+subquestion: |
+  Si Ud. vive en un edificio que recienmente se convirtió en un condominio o cooperativa, o si su arrendador tiene planes para convertir su edificio en un condominio o cooperativa, es posible que tengas protecciones especiales bajo las leyes estatales o locales.
+  
+fields: 
+  - El edificio dónde está mi apartamento tiene más de tres unidades: more_than_3_units
+    datatype: yesno
+  - Mi arrendador no cumplió con la ley estatal de conversión a condominios en la siguiente manera: condo_violations
+    show if: more_than_3_units
+    datatype: checkboxes
+    choices:
+      - No me  dio notificación con un año de anticipación: Failed to provide me with 1 year's notice
+      - No me dio notificación con 2 años de anticipación y alguien con una descapacidad o un anciano (mayor de 61 años de edad) vive conmigo Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
+      - No me dio notificación con 2 años de anticipación y tengo nivel de ingresos moderado o bajo (gano menos de la 80% del ingreso medio local): Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
+      - Aumentó my renta por más de 10% o por más que el aumento en el índice de Precios de Consumidores, cualquier sea el más bajo: Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
+      - No me ofreció el derecho de comprar mi apartamento antes de ponerlo a la venta: Failed to offer me the right to purchase my apartment before listing it for sale
+      - No me ofreció pagarme los gastos de mudanza: Failed to offer me moving expenses
+  - My arrendador no cumplió con las reglas locales de conversión a condominio en las siguiente maneras: condo_local_violations
+    datatype: checkboxes
+    show if:
+      code: |
+        tenant.address.city in ['Abington','Acton','Amherst','Boston','Brookline','Haverhill','Lexington','Malden','Marlborough','New Bedford','Newburyport','Newton','Somerville']
+    code: |
+      condo_local_options
+help: |
+  Vea: https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-state-laws
+  y https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-condo-conversion
+  
+  También https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
+---
+code: |
+  temp = [{'My landlord failed to obtain the proper local permit.': 'Mi arrendador no obtuvo el permiso local apropiado.'}]
+  if tenant.address.city == 'Boston':
+    temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.": " Mi arrendador no me notificó con 5 años de anticipación y alguien con una descapacidad o un anciano vive conmigo."})
+    temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).": " Mi arrendador no me dió 'motivo justo' para el desalojo (no me dió motivo o me dió un motivo incorrecto)."})
+  temp.append({"My landlord violated another local rule.": "Mi arrendador violó otra regla local (vea los enlaces en ayuda)."})
+
+  condo_local_options = temp
+---
+comment: |
+  Bad housing conditions
+---
+question: |
+  Problemas con el apartamento
+subquestion: | 
+  Indique cualquier problema con el apartamento donde está viviendo ahora. Piense sobre los problemas durante los últimos 6 años, no importa si actualmente han sido resueltos o no. 
+  Su arrendador solo será responsable por problemas que ellos conocían o debieron haber conocido.  Por ejemplo, puede que sea responsable por problemas que existían cuando usted por primera vez se mudó o compró el edificio 
+video: |
+  [YOUTUBE DCpIr9ldSsw]
+fields:
+  - "Indique las condiciones que han existido": bad_conditions.conditions
+    datatype: checkboxes
+    choices:
+      - insectos: insects
+      - cucarachas: cockroaches
+      - ratones o ratas: mice or rats
+      - goteras o problemas de plomería: water leaks or other plumbing problems
+      - problemas eléctricos: electrical problems
+      - Pintura con plomo: lead paint
+      - ventanas con defectos o que dejan entrar el aire: defective or leaky windows
+      - techos, paredes o pisos defectuosos: defective ceilings, walls, or floors
+      - falta de calefacción: no heat
+      - falta de agua caliente: no hot water
+      - no suficiente calefacción: not enough heat
+      - no suficiente agua caliente: not enough hot water
+      - pestillos defectuosos: defective locks
+      - problemas con seguridad: security problems
+      - otros: other
+  - Otras condiciones: bad_conditions.other_condition
+    datatype: area
+    show if: bad_conditions.conditions['other']
+help: |
+  Puede que tenga un reclamo contra su arrendador por problemas durante los últimos 6 años en su hogar, no importa si actualmente han sido reparados o no. Por algunos problemas, solo tiene un reclamo por los últimos 4 años.
+
+  SI este es un caso "sin-culpa" o por no pagar la renta, tener malas condiciones puede que paren el desalojo (ser una defensa). 
+  
+  Su arrendador puede que tenga que pagarle la diferencia entre el valor de su hogar con toda las reparaciones hechas y el valor de su hogar con las malas condiciones por cada mes que existieron esas condiciones. Para problemas muy serios que hicieron que el apartamento fuera inhabitable, puede que tenga derecho a de 1 a 3 meses de renta. 
+
+  Aprenda más sobre consiguiendo que se hagan las reparaciones en [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
+section: Claims and Defenses
+---
+question: |
+  Reparación y deducción
+subquestion: |
+  En algunos casos, si usted hizo sus propias reparaciones al apartamento, el arrendador puede que sea responsable por el costo de esas reparaciondes.
+  Indique cualquier oración que es cierta de las que siguen. 
+fields:
+  - Pagué por las reparaciones a las malas condiciones a costo mío.: other.tenant_repaired
+    datatype: yesno
+  - Antes de hacer las reparaciones, la Comisión de Salud o la División de Servicios de Inspección le dio al arrendador un informe certificado sobre las malas condiciones de vivienda.: other.certified_report
+    datatype: yesno
+    show if: other.tenant_repaired
+  - El arrendador no hizo o contrató para que se hicieran las reparaciones que habían sido ordenadas en un tiempo razonable (14 días, o menos si ordenadas por el DSI o la Comisión de Salud).: other.no_timely_repairs
+    datatype: yesno
+    show if: other.tenant_repaired   
+  - Yo deduje los costos de las reparaciones de mi renta.: other.deducted_repair_cost
+    datatype: yesno
+    show if: other.tenant_repaired   
+  - La cantidad total de dinero que retuve para pagar las reparaciones fue menos de 4 meses de renta.: other.repair_less_than_4_months
+    datatype: yesno
+    show if: other.tenant_repaired    
+help: |
+  El estatuto de Reparar y Deducir le da al inquilino una manera limitada para reparar condiciones malas de la vivienda que le fueron reportadas al arrendador por una agencia de la ciudad que aplica el codico de vivienda. 
+  
+  [G.L. c. 111, §127L](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVI/Chapter111/Section127L)
+---
+need: bad_conditions.conditions
+question: |
+  Como notificó a su arrendador?
+subquestion: |
+  ¿Como notificó a su arrendador de las condiciones malas de la vivienda?
+fields:
+  - ¿Como notificó a su arrendador de las condiciones malas de la vivienda?: bad_conditions.landlord_notified
+    datatype: checkboxes
+    choices:
+      - Se lo dije al arrendador verbalmente.: I told the landlord orally.
+      - Se lo dije al arrendador por escrito (vía texto, email, carta, o una nota escrita).: I told the landlord in writing (by text, email, letter, or written note).
+      - El arrendador fue notificado por el Servicio de Inspecciones, Comisión de Salud, agencia de la vivienda o alguien más.:  The landlord was notified by Inspectional Services, Board of Health, housing agency, or someone else.
+      - Todas o algunas de las condiciones existían cuando me mudé.: All or some of the conditions existed when I moved in.
+      - Todas o algunas de las condiciones existían cuando el arrendador compró la propiedad o cuando se ejecutó la hipoteca.: All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
+      - Todas o algunas de estas condiciones existen en áreas comunes a la cuales el arrendador tiene acceso .: All or some of these conditions exist in common areas that the landlord has access to.
+  - Otras: bad_conditions.other
+    required: False
+section: Claims and Defenses
+
+---
+question: Incumplimiento del gozo sin molestia
+subquestion: |
+  Un "incumplimiento del gozo sin molestia" ocurre cuando su arrendador hace algo o permite que algo ocurra que hace vivir en su apartamento difícil. Esto puede que se deba a algo que ocurrió una vez (como inundarse el sótano, o caerse el techo) o algo que ocurrió por un período largo, como una renovación al apartamento de al lado que se llevaba a cabo en un hora del día no razonable.
+
+  Piense de los problemas que han ocurrido en los últimos 4 años y escoja de la siguiente lista todos los que se aplican.
+fields:
+  - Falta de calefacción apropiada: bqe.heat
+    datatype: yesno
+    default: ${bad_conditions.conditions['not enough heat'] or bad_conditions.conditions['no heat']}
+  - No porporcionó agua caliente adecuada: bqe.hot_water
+    datatype: yesno
+    default: ${bad_conditions.conditions['not enough hot water'] or bad_conditions.conditions['no hot water']}    
+  - No pagó los servicios públicos que eran responsabilidad del arrendador: bqe.unpaid_utilities
+    datatype: yesno
+  - Desconectó mis servicios públicos: bqe.shutoff_utilities
+    datatype: yesno
+  - Me dejó encerrado fuera de mi hogar: bqe.locked_out
+    datatype: yesno
+  - Sacó mis pertenencias de mi apartamento sin una orden judicial: bqe.removed_possessions
+    datatype: yesno
+  - Permitió que condiciones malas exisiteran en mi hogar: bqe.bad_conditions
+    datatype: yesno
+    default: 
+      code: |
+        bad_conditions.have_conditions
+  - Entró en mi hogar sin permiso o notificación: bqe.entered_without_permission
+    datatype: yesno
+  - Interfirió de alguna otra manera (especifique): bqe.other
+    required: False
+section: Claims and Defenses
+help: |
+  Aprenda más sobre como hacer que hagan reparaciones en [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
+---
+question: |
+  Interferencia con servicios públicos
+subquestion: |
+  Puede que tenga un reclamo en contra de su arrendador por un manejo inapropiado de sus servicios públicos.
+  Escoja cualquiere que se aplica.
+fields:
+  - He recibido cuenta por calefacción, agua caliente, electricidad o gas sin tener un acuerdo por escrito.: bqe.billed_no_agreement
+    datatype: yesno
+  - He recibido una cuenta por uno o más de los servicios públicos que pertenecen a áreas comunes o el apartamento de otras personas (medida de energía cruzada o alambrado cruzado).: bqe.billed_for_others
+    datatype: yesno
+  - Mi arrendador me cobró por el agua en violación de G.L. c. 186, §22. : other.water_violation
+    datatype: yesno
+section: Claims and Defenses
+---
+comment: |
+  Foreclosure defenses
+---
+question: Foreclosure related defenses for owners and tenants
+fields:
+  - La ejecución de la hipoteca es inválida debido a violaciones del poder de vender en la hipoteca; requisitos por estatuto o regulatorios para ejecutar la hipoteca; o requisitos de aguantar  o transferir la hipoteca. : postforeclosure.failure_to_comply
+    datatype: yesno 
+    default: True
+  - Fui tratado injustamente con relación a una modificación del préstamo y/o alternativas a la ejecución de la hipoteca.: postforeclosure.unfair_loan_mod
+    datatype: yesno
+  - Fui tratado injustamente con relación a notificaciones antes de la ejecución. : postforeclosure.unfair_notices
+    datatype: yesno
+  - Mi préstamo era predatorio, injusto y/o no sostenible basado en mis ingresos.  : postforeclosure.unfair_loan_based_on_income
+    datatype: yesno
+section: Claims and Defenses
+
+---
+question: |
+  Defensas para inquilinos contra ejecución de hipoteca 
+fields:
+  - Soy un inquilino auténtico con derecho a las protecciones de G.L. c. 186A. : postforeclosure.no_just_cause.bona_fide_protections
+    datatype: yesno
+  - Porque el demandante no tiene una causa justa para desalojarme y no hay un acuerdo activo de compra y venta como requerido por G.L. c. 186A, §2, este caso debería ser descartado.: postforeclosure.no_just_cause.no_binding_purchase
+    datatype: yesno
+  - El servicio de la Notificación de Salir u otras acciones para obligarme a salir de la instalación sin tener causa justa o tener un contrato de venta de la propiedad violan G.L. c. 186A, §2; c. 186, §14; and c. 93A.: postforeclosure.no_just_cause.ntq_or_other_actions
+    datatype: yesno
+  - El demandante no pegó, entregó o metió por debajo de la puerta una notificación conteniendo información de contactos e información sobre a quien llamar para reparaciones. : postforeclosure.notice_provisions.no_plaintiff_info
+    datatype: yesno
+  - El demandante me sirvió la Notificación de Salir con menos de 30 días después de que fijó y entregó la información requerida sobre contactos en violación de G.L. c. 186A, §§3 and 4.: postforeclosure.notice_provisions.less_than_30_days
+    datatype: yesno
+  - El demandante no me proveyó una notificación escrita sobre mi derecho de tener una vista en corte en violación de G.L. c. 186A, §§3 and 4.: postforeclosure.notice_provisions.no_right_to_court_notice
+    datatype: yesno
+  - El demandante no me dió notificación escrita reclamando que había violado substancialmente mi contrato de arrendamiento o inquilinato en violación de G.L. c. 186A, §4.: postforeclosure.notice_provisions.no_written_notice_of_violations
+    datatype: yesno
+  - El demandante no me dío 30 días para sanar el reclamo de que había violado substancialmente mi contrato de arrendamiento o inquilinato en violación de G.L. c. 186A, §4.: postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    datatype: yesno
+  - El demandante no me informó sobre cuanto era la renta mensual que está reclamando y a quien se le debería pagar la renta en violación de G.L. c. 186A, §§3 and 4.: postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    datatype: yesno
+  - Porque el demandante no cumplió con los requisitos de notificación de G.L. c. 186A, §§3 and 4, este cxaso debería ser desestimado.: postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    datatype: yesno
+  - El caso del demandante debe ser desestimado pues no tiene un título correcto a la propiedad y por lo tanto no puede  probar que tiene un derecho superior de la posesión de la propiedad y la ejecución de la hipoteca es nula. Wayne Inv. Corp. v. Abbott, 350 Mass. 775 (1966) (defectos en el título pueden ser presentados como defensa en un proceso sumario); G.L. c. 239, §1 (Proceso sumario está disponible al demandante solo si la ejecución fue llevada a cabo de acuerdo con la ley). : postforeclosure.no_standing
+    datatype: yesno
+  - Le pido a la corte que declare la ejecución nula.: relief.void_foreclosure
+    datatype: yesno
+section: Claims and Defenses
+---
+comment: |
+  Subsidized tenancy
+---
+question: |
+  ¿Que tipo de subsidio tiene? 
+subquestion: |
+  ¿Cual es la mejor descripción del programa de vivienda pública o del programa que le reduce la renta? 
+field: subsidy_type
+choices:
+  - Cupón de Sección 8 (cupón portable): Section 8 voucher
+    help: |
+     Un cupón portable Federal que se usa con un arrendador privado. La renta normalmente se fija al 30% de sus ingresos.
+  - MRVP (Programa de Cupón de Renta de Massachusetts): MRVP
+    help: |
+      Un cupón portable Estatal que se usa con un arrendador privado. La renta normalmente se fija al 40% de sus ingresos.
+  - Vivienda Pública (mi arrendador es una autoridad de vivienda): public housing
+    default: ${default_landlord_type == "public"}
+    help: |
+      Si parte del nombre de su arrrendador es "Housing Authority" este es el tipo de vivienda que usted tiene. La renta normalmente se fija al 30% de sus ingresos.
+  - VIvienda HUD operada por un arrendador privado: HUD multi-family
+    help: |
+      Normalmente la renta es el 30% de sus ingresos. El tipo más común es vivienda multi-familia HUD.
+  - Crédito impositivo: tax credit
+    help: |
+      Puede que haya un límite de ingresos pero la renta no cambia si el ingreso cambia.
+  - Otro o no se: other
+---
+question: Subsidized Housing Defenses
+fields:
+  - Una porción de mi renta es pagada por una autoridad de vivienda pública.: subsidized_housing.pha_pays_rent
+    datatype: yesno
+    default:
+      code: |
+        subsidy_type in ["Section 8 voucher","MRVP"]
+  - La autoridad de vivienda pública paró de pagarle al arrendador debido a las condiciones malas.: subsidized_housing.stopped_payment
+    datatype: yesno
+  - Mi arrendador o autoridad de vivienda calcularon mi porción de la renta mal.: subsidized_housing.improper_rent_calculation
+    datatype: yesno
+  - Mi arrendador me cobró más de renta que lo permitido por la autoridad de vivienda (pagos por el lado).: subsidized_housing.landlord_overcharged
+    datatype: yesno
+section: Claims and Defenses
+---
+question: Subsidized Housing Defenses
+subquestion: |
+  Defensas comunes relacionadas a vivienda subsidiada 
+fields: 
+  - Mi arrendador no siguió las reglas de mi programa de subsidio.: subsidized_housing.no_proper_termination
+    datatype: yesnoradio
+    default: True
+  - Mi arrendador no tiene causa buena para desalojarme.: subsidized_housing.no_just_cause
+    datatype: yesnoradio
+    default: True
+  - El arrendador no envió una copia de la notificación de salir a mi autoridad de vivienda al mismo tiempo que me la enviaron a mi.: subsidized_housing.no_ntq_to_agency
+    datatype: yesnoradio
+    show if: 
+      code: |
+        facts.tenant_has_subsidy and subsidy_type == "Section 8 voucher"
+  - Nunca fui ofrecido el chance de discutir el desalojo con mi arrendador en una "conferencia privada" o una "audiencia de queja".: subsidized_housing.no_hearing_or_conference
+    datatype: yesnoradio
+    default: True
+    show if:
+      code: |
+        not subsidy_type == "Section 8 voucher"
+  - Tengo una defensa bajo el Estatuto de Violencia Contra la Mujer. : subsidized_housing.vawa
+    datatype: yesnoradio
+    default: ${claims.harassment or tenant.is_dvvictim}
+section: Claims and Defenses
+---
+comment: |
+  Retaliation
+---
+question: |
+  Retaliación
+subquestion: |
+  ¿Tiene usted alguna razón para creer que el arrendador no lo está desalojando debido a "${eviction_detailed_reason}", y por contrario lo está desalojando por algo que usted tiene el derecho legal de hacer?
+
+  Ejemplos incluyen reportar condiciones malas; aguantar de pagar la renta; demandando a su arrendador, u obteniendo protección de violencia doméstica. Si no está seguro, puede elegir "si" y ver preguntas más detalladas en la próxima pantalla.  
+video: |
+  [YOUTUBE Bs-aVV5K-oo]
+yesno: retaliation.is_retaliated
+section: Claims and Defenses
+help: |
+  Aprenda más sobre la retaliación en [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)
+
+  También puede ver 
+  [Mass. Gen. Laws c. 239, §2A](https://malegislature.gov/Laws/GeneralLaws/PartIII/TitleIII/Chapter239/Section2A): Reprisal for reporting violations of law, for tenant's union activity, 
+  O acciones tomadas siguiendo las leyes protegiendo a los inquilinos que son víctimas de violencia doméstica, violación, agresión sexual o acecho; defensa; presunción y  
+  [Mass. Gen. Laws c. 186, §18](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section18): 
+  Represalia por reportar violaciones de la ley o actividad laboral del inquilino; daños y costos; notificación de terminación, presunción; están prohibido renuncias en acuerdos de arrendamiento u otros acuerdos de renta 
+---
+question: | 
+  Retaliación
+subquestion: |
+  "Retaliación" quiere decir que su arrendador lo está desalojando por algo que usted tenia el derecho de hacer. Una situación común es radicar una queja protegida legalmente, por ejemplo, sobre las malas condiciones de vivienda. 
+  Usted puede que tenga la defensa de represalia aún si su arrendador tenia más de una razón para desalojarlo.  
+
+  ¿Usted tomó alguna de las siguientes acciones que usted cree son la verdadera razón por la cual su arrendador lo está desalojando? Indique todas las que se aplican. 
+fields:
+  - Yo retuve la renta por condiciones malas.: retaliation.withheld_rent
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - Reporté condiciones malas por escrito al arrendador.: retaliation.badconditions_to_landlord
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - Reporte condiciones malas verbalmente o por escrito a una agencia.: retaliation.badconditions_to_agency
+    datatype: yesno
+    default: ${plead_counterclaims and bad_conditions.have_conditions}
+  - Soy miembro de una unión de inquilinos o participé en reuniones para organizar una unión de los inquilinos.: retaliation.tenant_union
+    datatype: yesno
+  - Demandé a mi arrendador o radiqué alguna queja contra mi arrendador.: retaliation.brought_claim
+    datatype: yesno
+  - Yo o alguien en mi hogar tomo pasos para obtener una orden de protección (G.L. c. 209A) o una orden de prevención de hostigamiento (G.L. c. 258E).: retaliation.protection_or_prevention_order
+    datatype: yesno
+  - Yo o alguien en mi hogar reportó un incidente de violencia doméstica, violación, agresión sexualo acecho a la policia, o reporté una violación de una orden de protección  o una orden de prevención de hostigamiento.: retaliation.domestic_violence
+    datatype: yesno
+  - Yo soy sun sobreviviente de abuso, agresión sexual, violación o acecho y mi arrendador me está desalojando por violar mi contrato o cambiar los pestillos por razones de seguridad.: retaliation.survivor_rights
+    datatype: yesno
+  - Otro: show_retaliation_other
+    datatype: yesno
+  - Otro: retaliation.other
+    required: False
+    show if: show_retaliation_other
+  - Una o más de las mencionadas arriba ocurrió en los últimos 6 meses.: retaliation.within_6_months
+    datatype: yesnoradio
+    required: False
+    default: True
+section: Claims and Defenses
+help: |
+  Aprenda más sobre la retaliación en [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)  
+---
+comment: |
+  Discrimination
+---
+question: |
+  Discriminación
+subquestion: |
+  ¿Tiene alguna razón para creer que su arrendador está discriminando contra usted? 
+  
+  "Discriminación" quiere decir que su arrendador lo está desalojando o tratándolo mal de alguna otra manera por algo de usted o su familia que está protegido legalmente. Discriminación no quiere decir que usted le cae mal a su arrendador. 
+
+  Discriminación puede incluir:
+
+  * No querer arrendar a niños (posiblemente por pintura de plomo)
+  * No querer hacer cambios a las reglas o a la propiedad para ayudar a un inquilino descapacitado 
+  * No querer aceptar un cupón de Sección 8 u otra asistencia con la renta
+  * Tratando a alguien de manera injusta por su raza, sexo, religion, estatus de veterano, género o sexualidad 
+
+  Si no está seguro, puede seleccionar "si" y ver preguntas más detalladas en la próxima pantalla.
+video: |
+  [YOUTUBE Yxry8Zbmcgs]
+yesno: tenant.is_discriminated
+section: Claims and Defenses
+help: |
+  Aprenda más sobre la ley de discriminación [aquí](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: |
+  Clases protegidas y discriminación 
+subquestion: |
+  Es ilegal que su arrendador lo trate a usted o alguien de su familia injustamente o trate de desalojarlo porque usted es igual que cierto tipo de persona. 
+fields:
+  - Escoja la clase protegida qque usted cree es la razón por la discriminación por su arrendador. Escójala si la clase se aplica a usted o alguien más en su familia.: discrimination.protected_classes
+    datatype: checkboxes
+    choices:
+      - Tengo niños: Family status
+      - Mi edad: My age
+      - Recibo beneficios: I am on benefits
+      - Recibo asistencia con la renta: I get rental assistance
+      - Mi género: My gender
+      - Mi identidad de género: My gender identity
+      - Mi estatus matrimonial: My marital status
+      - Mi raza: My race
+      - Mi religión: My religion
+      - Mi orientación sexual: My sexual orientation
+      - Mi estatus de Veterano: My Veteran status
+      - Mi origen nacional (el país de donde viene mi familia): My national origin
+      - Tengo una discapacidad: disability
+      - El color de mi piel: My skin color
+    default: 
+      code: |
+        dict(disability = tenant.is_disabled)
+  - Otro: discrimination.show_other
+    datatype: yesno
+  - "Otro:": discrimination.other
+    show if: discrimination.show_other
+section: Claims and Defenses
+comment: |
+  Setting the dictionary of defaults, Disability is a 
+  default if tenant.is_disabled is true, and false if it is false.
+help: |
+  Aprenda más sobre la ley de discriminación [aquí](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: | 
+  Discriminacieon basada en discapacidad
+subquestion: |
+  Si usted está discapacitado y hay una conección entre su discapacidad y el desalojo, puede que tenga el derecho a una "acomodación razonable" de su arrendador. Esto puede que sea una defensa contra el desalojo.
+  ¿Le gustaría pedir una acomodación razonable? 
+yesno: disability.request_reasonable_accommodation
+section: Claims and Defenses
+help: |
+ Vea [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+---
+question: |
+  Hostigamiento sexual
+subquestion: |
+  Si usted se ha enfrentado con hostigamiento sexual de parte de su arrendador o un empleado suyo, puede que tenga una defensa contra el desalojo. Escoja algunas de las que siguen que se apliquen.
+fields:
+  - Mi arrendador me pidió/presionó a mi  o a alguien con quien vivo favores de naturaleza sexual. : discrimination.sexual_harassment.pressured_sexual_favors
+    datatype: yesno
+  - Mi arrendador cambió los términos de mi arrendamiento debido a mi respuesta a hostigamiento.: discrimination.sexual_harassment.tenancy_terms_changed
+    datatype: yesno
+  - El hostigamiento me hizo sentir inseguro o incómodo. : discrimination.sexual_harassment.unsafe_or_uncomfortable
+    datatype: yesno
+   
+section: Claims and Defenses
+
+---
+question: |
+  Protección del Consumidor M.G.L. c. 93A
+subquestion: |
+  Marque cualquier oración que es cierta de las siguientes. Usted puede que tenga defensas extras bajo la ley de Protección del Consumidor si tiene defensas listadas en cualquier otra parte de esta entrevista. 
+fields:
+  - Me cobraron cargos ilegales por tardía (irrazonablemente altos o antes de que la renta estuviese 30 días tarde).: consumer_protection.late_fees
+    datatype: yesno
+  - Me cobraron una cantidad de renta que yo nunca acordé pagar.: consumer_protection.nonagreed_rent
+    datatype: yesno
+  - Me cobraron cargos de corte o cargos de agente ilegalmente.: consumer_protection.unlawful_court_fees
+    datatype: yesno
+  - Hay términos ilegales en mi contrato de arrrendamiento.: consumer_protection.unlawful_lease_terms
+    datatype: yesno
+  - Otros : consumer_protection.other
+    datatype: yesno
+  - Otra violación: consumer_protection.other_reason
+    show if: consumer_protection.other
+section: Claims and Defenses
+help: |
+  La Ley de Protección del Consumidor de Massachusetts, [G.L. c. 93A](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXV/Chapter93A),
+  Protégé a los inquilinos de violaciones de la ley federal, estatal o local.
+  Le permite a los inquilinos que ganen su caso recobrar los costos de abogados y daños adicionales (dinero extra si ganan).
+  
+  Protección del consumidor se aplica a arrendadores que están "en el negocio" de ser arrendadores. No se aplica a una agencia gubernamental, tal como una autoridad de vivienda, o un dueño de hogar que alquila un cuarto o un segundo apartamento en un edificio pequeño de menos de 4 apartamentos 
+---
+question: |
+  Depeosito de Seguridad
+subquestion: |
+  Marque cualquier violación de depeosito de seguridad de las que siguen que se aplica 
+fields: 
+  - Monto del depósito de seguridad: security_deposit.amount
+    datatype: currency
+  - Violaciones: security_deposit.violations
+    datatype: checkboxes
+    choices:
+      - Aceptó un depósito por más de la renta de un mes 
+      - No mantuvo el depósito en una cuenta bancaria separada 
+      - No proporcionó los recibos requeridos 
+      - No pagó interés en cada aniversario del depósito o darme un crédito en mi renta 
+      - No proporcionó un listado de las condiciones 
+      - No aceptó responsabilidad por un depósito hecho a un arrendador anterior 
+section: Claims and Defenses
+help: |
+  Aprenda más sobre las reglas de como bregar con un depósito de seguridad en [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
+---
+question: |
+  Renta del último mes
+subquestion: |
+  "Renta del último mes" quiere decir la renta que algunos arrendadores reciben cuando usted se muda por primera vez como "primer, último y depósito de seguridad". Es la renta que usted pago por anticipo y que puede aplicarse al mes enque usted se muda del apartamento.  
+
+  Si su arrendador tomó "la renta del último mes" tiene que pagarle interés una vez cada año.  
+
+  ¿Violó su arrendador las reglas sobre como manejar la renta del último mes que usted pagó anticipadamente? Marque todas las que se aplican. 
+fields:    
+  - Monto de su renta del ultimo mes pagada anticipadamenete: last_months_rent.amount
+    datatype: currency
+    required: False
+  - ¿El pago fue hecho a su arrendedor actual o al anterior?: last_months_rent.to_whom
+    datatype: radio
+    default: current
+    choices:
+      - Arrendador actual: current
+      - Arrendador anterior: former
+  - ¿ha vivido en el apartamento más de 1 año?: last_months_rent.over_a_year
+    datatype: yesno
+  - ¿Le pagó interés su arrendador cada año por su renta pagada anticipadamente?: last_months_rent.paid_interest
+    datatype: yesno
+    show if: last_months_rent.over_a_year
+section: Claims and Defenses
+help: |
+  Aprenda más sobre las reglas del manejo de la paga anticipada de la renta del último mes en [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
+---
+question: |
+  Interrogatorias (preguntas para su arrendador)
+subquestion: |
+  Puede preguntarle a su arrendador hasta 30 preguntas, siempre que estén relacionadas con su caso. Puede que le hayamos recomendado algunas automaticamente y otras siempre son preguntadas
+  
+  ${ ints.count_checked() } preguntas ya están seleccionadas. 
+  
+  Abajo hay un resumen breve del tópico de cada pregunta. Por favor escoja todas las preguntas que le quiere hacer a su arrendador.
+fields: 
+  code: ints_fields
+continue button field: interrogatory_questions  
+---
+question: |
+  Descubrimiento de evidencia
+subquestion: |
+  Esta estrevista está preparada para darle "descubrimiento" o preguntas para su arrendador. ¿Quiere escogerlas usted por su cuenta, o quiere usar las que se usan por falta de otras?
+    
+  Por las respuestas que ya ha dado, usted actualmente tiene 
+  **${ ints.count_checked() }** preguntas para su arrendador, y 
+  **${ drq.count_checked() }** clase de documentos que está pidiendo. 
+
+  La mayoría de los inquilinos no necesitan hacer cambios aquí. 
+decoration: |
+  book
+field: tenant_review_discovery
+buttons:
+  - Mantenga las preguntas presentadas: False
+  - Personalize el descubrimiento: True
+help: |
+  Usted tiene el derecho de recibir información de su arrendador, o "descubrimiento". La información le puede ayudar a prepararse para corte o llegar a un acuerdo con su arrendador. 
+  
+  Descubrimiento está regido por [U.S.P.R. 7](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
+  
+  Esta entrevista le puede ayudar a hacerle preguntas a su arrendador y pedirle a su arrendador que le de copias de documentos, tales como su contrato o historial de pagos. También tiene el derecho de preguntarle a su arrendador por "admisiones" (preguntas de si o no) pero esta entrevista no le va a ayudar preguntar esas.
+  
+  Su arrendador tiene 10 días para hacerle llegar la información. Si no lo hacen, usted tiene el derecho de pedirle al juez que les ordene dársela. Parte del paquete que usted va a entregar incluye un formulario de moción que puede usar para pedir el descubrimiento si su arrendador no le da la información.
+section: Discovery
+---
+question: |
+  Documentos pedidos (cartas, contratos, retratos, y otra información impresa) 
+subquestion: |
+  No hay límite al número de documentos que usted le puede pedir a su arrendador que le de, siempre y cuando estén relacionados con su caso. Puede que le hayamos recomendado algunos automaticamente y otros siempre se pedirán.
+
+  Abajo hay una oración resumiendo en breve cada una de las preguntas ya escritas disponibles.   
+  Seleccione los documentos que a usted le gustaría que su arrendador le de. 
+fields: 
+  code: drq_fields
+help: |
+  Los pedidos de documentos pueden ser ilegibles para alguien que no es abogado. Lo importante es revisar el tema de lo pedido.
+continue button field: drq_questions
+---
+template: compel_discovery_email
+subject: |
+  Es hora de obligar el descubrimiento (Massachusetts Defensa para el Desalojo) en ${landlord} v. ${tenant}
+content: |
+  Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defense for Eviction) de Greater Boston Legal Services.
+  
+  Cuando usted usó nuestra herramienta autoayuda para defensa contra el desalojo en${format_date(start_time())}, usted le pidió a su 
+  Arrendador ${landlord} que le enviase información para prepararse para su caso.
+  
+  Esa información debió haber sido enviada a usted a más tardar el ${date_discovery_due}.
+  
+  Para proteger su derecho a obtener información para su caso, necesita enviar una "moción para obligar descubrimiento" a 
+  % if landlord.has_attorney:
+    ${landlords_attorney}.
+  % else:
+    ${landlord.name}.
+  % endif
+  También necesita enviar una copia de la moción a ${court}.
+  
+  Aprenda más y obtenga el formulario aquí: https://gbls.org/tactics/compel
+---
+template: compel_discovery_text
+content: |
+  Recordatorio: enviar una "moción para obligar descubrimiento"
+  En su caso de desalojo ${landlord} v. ${tenant} HOY. Formulario con instrucciones aquí: 
+  https://gbls.org/tactics/compel
+  
+   - MADE from GBLS.
+---
+template: court_reminder_email
+subject: |
+  Tiene cita en corte ${court_date}! (Defensa Contra el Desalojo en Massachusetts) para ${landlord} v. ${tenant}
+content: |
+  Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defense for Eviction) de Greater Boston Legal Services.
+  
+  No se olvide de estar en ${court} el ${court_date} (a menos que la corte le dijo una fecha diferente!)
+  
+  % if court_date_is_holiday:
+  Parece que ${court_date}  es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  Si no recibió una notificación de la corte, puede que quiera llamarla para averiguar cuando se va a ver su caso. 
+  % endif
+
+  Está recibiendo este email proque usted usó nuestra herramienta autoayuda para desalojos el ${format_date(start_time())}.
+---
+template: attend_court_text
+content: |
+ Recordatorio: su fecha en corte para ${landlord} v. ${tenant} es ${format_date(court_date)} 
+  en ${court} a las 9 AM.   
+  % if court_date_is_holiday:
+  ${court_date} es ${ma_holidays.get(court_date)} así que su fecha puede que haya sido pospuesta. Si la corte no le mencionó la fecha nueva, llame a la corte para averiguarla. 
+  % endif
+Prepárese aquí: https://gbls.org/tactics/12
+   - MADE de GBLS.  
+---
+template: sharing_email_template
+subject: |
+  Se le envió el link para la entrevista en ${landlord} v. ${tenant}
+content: |
+  Alguien que estaba completando la entrevista usando Massachusetts Defensa Contra el Desalojo (MADE) le envió este link. 
+  
+  Haga clic [aquí](${interview_url()}) para seguir trabajando en la entrevista.
+---
+template: interview_complete_email
+subject: |
+  Acabó la entrevista sobre el desalojo! Mantenga esto para sus records (Massachusetts Defensa Contra el Desalojo) de ${landlord} v. ${tenant}
+content: |
+  Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defensa Contra el Desalojo) de Greater Boston Legal Services.
+  
+  Esta es una copia para usted de todos los formularios que completó hoy. 
+  
+  Recuerde, su fecha en corte será el ${format_date(court_date)},
+  A menos que oiga algo diferente de parte de la corte.
+  % if court_date_is_holiday:
+  Parece que ${court_date} e sun día de fiesta, ${ma_holidays.get(court_date)}.
+  Si no recibió una notificación de la corte, puede que quiera llamar para averiguar cuando va a ser visto su caso. 
+  % endif
+
+  Prepárese para la corte! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
+  contiene información que le puede ayudar a prepararse. 
+
+  Si todadvía no ha radicado ningún papeleo con la corte o con su arrendador, no ha terminado todavía. Va a necesitar imprimir y enviar por correo o entregar los 
+  ${nice_number(num_downloads)} formularios que creamos para usted por su cuenta. Están anexos a este email. Puede imprimir cada formulario por separado, o imprimir el documento PDF que contiene todos los formularios. 
+  
+   
+  #### Próximos pasos
+  
+  1. Imprima tres copias de los formularios de la corte. Puede saltar la primera página que tiene las instrucciones para usted. 
+  1. Entregue una copia al "Secretario del Tribunal de Proceso Judicial Sumario" en la ${ court }, 
+     Antes de que la corte cierre al final del día (normalmente las 4:30 PM) en **${format_date(case.answer_date)}**.
+  % if answer_date_is_holiday:
+  Parece que ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Normalmente puede entregar su respuesta el día después del día de fiesta y estará entregado a tiempo. 
+  % endif
+
+  1. Mantenga una copia para sus records personales. Léala. También puede traer esta copia con usted a la corte.
+  % if landlord.has_attorney:
+  1. Entregue la tercera copia al abogado de su arrendador, ${landlords_attorney}, en ${landlords_attorney.address.on_one_line()}, a más tardar el **${format_date(case.answer_date)}**.
+  % else:
+  1. . Entregue la tercera copia a su arrendador ${landlord.name}, a más tardar el **${format_date(case.answer_date)}**.
+  %endif
+  1. **Preséntese en la corte el ${format_date(court_date)}** o en la fecha que la corte le ha dicho que se presente.
+  
+  
+---
+template: interview_complete_text
+content: |
+  Felicidades con completar la entrevista! No olvide: 
+  Radicar su papeleo e ir a la corte el ${ format_date(court_date) }.
+  % if court_date_is_holiday:
+  Dado que ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)},
+  Pregúntele a la corte que fecha debe estar en corte. 
+  % endif
+
+  Prepárese aquí: https://gbls.org/tactics/12
+   - MADE de GBLS.
+---
+interview help:
+  heading: |
+    Acerca de esta entrevista
+  content: |
+    Esta entrevista es para ayudar a los residentes de Massachusetts responder a un caso de desalojo. 
+
+    Hay 5 formularios disponibles en esta entrevista
+    
+    1. Respuesta (su respuesta al desalojo)
+    1. Pedido de Descubrimiento (su oportunidad de conseguir información para prepararse para la corte)
+    1. Petición de Respuesta Tardía
+    1. Traspaso a Tribunal de Vivienda (si su caso no está en un tribunal de vivienda, puede moverlo a esa corte gratis) 
+    1. Intervenir (si no está nombrado en el desalojo, puede pedir permiso para defender en contra del desalojo)
+     
+    Al acabar esta entrevista, tendrá los documentos que puede radicar en la corte.
+    Esta entrevista no_los_ radica por usted.
+    Necesita darle una copia de los documentos a su arrendador o al abogado de su arrendador. 
+    
+    ### Contribuyentes:
+    Esta entrevista fue creada por [Greater Boston Legal Services](https://www.gbls.org) basándose en formularios editados por [Massachusetts Law Reform Institute](https://www.mlri.org), con asistencia y videos adicionales financiados por el 
+    Massachusetts Law Reform Institute.
+
+    1. Quinten Steenhuis, Esq. ([Greater Boston Legal Services](https://www.gbls.org))
+    1. Rina Padua ([Greater Boston Legal Services](https://www.gbls.org) y Universidad de Harvard [Phillips Brooks House](http://pbha.org/))
+    1. Caroline Robinson ([Massachusetts Law Reform Institute](http://www.mlri.org))
+    1. Mariah Jennings-Rampsi, Esq. ([Volunteer Lawyer's Project](https://www.vlpnet.org/))
+    
+    ### ¿Comentarios o quiere mejorar esta entrevista? 
+    Vea  [someta temas](https://github.com/nonprofittechy/docassemble-MAEvictionDefense/issues) en [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    ### ¿Tuvo algún problema?
+    Le pedimos disculpa por la inconveniencia. 
+    
+    1. Trate de volver a cargar la pantalla (use el botón de refresh) o haga clic "back" y entre la información que dejó en blanco.
+    2.  O en vez de eso, puede usar los formularios de papel.
+    Por favor haga el download de [Respuesta](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    y el [Pedido de Descubrimientp](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    Puede seguir las [instrucciones](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) aquí.
+    
+    ### Notificación de Copyright 
+    Esta entrevista es copyright 2018 Greater Boston Legal Services y contribuyentes en open source. Está hecha disponible bajo la licencia de open source de MIT y el código sel software está disponible en
+     [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
+    
+    *Ultima fecha de revisión ${format_date(all_variables(special='metadata')['revision_date'])}*
+---
+auto terms:
+  notificación de salir: |
+    Una notificación por escrito de su arrendador que le dice por que su arrendador está terminando su tenencia. 
+    Otros nombres: notice to terminate tenancy.
+    [FILE notice-to-quit-14.png, 100%]
+  Orden y reclamo: |
+    Una notificación por escrito de su caso de desalojo que le dice que vaya a corte en una fecha específica. 
+    [FILE summons_and_complaint.png, 100%]
+  Proceso sumario: |
+    Proceso sumario es el término legal en Massachusetts para el desalojo.
+  Demandante: |
+    La persona que inicia el caso. En un desalojo, este es normalmente es el arrendador.
+  Demandado: |
+    La persona que se está defendiendo en un caso. En un desalojo, normalmente es el inquilino. 
+  Tenencia sin plazo fijo: |
+    Un acuerdo para alquilar un apartamento o casa de mes-a-mes. Se renueva automaticamente a menos que sea terminado por una notificación por escrito. 
+
+    Una tenencia por contrato se puede convertir en una sin plazo fijo cuando el contrato termina. 
+  Tenencia subsidiada: |
+    Una tenencia donde el inquilino paga algo menos de la renta en el Mercado, y una autoridad de vivienda o HUD paga la diferencia. Muchas veces la renta es fijada al 30 o 40% de sus ingresos. 
+  G.L. c. 93A: |
+    Es referido como el Acto de Protección del Consumidor. Permite acción legal contra conducta injusta o engañosa en el mercado.  
+  Carta demandante: |
+    Bajo la ley de protección del consumidor, G.L. c. 93A, un consumidor (o inquilino) puede enviar una "carta demandante" de lo que hizo mal el vendedor (o arrendador) y pidiendo que se le pague. 
+    SI el arrendador no responde con una oferta razonable, puede que sea responsable por daños dobles o triples.
+  discapacitado: |
+    Legalmente, una persona que tiene limitaciones en una o más áreas de actividades esenciales de la vida.
+    Una discapacidad puede ser física o mental. 
+  Acomodación razonable: |
+    Un cambio en las reglas, políticas o prácticas del arrendadorq ue le permitiría al inquilino permanecer en el apartamento alquilado. Un inquilino que es discapacitado y cuya discapacidad está relacionada a la base para el desalojo puede tener derecho legal a dichos cambios.  
+  Clase protegida: |
+    Clase protegida es un t´rmino legal que describe a las personas que están protegidas contra la discriminación. Por ejemplo, usted está protegido contra la discriminación a causa de (pero no limitado a)    
+    Raza, género, estatus familiar (tener niños) discapacidad, e identidad de género u orientacieon sexual. 
+  Uso y ocupación: |
+    El nombre especial legal para **renta** que se le debe al arrendador una vez que este comienza el proceso de desalojo. 
+  Número de expediente: |
+    El Número de Expediente es el número que la corte ha asignado a su caso. A veces no ha sido asignado a su caso todavía, así que no aparecerá en la Orden y Reclamo. Puede pedirle este número a la corte o dejarlo en blanco. 
+    
+           

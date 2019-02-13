@@ -1,0 +1,71 @@
+---
+question: |
+  Following up on your questions to your landlord
+subquestion: |
+  This follow-up interview will help you make sure that your
+  landlord answers the questions that they were supposed to answer by
+  ${ date_discovery_due }.
+  
+  Did you get any mail from your landlord or their attorney after you
+  first used this interview or attended eviction clinic?
+  
+yesno: received_correspondence
+---
+question: |
+  Was the mail a response to your request for discovery?
+subquestion: |
+  Does the mail say something like "Plaintiff's response to Defendant's
+  Request for Discovery" or "Plaintiff's response to Defendant's Interrogatories /
+  Document Requests"?
+yesno: looks_like_discovery_response
+---
+question: |
+  Did your landlord answer all of the questions that they were supposed to answer?
+subquestion: |
+  You originally asked your landlord ${ ints.count_checked() } questions and asked for
+  ${ drq.count_checked() } kinds of documents from your landlord.
+  
+  Here's what the discovery form looked like:
+  ${ discovery.pdf.show() }
+
+  You should look over your landlord's response carefully. Pay attention to any 
+  questions you asked that your landlord ignored or did not answer
+  (the response includes something like _Objection:_).
+  
+fields: 
+  - Did your landlord answer all of the questions, in full?: answered_all
+    datatype: yesno
+  - Did your landlord give you all of the documents you asked for? : gave_all_docs
+    datatype: yesno
+  - Did your landlord object to (say why they should not have to answer) any of the questions? : objected
+    datatype: yesno
+  - Do you agree with the reason the landlord gave for not answering your questions?: agree_with_objections
+    datatype: yesno
+    show if: objected
+---
+question: |
+  What do you want the court to do?
+fields:
+  - The judge should enter an order that: discovery_relief_requested
+    datatype: checkboxes
+    code: |
+      [
+        ["Dismissing this case and entering Judgment in Tenant's favor.","Dismissing this case and entering Judgment in Tenant's favor.",True],
+        ["Prohibiting Landlord from introducing evidence opposing Tenant's claims and defenses.","Prohibiting Landlord from introducing evidence opposing Tenant's claims and defenses.", True],
+        ["Compelling Landlord to completely answer and respond to Discovery no later than 1 week from the hearing on this motion, and continuing the trial (or pre-trial if jury trial requested) until at least 1 week after the Tenant receives responses. USPR 7(e).","Compelling Landlord to completely answer and respond to Discovery no later than 1 week from the hearing on this motion, and continuing the trial (or pre-trial if jury trial requested) until at least 1 week after the Tenant receives responses. USPR 7(e).",True],
+        ["Granting the Tenant any other relief that may be just and necessary.","Granting the Tenant any other relief that may be just and necessary.",True]
+      ]
+---
+event: compel_discovery_motion
+question: |
+  Here is your motion
+subquestion: |
+  Please print three (3) copies.
+  
+  Bring one copy to your landlord's attorney and one to the court no later than
+  ${ date_motion_to_compel_due }. Keep the third copy for your own records.
+attachment: 
+  - name: Motion to Compel Discovery
+    filename: CompelDiscovery
+    variable name: discovery_motion
+    docx template file: CompelDiscovery.docx

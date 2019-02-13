@@ -1,0 +1,90 @@
+---
+need: all_answer_variables
+code: |
+  other_ints.there_are_any = False
+  other_drq.there_are_any = False
+  ints.there_are_any = True
+  drq.there_are_any = True
+  
+  # Load the CSV file into a list 
+  
+  discovery_url = 'data/sources/discovery-map.csv'
+  # claim_discovery_link_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiHI5ZbD2baKGXBZgvHUDQqiOXzbNjtfMJwjAcrjfTIfve_21yjlDQc4yB2XJZII5q56y5wYiLp2yY/pub?gid=1622332186&single=true&output=csv'
+  claim_discovery_link_url = 'data/sources/claim-discovery-link.csv'
+  discovery_list = load_from_csv(discovery_url)
+  discovery_map = load_from_csv(claim_discovery_link_url)
+ 
+  discovery_categories = []
+  
+  for item in discovery_list:
+    if item['Variable'] and item['Description']:
+    
+      # Build the set of unique categories
+      if item['Category'] not in discovery_categories:
+        discovery_categories.append(item['Category'])
+      
+      # Strip off the prefix "int." or "drq.": should refactor this in csv?
+      iname = item['Variable'][item['Variable'].find('.') + 1:] 
+      is_checked = item['AlwaysChecked'].lower() == 'true'
+      if 'ints.' in item['Variable']:
+        ints.initializeObject(iname, DiscoveryRequest)
+        ints[iname].description = item['Description']
+        ints[iname].checked = is_checked
+        ints[iname].category = item['Category']
+      if 'drq.' in item['Variable']:
+        drq.initializeObject(iname, DiscoveryRequest)
+        drq[iname].description = item['Description']
+        drq[iname].checked = is_checked
+        drq[iname].category = item['Category']
+
+  # Evaluate our logic table to set discovery values automatically.
+  always_true = True 
+  
+  for lemma in discovery_map:
+    # make sure it's a valid entry in the list
+    if lemma['Claim'] and lemma['Value'] and lemma['Discovery']:
+      # handle special case of true/false variables, not string comparison
+      if lemma['Value'].lower() == 'true':
+        comparison = True
+      elif lemma['Value'].lower() == 'false':
+        comparison = False
+      else:
+        comparison = lemma['Value']
+      # strip off the clunky way we name discovery in the CSV
+      discovery_name = lemma['Discovery'][lemma['Discovery'].find('.') + 1:]
+      # evaluate whether there's a rule that says to check this discovery item
+      if defined(lemma['Claim']) and value(lemma['Claim']) == comparison:
+        if 'ints.' in lemma['Discovery']:
+          ints[discovery_name].checked = True
+        elif 'drq.' in lemma['Discovery']:
+          drq[discovery_name].checked = True
+
+  ints.there_is_another = False
+  drq.there_is_another = False
+
+  # Build the fields statement to select the discovery requests
+  # Requests will be separated by the category/title of the discovery section
+  ints_fields = []
+  for category in discovery_categories:
+    if len(ints.matches_category(category)) > 0:
+      ints_fields.append({'note': '### Questions relating to ' + category})
+    for key in ints.matches_category(category):
+      ints_fields.append({'label': ints[key].description,
+                        'field': "ints[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
+                        
+  drq_fields = []
+
+  for category in discovery_categories:
+    if len(drq.matches_category(category)) > 0:
+      drq_fields.append({'note': '### Documents relating to ' + category})
+    for key in drq.matches_category(category):
+      drq_fields.append({'label': drq[key].description,
+                        'field': "drq[" + repr(key) + "].checked",
+                        'datatype': 'yesno'})
+
+  loaded_discovery = True        
+---
+code: |
+  if claims.utilities or bad_conditions.have_conditions or bqe.violated:
+    need_rental_value = True

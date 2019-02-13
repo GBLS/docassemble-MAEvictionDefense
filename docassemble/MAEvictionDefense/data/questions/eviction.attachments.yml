@@ -1,0 +1,116 @@
+---
+reconsider: case_title
+comment: |
+  Clean up the filename so that you can download a file.
+code: |
+  orig_filename = case_title + '.pdf'
+  #s = str(orig_filename).strip().replace(' ', '_')
+  #s = re.sub(r'(?u)[^-\w.]', '', s)
+  #safe_filename = s
+  safe_filename = space_to_underscore(orig_filename)
+---
+code: |
+  reconsider('instructions', 'cover_letter', 'answer', 'discovery','safe_filename')
+  downloads = [instructions,cover_letter,answer,discovery]
+      
+  if case.status == 'late':
+    reconsider('late_answer')
+    downloads.append(late_answer)
+  if not court_is_housing_court and transfer_to_housing_court:
+    reconsider('transfer_notice')
+    downloads.append(transfer_notice)
+
+  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
+    reconsider('intervene_motion')
+    downloads.append(intervene_motion)
+  
+  if tenant.is_nonnativespeaker and tenant.needs_interpreter:
+    reconsider('interpreter_notice')
+    downloads.append(interpreter_notice)
+  
+  # downloads = downloads_temp
+  
+  downloads_pdf = [i.pdf for i in downloads]
+  downloads_docx = [i.docx for i in downloads]
+  downloads_concat = pdf_concatenate(downloads_pdf,filename=safe_filename)
+  downloads_zip = zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip")
+---
+code: |
+  download_titles_temp = ['Answer','Discovery']
+  
+  num_downloads = 2
+  if case.status == 'late':
+    num_downloads += 1
+    download_titles_temp.append('Motion to File Late Answer')
+  if not court_is_housing_court and transfer_to_housing_court:
+    num_downloads += 1
+    download_titles_temp.append('Notice of Transfer')
+  if tenant.name_different_on_summons and tenant.not_named_on_summons and request_right_to_intervene:
+    num_downloads += 1
+    download_titles_temp.append('Motion to Intervene')
+  if tenant.is_nonnativespeaker and tenant.needs_interpreter:
+    num_downloads += 1
+    download_titles_temp.append('Notice of Interpreter Request')
+    
+  download_titles = download_titles_temp
+---
+attachment:
+  - name: Notice of Interpreter Request
+    language: en
+    filename: InterpreterNotice
+    variable name: interpreter_notice
+    docx template file: InterpreterNotice.docx
+---
+attachment:
+  - name: Instructions and Next Steps
+    language: en
+    filename: NextSteps
+    variable name: instructions
+    docx template file: NextSteps.docx
+---
+attachment: 
+  - name: Motion to file late Answer and Discovery
+    language: en
+    filename: LateAnswerMotion
+    variable name: late_answer
+    docx template file: LateAnswerMotion.docx
+---
+attachments:
+  - name: Answer Form
+    language: en
+    filename: Answer
+    variable name: answer
+    docx template file: SummaryProcessAnswer.docx
+  - name: Request for Discovery
+    language: en
+    variable name: discovery
+    filename: Discovery
+    docx template file: SummaryProcessDiscovery.docx
+---
+attachment:
+  - name: Notice of Transfer Form
+    language: en
+    filename: TransferNotice
+    variable name: transfer_notice
+    docx template file: TransferNotice.docx
+---
+attachment:
+  - name: Intervene
+    language: en
+    filename: Intervene
+    variable name: intervene_motion
+    docx template file: InterveneMotion.docx
+---
+attachment: 
+  - name: Cover Letter
+    language: en
+    filename: CoverLetter
+    variable name: cover_letter
+    docx template file: CoverLetter.docx    
+---
+attachment:
+  - name: Motion to Compel Discovery
+    language: en
+    filename: MotionToCompelDiscovery
+    variable name: compel_discovery_with_instructions
+    docx template file: CompelDiscoveryWithInstructions.docx

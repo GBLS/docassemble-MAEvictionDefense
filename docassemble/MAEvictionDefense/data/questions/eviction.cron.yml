@@ -1,0 +1,33 @@
+---
+code: |
+  if user_email:
+    if task_not_yet_performed("interview complete email"):
+      background_action('background_email')    
+  if user_cell and task_not_yet_performed('interview complete text'):
+      send_sms(to=phone_number_in_e164(user_cell), template=interview_complete_text, task='interview complete text')
+  send_user_email = True
+---
+event: background_email  
+code: |
+  success = send_email(task="interview complete email",to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+  background_response(success)
+---
+event: cron_daily
+code: |
+  if remind_user and task_not_yet_performed('discovery reminder') and today() >= date_discovery_due and today() <= date_motion_to_compel_due: # (date_difference(starting=date_discovery_due).days) > 0 and (date_difference(starting=date_discovery_due).days) < 10:
+    compel_discovery_needed = True
+    send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
+    if user_cell and task_not_yet_performed('discovery reminder text'):
+      send_sms(to=phone_number_in_e164(user_cell), template=compel_discovery_text, task='discovery reminder text')
+      
+  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :
+    send_email(to=user_email, template=court_reminder_email, task='court reminder')
+    if user_cell and task_not_yet_performed('court reminder text'):
+      send_sms(to=phone_number_in_e164(user_cell), template=attend_court_text, task='court reminder text')
+
+  if survey_user and task_not_yet_performed('survey link') and today() >= court_date.plus(days=30):
+    send_email(to=user_email, template=survey_email,task='survey link')
+    if user_cell and task_not_yet_performed('survey text'):
+      send_sms(to=phone_number_in_e164(user_cell), template=survey_email, task='survey text')
+      
+  response() # This stops Docassemble from running the rest of the interview and potentially running into an error

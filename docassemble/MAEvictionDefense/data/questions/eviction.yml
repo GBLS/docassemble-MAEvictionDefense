@@ -1,0 +1,182 @@
+metadata:
+  interview_identifier: "MADE: Massachusetts Defense for Eviction (Launch)"
+  title: |
+    MADE: Massachusetts Defense for Eviction
+  short title: |
+    MADE (Eviction)
+  description: |
+    This interview helps you complete a summary process answer and request for discovery.
+  authors:
+    - name: Quinten Steenhuis
+      organization: Greater Boston Legal Services
+  error help: |
+    # We ran into a bug.
+    We are very sorry for the inconvenience. 
+    
+    1. Try reloading the screen (use the refresh button) and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+  revision_date: 2019-02-10
+  post: |
+    <div style="text-align: right; padding: 2em">
+    Feedback, suggestions, or comments? 
+    <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
+    </div>
+---
+features:
+  question help button: True
+  progress bar: True
+  navigation: True
+  default icons: material icons
+---
+modules:
+  - docassemble.base.util
+  - docassemble.base.legal
+  - docassemble.MACourts.macourts
+  - .discovery
+---
+imports:
+  - holidays
+  - dt_send_answers  
+  #- re
+---
+objects:
+  - tenant: Individual
+  - landlord: Person
+  - landlords_attorney: Person
+  - court: MACourt
+  - case: Case
+  - eviction: DAObject
+  - tenancy: DAObject
+  - claims: DAObject
+  - facts: DAObject
+  - bad_conditions: DAObject
+  - bqe: DAObject
+  - disability: DAObject
+  - fault: DAObject
+  - initial_defense: DAObject
+  - last_months_rent: DAObject
+  - other: DAObject
+  - postforeclosure: DAObject
+  - postforeclosure.no_just_cause: DAObject
+  - postforeclosure.notice_provisions: DAObject
+  - retaliation: DAObject
+  - security_deposit: DAObject
+  - subsidized_housing: DAObject
+  - discrimination: DAObject
+  - relief: DAObject
+  - relief.stay: DAObject 
+  - consumer_protection: DAObject
+  - discrimination.sexual_harassment: DAObject
+  - county: DAObject
+  - ints: DiscoveryDict
+  - drq: DiscoveryDict
+  - other_ints: DiscoveryList
+  - other_drq: DiscoveryList
+  - review_answers: DAObject
+  - macourts: MACourtList.using(courts=True)
+---
+initial: True
+code: |
+  set_language(user_language)
+---
+include:
+  - review_screens.yml
+  - eviction.en.yml
+  - eviction.es.yml
+  - eviction.code.yml
+  - eviction.cron.yml
+  - eviction.attachments.yml
+  - interview-order.yml
+#  - help.yml
+  - discovery-logic.yml
+  - compel_discovery.yml
+---
+comment: |
+  This block controls the overall interview flow.
+  interview-order.yml contains questions which set the logical order of the main Answer form
+  which must be completed before discovery is generated.
+  Then we load discovery defaults from a CSV file or Google Sheets.
+  Finally, we display the final interview screens.
+mandatory: True
+code: |
+  multi_user = True
+  allow_cron = True
+  speak_text = True
+  menu_items = [action_menu_item('Review Answers', 'road_map')]
+  menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
+  set_live_help_status(availability='available', mode='help')
+  
+  started_on_phone # check to see what the starting device is
+
+  acknowledged_information_use
+
+  if user_language == 'es':
+    default_lang = 'Spanish'
+  else:
+    default_lang = ''
+
+  all_answer_variables # refers to variables listed in interview-order.yml
+  loaded_discovery
+  if person_answering == 'attorney' or tenant_review_discovery:
+    interrogatory_questions
+    drq_questions
+  
+  if started_on_phone:
+    saw_signature_choice = True
+    tenant.signature
+  else: 
+    saw_signature_choice
+    if defined('signature_choice') and signature_choice =='this device':
+      tenant.signature
+    elif defined('signature_choice') and signature_choice == 'phone':
+      if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
+        send_sms(task='send signature link', to=link_cell,template=interview_link)
+        signature_wait_screen
+        tenant.signature
+        if device().is_mobile:
+          signature_phone_followup
+      else:
+        tenant.signature
+    # Handle situation where someone uses the QR code    
+    if saw_signature_choice and not defined('signature_choice'):
+      tenant.signature
+      signature_phone_followup
+      signature_choice = 'phone'
+
+  method_of_service
+  
+  if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
+    compel_discovery_motion
+  else:
+    send_user_email
+    download_forms
+    # Only send responses from the live site
+    if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
+      sent_answers # will only send once, so doesn't account for revisions
+---
+code: |
+  dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
+  sent_answers = True
+---
+comment: |
+  Send interview responses to community.lawyer
+reconsider: True
+code: |
+  # import dt_send_answers
+
+  # Workarounds for dt_send_answers
+  #case.case_id = "" # Needed for dt-sendanswers
+  answers_response = ''
+---
+question: |
+  Advertencia
+subquestion: |
+  Esta traducción no está completa / This translation is not complete.
+field: warn_spanish  
+  
+  
+  
