@@ -63,7 +63,7 @@ subquestion: |
   Esta información se usará para decidir quien ganaría su caso de desalojo y si
   usted o su arrendador le debe dinero a la otra persona.
   Es importante contestar honestamente.
-  
+    
   Debería incluir toda información que sea verdad, aún
   Si no es relevante al desalojo. _ Si no está seguro sobre alguna pregunta, 
   casi siempre es mejor contestarla que dejarla en blanco._
@@ -135,7 +135,7 @@ field: firstdatepassed
 buttons:
   - Continúe:
       code: |
-        primerafechapasó = CIerto  
+        firstdatepassed = True
   - Recomenzar: restart
   - Salir: exit
     url: https://www.gbls.org/  
@@ -675,33 +675,16 @@ subquestion: |
   Vea la esquina superior de mano derecha de la planilla de Notificación y Demanda. Escoja el nombre de la corte en la(s) lista(s) que sigue:
   
   [FILE court_and_county.png, 100%]
-fields: 
+fields:
   - Nombre de la Corte: court
-    default: ${local_housing_court}
-    code: |
-      ma_courts_list()
-  - Condado: court.address.county
-    default: ${tenant.address.county}
-    choices:
-      - Barnstable County
-      - Berkshire County
-      - Bristol County
-      - Dukes County
-      - Essex County
-      - Franklin County
-      - Hampden County
-      - Hampshire County
-      - Middlesex County
-      - Nantucket County
-      - Norfolk County
-      - Plymouth County
-      - Suffolk County
-      - Worcester County
+    datatype: object
+    default: local_housing_court
+    choices: macourts
 section: About Your Court Case
 
 ---
 question: |
-  Trasladado al Tribunal de VIvienda
+  Trasladado al Tribunal de Vivienda
 subquestion: |
   Ud. indicó que actualmente su caso tendrá lugar en ${court}.
 
@@ -1288,11 +1271,11 @@ help: |
   También https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
 ---
 code: |
-  temp = [{'My landlord failed to obtain the proper local permit.': 'Mi arrendador no obtuvo el permiso local apropiado.'}]
+  temp = [{'My landlord failed to obtain the proper local permit.': u'Mi arrendador no obtuvo el permiso local apropiado.'}]
   if tenant.address.city == 'Boston':
-    temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.": " Mi arrendador no me notificó con 5 años de anticipación y alguien con una descapacidad o un anciano vive conmigo."})
-    temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).": " Mi arrendador no me dió 'motivo justo' para el desalojo (no me dió motivo o me dió un motivo incorrecto)."})
-  temp.append({"My landlord violated another local rule.": "Mi arrendador violó otra regla local (vea los enlaces en ayuda)."})
+    temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.": u" Mi arrendador no me notificó con 5 años de anticipación y alguien con una descapacidad o un anciano vive conmigo."})
+    temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).": u" Mi arrendador no me dió 'motivo justo' para el desalojo (no me dió motivo o me dió un motivo incorrecto)."})
+  temp.append({"My landlord violated another local rule.": u"Mi arrendador violó otra regla local (vea los enlaces en ayuda)."})
 
   condo_local_options = temp
 ---
@@ -1871,7 +1854,7 @@ Prepárese aquí: https://gbls.org/tactics/12
 ---
 template: sharing_email_template
 subject: |
-  Se le envió el link para la entrevista en ${landlord} v. ${tenant}
+  Ese es un link para la entrevista en ${landlord} v. ${tenant}
 content: |
   Alguien que estaba completando la entrevista usando Massachusetts Defensa Contra el Desalojo (MADE) le envió este link. 
   
@@ -1879,7 +1862,7 @@ content: |
 ---
 template: interview_complete_email
 subject: |
-  Acabó la entrevista sobre el desalojo! Mantenga esto para sus records (Massachusetts Defensa Contra el Desalojo) de ${landlord} v. ${tenant}
+  Mantenga esto para sus records (Massachusetts Defensa Contra el Desalojo) de ${landlord} v. ${tenant}
 content: |
   Hola ${ tenant.name.first }! Este es MADE (Massachusetts Defensa Contra el Desalojo) de Greater Boston Legal Services.
   

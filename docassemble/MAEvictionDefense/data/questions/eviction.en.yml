@@ -43,7 +43,14 @@ help: |
 terms: 
   - green word: This is an example. Click it again to hide this definition.
   - palabra en verde: |
-      Esto es un ejemplo. Haga clic para esconder esta definición.  
+      Esto es un ejemplo. Haga clic para esconder esta definición.
+  - orden y reclamo: |
+      Una notificación por escrito de su caso de desalojo que le dice que vaya a corte en una fecha específica. 
+      [FILE summons_and_complaint.png, 100%]
+  - notificación de salir: |
+      Una notificación por escrito de su arrendador que le dice por que su arrendador está terminando su tenencia. 
+      Otros nombres: notice to terminate tenancy.
+      [FILE notice-to-quit-14.png, 100%]      
 section: Getting Started
 fields:
   - Language / Idioma: user_language
@@ -78,8 +85,8 @@ fields:
   
       Antes de comenzar, necesita buscar:
 
-      1. La **Notificación y Demanda** y
-      2. La **Notificación de Desalojo** que recibió de su arrendador.
+      1. La **{notificación de salir} (notice to quit)** y
+      2. La **{orden y reclamo} (summons and complaint)** que recibió de su arrendador.
     
       Si no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
   
