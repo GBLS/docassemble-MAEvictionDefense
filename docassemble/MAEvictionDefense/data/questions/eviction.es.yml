@@ -993,12 +993,12 @@ fields:
     show if:
       variable: notice_type
       is: 'fourteen_day'
-  - Pagué la cantidad entera que debía.: attempted_cure
+  - Pagué la cantidad entera que debía.: attempted_full_cure
     datatype: yesno
     show if:
       variable: notice_type
       is: 'fourteen_day'
-  - Ofrecí pagar la cantidad entera de dinero que debía.: attempted_cure
+  - Ofrecí pagar la cantidad entera de dinero que debía.: attempted_offered_cure
     datatype: yesno
     show if:
       variable: notice_type
