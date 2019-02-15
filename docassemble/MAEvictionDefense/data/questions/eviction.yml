@@ -148,9 +148,7 @@ code: |
       signature_choice = 'phone'
 
   method_of_service
-  service_date  
-
-  if url_args.get('clinic', '').lower() == 'gbls':
+  if url_args.get('clinic', None).lower() == 'gbls':
     ls_case_id
   
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
@@ -164,6 +162,7 @@ code: |
     download_forms
 ---
 code: |
+  case.case_id = ''
   dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
   sent_answers = True
 ---
