@@ -148,15 +148,20 @@ code: |
       signature_choice = 'phone'
 
   method_of_service
+  service_date  
+
+  if url_args.get('clinic', '').lower() == 'gbls':
+    ls_case_id
   
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
     compel_discovery_motion
   else:
     send_user_email
-    download_forms
+    send_ls_email
     # Only send responses from the live site
     if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
-      sent_answers # will only send once, so doesn't account for revisions
+      sent_answers # will only send once, so doesn't account for revisions    
+    download_forms
 ---
 code: |
   dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
@@ -171,12 +176,3 @@ code: |
   # Workarounds for dt_send_answers
   #case.case_id = "" # Needed for dt-sendanswers
   answers_response = ''
----
-question: |
-  Advertencia
-subquestion: |
-  Esta traducción no está completa / This translation is not complete.
-field: warn_spanish  
-  
-  
-  

@@ -15,6 +15,17 @@ sections:
   - Conclusion
 ---
 question: |
+  Case number
+subquestion: |
+  If you are completing this interview inside a clinic at Greater Boston Legal
+  Services, please enter your Legal Server case number.
+  It should look like this: 19-123456 (include the dash).
+fields:
+  - Case number: ls_case_id
+    hint: 19-XXXXXXX
+    required: False
+---
+question: |
   Requesting Time to Move
 subquestion: |
   We don't know yet who will win your case. If your case goes to a trial, the judge or jury can decide in favor
@@ -446,8 +457,8 @@ subquestion: |
   attorney. They need to _get_ the forms no later than 
   **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
-  Because ${case.answer_date} is ${ma_holidays.get(case.answer_date)}, you can
-  deliver it the next weekday after ${ma_holidays.get(case.answer_date)}.
+  Because ${case.answer_date} is ${answer_date_holiday}, you can
+  deliver it the next weekday after ${answer_date_holiday}.
   % endif
 
   Deliver it in person
@@ -505,7 +516,7 @@ subquestion: |
   <li>
   <b>Get ready for court and show up on ${court_date}.</b>
   % if court_date_is_holiday:
-  ${court_date} is a holiday (${ma_holidays.get(court_date)}), so ask the court
+  ${court_date} is a holiday (${court_date_holiday}), so ask the court
   when your case will be postponed until.
   % endif
 
@@ -925,14 +936,14 @@ subquestion: |
   Because you will be filing these forms on-time (no later than ${format_date(case.answer_date)}), your case date will automatically be
   postponed by two weeks. You do not need to appear in court on ${format_date(case.original_date)}.
   % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${ma_holidays.get(case.answer_date)}. 
+  It looks like ${case.answer_date} is a holiday, ${answer_date_holiday}. 
   Usually you can deliver your answer the day after a holiday and it will still be on
   time.
   % endif
   
   % if court_date_is_holiday:
   The date you should appear is ${court_date}. However, it looks like
-  ${court_date} is a holiday, ${ma_holidays.get(court_date)}. You should ask the court what they do about
+  ${court_date} is a holiday, ${court_date_holiday}. You should ask the court what they do about
   cases scheduled on this holiday.
   % else:
   Instead, you must appear on **${format_date(court_date)}**.
@@ -1174,12 +1185,12 @@ fields:
     show if:
       code: |
         notice_type == 'fourteen_day'
-  - I gave the landlord the full amount of money I owed.: attempted_cure
+  - I gave the landlord the full amount of money I owed.: attempted_full_cure
     datatype: yesno
     show if:
       code: |
         notice_type == 'fourteen_day'
-  - I offered to pay the full amount of money I owed.: attempted_cure
+  - I offered to pay the full amount of money I owed.: attempted_offered_cure
     datatype: yesno
     show if:
       code: |
@@ -2117,7 +2128,7 @@ content: |
   a different date!
   
   % if court_date_is_holiday:
-  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}. 
+  It looks like ${court_date} is a holiday, ${court_date_holiday}. 
   If you didn't get a notice from the court, you may want to call to find out
   when your case will be heard.
   % endif
@@ -2130,7 +2141,7 @@ content: |
   Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
   at ${court} at 9 AM.   
   % if court_date_is_holiday:
-  ${court_date} is ${ma_holidays.get(court_date)} so your date may have been
+  ${court_date} is ${court_date_holiday} so your date may have been
   postponed. If the court didn't tell you the new date, call the court to find out.
   % endif
 Get ready here: https://gbls.org/tactics/12
@@ -2159,7 +2170,7 @@ content: |
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
   % if court_date_is_holiday:
-  It looks like ${court_date} is a holiday, ${ma_holidays.get(court_date)}.
+  It looks like ${court_date} is a holiday, ${court_date_holiday}.
   If you didn't get a notice from the court, you may want to call to find out
   when your case will be heard.
   % endif
@@ -2172,7 +2183,7 @@ content: |
   Congrats on finishing the interview! Don't forget:
   File your paperwork and go to court on ${ format_date(court_date) }.
   % if court_date_is_holiday:
-  Because ${court_date} is a holiday, ${ma_holidays.get(court_date)},
+  Because ${court_date} is a holiday, ${court_date_holiday},
   ask the court what date to appear.
   % endif
 

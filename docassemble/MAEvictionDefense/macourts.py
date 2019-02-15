@@ -209,12 +209,12 @@ class MACourtList(DAList):
             elif self.courts is True:
                 self.load_courts()
 
-    def load_courts(self, courts=['housing_courts','bmc','district_courts','superior_courts']):
+    def load_courts(self, courts=['housing_courts','bmc','district_courts','superior_courts'], data_path='docassemble.MACourts:data/sources/'):
         """Load a set of courts into the MACourtList. Courts should be a list of names of JSON files in the data/sources directory.
         Will fall back on loading default set of courts from Mass.gov. Default set of courts is applicable to housing cases"""
         try:
             for court in courts:
-                self.load_courts_from_file('data/sources/' + court + '.json')
+                self.load_courts_from_file(court, data_path=data_path)
         except IOError:
             if courts == ['housing_courts','bmc','district_courts','superior_courts']:
                 self.load_from_massgov()
@@ -257,12 +257,12 @@ class MACourtList(DAList):
                 court.address.county = item['address']['county']
                 court.address.orig_address = item['address'].get('orig_address')
 
-    def load_courts_from_file(self, json_path):
+    def load_courts_from_file(self, json_path, data_path='docassemble.MACourts:data/sources/'):
         """Add the list of courts at the specified JSON file into the current list"""
 
-        path = path_and_mimetype(json_path)[0]
+        path = path_and_mimetype(os.path.join(data_path,json_path+'.json'))[0]
 
-        with open(path) as courts_json:  
+        with open(path) as courts_json:
             courts = json.load(courts_json)
 
         for item in courts:

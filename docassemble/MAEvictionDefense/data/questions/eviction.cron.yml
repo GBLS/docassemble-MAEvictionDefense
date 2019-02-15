@@ -1,16 +1,28 @@
 ---
 code: |
-  if user_email:
-    if task_not_yet_performed("interview complete email"):
-      background_action('background_email')    
+  if user_email and task_not_yet_performed("interview complete email"):
+      # background_action('background_email')
+      send_email(task="interview complete email",to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
   if user_cell and task_not_yet_performed('interview complete text'):
       send_sms(to=phone_number_in_e164(user_cell), template=interview_complete_text, task='interview complete text')
   send_user_email = True
 ---
+code: |
+  if defined('ls_case_id') and task_not_yet_performed('legal server email'):
+    send_email(task="legal server email",to=ls_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+    #background_action('email_legalserver')
+  send_ls_email = True
+---
+event: email_legalserver
+code: |
+  ls_email = ls_case_id + '@gbls.legalserver.org'
+  send_email(task="legal server email",to=ls_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+  background_response()
+---
 event: background_email  
 code: |
-  success = send_email(task="interview complete email",to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
-  background_response(success)
+  send_email(task="interview complete email",to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+  background_response()
 ---
 event: cron_daily
 code: |

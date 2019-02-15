@@ -367,7 +367,7 @@ subquestion: |
   % endif
 
   % if answer_date_is_holiday:
-  Parece que  ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+  Parece que  ${case.answer_date} es un día de fiesta ${answer_date_holiday}. 
   Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
   % endif
 
@@ -401,7 +401,7 @@ subquestion: |
      . Puede remover la portada que tiene instrucciones para Ud.
   1. Entregue una copia al "Secretario del Tribunal para Acciónes Judiciales Sumarias" al ${ court },  antes de que cierre la corte (típicamente a las 4:30 PM) el **${format_date(case.answer_date)}**.
     % if answer_date_is_holiday:
-    Parece que el ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+    Parece que el ${case.answer_date} es un día de fiesta ${answer_date_holiday}. 
   
     Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
     % endif
@@ -410,13 +410,13 @@ subquestion: |
   % if landlord.has_attorney:
   1. Entregue la tercera copia al abogado de su arrendador ${landlords_attorney}, en ${landlords_attorney.address.on_one_line()}, no más tarde que **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
-  Parece que el ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Parece que el ${case.answer_date} es un día de fiesta, ${answer_date_holiday}. 
   Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
   % endif
   % else:
   1. Entregue la tercera copia a su arrendador ${landlord.name}, no más tarde que **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
-  Parece que el ${case.answer_date} es un día de fiesta ${ma_holidays.get(case.answer_date)}. 
+  Parece que el ${case.answer_date} es un día de fiesta ${answer_date_holiday}. 
   Típicamente se puede entregar su respuesta el día después de un día de fiesta, y todavía estará a tiempo.
   % endif
 
@@ -424,7 +424,7 @@ subquestion: |
   
   1. ** Preséntese en la corte el ${format_date(court_date)}**.
   % if court_date_is_holiday:
-  Parece que el ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  Parece que el ${court_date} es un día de fiesta, ${court_date_holiday}. 
   Si no recibió una noticia de la corte, debería llamar para averiguar cuando su audiencia tendrá lugar.
   % endif
 
@@ -775,13 +775,13 @@ question: |
 subquestion: |
   Porque estará entregando  los formularios con tiempo (no más tarde que ${format_date(case.answer_date)}), su audiencia se pospondrá automáticamente por dos semanas. Ud. no tiene que presentarse en la corte el ${format_date(case.original_date)}.
   % if answer_date_is_holiday:
-  Parece que el ${case.answer_date}  es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Parece que el ${case.answer_date}  es un día de fiesta, ${answer_date_holiday}. 
   Típicamente se puede entregar la respuesta el día después de un día de fiesta y todavía estar a tiempo.
   % endif
   
   % if court_date_is_holiday:
   La fecha que debería presentarse es el ${court_date}. Sin embargo, parece que el 
-  ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  ${court_date} es un día de fiesta, ${court_date_holiday}. 
   Debería preguntar en la corte que hacen cuando los casos están programados para este día de fiesta.
   % else:
   En lugar, debiera presentarse el **${format_date(court_date)}**.
@@ -1836,7 +1836,7 @@ content: |
   No se olvide de estar en ${court} el ${court_date} (a menos que la corte le dijo una fecha diferente!)
   
   % if court_date_is_holiday:
-  Parece que ${court_date}  es un día de fiesta, ${ma_holidays.get(court_date)}. 
+  Parece que ${court_date}  es un día de fiesta, ${court_date_holiday}. 
   Si no recibió una notificación de la corte, puede que quiera llamarla para averiguar cuando se va a ver su caso. 
   % endif
 
@@ -1847,7 +1847,7 @@ content: |
  Recordatorio: su fecha en corte para ${landlord} v. ${tenant} es ${format_date(court_date)} 
   en ${court} a las 9 AM.   
   % if court_date_is_holiday:
-  ${court_date} es ${ma_holidays.get(court_date)} así que su fecha puede que haya sido pospuesta. Si la corte no le mencionó la fecha nueva, llame a la corte para averiguarla. 
+  ${court_date} es ${court_date_holiday} así que su fecha puede que haya sido pospuesta. Si la corte no le mencionó la fecha nueva, llame a la corte para averiguarla. 
   % endif
 Prepárese aquí: https://gbls.org/tactics/12
    - MADE de GBLS.  
@@ -1871,7 +1871,7 @@ content: |
   Recuerde, su fecha en corte será el ${format_date(court_date)},
   A menos que oiga algo diferente de parte de la corte.
   % if court_date_is_holiday:
-  Parece que ${court_date} e sun día de fiesta, ${ma_holidays.get(court_date)}.
+  Parece que ${court_date} e sun día de fiesta, ${court_date_holiday}.
   Si no recibió una notificación de la corte, puede que quiera llamar para averiguar cuando va a ser visto su caso. 
   % endif
 
@@ -1888,7 +1888,7 @@ content: |
   1. Entregue una copia al "Secretario del Tribunal de Proceso Judicial Sumario" en la ${ court }, 
      Antes de que la corte cierre al final del día (normalmente las 4:30 PM) en **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
-  Parece que ${case.answer_date} es un día de fiesta, ${ma_holidays.get(case.answer_date)}. 
+  Parece que ${case.answer_date} es un día de fiesta, ${answer_date_holiday}. 
   Normalmente puede entregar su respuesta el día después del día de fiesta y estará entregado a tiempo. 
   % endif
 
@@ -1907,7 +1907,7 @@ content: |
   Felicidades con completar la entrevista! No olvide: 
   Radicar su papeleo e ir a la corte el ${ format_date(court_date) }.
   % if court_date_is_holiday:
-  Dado que ${court_date} es un día de fiesta, ${ma_holidays.get(court_date)},
+  Dado que ${court_date} es un día de fiesta, ${court_date_holiday},
   Pregúntele a la corte que fecha debe estar en corte. 
   % endif
 

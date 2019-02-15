@@ -149,8 +149,15 @@ review:
       
       You said that the Summons and Complaint ${ 'did' if ntq_matches_summons else 'did not'}
       match the Notice to Quit.
-      
-      
+  - Update reason for more time:
+    - needs_time_because
+    button: |
+      You said you need more time because: ${needs_time_because}.
+  - Update delivery date and method:
+      - service_date
+      - method_of_service
+    button: |
+      You said you will deliver the paperwork on ${service_date} by ${method_of_service}      
 ---
 event: review_about_tenancy
 question: About your tenancy
@@ -218,22 +225,30 @@ review:
     button: |
       You said that your landlord ${ 'is' if retaliation.is_retaliated else 'is not'}
       retaliating against you.
-      
-      % if retaliation.is_retaliated:
+  - Update basis of retaliation:
+    - retaliation.withheld_rent
+    - retaliation.badconditions_to_landlord
+    - retaliation.badconditions_to_agency
+    - retaliation.tenant_union
+    - retaliation.brought_claim
+    - retaliation.protection_or_prevention_order
+    - retaliation.domestic_violence
+    - retaliation.survivor_rights
+    - retaliation.within_6_months
+    button: |
       Specifically, you said the retaliation included:
       
-        * Withheld rent due to bad conditions: ${ retaliation.withheld_rent }
-        * Reported bad conditions to a public agency: ${retaliation.badconditions_to_agency}
-        * Reported bad conditions to landlord: ${ retaliation.badconditions_to_landlord }
-        * Brought a claim against landlord: ${ retaliation.brought_claim }
-        * Tried to get protection related to domestic violence: ${ retaliation.domestic_violence}
-        % if defined('retaliation.other'):
-        * Other: ${retaliation.other}
-        % endif
-        * Participated in a tenant's union: ${ retaliation.tenant_union }
+      * Withheld rent due to bad conditions: ${ retaliation.withheld_rent }
+      * Reported bad conditions to a public agency: ${retaliation.badconditions_to_agency}
+      * Reported bad conditions to landlord: ${ retaliation.badconditions_to_landlord }
+      * Brought a claim against landlord: ${ retaliation.brought_claim }
+      * Tried to get protection related to domestic violence: ${ retaliation.domestic_violence}
+      % if defined('retaliation.other'):
+      * Other: ${retaliation.other}
+      % endif
+      * Participated in a tenant's union: ${ retaliation.tenant_union }
         
       You said the retaliation ${ 'did' if retaliation.within_6_months else 'did not'} occur in the last 6 months.
-      % endif
   - Update discrimination:
     - tenant.is_discriminated
     - recompute:
@@ -263,7 +278,6 @@ review:
       % endif
   - Update bad conditions: 
     - bad_conditions.conditions
-    - bad_conditions.other_condition
     - recompute:
       - bad_conditions.have_conditions
       - bad_conditions.landlord_notified
@@ -271,14 +285,26 @@ review:
       You said that you ${'did' if bad_conditions.have_conditions else 'did not'} have any bad housing conditions in the last 6 years.
       % if bad_conditions.have_conditions:
       Specifically, the bad conditions included ${ bad_conditions.conditions.true_values() }.
-      % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:
-      
+      % if defined("bad_conditions.conditions['other']") and bad_conditions.conditions['other']:      
       You also said you had the other bad condition: ${ bad_conditions.other_condition }.
       % endif
-
-      Your landlord learned about the problem because: ${bad_conditions.landlord_notified}.
+      
+      %if defined('bad_conditions.landlord_notified'):
+      Your landlord learned about the problem because: ${bad_conditions.landlord_notified.true_values()}.
+      %endif
       
       % endif
+  - Update repair and deduct: 
+    - other.tenant_repaired
+    - recompute:
+      - other.repair_and_deduct_statute
+    button: |
+      You said that you ${'did' if other.tenant_repaired else 'did not'} make
+      your own repairs to the apartment.
+      
+      It looks like you ${'may' if other.repair_and_deduct_statute else 'may not'}
+      qualify for a defense based on this.
+      
   - Update Security Deposit: paid_deposit
     button: |
       You said you ${'paid' if paid_deposit else 'did not pay'}
@@ -336,8 +362,9 @@ review:
       You said that your quiet enjoyment of the premises 
       ${ 'was' if bqe.violated else 'was not' }
       violated by your landlord.
-      
-      % if bqe.violated:
+  - Update basis of Quiet Enjoyment:
+    - bqe.bad_conditions
+    button: |
       Specifically, you said your landlord allowed or caused:
       
       * Bad conditions: ${ bqe.bad_conditions }
@@ -346,8 +373,7 @@ review:
       * No hot water: ${ bqe.hot_water}
       * Locked you out: ${ bqe.locked_out}
       * Removed possessions: ${ bqe.removed_possessions}
-      * Other: ${ bqe.other}
-      % endif
+      * Other: ${ bqe.other if defined('bqe.other') else ''}
   - Update utilities: claims.utilities
     button: | 
       You said you ${ 'did' if claims.utilities else 'did not'} pay for utilities.
