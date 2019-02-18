@@ -17,20 +17,11 @@ comment: |
 ---
 id: intro screen
 decoration: home
-terms: 
-  - green word: This is an example. Click it again to hide this definition.
-  - palabra en verde: |
-      Esto es un ejemplo. Haga clic para esconder esta definición.
-  - orden y reclamo: |
-      Una notificación por escrito de su caso de desalojo que le dice que vaya a corte en una fecha específica. 
-      [FILE summons_and_complaint.png, 100%]
-  - notificación de salir: |
-      Una notificación por escrito de su arrendador que le dice por que su arrendador está terminando su tenencia. 
-      Otros nombres: notice to terminate tenancy.
-      [FILE notice-to-quit-14.png, 100%]
 question: |
   MADE: Defensa contra desalojo en Massachusetts
-subquestion: |
+section: Comenzando
+fields:
+  - note: |
       MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
       Prepararemos los formularios que usted necesita :print: imprimir y :envelope:
       Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
@@ -47,11 +38,6 @@ subquestion: |
       En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
       Acerca de la entrevista o una pregunta específica, y "[ATRAS]" si quiere regresar
       A la pregunta anterior.
-help: |
-  Esta es un ejemplo de una página de ayuda.
-  Haga clic "[Regrese a la pregunta]" para ir a la pantalla anterior y continuar la entrevista.
-section: Comenzando
-fields:
   - Estoy de acuerdo con las [condiciones de uso](https://www.gbls.org/self-help/eviction/terms-of-use) : acknowledged_information_use
     datatype: checkboxes
     default: "Acepto."
@@ -62,6 +48,12 @@ fields:
     validation messages:
       minlength: |
         No puede continuar a menos que acepte los términos del servicio.
+help: |
+  Esta es un ejemplo de una página de ayuda.
+  Haga clic "Regrese a la pregunta" para ir a la pantalla anterior y continuar la entrevista.
+terms: 
+  - palabra en verde: |
+      Esto es un ejemplo. Haga clic para esconder esta definición.
 continue button field: getting_started
 ---
 id: how to answer
