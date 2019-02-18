@@ -17,41 +17,51 @@ comment: |
 ---
 id: intro screen
 decoration: home
+terms: 
+  - green word: This is an example. Click it again to hide this definition.
+  - palabra en verde: |
+      Esto es un ejemplo. Haga clic para esconder esta definición.
+  - orden y reclamo: |
+      Una notificación por escrito de su caso de desalojo que le dice que vaya a corte en una fecha específica. 
+      [FILE summons_and_complaint.png, 100%]
+  - notificación de salir: |
+      Una notificación por escrito de su arrendador que le dice por que su arrendador está terminando su tenencia. 
+      Otros nombres: notice to terminate tenancy.
+      [FILE notice-to-quit-14.png, 100%]
 question: |
   MADE: Defensa contra desalojo en Massachusetts
 subquestion: |
-  MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
-  Prepararemos los formularios que usted necesita:print: imprimir y:envelope:
-  Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
-  Si es interrumpido, puede guardar su trabajo en la computadora y regresar a él después. También puede enviárse los formularios ya llenados a si mismo vía correo electrónico.
-  Esta entrevista es completamente gratis.
+      MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
+      Prepararemos los formularios que usted necesita :print: imprimir y :envelope:
+      Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
+      Si es interrumpido, puede guardar su trabajo en la computadora y regresar a él después. También puede enviárse los formularios ya llenados a si mismo vía correo electrónico.
+      Esta entrevista es completamente gratis.
   
-  Antes de comenzar, necesita buscar:
+      Antes de comenzar, necesita buscar:
 
-  1. La **Notificación y Demanda** y
-  2. La **Notificación de Desalojo** que recibió de su arrendador.
+      1. La **{notificación de salir} (notice to quit)** y
+      2. La **{orden y reclamo} (summons and complaint)** que recibió de su arrendador.
+    
+      Si no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
   
-  SI no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
-  
-  En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
-  Acerca de la entrevista o una pregunta específica, y"[ATRAS]" si quiere regresar
-  A la pregunta anterior.
+      En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
+      Acerca de la entrevista o una pregunta específica, y "[ATRAS]" si quiere regresar
+      A la pregunta anterior.
 help: |
   Esta es un ejemplo de una página de ayuda.
   Haga clic "[Regrese a la pregunta]" para ir a la pantalla anterior y continuar la entrevista.
-terms: 
-  - palabra en verde: |
-      Esto es un ejemplo. Haga clic para esconder esta definición.
 section: Comenzando
 fields:
-  - Lenguage / Idioma: user_language
-    default: en
+  - Estoy de acuerdo con las [condiciones de uso](https://www.gbls.org/self-help/eviction/terms-of-use) : acknowledged_information_use
+    datatype: checkboxes
+    default: "Acepto."
+    minlength: 1
+    none of the above: False
     choices:
-      - Inglés: en
-      - Español: es
-  - He leido y estoy de acuerdo con las [condiciones de uso y política de uso de la información](https://www.gbls.org/self-help/eviction/terms-of-use).: acknowledged_information_use
-    datatype: yesnoradio
-    default: True
+      - Acepto.
+    validation messages:
+      minlength: |
+        No puede continuar a menos que acepte los términos del servicio.
 continue button field: getting_started
 ---
 id: how to answer

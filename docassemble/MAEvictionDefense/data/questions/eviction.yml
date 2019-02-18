@@ -19,7 +19,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2019-02-14
+  revision_date: 2019-02-10
   post: |
     <div style="text-align: right; padding: 2em">
     Feedback, suggestions, or comments? 
@@ -81,6 +81,8 @@ objects:
 ---
 initial: True
 code: |
+  if url_args.get('lang', None) == 'es':
+    user_language = 'es'
   set_language(user_language)
 ---
 include:
@@ -96,11 +98,20 @@ include:
   - compel_discovery.yml
 ---
 comment: |
+  Transition to MACourt object from Court
+mandatory: True
+id: macourt_transition
+code: |
+  if defined('court.county'):
+    del court
+---
+comment: |
   This block controls the overall interview flow.
   interview-order.yml contains questions which set the logical order of the main Answer form
   which must be completed before discovery is generated.
   Then we load discovery defaults from a CSV file or Google Sheets.
   Finally, we display the final interview screens.
+id: parent_interview_flow
 mandatory: True
 code: |
   multi_user = True
@@ -108,7 +119,7 @@ code: |
   speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
-  set_live_help_status(availability='available', mode='help')
+  set_live_help_status(availability='available', mode='help',partner_roles='advocate')
   
   started_on_phone # check to see what the starting device is
 

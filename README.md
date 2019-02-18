@@ -4,6 +4,7 @@ A guided interview for pro se eviction defense in Massachusetts. Generates an An
 Request for Discovery, and accompanying forms and motions.
 ## Changelog
 
+* 2019-02-18 Bugfixes (transition to new MACourt object)
 * 2019-02-14 Bugfixes
 * 2019-02-14 Resolve bugs in Spanish language version (unicode errors)
 * 2019-02-12 Fix survey link
