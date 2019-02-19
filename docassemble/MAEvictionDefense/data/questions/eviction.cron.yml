@@ -15,7 +15,6 @@ code: |
 ---
 event: email_legalserver
 code: |
-  ls_email = ls_case_id + '@gbls.legalserver.org'
   send_email(task="legal server email",to=ls_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
   background_response()
 ---

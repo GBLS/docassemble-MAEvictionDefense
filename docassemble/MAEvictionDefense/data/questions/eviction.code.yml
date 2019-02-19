@@ -348,6 +348,9 @@ code: |
     security_deposit.violated = False
 ---
 code: |
+    ls_email = ls_case_id + '@gbls.legalserver.org'
+---
+code: |
   last_months_rent.violated = last_months_rent.over_a_year and (not last_months_rent.paid_interest)
 ---
 code: |
