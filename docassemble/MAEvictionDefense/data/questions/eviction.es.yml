@@ -984,6 +984,9 @@ comment: |
 question: |
   Defensas para la falta de pago de la renta
 fields: 
+  - No le debo la cantidad de dinero que el arrendador dice que debo.: dont_owe_rent
+    datatype: yesno
+    default: True
   - Estaba retrasado en la renta cuando recibí la notificación de 14 días.: behind_in_rent
     datatype: yesnoradio
     default: True

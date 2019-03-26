@@ -58,6 +58,6 @@ def relationship_list():
         'domestic partner': 'Domestic Partner',
         'step child': 'Step Child',
         'step parent': 'Step Parent',
-        'unmarried partner': 'Unmarried Partner'
-        'other': 'Other',
+        'unmarried partner': 'Unmarried Partner',
+        'other': 'Other'
     }    

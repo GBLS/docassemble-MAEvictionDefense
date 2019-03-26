@@ -1174,6 +1174,9 @@ comment: |
 question: |
   Non-payment of rent defenses
 fields: 
+  - I do not owe the amount of money my landlord says I owe.: dont_owe_rent
+    datatype: yesno
+    default: True
   - I was behind in rent when I got the 14-day notice.: behind_in_rent
     datatype: yesnoradio
     default: True
