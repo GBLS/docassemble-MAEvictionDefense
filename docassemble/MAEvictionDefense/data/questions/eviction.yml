@@ -28,6 +28,10 @@ metadata:
 ---
 translations:
   - eviction_es.xlsx
+  - eviction_zh-t.xlsx
+  - eviction_pt.xlsx
+  - eviction_vi.xlsx
+  - eviction_ht.xlsx
 ---
 features:
   question help button: True

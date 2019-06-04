@@ -51,7 +51,7 @@ decoration: home
 question: |
   MADE: Massachusetts Defense for Eviction
 subquestion: |
-  ${get_language_list(get_tuples(['en','es','vn','pt','zh','ht']),current='en')}
+  ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current='en')}
 
   MADE is a free tool to help tenants defend against an eviction in court.
   When you finish, you need to print and deliver paperwork to
