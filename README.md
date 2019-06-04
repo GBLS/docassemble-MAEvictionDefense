@@ -1,8 +1,12 @@
 # docassemble.MAEvictionDefense
 
-A guided interview for pro se eviction defense in Massachusetts. Generates an Answer form, 
+A guided interview for pro se eviction defense in Massachusetts, using the project
+name MADE, Massachusetts Defense for Eviction. Generates an Answer form, 
 Request for Discovery, and accompanying forms and motions.
+
 ## Changelog
+* 2019-06-04 Language translation prep
+* 2019-05-28 Added question IDs
 * 2019-05-01 Improved instructions for discovery requests
 * 2019-03-25 Cleaned up instructions, bugfixes
 * Bugfix - ls_email

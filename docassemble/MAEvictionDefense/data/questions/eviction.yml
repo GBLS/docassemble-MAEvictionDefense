@@ -26,6 +26,9 @@ metadata:
     <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
     </div>
 ---
+translations:
+  - eviction_es.xlsx
+---
 features:
   question help button: True
   progress bar: True
@@ -37,10 +40,11 @@ modules:
   - docassemble.base.legal
   - docassemble.MACourts.macourts
   - .discovery
+  - .language
 ---
 imports:
   - holidays
-  - dt_send_answers  
+  - dt_send_answers
   #- re
 ---
 objects:
@@ -81,14 +85,27 @@ objects:
 ---
 initial: True
 code: |
-  if url_args.get('lang', None) == 'es':
-    user_language = 'es'
+  process_action()
+---
+initial: True
+code: |
   set_language(user_language)
+---
+code: |
+  if url_args.get('lang'):
+    user_language = url_args.get('lang')
+  else:
+    user_language= 'en'
+---
+event: change_language
+code: |
+  if 'lang' in action_arguments():
+    user_language = action_argument('lang')
+    set_language(user_language)
 ---
 include:
   - review_screens.yml
   - eviction.en.yml
-  - eviction.es.yml
   - eviction.code.yml
   - eviction.cron.yml
   - eviction.attachments.yml

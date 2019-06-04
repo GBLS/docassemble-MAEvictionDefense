@@ -1,5 +1,5 @@
----
-default language: en
+#---
+#default language: en
 ---
 comment: |
   Overview screens
@@ -14,6 +14,7 @@ sections:
   - review_discovery: Discovery
   - Conclusion
 ---
+id: case number
 question: |
   Case number
 subquestion: |
@@ -25,6 +26,7 @@ fields:
     hint: 19-XXXXXXX
     required: False
 ---
+id: time to move
 question: |
   Requesting Time to Move
 subquestion: |
@@ -48,65 +50,23 @@ id: intro screen
 decoration: home
 question: |
   MADE: Massachusetts Defense for Eviction
-help: |
-  This is an example help page.
-  Click "[Back to question]" to go to the previous screen and continue the interview.
-terms: 
-  - green word: This is an example. Click it again to hide this definition.
-  - palabra en verde: |
-      Esto es un ejemplo. Haga clic para esconder esta definición.
-  - orden y reclamo: |
-      Una notificación por escrito de su caso de desalojo que le dice que vaya a corte en una fecha específica. 
-      [FILE summons_and_complaint.png, 100%]
-  - notificación de salir: |
-      Una notificación por escrito de su arrendador que le dice por que su arrendador está terminando su tenencia. 
-      Otros nombres: notice to terminate tenancy.
-      [FILE notice-to-quit-14.png, 100%]      
-section: Getting Started
+subquestion: |
+  ${get_language_list(get_tuples(['en','es','vn','pt','zh','ht']),current='en')}
+
+  MADE is a free tool to help tenants defend against an eviction in court.
+  When you finish, you need to print and deliver paperwork to
+  court and to your landlord or their attorney.
+    
+  You can click on a {green word} to learn what it means. Click "Help" to learn
+  more about a question. Click "Back" or on one of the section headings to change
+  an earlier answer.
+  
+  Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
+  to return to later. We recommend that before you start you find:
+
+  1. The **Summons and Complaint** and 
+  2. the **Notice to Quit** you got from your landlord.
 fields:
-  - Language / Idioma: user_language
-    input type: radio
-    default: en
-    choices:
-      - English: en
-      - Español: es
-  - note: |
-      MADE is a free tool to help tenants defend against an eviction in court.
-      When you finish, you need to print and deliver paperwork to
-      court and to your landlord or their attorney.
-    
-      You can click on a {green word} to learn what it means. Click "Help" to learn
-      more about a question. Click "Back" or on one of the section headings to change
-      an earlier answer.
-  
-      Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
-      to return to later. We recommend that before you start you find:
-
-      1. The **Summons and Complaint** and 
-      2. the **Notice to Quit** you got from your landlord.
-    show if:
-      variable: user_language
-      is: "en"
-  - note: |
-      MADE ayuda a los inquilinos en su defensa en corte contra un desalojo.
-      Prepararemos los formularios que usted necesita :print: imprimir y :envelope:
-      Entregar a la corte y a su arrendador. Debería tomarle entre :stopwatch: 25 Minutos y una hora para completar, dependiendo de cuan complejo es su caso.
-      Si es interrumpido, puede guardar su trabajo en la computadora y regresar a él después. También puede enviárse los formularios ya llenados a si mismo vía correo electrónico.
-      Esta entrevista es completamente gratis.
-  
-      Antes de comenzar, necesita buscar:
-
-      1. La **{notificación de salir} (notice to quit)** y
-      2. La **{orden y reclamo} (summons and complaint)** que recibió de su arrendador.
-    
-      Si no tiene alguno de los documentos, trate de contestar lo mejor que pueda basándose en su memoria.
-  
-      En cualquier momento haga clic {palabra en verde} para saber que quiere decir. Haga clic en la tecla de "[Ayuda]" para saber más
-      Acerca de la entrevista o una pregunta específica, y "[ATRAS]" si quiere regresar
-      A la pregunta anterior.
-    show if:
-      variable: user_language
-      is: "es"
   - I accept the [terms of use](https://www.gbls.org/self-help/eviction/terms-of-use): acknowledged_information_use
     show if:
       variable: user_language
@@ -120,19 +80,12 @@ fields:
     validation messages:
       minlength: |
         You cannot continue unless you agree to the terms of service.      
-  - Estoy de acuerdo con las [condiciones de uso](https://www.gbls.org/self-help/eviction/terms-of-use) : acknowledged_information_use
-    datatype: checkboxes
-    default: "Acepto."
-    minlength: 1
-    none of the above: False
-    choices:
-      - Acepto.
-    show if:
-      variable: user_language
-      is: "es"
-    validation messages:
-      minlength: |
-        No puede continuar a menos que acepte los términos del servicio.
+help: |
+  This is an example help page.
+  Click "[Back to question]" to go to the previous screen and continue the interview.
+terms: 
+  - green word: This is an example. Click it again to hide this definition. 
+section: Getting Started
 ---
 id: how to answer
 decoration: info-circle
@@ -158,6 +111,7 @@ buttons:
   - I agree: continue
 section: Getting Started
 ---
+id: who is using
 question: |
   Who is completing this interview?
 field: person_answering
@@ -165,6 +119,7 @@ buttons:
   - Tenant or helper: tenant
   - Attorney: attorney
 ---
+id: tenant rights
 question: Your tenant rights in Massachusetts
 subquestion: | 
   Watch the video below to learn a little more about the eviction process.
@@ -190,6 +145,7 @@ help:
   "Motion to File Late Answer." This interview will help you decide. 
 section: Getting Started
 ---
+id: only ntq
 event: onlyhasntq
 progress: 100
 question: Sorry, this is not the right interview for you.
@@ -206,6 +162,7 @@ buttons:
   Exit: exit
   Restart: restart
 ---
+id: not right interview
 question: This may not be the right interview for you.
 subquestion: |
   This interview is meant to help you respond to your landlord's original eviction case.
@@ -227,6 +184,7 @@ buttons:
   - Exit: exit
     url: https://www.gbls.org/  
 ---
+id: jury trial
 question: |
   Your right to a jury trial
 subquestion: |
@@ -269,6 +227,7 @@ help: |
   about each of your claims and defenses, money owed to the landlord, and whether
   you get to remain in your apartment.  
 ---
+id: reminders
 decoration: bell
 question: |
   Court Date Reminders
@@ -318,6 +277,7 @@ help: |
   Sharing your information is optional. You can use this service for free whether or not
   you want your information to be shared.
 ---
+id: share
 decoration: share
 question: |
   Share this interview
@@ -346,6 +306,7 @@ fields:
     default: True    
 continue button field: share_fields
 ---
+id: shared
 need:
   - sent_sharing_email
   - sent_sharing_text
@@ -356,6 +317,7 @@ subquestion: |
   you gave us. It may take several seconds to arrive.
 field: share_success  
 ---
+id: signature
 question: |
   Signature
 subquestion: |
@@ -401,6 +363,7 @@ help: |
   If your phone does not do this, use the text option instead.
   
 ---
+id: signature wait screen
 question: |
   % if defined('tenant.signature'):
   Thank you for signing.
@@ -420,6 +383,7 @@ subquestion: |
   
 field: signature_wait_screen
 ---
+id: signature phone followup
 question: |
   Continue on the device you started the interview on
 subquestion: |
@@ -427,6 +391,7 @@ subquestion: |
   Keep going on the computer you started the interview on.
 field: signature_phone_followup  
 ---
+id: signature
 question: Sign below
 subquestion: |
 signature: tenant.signature
@@ -439,6 +404,7 @@ content: |
   Click the link below to continue the interview on your phone.
   ${interview_url()}
 ---
+id: almost done
 question: |
   Almost done!
 subquestion: |
@@ -450,6 +416,7 @@ field: almost_done
 section: Conclusion
 progress: 95
 ---
+id: method of service
 question: |
   Getting paperwork to your landlord
 subquestion: |
@@ -484,6 +451,7 @@ fields:
     datatype: date
 section: Conclusion
 ---
+id: download screen
 reconsider: 
   - downloads_zip
   - download_titles
@@ -574,6 +542,7 @@ section: Conclusion
 comment: |
   Questions about Tenant
 ---
+id: your name
 question: What is your name?
 fields:
   - First Name: tenant.name.first
@@ -588,6 +557,7 @@ fields:
       name_suffix()
 section: About You
 ---
+id: how named on summons
 question: |
   How are you named on the court summons?
 subquestion: |
@@ -611,6 +581,7 @@ fields:
   - Exact contents of the line "To Defendants / Tenants / Occupants": defendant_name_as_listed_on_summons
     show if: tenant.name_different_on_summons
 ---
+id: address
 question: |
   What is your current address?
 fields:
@@ -639,6 +610,7 @@ fields:
       variable: facts.tenant_address_is_eviction_address
       is: False
 ---
+id: rental agreement
 question: Your rental agreement
 fields:
   - When did you move in? (best date you know): facts.tenant_movein
@@ -693,6 +665,7 @@ help: |
 
   You can learn more from [Legal Tactics, Chapter 4: Tenancies](https://www.masslegalhelp.org/housing/lt1-chapter-4-tenancies.pdf)
 ---
+id: lease type
 question: |
   Type of lease
 subquestion: |
@@ -712,6 +685,7 @@ fields:
       is: fixed_term
        
 --- 
+id: tenant facts
 question: | 
   Information about you and your family
 subquestion: |
@@ -759,6 +733,7 @@ help: |
   even if that person is not receiving SSI benefit or has been turned down for those
   benefits.  
 ---
+id: tenancy facts
 question: Information about ${tenant.address.address}
 subquestion: |
   Below are statements that apply to some tenancies.
@@ -820,6 +795,7 @@ help: |
 comment: |
   Questions about court / eviction
 ---
+id: court information
 question: |
   What court is your case being heard in?
 subquestion: |
@@ -836,6 +812,7 @@ fields:
     choices: macourts
 section: About Your Court Case
 ---
+id: transfer
 question: |
   Transfer to Housing Court
 subquestion: |
@@ -865,6 +842,7 @@ help: |
   where and what day you should appear in court. You may get a notice in the mail. It will most likely not be
   the rescheduled trial date that is printed on the Answer form.
 ---
+id: intervene
 question: |
   Request to Intervene
 subquestion: |
@@ -880,6 +858,7 @@ fields:
     datatype: area
     show if: request_right_to_intervene
 ---
+id: landlord address
 question: |
   What is your landlord's address?
   Look on the summons and complaint if you are not sure.
@@ -894,6 +873,7 @@ fields:
   - country: landlord.address.country
     default: 'US'    
 --- 
+id: transfer court
 question: |
   Which Housing Court are you transferring your case to?
 subquestion: |
@@ -905,6 +885,7 @@ fields:
     choices: |
       [x for x in macourts if "housing court" in x.name.lower()]  
 ---
+id: court date
 question: |
   Court Date
 subquestion: |
@@ -928,6 +909,7 @@ help:
  
 section: About Your Court Case
 ---
+id: case postponed
 event: case_is_on_time
 decoration: thumbs-up
 question: |
@@ -958,6 +940,7 @@ help: |
   on-time and requests discovery. See [U.S.P.R. 7(b)](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
 section: About Your Court Case
 ---
+id: fault defenses
 question: |
   Defenses for fault eviction
 subquestion: |
@@ -974,6 +957,7 @@ fields:
     datatype: yesno
 section: Claims and Defenses
 ---
+id: eviction reason
 question: Reason for eviction
 subquestion: |
   Look at your Notice to Quit. 
@@ -998,6 +982,7 @@ help: |
   It can sometimes be written in a confusing or unclear way.
 section: About Your Court Case
 ---
+id: no fault reason
 question: | 
   Basis for no-fault eviction
 subquestion: |
@@ -1013,6 +998,7 @@ fields:
       - Other: other
 section: About Your Court Case
 ---
+id: fault reason
 question: | 
   Basis for fault eviction
 subquestion: |
@@ -1036,6 +1022,7 @@ fields:
       - Other lease violation: other lease violation
 section: About Your Court Case
 ---
+id: defense overview
 decoration: info-circle
 question: |
   Defenses for your case
@@ -1088,6 +1075,7 @@ help: |
 comment: |
   Questions about landlord
 ---
+id: landlords name
 question: What is your Landlord's name?
 subquestion: |
   To answer this question, look at the Summons and Complaint. Write your landlord's
@@ -1099,6 +1087,7 @@ fields:
   - Landlord's name (as written on the Summons): landlord.name.text
 section: About Your Landlord
 ---
+id: landlord information
 question: |
   Information about ${landlord.name}.
 subquestion: |
@@ -1131,6 +1120,7 @@ help: |
   them different questions to help you prepare for court.
 section: About Your Landlord
 ---
+id: landlords attorney
 question: |
   Does ${landlord.name} have an attorney for this case?
 
@@ -1171,6 +1161,7 @@ fields:
 comment: |
   Initial defenses
 ---
+id: nonpayment defenses
 question: |
   Non-payment of rent defenses
 fields: 
@@ -1202,6 +1193,7 @@ fields:
     datatype: yesno
 section: Claims and Defenses  
 ---
+id: notice to quit facts
 question: |
   Notice to Quit
 subquestion: |
@@ -1251,6 +1243,7 @@ help:
   and if you aren't sure, you can probably talk to a lawyer at the Attorney for the Day table at your local court.
 section: Claims and Defenses  
 ---
+id: waiver
 question: |
   Waiver / creation of a new tenancy
 subquestion: |
@@ -1289,6 +1282,7 @@ help: |
   There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
 section: Claims and Defenses  
 ---
+id: summons facts
 question: |
   Summons and Complaint
 subquestion: |
@@ -1331,6 +1325,7 @@ help: |
   is also likely to change and the summons may list rent due after the original notice.
 section: Claims and Defenses    
 ---
+id: notice timing
 question: Timing of notices
 subquestion: |
   It is important for your landlord to file your eviction case and pre-eviction notice
@@ -1355,6 +1350,7 @@ fields:
     datatype: yesno
 section: Claims and Defenses      
 ---
+id: nonpayment cure
 question: |
   Paying the money owed
 subquestion: |
@@ -1396,14 +1392,15 @@ help:
 section: Claims and Defenses  
  
 ---
+id: new landlord
 question: |
   Change in ownership
 fields:
   - Why do you have a new landlord? : new_landlord_reason
     choices:
-      - My landlord died
-      - My landlord sold the building
-      - I don't know who owns the building now but there is new management
+      - My landlord died: My landlord died
+      - My landlord sold the building: My landlord sold the building
+      - I don't know who owns the building now but there is new management: I don't know who owns the building now but there is new management
   - The building was sold after I got the notice to quit: building_sold_after_ntq
     datatype: yesno
     show if:
@@ -1413,6 +1410,7 @@ help: |
   We want to know about the new ownership of the building to understand if your new
   landlord has the right (standing) to evict you.
 ---
+id: custom defenses
 question: Custom Defenses
 subquestion: |
   You can customize your response to the eviction by adding additional
@@ -1428,6 +1426,7 @@ fields:
     required: False
 section: Claims and Defenses
 ---
+id: have a defense
 sets: show_defense_summary
 decoration: thumbs-up
 question: |
@@ -1476,6 +1475,7 @@ section: Claims and Defenses
 help: |
   Please see [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims) for more information.
 ---
+id: condo defenses
 question: |
   Protections for tenants in condo or coop conversions
 subquestion: |
@@ -1490,12 +1490,12 @@ fields:
     show if: more_than_3_units
     datatype: checkboxes
     choices:
-      - Failed to provide me with 1 year's notice
-      - Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
-      - Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
-      - Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
-      - Failed to offer me the right to purchase my apartment before listing it for sale
-      - Failed to offer me moving expenses
+      - Failed to provide me with 1 year's notice: Failed to provide me with 1 year's notice
+      - Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household: Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
+      - Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income): Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
+      - Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller: Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
+      - Failed to offer me the right to purchase my apartment before listing it for sale: Failed to offer me the right to purchase my apartment before listing it for sale
+      - Failed to offer me moving expenses: Failed to offer me moving expenses
   - My landlord failed to follow local condo conversion ordinances as follows: condo_local_violations
     datatype: checkboxes
     show if:
@@ -1521,6 +1521,7 @@ code: |
 comment: |
   Bad housing conditions
 ---
+id: bad conditions
 question: Bad Housing Conditions
 subquestion: | 
   List any problems with the apartment you live in now. Think about problems over the last
@@ -1534,21 +1535,21 @@ fields:
   - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
     datatype: checkboxes
     choices:
-      - insects
-      - cockroaches
-      - mice or rats
-      - water leaks or other plumbing problems
-      - electrical problems
-      - lead paint
-      - defective or leaky windows
-      - defective ceilings, walls, or floors
-      - no heat
-      - no hot water
-      - not enough heat
-      - not enough hot water
-      - defective locks
-      - security problems
-      - other
+      - insects: insects
+      - cockroaches: cockroaches
+      - mice or rats: mice or rats
+      - water leaks or other plumbing problems: water leaks or other plumbing problems
+      - electrical problems: electrical problems
+      - lead paint: lead paint
+      - defective or leaky windows: defective or leaky windows
+      - defective ceilings, walls, or floors: defective ceilings, walls, or floors
+      - no heat: no heat
+      - no hot water: no hot water
+      - not enough heat: not enough heat
+      - not enough hot water: not enough hot water
+      - defective locks: defective locks
+      - security problems: security problems
+      - other: other
   - Other conditions: bad_conditions.other_condition
     datatype: area
     show if: bad_conditions.conditions['other']
@@ -1568,6 +1569,7 @@ help: |
   Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 section: Claims and Defenses
 ---
+id: repair and deduct
 question: |
   Repair and deduct
 subquestion: |
@@ -1595,6 +1597,7 @@ help: |
   
   See [G.L. c. 111, §127L](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXVI/Chapter111/Section127L)
 ---
+id: bad conditions notice
 need: bad_conditions.conditions
 question: Notice to your landlord
 subquestion: |
@@ -1603,17 +1606,18 @@ fields:
   - How did you tell your landlord about the bad housing conditions?: bad_conditions.landlord_notified
     datatype: checkboxes
     choices:
-      - I told the landlord in person or on the phone.
-      - I told the landlord in writing (by text, email, letter, or written note).
-      - The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told my landlord about the problems.
-      - All or some of the conditions existed when I moved in.
-      - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
-      - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
+      - I told the landlord in person or on the phone.: I told the landlord in person or on the phone.
+      - I told the landlord in writing (by text, email, letter, or written note).: I told the landlord in writing (by text, email, letter, or written note).
+      - The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told my landlord about the problems.: The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told my landlord about the problems.
+      - All or some of the conditions existed when I moved in.: All or some of the conditions existed when I moved in.
+      - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.: All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
+      - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).: All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
   - Other: bad_conditions.other
     required: False
 section: Claims and Defenses
 
 ---
+id: breach of quiet enjoyment
 question: Breach of Quiet Enjoyment
 subquestion: |
   A "breach of quiet enjoyment" happens when your landlord does something or allows something to happen that makes your
@@ -1650,6 +1654,7 @@ section: Claims and Defenses
 help: |
   Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 ---
+id: interference with utilities
 question: |
   Interference with utilities
 subquestion: |
@@ -1667,6 +1672,7 @@ section: Claims and Defenses
 comment: |
   Foreclosure defenses
 ---
+id: foreclosure owners
 question: Foreclosure related defenses for owners and tenants
 fields:
   - The foreclosure is void due to violations of the power of sale in the mortgage; statutory or regulatory foreclosure requirements; or requirements for note holding or transfer requirements. : postforeclosure.failure_to_comply
@@ -1681,6 +1687,7 @@ fields:
 section: Claims and Defenses
 
 ---
+id: foreclosure tenants
 question: |
   Foreclosure related defenses for tenants
 fields:
@@ -1713,6 +1720,7 @@ section: Claims and Defenses
 comment: |
   Subsidized tenancy
 ---
+id: subsidy facts
 question: |
   What type of subsidy do you have?
 subquestion: |
@@ -1738,6 +1746,7 @@ choices:
       There may be an income limit but rent does not change if income changes.
   - Other or I don't know: other
 ---
+id: subsidy defenses 1
 question: Subsidized Housing Defenses
 fields:
   - A portion of my rent is paid for by a public housing authority. : subsidized_housing.pha_pays_rent
@@ -1753,6 +1762,7 @@ fields:
     datatype: yesno
 section: Claims and Defenses
 ---
+id: subsidy defenses 2
 question: Subsidized Housing Defenses
 subquestion: |
   Common defenses related to subsidized housing
@@ -1782,6 +1792,7 @@ section: Claims and Defenses
 comment: |
   Retaliation
 ---
+id: retaliation splash
 question: |
   Retaliation
 subquestion: |
@@ -1808,6 +1819,7 @@ help: |
   Reprisal for reporting violations of law or for tenant's union activity; 
   damages and costs; notice of termination, presumption; waiver in leases or other rental agreements prohibited
 ---
+id: retaliation
 question: Retaliation
 subquestion: |
   "Retaliation" means that your landlord is evicting you for something you had
@@ -1853,6 +1865,7 @@ help: |
 comment: |
   Discrimination
 ---
+id: discrimination splash
 question: Protected classes and discrimination
 subquestion: |
   Do you have any reason to believe that your landlord is discriminating against you?
@@ -1877,6 +1890,7 @@ section: Claims and Defenses
 help: |
   Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
+id: discrimination
 question: |
   Protected classes and discrimination
 subquestion: |
@@ -1887,19 +1901,19 @@ fields:
     datatype: checkboxes
     choices:
       - I have children: Family status
-      - My age
-      - I am on benefits
-      - I get rental assistance
-      - My gender
-      - My gender identity
-      - My marital status
-      - My race
-      - My religion
-      - My sexual orientation
-      - My Veteran status
-      - My national origin (the country my family comes from)
+      - My age: age
+      - I am on benefits: receipt of benefits
+      - I get rental assistance: receipt of rental assistance
+      - My gender: gender
+      - My gender identity: gender identity
+      - My marital status: marital status
+      - My race: race
+      - My religion: religion
+      - My sexual orientation: sexual orientation
+      - My Veteran status: veteran status
+      - My national origin (the country my family comes from): national origin
       - I have a disability: disability
-      - My skin color
+      - My skin color: skin color
     default: 
       code: |
         dict(disability = tenant.is_disabled)
@@ -1914,6 +1928,7 @@ comment: |
 help: |
   Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
+id: disability discrimination
 question: | 
   Discrimination on basis of disability
 subquestion: |
@@ -1926,6 +1941,7 @@ section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
+id: sexual harassment
 question: |
   Sexual Harassment
 subquestion: |
@@ -1942,6 +1958,7 @@ fields:
 section: Claims and Defenses
 
 ---
+id: consumer protection
 question: |
   Consumer Protection Law
 subquestion: |
@@ -1972,6 +1989,7 @@ help: |
   homeowner who rents out a room or second unit in a small building of less than 4 units.
   
 ---
+id: security deposit
 question: Security Deposit
 subquestion: |
   Check any security deposit violations that apply below
@@ -1981,16 +1999,17 @@ fields:
   - Violations: security_deposit.violations
     datatype: checkboxes
     choices:
-      - Accepted a deposit for more than one month's rent
-      - Failed to keep the deposit in a separate bank account
-      - Failed to provide required receipts
-      - Failed to pay interest on each anniversary of your deposit or give me a credit on my rent
-      - Failed to provide a statement of conditions
-      - Did not take responsibility for the deposit paid to a former landlord
+      - Accepted a deposit for more than one month's rent: Accepted a deposit for more than one month's rent
+      - Failed to keep the deposit in a separate bank account: Failed to keep the deposit in a separate bank account
+      - Failed to provide required receipts: Failed to provide required receipts
+      - Failed to pay interest on each anniversary of your deposit or give me a credit on my rent: Failed to pay interest on each anniversary of your deposit or give me a credit on my rent
+      - Failed to provide a statement of conditions: Failed to provide a statement of conditions
+      - Did not take responsibility for the deposit paid to a former landlord: Did not take responsibility for the deposit paid to a former landlord
 section: Claims and Defenses
 help: |
   Learn more about the rules for handling a security deposit on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
 ---
+id: last months rent
 question: Prepaid last month's rent
 subquestion: |
   "Last-month's rent" means the rent that some landlords take when you first move in as "first, last, and security deposit".
@@ -2018,6 +2037,7 @@ section: Claims and Defenses
 help: |
   Learn more about the rules for handling pre-paid last month's rent on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
 ---
+id: interrogatories
 question: |
   Interrogatories (questions for your landlord)
 subquestion: |
@@ -2067,6 +2087,7 @@ help: |
   discovery if your landlord doesn't give it to you.
 section: Discovery
 ---
+id: document requests
 question: |
   Document requests (letters, leases, photos, and other printed information)
 subquestion: |
