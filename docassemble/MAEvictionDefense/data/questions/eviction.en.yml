@@ -455,7 +455,6 @@ id: download screen
 reconsider: 
   - downloads_zip
   - download_titles
-id: download
 decoration: check-circle
 event: download_forms
 question: |
@@ -1535,21 +1534,21 @@ fields:
   - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
     datatype: checkboxes
     choices:
-      - insects: insects
-      - cockroaches: cockroaches
-      - mice or rats: mice or rats
-      - water leaks or other plumbing problems: water leaks or other plumbing problems
-      - electrical problems: electrical problems
-      - lead paint: lead paint
-      - defective or leaky windows: defective or leaky windows
-      - defective ceilings, walls, or floors: defective ceilings, walls, or floors
-      - no heat: no heat
-      - no hot water: no hot water
-      - not enough heat: not enough heat
-      - not enough hot water: not enough hot water
-      - defective locks: defective locks
-      - security problems: security problems
-      - other: other
+      - Insects: insects
+      - Cockroaches: cockroaches
+      - Mice or rats: mice or rats
+      - Water leaks or other plumbing problems: water leaks or other plumbing problems
+      - Electrical problems: electrical problems
+      - Lead paint: lead paint
+      - Defective or leaky windows: defective or leaky windows
+      - Defective ceilings, walls, or floors: defective ceilings, walls, or floors
+      - No heat: no heat
+      - No hot water: no hot water
+      - Not enough heat: not enough heat
+      - Not enough hot water: not enough hot water
+      - Defective locks: defective locks
+      - Security problems: security problems
+      - Other: other
   - Other conditions: bad_conditions.other_condition
     datatype: area
     show if: bad_conditions.conditions['other']
