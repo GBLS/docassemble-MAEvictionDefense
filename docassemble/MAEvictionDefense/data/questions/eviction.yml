@@ -107,6 +107,13 @@ code: |
     user_language = action_argument('lang')
     set_language(user_language)
 ---
+id: language
+question: |
+  Language
+subquestion: |
+  ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
+field: language
+---
 include:
   - review_screens.yml
   - eviction.en.yml
@@ -140,6 +147,7 @@ code: |
   speak_text = True
   menu_items = [action_menu_item('Review Answers', 'road_map')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
+  menu_items.append(action_menu_item('Language','language'))
   set_live_help_status(availability='available', mode='help',partner_roles='advocate')
   
   started_on_phone # check to see what the starting device is
