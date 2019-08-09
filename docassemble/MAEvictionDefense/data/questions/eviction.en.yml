@@ -467,7 +467,7 @@ subquestion: |
     Download and print three copies of the :file-pdf: PDF below. We created ${nice_number(num_downloads)} forms, combined into one PDF: ${comma_and_list(download_titles)}.
   </li>
   <li> 
-    Deliver a copy to your
+    Deliver one copy to your
      ${("landlord's attorney, " + landlords_attorney.name.text) if landlord.has_attorney else ('landlord, ' + landlord.name.text) }, 
      at ${landlords_attorney.address.on_one_line() if landlord.has_attorney else 'their address' }, 
      no later than ${format_date(case.answer_date)}. Deliver a second copy to the ${ court }. Keep
@@ -532,7 +532,6 @@ css: |
     border-radius: 50%;
     }
   </style>  
-
 video: |
   [YOUTUBE mG-JDXOAkJU]
 progress: 100  
