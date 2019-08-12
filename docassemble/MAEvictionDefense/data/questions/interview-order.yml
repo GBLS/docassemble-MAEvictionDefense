@@ -76,8 +76,9 @@ code: |
     subsidized_housing.improper_rent_calculation 
     if subsidy_type in ['Section 8 voucher', 'MRVP']:
       subsidized_housing.pha_pays_rent
-      subsidized_housing.no_ntq_to_agency
       subsidized_housing.stopped_payment
+    if subsidy_type in ['Section 8 voucher']:
+      subsidized_housing.no_ntq_to_agency
   
   if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and is_condo_conversion:
     more_than_3_units
