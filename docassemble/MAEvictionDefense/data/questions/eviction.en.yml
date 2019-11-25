@@ -499,6 +499,8 @@ subquestion: |
   % endif
   <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${downloads_zip.url_for()})</li>
   </ul>
+right: |
+  ${action_button_html("https://www.surveymonkey.com/r/8T2KZBV",icon="comment-alt",label="Take our survey",color="success",size="md")}
 terms: 
   discovery: |
     Discovery is the list of questions we helped you ask your landlord. Your landlord
@@ -2199,6 +2201,8 @@ content: |
 
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
   has information that can help you be prepared.  
+
+  Was MADE helpful? [Tell us here](https://www.surveymonkey.com/r/8T2KZBV).
 ---
 template: interview_complete_text
 content: |
@@ -2212,6 +2216,8 @@ content: |
   Get ready here: https://gbls.org/tactics/12
   
    - MADE from GBLS.
+
+  How was MADE? Tell us here: https://www.surveymonkey.com/r/8T2KZBV
 ---
 template: survey_email
 subject: |
@@ -2219,7 +2225,7 @@ subject: |
 content: |
   Thanks for your recent use of MADE, Massachusetts Defense Against Eviction.
   
-  Can you help us help more tenants by taking this [short survey](${interview_url(i='docassemble.MAEvictionDefense:data/questions/survey.yml',interview_date=start_time(),interview_zip=showifdef('tenant.address.zip'))})?
+  Can you help us help more tenants by taking this [short survey](https://www.surveymonkey.com/r/5BVKQWQ)?
   
     - MADE from GBLS
 ---
@@ -2260,6 +2266,10 @@ interview help:
     ### Feedback, comments, or want to improve this interview?
     View or [submit issues](https://github.com/nonprofittechy/docassemble-MAEvictionDefense/issues) on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
     
+    [Take a survey](https://www.surveymonkey.com/r/8T2KZBV).
+
+    Email made@gbls.org
+
     ### Run into a problem?
     We are very sorry for the inconvenience. 
     
@@ -2271,13 +2281,11 @@ interview help:
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
     
     ### Copyright Notice
-    This interview is copyright 2018 Greater Boston Legal Services and open source 
+    This interview is copyright 2018-2019 Greater Boston Legal Services and open source 
     contributors. It is released under the MIT open source license and code is available
     on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
     
     *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
-    
-    [Take a survey](${interview_url(i='docassemble.MAEvictionDefense:data/questions/survey.yml',interview_date=start_time(),interview_zip=showifdef('tenant.address.zip'))}).
 ---
 auto terms:
   notice to quit: |
