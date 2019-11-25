@@ -18,7 +18,6 @@ code: |
   if case.status == "afj" or case.status == 'late':
     firstdatepassed
   
-  claim_jurytrial
   tenant.name
   tenant.name_different_on_summons
   if tenant.name_different_on_summons and tenant.not_named_on_summons:
@@ -198,6 +197,8 @@ code: |
   if person_answering == 'attorney':
     initial_defense.custom_reason_for_dismissal 
     initial_defense.custom_other
+
+  claim_jurytrial
 
   needs_time_because
   almost_done
