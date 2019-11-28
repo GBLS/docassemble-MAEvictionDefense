@@ -5,6 +5,7 @@ name MADE, Massachusetts Defense for Eviction. Generates an Answer form,
 Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
+* 2019-11-27 stagger survey emails; other cron randomization to reduce risk of resource exhaustion
 * 2019-11-25 Added survey link; fix Monday holiday problem; language fixes
 * 2019-08-12 Fixed bug with MRVP
 * 2019-08-09 Language fixes
