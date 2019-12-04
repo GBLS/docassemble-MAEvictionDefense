@@ -2566,7 +2566,7 @@ fields:
     input type: radio
     choices:
       - Yes: Citizen
-      - No: Non-Citizen
+      - No: Eligible Alien
 ---
 question: |
   Your paperwork (optional) (6 of 7)
