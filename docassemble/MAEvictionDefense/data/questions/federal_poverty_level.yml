@@ -1,0 +1,8 @@
+---
+comment: |
+  Federal Poverty Level
+code: |
+  poverty_level_update = "2019"
+  poverty_base = 12490
+  poverty_increment = 4420
+  poverty_multiplier = 2 # threshold multiplier. e.g. 2 for 200%

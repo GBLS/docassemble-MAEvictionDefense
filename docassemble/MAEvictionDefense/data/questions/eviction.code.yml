@@ -373,3 +373,98 @@ code: |
     sent_sharing_text = send_sms(to=share_cell,template=interview_link)
   else: 
     sent_sharing_text = False  
+---
+reconsider: True
+code: |
+  household_income_limit = (poverty_base + ((household_size) + 1 * poverty_increment)) * poverty_multiplier
+
+  # We want a soft cutoff--add 1% fudge factor
+  household_income_qualifies = int((household_income_limit * 1.01)/12) >=  int(household_monthly_income)
+---
+code: |
+  household_qualifies = tenant.is_crime_victim or tenant.is_over60 or household_income_qualifies
+---
+code: |
+  household.there_are_any = household_size > 0
+---
+code: |
+  if tenant.has_alias:
+    alias_name_parts = nameparts(tenant.other_name)
+  else:
+    alias_name_parts = nameparts('')
+---
+code: |
+  """
+  61 Federally subsidized housing
+  63 Private landlord/tenant
+  64 Public housing
+  """
+  if facts.tenant_has_subsidy:
+    if subsidy_type == 'public housing':
+      legal_problem_code = "64 Other Public housing"
+    else:
+      legal_problem_code = "61 Federal Subsidized Housing"
+  else:
+    legal_problem_code = "63 Landlord/ Tenant (Not Public Housing)"
+---
+code: |
+  num_adults_temp = 0 if tenant.age_in_years() < 18 else 1
+  num_children_temp = 0 if tenant.age_in_years() >= 18 else 1
+  for person in household:
+    if person.age_in_years() < 18:
+      num_children_temp += 1
+    else:
+      num_adults_temp += 1
+  num_adults = num_adults_temp
+  num_children = num_children_temp  
+---
+code: |
+  if task_not_yet_performed('create online intake'):
+    r = ls_submit_online_intake( params = {
+        'firstName': tenant.name.first,
+        'lastName': tenant.name.last,
+        'dateOfBirth': tenant.birthdate,
+        'eTransferOrganization': 'Greater Boston Legal Services',
+        'note': ls_case_note_template,
+        'phoneHome': tenant.phone_number,
+        'addressHome': address_to_json(tenant.address),
+        'email': tenant.email,
+        'aliasFirst': alias_name_parts['first'],
+        'aliasLast':alias_name_parts['last'],
+        'aliasMiddle':alias_name_parts['middle'],
+        'race': showifdef('tenant.ethnicity',None),
+        'gender': showifdef('tenant.gender',None),
+        'language': showifdef('tenant.preferred_language',None),
+        'veteran': showifdef('veteran_status',None),
+        'disabled' : tenant.is_disabled,
+        'legalProblemCode': legal_problem_code,
+        'numberOfAdults': num_adults,
+        'numberOfChildren': num_children,
+        'citizenshipStatus': showifdef('tenant.is_citizen',None),
+        'incomes': incomes.to_json()
+      }, task = 'create online intake')
+    # debug_url = r.request.url
+  created_online_intake = True
+---
+code: |
+  # Set an intial vaue for running an intake, in case user 
+  # was sent link to resume intake later, after completing the interview
+  time_to_do_intake = False
+---
+code: |
+  if task_not_yet_performed('send intake email'):
+    if user_cell:
+      send_sms(to=user_cell,template=intake_reminder_template)
+    elif user_email:
+      send_email(to=user_email,template=intake_reminder_template)
+  sent_take_intake_later_email = True
+---
+code: |
+  try:
+    ntq_pictures_pdf = pdf_concatenate(ntq_pictures)
+  except:
+    ntq_pictures_pdf = DAEmpty()
+---
+event: run_intake
+code: |
+  time_to_do_intake = True
