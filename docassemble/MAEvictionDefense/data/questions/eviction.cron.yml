@@ -58,5 +58,5 @@ code: |
     
     if task_performed('discovery reminder') and task_performed('court reminder') and task_performed('survey message'):
       allow_cron = False # disable cron when we have run all jobs
-
+      
   response() # This stops Docassemble from running the rest of the interview and potentially running into an error
