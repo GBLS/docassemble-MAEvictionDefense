@@ -29,24 +29,34 @@ code: |
   from random import randint, random
   time.sleep(random())
 
-  if remind_user and task_not_yet_performed('discovery reminder') and today() >= date_discovery_due and today() <= date_motion_to_compel_due:
-    compel_discovery_needed = True
-    send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
-    if user_cell and task_not_yet_performed('discovery reminder text'):
-      send_sms(to=phone_number_in_e164(user_cell), template=compel_discovery_text, task='discovery reminder text')
+  # Only run cron jobs below if the tenant reached the service screen. No need to email people who didn't finish interview
+  if defined('method_of_service'):
+    if remind_user and today() >= date_discovery_due and today() <= date_motion_to_compel_due:
+      compel_discovery_needed = True
+      if user_email and task_not_yet_performed('discovery reminder'):
+        send_email(to=user_email, template=compel_discovery_email, task='discovery reminder')
+        mark_task_as_performed('discovery reminder') # give up after 1 try
+      if user_cell and task_not_yet_performed('discovery reminder text'):
+        send_sms(to=phone_number_in_e164(user_cell), template=compel_discovery_text, task='discovery reminder text')
+        mark_task_as_performed('discovery reminder text')
+    if remind_user and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :    
+      if user_email and task_not_yet_performed('court reminder'):
+        send_email(to=user_email, template=court_reminder_email, task='court reminder')
+        mark_task_as_performed('court reminder')
+      if user_cell and task_not_yet_performed('court reminder text'):
+        send_sms(to=phone_number_in_e164(user_cell), template=attend_court_text, task='court reminder text')
+        mark_task_as_performed('court reminder text')
+
+    if survey_user and today() >= court_date.plus(days=30):
+      if randint(0,15) == 7: # spread out the emails over the course of 2 weeks
+        if user_email and task_not_yet_performed('survey message'):
+          send_email(to=user_email, template=survey_email,task='survey message')
+          mark_task_as_performed('survey message')
+        if user_cell and task_not_yet_performed('survey text message'):
+          send_sms(to=phone_number_in_e164(user_cell), template=survey_email, task='survey text')
+          mark_task_as_performed('survey text')
+    
+    if task_performed('discovery reminder') and task_performed('court reminder') and task_performed('survey message'):
+      allow_cron = False # disable cron when we have run all jobs
       
-  if remind_user and task_not_yet_performed('court reminder') and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :    
-    send_email(to=user_email, template=court_reminder_email, task='court reminder')
-    if user_cell and task_not_yet_performed('court reminder text'):
-      send_sms(to=phone_number_in_e164(user_cell), template=attend_court_text, task='court reminder text')
-
-  if survey_user and task_not_yet_performed('survey message') and today() >= court_date.plus(days=30):
-    if randint(0,7) == 3: # spread out the emails over the course of a week
-      send_email(to=user_email, template=survey_email,task='survey link')
-      if user_cell and task_not_yet_performed('survey text message'):
-        send_sms(to=phone_number_in_e164(user_cell), template=survey_email, task='survey text')
-  
-  if task_performed('discovery reminder') and task_performed('court reminder') and task_performed('survey message'):
-    allow_cron = False # disable cron when we have run all jobs
-
   response() # This stops Docassemble from running the rest of the interview and potentially running into an error

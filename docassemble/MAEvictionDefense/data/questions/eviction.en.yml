@@ -620,6 +620,7 @@ fields:
     datatype: yesno
   - What do you pay for rent?: facts.tenant_rent_share
     datatype: currency
+    step: 1
     hide if: is_pca
   - How often is your rent paid?: facts.tenant_rent_frequency
     choices:
@@ -2337,4 +2338,361 @@ auto terms:
   docket number: |
     The Docket Number is the number the court has assigned to your case. Sometimes it has not yet been assigned to your case, so it will not be on the Summons and Complaint. You may ask the court for this number, or leave it blank
     
-           
+---
+comment: |
+  Intake questions
+---
+question: |
+  You may qualify for free legal help
+subquestion: |
+  MADE was created by [Greater Boston Legal Services](https://www.gbls.org).
+  Unfortunately, you don't live in a city helped by GBLS.
+
+  If you would like to 
+  know if you qualify for help from a different program, please use the 
+  [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid).
+  You can open this link now but don't forget to come back and finish
+  the interview.
+field: out_of_service_area
+---
+question: |
+  It looks like you may qualify for free legal help
+subquestion: |
+  Because of where you live, you may qualify for free legal help from
+  [Greater Boston Legal Services](https://www.gbls.org).
+
+  To find out, we need to ask you a few more questions. You can download your forms
+  at the end.
+
+  Would you like to find out more?
+field: ask_intake_questions
+buttons:
+  - Ask me now: ask_now
+  - Remind me later: reminder
+  - Skip: skip
+help: |
+  GBLS income guidelines may change over time. [View current guidelines](https://www.gbls.org/get-legal-help/towns-served).
+
+  Eligibility depends on your income, household size, and where you live.
+
+  Not everyone who qualifies will be assigned an attorney. Because of funding, GBLS can only represent about
+  1 in 3 tenants who qualify for our help.
+---
+question: |
+  Application overview
+subquestion: |
+  The next few questions will help us find out if you are _eligible_ for 
+  free legal help. Not everyone who is eligible will be helped. Due to funding,
+  GBLS can only represent about 1 in 3 tenants who qualify.
+field: understands_eligibility
+continue button label: I understand
+---
+comment: |
+  Skip this page if the tenant said someone living with them is over 60
+question: |
+  Pre-screening
+subquestion: |
+  Lets find out if your income is likely to qualify you first. If it does, we'll ask some follow-up questions.
+fields:
+  - Not counting yourself, how many people live with you?: household_size
+    datatype: integer
+  - What is your average _monthly_ income (include all household members)?: household_monthly_income
+    datatype: currency
+  - Are you a victim of crime, or a _survivor_ of a victim of crime? : tenant.is_crime_victim
+    datatype: yesnoradio
+---
+question: |
+  Pre-screening
+subquestion: |
+  Based on your answers, you probably don't qualify for a free attorney from 
+  [Greater Boston Legal Services](https://www.gbls.org). If you would like to 
+  know if you qualify for help from a different program, please use the 
+  [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid).
+
+  You can open this link now but don't forget to come back and finish
+  the interview.
+help: |
+  You told us that your household size is ${household_size + 1} and your income is about ${currency(household_monthly_income*12)}/year.
+
+  GBLS can accept clients earning up to ${poverty_multiplier * 100}% of the current Federal Poverty Level. We think that is ${currency(household_income_limit)}/year
+  for your household.
+
+  Based on the ${poverty_level_update} Federal Poverty Guidelines, it looks like your income is too high. Please take a look at
+  [GBLS's eligibility guidelines](https://www.gbls.org/get-legal-help/towns-served) and the 
+  [Health and Human Services website](https://aspe.hhs.gov/poverty-guidelines) for up-to-date
+  information. If this looks wrong or out of date, please email [MADE@gbls.org](mailto:made@gbls.org) so we can fix this.
+field: does_not_qualify
+---
+question: |
+  Review (1 of 7)
+subquestion: |
+  It looks like you may qualify, but we need to ask some more questions to know for sure.
+  We'll collect some information and then a person at Greater Boston Legal Services will take a second look.
+
+  Due to the number of intakes we receive, you will _only_ get a call back
+  if an attorney is able to help you.
+
+  First, lets review the information you already gave us. Make any changes needed.
+
+  ##### Information about you
+  ${tenant}
+  % if defined('tenant.preferred_language'):
+  Language: ${tenant.preferred_language} 
+  
+  ${action_button_html(url_action('tenant.preferred_language'))}
+  % endif
+
+  I have a disability: ${yesno(tenant.is_disabled)}
+  
+  ${action_button_html(url_action('tenant.is_disabled'))}
+
+  ##### Landlord
+  ${landlord} 
+  
+  ${action_button_html(url_action('landlord.name.text'))}
+
+  ##### Address
+  ${tenant.address.on_one_line()} ${action_button_html(url_action('tenant.address.address'))}
+
+  ##### Phone number
+  % if defined('tenant.phone_number'):
+  ${tenant.phone_number} 
+  % else:
+  (not provided)
+  % endif
+  
+  ${action_button_html(url_action('tenant.phone_number'))}
+
+  ##### Housing type
+  ${landlord.organization_type} 
+  
+  ${action_button_html(url_action('landlord.organization_type'))}
+field: review_intake_information
+---
+question: |
+  Information about you (2 of 7)
+fields:
+  - Have you ever used another name?: tenant.has_alias
+    datatype: yesnoradio
+  - Other name: tenant.other_name
+    show if: tenant.has_alias
+  - Birth date: tenant.birthdate
+    datatype: date
+help: |
+  We need to know this information to make sure we do not
+  have a conflict of interest in representing you.    
+---
+question: |
+  Your household (3 of 7)
+subquestion: |
+  Please list everyone who lives with you as part
+  of your household.
+fields:
+  - Name: household[i].name.first
+  - Date of birth: household[i].birthdate
+    datatype: date
+  - Relationship to you: household[i].relationship
+    choices:
+      - Child: Child
+      - Cousin: Cousin
+      - Foster child: Foster child
+      - Grandchild: Grandchild
+      - Grandparent: Grandparent
+      - Legal Guardian: Guardian
+      - Parent: Parent
+      - Sibling: Sibling
+      - Spouse (husband, wife, domestic partner): Spouse/Domestic Partner
+      - Step child: Step child
+      - Step parent: Step parent
+      - Unmarried partner (boyfriend, girlfriend): Unmarried partner
+      - Other: Other
+list collect: True
+---
+question: |
+  Income (4 of 7)
+subquestion: |
+  Please tell us about the income of everyone who lives with you. Include jobs, working for yourself,
+  public benefits, and other kinds of income such as child support.
+list collect: True
+fields:
+  - Income type: incomes[i].type
+    choices:
+      - Child Support: Child Support
+      - Social Security Disability: Disability
+      - Wages/Working: Employment
+      - No income: No Income
+      - Pension: Pension
+      - Social Security: Social Security
+      - SSI: SSI
+      - TAFDC (Welfare): TANF
+      - Unemployment Benefits: Unemployment Compensation
+      - Veteran's Benefits: Veteran's Benefits
+      - Other: Other
+  - Amount you get: incomes[i].value
+    datatype: currency
+  - How often you get it: incomes[i].period
+    code: |
+      period_list()
+---
+question: |
+  Demographics (5 of 7)
+subquestion: |
+  Please answer the optional questions below. They will not be used
+  to decide if you qualify for our help, but we are required to ask
+  them by our funders. All answers will remain confidential.
+fields:
+  - I (or someone who lives with me) is a veteran of the US military: veteran_status
+    datatype: yesno
+  - Gender: tenant.gender
+    required: False
+    choices:
+      - Female: Female
+      - Male: Male
+      - Non-binary/third gender: Other
+      - Prefer not to say: Unknown
+  - Race or ethnicity: tenant.ethnicity
+    required: False
+    choices:
+      - Asian or Pacific Islander: Asian
+      - Black (not Hispanic): Black
+      - Hispanic / Latino: Hispanic or Latino
+      - Multiracial: Other
+      - Native American/Alaskan Native: American Indian or Alaska Native
+      - White (not Hispanic): White
+      - Other: Other
+      - Prefer not to say: None
+  - I am a US Citizen: tenant.is_citizen
+    required: False
+    input type: radio
+    choices:
+      - Yes: Citizen
+      - No: Non-Citizen
+---
+question: |
+  Your paperwork (optional) (6 of 7)
+subquestion: |
+  If you have your Notice to Quit and Summons and Complaint with you,
+  you can upload a picture of them now. If it's not easy to do this now,
+  you can skip this step.
+fields:
+  - Upload or take a picture of any paperwork you want GBLS to review: ntq_pictures[i]
+    datatype: file
+    required: False
+list collect: True
+---
+question: |
+  Facts about your case (7 of 7)
+subquestion: |
+  These are the last questions. We'll send your answers to GBLS.
+fields:
+  - Do you owe any money to your landlord?: owes_money
+    datatype: yesnoradio
+  - About how much do you owe?: amount_owed
+    datatype: currency
+    show if: owes_money
+  - What type of disability do you have?: tenant.disability_type
+    show if:
+      code: |
+        tenant.is_disabled
+  - What is your goal in defending this eviction?: eviction_goal
+    choices:
+      - Stay
+      - Move
+      - Other
+    required: False
+  - field: intake_additional_information
+    label: |
+      Write down any other important facts about your case.
+      Don't tell us anything you already answered earlier in the
+      interview. Don't worry about leaving something out. If we
+      need to, we will call for more information.
+    datatype: area
+---
+event: view_intake
+question: |
+  Intake information for ${tenant}
+subquestion: |
+  #### Tenant forms
+  ${downloads_concat}
+
+  ${ntq_pictures_pdf}
+
+  Send to Legal Server 
+
+  ${case_facts_template}
+
+---
+template: ls_case_note_template
+content: |
+  Electronic intake from MADE.
+
+  View case documents in Docassemble:
+  ${interview_url_action('view_intake')}
+
+  ${case_facts_template}
+---
+template: case_facts_template
+content: |
+  Landlord name: ${landlord}
+  % if landlord.has_attorney:
+  
+  Landlord's attorney: ${landlords_attorney}
+  % endif
+
+  #### Household members
+  % for person in household:
+  * ${person} (DOB: ${person.birthdate}, Relationship: ${person.relationship})
+  % endfor
+
+  #### Case facts
+  Address: ${tenant.address.on_one_line()}
+
+  Court: ${court}
+
+  Subsidized tenancy: ${yesno(facts.tenant_has_subsidy)}
+  %if facts.tenant_has_subsidy:
+
+  ${subsidy_type}
+  %endif
+
+  Rescheduled court date: ${case.rescheduled_date}
+
+  Type of notice: ${notice_type}
+
+  Date of Notice to Quit: ${date_received_ntq}
+
+  Reasons for eviction: ${eviction_detailed_reason}
+
+  Tenant's rent amount: ${currency(showifdef('facts.tenant_rent_share',0))}
+  %if facts.tenant_has_subsidy:
+
+  Contract rent: ${currency(showifdef('facts.tenant_contract_rent',0))}
+  %endif
+
+  Money owed: ${yesno(owes_money)}
+  % if owes_money:
+
+  ${currency(amount_owed)}
+  %endif
+
+  Tenant is disabled: ${yesno(tenant.is_disabled)}
+  % if tenant.is_disabled:
+
+  ${tenant.disability_type}
+  %endif
+
+  Tenant is a crime victim: ${yesno(tenant.is_crime_victim)}
+
+  Tenant goals: ${eviction_goal}
+
+  Additional information: ${intake_additional_information}
+---
+template: intake_reminder_template
+subject: |
+  Save this link to complete your intake with GBLS
+content: |
+  Use the link below to finish the questions we need to answer to 
+  send your information to Greater Boston Legal Services.
+
+  ${interview_url_action('run_intake')}
+    - MADE from GBLS (https://www.gbls.org/MADE)

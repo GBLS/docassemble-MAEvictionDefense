@@ -240,7 +240,7 @@ class MACourt(Court):
         return text_type(self.name)
 
     def __str__(self):
-        return self.__unicode__().encode('utf-8') if PY2 else self.__unicode__()      
+        return self.__unicode__().encode('utf-8') if PY2 else self.name     
 
 class MACourtList(DAList):
     """Represents a list of courts in Massachusetts. Package includes a cached list that is scraped from mass.gov"""

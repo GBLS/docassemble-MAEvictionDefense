@@ -20,7 +20,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2019-11-25
+  revision_date: 2019-12-04
   post: |
     <div style="text-align: right; padding: 2em">
     Feedback, suggestions, or comments? 
@@ -44,8 +44,10 @@ modules:
   - docassemble.base.util
   - docassemble.base.legal
   - docassemble.MACourts.macourts
+  - docassemble.income.income
   - .discovery
   - .language
+  - .gbls_intake
 ---
 imports:
   - holidays
@@ -54,6 +56,9 @@ imports:
 ---
 objects:
   - tenant: Individual
+  - household: DAList.using(object_type=Individual)
+  - incomes: IncomeList.using(there_are_any = True)
+  - ntq_pictures: DAFileList.using(there_are_any = True)
   - landlord: Person
   - landlords_attorney: Person
   - court: MACourt
@@ -125,6 +130,7 @@ include:
 #  - help.yml
   - discovery-logic.yml
   - compel_discovery.yml
+  - federal_poverty_level.yml
 ---
 comment: |
   Transition to MACourt object from Court
@@ -191,6 +197,17 @@ code: |
   method_of_service
   if url_args.get('clinic', '').lower() == 'gbls':
     ls_case_id
+
+  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic
+  if in_service_area(tenant) and not url_args.get('clinic', '').lower() == 'gbls':
+    ask_intake_questions
+    if ask_intake_questions == 'reminder':
+      sent_take_intake_later_email
+    if ask_intake_questions == "ask_now" or (ask_intake_questions == 'reminder' and time_to_do_intake):
+      asked_intake_questions
+      created_online_intake
+  else:
+    out_of_service_area
   
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
     compel_discovery_motion
@@ -199,8 +216,25 @@ code: |
     send_ls_email
     # Only send responses from the live site
     if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
-      sent_answers # will only send once, so doesn't account for revisions    
+      sent_answers # will only send once, so doesn't account for revisions
     download_forms
+---
+code: |
+  understands_eligibility
+  if not tenant.is_over60:
+    household_size
+  if not tenant.is_over60 and not household_qualifies:
+      does_not_qualify
+  else:
+    review_intake_information
+    tenant.birthdate
+    household.gather()
+    incomes.gather()
+    tenant.gender
+    ntq_pictures.gather()
+    intake_additional_information
+    # view_intake
+  asked_intake_questions = True
 ---
 code: |
   case.case_id = ''
