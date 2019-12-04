@@ -401,7 +401,7 @@ code: |
   """
   if facts.tenant_has_subsidy:
     if subsidy_type == 'public housing':
-      legal_problem_code = "64 Other Public housing"
+      legal_problem_code = "64 Other Public Housing"
     else:
       legal_problem_code = "61 Federal Subsidized Housing"
   else:
