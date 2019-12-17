@@ -180,6 +180,7 @@ code: |
     if defined('signature_choice') and signature_choice =='this device':
       tenant.signature
     elif defined('signature_choice') and signature_choice == 'phone':
+      saw_signature_qrcode
       if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
         send_sms(task='send signature link', to=link_cell,template=interview_link)
         signature_wait_screen

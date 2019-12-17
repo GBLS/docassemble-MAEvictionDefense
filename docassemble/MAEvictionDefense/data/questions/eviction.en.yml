@@ -318,50 +318,38 @@ subquestion: |
 field: share_success  
 ---
 id: signature
+decoration: file-signature
 question: |
-  Signature
+  Sign your court forms
 subquestion: |
   We are almost ready to print your forms. You will need to sign them before
-  delivering them.
-fields:
-  - How do you want to sign?: signature_choice
-    input type: radio
-    default: phone
-    choices:
-      - Sign on this computer (using the computer's mouse): this device
-      - Print the forms and sign on paper: paper
-      - Send a link to my phone and sign on my phone's touchscreen: phone
-    show if: 
-      code: |
-        device().is_pc      
-  - note: |
-      To sign on your phone, point your phone camera at this barcode and click the 
-      barcode or link icon that appears in the camera view. Click continue on your 
-      phone.
-      
-      <center>
-      ${interview_url_as_qr()}
-      </center>
-
-    show if: 
-      code: |
-        device().is_pc    
-  - Or, text me a link at this phone number: link_cell
-    show if: 
-      code: |
-        device().is_pc        
-    required: false
-  - note: |
-      Once this screen has loaded on your mobile device, click continue.
-    show if: 
-      code: |
-        not device().is_pc            
-continue button field: saw_signature_choice
+  delivering them. We recommend you sign electronically now, before you print. 
+  You can sign using your computer mouse, or sign on your phone with your finger.
+field: signature_choice
+buttons:  
+  - Sign on my phone: phone
+    image: mobile-alt
+  - Sign on this computer: this device
+    image: desktop
+  - Sign after I print: paper
+    image: print
 help: |
-  Many smartphones will automatically find the link on this screen. The link
-  may "float" up from the screen into a small icon you can click.
-  If your phone does not do this, use the text option instead.
-  
+  #### Why do I need to sign it now?
+  We will print several forms for you. You will need to add your signature
+  to each page and then copy each collated set. If you sign now, you can print
+  all of the copies you need at once.
+  #### Will the court accept my digital signature?
+  Yes. Digital signatures are allowed by court rule. See [mass.gov](https://www.mass.gov/supreme-judicial-court-rules/massachusetts-rules-of-electronic-filing-rule-13-electronic-signature).
+  By comment to this rule, the court has expressed their acceptance of digital
+  signatures from MADE whether filed electronically or in person.
+continue button field: saw_signature_choice
+script: |
+  <script>
+    $(document).on('daPageLoad', function(){
+      $(".da-field-buttons > div > .btn-da-custom").last().after("<br>")
+      $(".da-field-buttons > div > .btn-da-custom").first().before("<br>")
+    });
+  </script>
 ---
 id: signature wait screen
 question: |
@@ -379,9 +367,49 @@ subquestion: |
   % endif
   % else:
   Click continue on this screen when you're ready to sign.
-  % endif
-  
+  % endif  
 field: signature_wait_screen
+decoration: file-signature
+---
+id: signature-phone
+question: |
+  Sign your court forms
+fields:
+  - note: |
+      1. Open the camera app or barcode reader app on your phone.
+      2. Point it at the screen.
+      3. Click the link icon that appears on the camera screen.
+      4. Click ${word("continue")} on your phone.
+      
+      <center>
+      ${interview_url_as_qr()}
+      </center>
+
+    show if: 
+      code: |
+        device().is_pc
+  - Text me a link instead: text_link
+    datatype: yesnowide
+    show if: 
+      code: |
+        device().is_pc
+  - label: Cell phone number
+    field: link_cell
+    show if: text_link
+    default: ${showifdef('user_cell_edited')}
+  - note: |
+      Click ${word("continue")} to add your signature.
+  - note: |
+      Click ${word("continue")} to add your signature.
+    show if: 
+      code: |
+        not device().is_pc
+help: |
+  Many smartphones will automatically find the link on this screen when you use
+  the camera app. The link
+  may "float" up from the screen into a small icon you can click.
+  If your phone does not do this, use the text option instead.
+continue button field: saw_signature_qrcode
 ---
 id: signature phone followup
 question: |
@@ -2645,6 +2673,10 @@ content: |
   % endfor
 
   #### Case facts
+  % if defined('tenant.preferred_language'):
+  Language: ${tenant.preferred_language}
+  % endif
+
   Address: ${tenant.address.on_one_line()}
 
   Court: ${court}

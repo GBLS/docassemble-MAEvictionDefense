@@ -434,7 +434,7 @@ code: |
         'aliasMiddle':alias_name_parts['middle'],
         'race': showifdef('tenant.ethnicity',None),
         'gender': showifdef('tenant.gender',None),
-        'language': showifdef('tenant.preferred_language',None),
+        #'language': showifdef('tenant.preferred_language',None),
         'veteran': showifdef('veteran_status',None),
         'disabled' : tenant.is_disabled,
         'legalProblemCode': legal_problem_code,
