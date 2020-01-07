@@ -5,6 +5,7 @@ name MADE, Massachusetts Defense for Eviction. Generates an Answer form,
 Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
+* 2020-01-07 Better intake (require contact info)
 * 2019-12-17 Improved signature page
 * 2019-12-04 Additional efforts to reduce resource exhaustion. Add intake to GBLS's Legal Server instance
 * 2019-11-27 stagger survey emails; other cron randomization to reduce risk of resource exhaustion
