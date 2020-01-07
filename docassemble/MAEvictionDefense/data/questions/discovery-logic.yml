@@ -1,9 +1,4 @@
 ---
-modules:
-  - docassemble.base.util
-  - .discovery
----
-mandatory: True
 need: all_answer_variables
 code: |
   other_ints.there_are_any = False
@@ -14,7 +9,8 @@ code: |
   # Load the CSV file into a list 
   
   discovery_url = 'data/sources/discovery-map.csv'
-  claim_discovery_link_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiHI5ZbD2baKGXBZgvHUDQqiOXzbNjtfMJwjAcrjfTIfve_21yjlDQc4yB2XJZII5q56y5wYiLp2yY/pub?gid=1622332186&single=true&output=csv'
+  # claim_discovery_link_url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRiHI5ZbD2baKGXBZgvHUDQqiOXzbNjtfMJwjAcrjfTIfve_21yjlDQc4yB2XJZII5q56y5wYiLp2yY/pub?gid=1622332186&single=true&output=csv'
+  claim_discovery_link_url = 'data/sources/claim-discovery-link.csv'
   discovery_list = load_from_csv(discovery_url)
   discovery_map = load_from_csv(claim_discovery_link_url)
  
@@ -42,7 +38,7 @@ code: |
         drq[iname].category = item['Category']
 
   # Evaluate our logic table to set discovery values automatically.
-  always_true = True
+  always_true = True 
   
   for lemma in discovery_map:
     # make sure it's a valid entry in the list
@@ -86,94 +82,9 @@ code: |
       drq_fields.append({'label': drq[key].description,
                         'field': "drq[" + repr(key) + "].checked",
                         'datatype': 'yesno'})
+
+  loaded_discovery = True        
 ---
 code: |
   if claims.utilities or bad_conditions.have_conditions or bqe.violated:
     need_rental_value = True
----
-generic object: Interrogatory
-question: |
-  Custom Interrogatories (Questions)
-subquestion: |
-  What additional question would you like to ask the landlord?
-fields:
-  - Question text: x.content
-    datatype: textarea
----
-generic object: DocumentRequest
-question: |
-  Custom Document Requests
-subquestion: |
-  What additional documents would you like to request from the landlord?
-fields:
-  - Document request text: x.content
-    datatype: textarea
----
-question: |
-  Additional Interrogatories
-subquestion: |
-  Would you like to ask an additional, custom interrogatory (question)?
-yesno: other_ints.there_is_another
----
-question: |
-  Additional Document Requests
-subquestion: |
-  Would you like to ask your landlord for additional documents?
-yesno: other_drq.there_is_another
----
-mandatory: True
-need: all_answer_variables
-question: |
-  Interrogatories (questions for your landlord)
-subquestion: |
-  You can ask your landlord up to 30 questions, so long as they are related
-  to your case. We may have recommended some for you automatically and some
-  will always be asked.
-  
-  ${ ints.count_checked() } interrogatories are already selected. 
-  
-  Below is a short summary of the topic of each question.
-  Please select all questions that you would like to ask your landlord.
-fields: 
-  code: ints_fields
----
-mandatory: True
-need: all_answer_variables
-question: |
-  Document requests (letters, leases, photos, and other printed information)
-subquestion: |
-  There is no limit to the number of documents you can ask your landlord
-  to provide to you, so long as they are related to your case. We may have 
-  recommended some for you automatically and some will always be asked.
-
-  Below is a short summary sentence for each pre-written question available.
-  Select the documents you would like your landlord to give you.
-fields: 
-  code: drq_fields
-help: |
-  Document requests can be unreadable for non-lawyers. The important thing
-  to review is the topic of the request.
----
-question: |
-  Summary of Discovery Selections
-subquestion: |
-  ###The Discovery categories are
-  
-  ${ints['person_answering'].checked}
-   
-  Number selected: ${ len(ints.checked_values()) }
-  
-  ###You've selected ${ len(ints.checked_values()) } interrogatories
-    
-  %for int in ints.checked_values():
-  * ${ints[int].description}  
-  %endfor
-
-  ###You've selected ${ len(drq.checked_values()) } document requests
-    
-  %for d in drq.checked_values():
-  * ${drq[d].description}  
-  %endfor
-section: Discovery
-buttons:
-  - Continue: continue

@@ -1,54 +1,67 @@
+---
 metadata:
+  interview_identifier: "MADE: Massachusetts Defense for Eviction (Launch)"
   title: |
-    Massachusetts Eviction Defense
+    MADE: Massachusetts Defense for Eviction
   short title: |
-    Eviction Defense
+    MADE (Eviction)
   description: |
     This interview helps you complete a summary process answer and request for discovery.
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
-  revision_date: 2018-03-14
-#  logo: |
-#    <img src="https://interviews.gbls.org/playgroundstatic/1/evictionlogo.png" style="height: 70px">
+  error help: |
+    # We ran into a bug.
+    We are very sorry for the inconvenience. 
+    
+    1. Try reloading the screen (use the refresh button) and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+  revision_date: 2019-12-04
+  post: |
+    <div style="text-align: right; padding: 2em">
+    Feedback, suggestions, or comments? 
+    <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
+    </div>
 ---
-sections:
-  - Getting Started
-  - Your Right to a Jury Trial
-  - About You
-  - Review Answers
-  - About Your Landlord
-  - About Your Tenancy
-  - Claims and Defenses
-  - Relief
-  - Discovery
-  - Conclusion
-
+translations:
+  - eviction_es.xlsx
+  - eviction_zh-t.xlsx
+  - eviction_pt.xlsx
+  - eviction_vi.xlsx
+  - eviction_ht.xlsx
 ---
 features:
   question help button: True
-#  question back button: True
   progress bar: True
   navigation: True
-  javascript: 
-    - analytics.js
-    - autotrack.js
   default icons: material icons
-#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css
-#  bootstrap theme: https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/united/bootstrap.min.css
-#  inverse navbar: False
-#  css: originalbase.css
-#  css: originalnav.css
-#  css: logonav.css
 ---
 modules:
   - docassemble.base.util
   - docassemble.base.legal
+  - docassemble.MACourts.macourts
+  - docassemble.income.income
+  - .discovery
+  - .language
+  - .gbls_intake
+---
+imports:
+  - holidays
+  - dt_send_answers
+  #- re
 ---
 objects:
   - tenant: Individual
+  - household: DAList.using(object_type=Individual)
+  - incomes: IncomeList.using(there_are_any=True)
+  - ntq_pictures: DAFileList.using(there_are_any = True)
   - landlord: Person
-  - court: Court
+  - landlords_attorney: Person
+  - court: MACourt
   - case: Case
   - eviction: DAObject
   - tenancy: DAObject
@@ -69,265 +82,176 @@ objects:
   - subsidized_housing: DAObject
   - discrimination: DAObject
   - relief: DAObject
-  - relief.stay: DAObject
+  - relief.stay: DAObject 
   - consumer_protection: DAObject
   - discrimination.sexual_harassment: DAObject
-  #rp
   - county: DAObject
   - ints: DiscoveryDict
   - drq: DiscoveryDict
   - other_ints: DiscoveryList
   - other_drq: DiscoveryList
-#  - discovery_categories: DAList
   - review_answers: DAObject
+  - macourts: MACourtList.using(courts=True)
 ---
-images:
-  summons: summons_and_complaint.png
+initial: True
+code: |
+  process_action()
+---
+initial: True
+code: |
+  set_language(user_language)
 ---
 code: |
-  case.defendant.append(tenant)
-  case.plaintiff.append(landlord)
-  case.court = court
-  pleading.case = case
-  pleading.title = "Defendant's Request for Discovery (Interrogatories and Document Requests)"
-  pleading.case.firstParty.gathered = True
-  pleading.case.secondParty.gathered = True
+  if url_args.get('lang'):
+    user_language = url_args.get('lang')
+  else:
+    user_language= 'en'
 ---
+event: change_language
+code: |
+  if 'lang' in action_arguments():
+    user_language = action_argument('lang')
+    set_language(user_language)
+---
+id: language
+question: |
+  Language
+subquestion: |
+  ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
+field: language
+---
+include:
+  - review_screens.yml
+  - eviction.en.yml
+  - eviction.code.yml
+  - eviction.cron.yml
+  - eviction.attachments.yml
+  - interview-order.yml
+#  - help.yml
+  - discovery-logic.yml
+  - compel_discovery.yml
+  - federal_poverty_level.yml
+---
+comment: |
+  Transition to MACourt object from Court
+mandatory: True
+id: macourt_transition
+code: |
+  if defined('court.county'):
+    del court
+---
+comment: |
+  This block controls the overall interview flow.
+  interview-order.yml contains questions which set the logical order of the main Answer form
+  which must be completed before discovery is generated.
+  Then we load discovery defaults from a CSV file or Google Sheets.
+  Finally, we display the final interview screens.
+id: parent_interview_flow
 mandatory: True
 code: |
   multi_user = True
----
-mandatory: true
-decoration: home
-question: |
-  Massachusetts Eviction Defense
-subquestion: |
-  This interview is designed to help a tenant respond to an eviction case in court.
+  allow_cron = True
+  speak_text = True
+  menu_items = [action_menu_item('Review Answers', 'road_map')]
+  menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
+  menu_items.append(action_menu_item('Language','language'))
+  set_live_help_status(availability='available', mode='help',partner_roles='advocate')
   
-  A typical tenant will take about :stopwatch: 25 minutes to complete this interview.
-  You will receive documents that you can print and file at the end. It may postpone
-  your court hearing by 2 weeks.
-  
-  Words that you may not understand will be {highlighted in green}. Click on a green
-  word to learn more. Click the "[Help]" button at any time to learn more about this
-  interview.
-field: user_saw_initial_screen
-terms: 
-  - highlighted in green: This is an example. Click it again to hide this definition.
-buttons: 
-  - Continue: continue
-section: Getting Started
----
-question: | 
-  This site does not give legal advice.
-subquestion: |
-  Your use of this system does not mean that you have a lawyer.  Do
-  you understand this?
-  
-  If you would like a lawyer, you may qualify for help from legal aid. You can use the
-  [Legal Resource Finder](https://www.masslegalservices.org/FindLegalAid) to find out.
-field: user_understands
-buttons:
-  - "I understand": understands
-  - code: |
-      [{'does not understand':"I do not understand"}, {'unsure':"I'm not sure"}]
----
-mandatory: True
-code: |
-  need(user_saw_initial_screen)
-  if not user_understands == "understands":
-    need(client_kicked_out)
----
-mandatory: True
-question: |
-  Who is completing this interview?
-field: person_answering
-buttons:
-  - Tenant or helper: tenant
-  - Attorney or paralegal: attorney
----
-mandatory: True
-code: |
-  if person_answering == 'tenant':
-    need(overview_video)
-    need(getting_started)
----
-question: Overview of Tenant's Rights in Evictions in Massachusetts
-subquestion: | 
-  Watch the video below to learn a little more about the eviction process.
-  You can also visit the [MassLegalHelp](http://www.masslegalhelp.org/housing/evictions) website.
-video: "[YOUTUBE TSaTw0Y5OFA]"
-field: overview_video
----
-question: Getting Started
-subquestion: |
-  Please locate the Summons and Complaint and the Notice to Quit for your case
-  before you begin. You'll be asked to look for information on both
-  documents to help answer some questions. For some situations, it may help to
-  refer to your lease or any written rental agreement.
-  
-  If you don't have either document, 
-  you can still do your best to answer from your memory.
-field: getting_started
-buttons: 
-  - Continue: continue
-  - Exit: exit
----
-question: |
-  Upcoming court dates
-subquestion: |
-  This interview is designed to help a tenant whose case is scheduled in court for
-  the first time. It can also help you ask for permission to file late.
-  What best describes ${tenant.name}'s case?
-field: case.status
-choices: 
-  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - I have a court date scheduled: summons
-  - I signed an agreement in this case already. I have a new court date coming up.: afj
-  - I missed my first court date.: late
-default: summons
-help:
-  We need to know where your case is in the court process to choose the right forms.
-  
-  If your first court date has passed, you may be able to use a special form called a 
-  "Motion to File Late Answer." This interview will help you decide. 
-section: Getting Started
----
-mandatory: True
-code: |
-  if case.status == "onlyntq":
-    need(onlyhasntq)
-  if case.status == "afj":
-    need(firstdatepassed)
----
-mandatory: True
-question: |
-  Your right to a jury trial
-subquestion: |
-  Both the tenant and the landlord have the right to have a jury decide the facts of their case instead of 
-  a judge. This is your only chance to claim your
-  right to a jury (unless you file a separate form before the answer date).
-  
-  #### Why claim your right to a jury trial?
-  1. Members of the jury are your peers. Some may be tenants who can understand your experiences.
-  1. Jury trials take time to schedule. You can use this time to try to resolve your case.
-  1. You still can waive your jury trial right later. Claiming a jury trial also does not
-     stop you from reaching an agreement with your landlord.
-  
-  There is a chance that the judge will ask you to pay rent or use and occupancy while you
-  are waiting for the jury trial to be scheduled. 
-  Most tenants who receive assistance in Greater Boston Legal Services clinics request a 
-  jury trial. 
+  started_on_phone # check to see what the starting device is
 
-field: claim_jurytrial
-buttons:
-  - Claim a jury trial: True
-  - Waive my right to a jury: False
-section: Your Right to a Jury Trial
+  acknowledged_information_use
+
+  if user_language == 'es':
+    default_lang = 'Spanish'
+  else:
+    default_lang = ''
+
+  all_answer_variables # refers to variables listed in interview-order.yml
+  loaded_discovery
+  if person_answering == 'attorney' or tenant_review_discovery:
+    interrogatory_questions
+    drq_questions
+  
+  if started_on_phone:
+    saw_signature_choice = True
+    tenant.signature
+  else: 
+    saw_signature_choice
+    if defined('signature_choice') and signature_choice =='this device':
+      tenant.signature
+    elif defined('signature_choice') and signature_choice == 'phone':
+      saw_signature_qrcode
+      if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
+        send_sms(task='send signature link', to=link_cell,template=interview_link)
+        signature_wait_screen
+        tenant.signature
+        if device().is_mobile:
+          signature_phone_followup
+      else:
+        tenant.signature
+    # Handle situation where someone uses the QR code    
+    if saw_signature_choice and not defined('signature_choice'):
+      tenant.signature
+      signature_phone_followup
+      signature_choice = 'phone'
+
+  method_of_service
+  if url_args.get('clinic', '').lower() == 'gbls':
+    ls_case_id
+
+  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic
+  if in_service_area(tenant) and not url_args.get('clinic', '').lower() == 'gbls':
+    ask_intake_questions
+    if ask_intake_questions == 'reminder':
+      sent_take_intake_later_email
+    if ask_intake_questions == "ask_now" or (ask_intake_questions == 'reminder' and time_to_do_intake):
+      asked_intake_questions
+      created_online_intake
+  else:
+    out_of_service_area
+  
+  if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
+    compel_discovery_motion
+  else:
+    send_user_email
+    send_ls_email
+    # Only send responses from the live site
+    if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
+      sent_answers # will only send once, so doesn't account for revisions
+    download_forms
 ---
 code: |
-  last_months_rent_amount = 0
+  understands_eligibility
+  if not tenant.is_over60:
+    household_size
+  if not tenant.is_over60 and not household_qualifies:
+      does_not_qualify
+  else:
+    review_intake_information
+    if not defined('tenant.phone_number') or not defined('tenant.email') or (tenant.phone_number.rstrip() == '' or tenant.email.rstrip() == '' ):
+      tenant.no_phone
+      tenant.no_email
+      tenant.other_contact_method
+    tenant.birthdate
+    household.gather()
+    incomes.gather()
+    tenant.gender
+    ntq_pictures.gather()
+    intake_additional_information
+    # view_intake
+  asked_intake_questions = True
 ---
-include:
-  - control-order.yml
-#  - review_screens.yml
-  - tenant_and_tenancy.yml
-  - landlord.yml
-  - court_and_eviction.yml
-  - help.yml
-  - glossary.yml
-  - endpoints.yml
-  - initial_defenses.yml
-  - conditions.yml
-  - foreclosure.yml
-  - subsidized_tenancy.yml
-  - retaliation.yml
-  - discrimination_and_harassment.yml
-  - consumer_protection.yml
-  - security_deposit_and_prepaid_rent.yml
-  - discovery-logic.yml
-#  - basic-questions.yml
+code: |
+  case.case_id = ''
+  #dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
+  sent_answers = True
 ---
-question: Please sign below
-subquestion: |
-  By signing below, you acknowledge that your answers to the questions
-  in this interview were truthful, to the best of your knowledge.
-signature: tenant.signature
-under: |
-  ${ tenant.name }
----
-need: all_answer_variables
-question: |
-  Printed Instructions
-subquestion: |
-  Should we include printed instructions about delivering the forms 
-  in the documents for you to print?
-yesno: show_instructions 
-#section: Conclusion
----
-need: all_answer_variables
-question: |
-  Method of Service
-subquestion: |
-  A copy of the paperwork needs to go to your landlord. If your landlord has an attorney,
-  you need to bring it to their attorney. The address is written on your Summons and
-  Complaint.
-  
-  % if format_date(case.answer_date) == format_date(today()):
-  You must deliver the paperwork in person today. You cannot mail it.
-  % endif
+comment: |
+  Send interview responses to community.lawyer
+reconsider: True
+code: |
+  # import dt_send_answers
 
-  Some landlords or landlord's attorneys will allow you to deliver the paperwork
-  by fax or email. However, you must call and confirm with your landlord before
-  faxing or emailing. The landlord has to agree to get the paperwork this way.
-
-  When and how will you bring the paperwork to your landlord or their attorney?
-fields: 
-  - Delivery method: method_of_service
-    choices:
-      - Mail: mailed
-      - Delivering by hand: delivered in-hand
-      - Email (with permission of my landlord): emailed
-      - Fax (with permission of my landlord): faxed
-  - Date of delivery: service_date
-    datatype: date
-section: Conclusion
----
-id: download
-mandatory: True
-question: |
-  Your documents are ready. Please print and file!
-subquestion: |
-  Please download and print 3 copies of each document below. 
-  
-  1. Bring one copy to the "Summary Process Clerk" at the ${ court.name }.
-  2. Keep one copy for your personal records.
-  % if landlord.has_attorney:
-  3. Deliver the final copy to your landlord's attorney, ${landlord.attorneys_name}, at ${landlord.attorneys_address}.
-  % else:
-  3. Deliver the final copy to your landlord ${landlord.name}.
-  %endif
-  
-  % if case.on_time :
-  Please note: **your hearing date will be postponed to ${format_date(case.rescheduled_date)}**.
-  You will not receive any special notice in the mail. The new date is also printed
-  on your paperwork.
-
-  According to your earlier answer, you must deliver all copies no later than 
-  **${format_date(case.answer_date)}**. Please note, most Massachusetts courts close at 
-  4:30 PM.
-
-  % else:
-  Please note: because you are filing your answer after the Answer date (${format_date(case.answer_date)}),
-  your hearing date will not be postponed. Please attend court as originally scheduled.
-  % endif
-attachment:
-  - name: Answer Form
-    filename: Answer.docx
-    docx template file: SummaryProcessAnswer_Finaledit.docx
-  - name: Request for Discovery
-    filename: Discovery.docx
-    docx template file: SummaryProcessDiscovery.docx
-
-section: Conclusion 
-
+  # Workarounds for dt_send_answers
+  #case.case_id = "" # Needed for dt-sendanswers
+  answers_response = ''

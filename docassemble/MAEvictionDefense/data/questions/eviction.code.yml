@@ -1,0 +1,470 @@
+---
+code: |
+  case_title = landlord.name.full() + ' v. ' + tenant.name.full()
+---
+code: |
+  attempted_cure = attempted_full_cure or attempted_offered_cure
+---
+code: |
+  prepared_with_aoc = url_args.get('clinic',False) == 'GBLS' or person_answering == 'attorney'
+---
+sets: 
+  - landlords_attorney.name.text
+  - landlords_attorney.name
+code: |
+  if not landlord.has_attorney:
+    landlords_attorney.name.text = ''
+---
+code: |
+  started_on_phone = device().is_mobile
+---
+code: |
+  if remind_user and (tenant.email or tenant.phone_number):
+    user_cell = tenant.phone_number
+    user_email = tenant.email
+    if edit_contact_info:
+      user_cell = user_cell_edited
+      user_email = user_email_edited
+    didnt_provide_contact_info = False      
+  elif edit_contact_info and (user_cell_edited or user_email_edited):
+    user_cell = user_cell_edited
+    user_email = user_email_edited
+    didnt_provide_contact_info = False   
+  else:
+    user_cell = tenant.phone_number
+    user_email = tenant.email
+    didnt_provide_contact_info = True
+---
+code: |
+  date_discovery_received = service_date
+  if method_of_service == 'mailed':
+    date_discovery_received = date_discovery_received.plus(days=1)
+
+  date_discovery_due = date_discovery_received.plus(days=10)
+  date_motion_to_compel_due = date_discovery_received.plus(days=15)
+---
+comment: |
+  Information about tenant
+---
+code: |
+  if tenant.name_different_on_summons:
+    defendants_name = defendant_name_as_listed_on_summons
+  else:
+    defendants_name = tenant.name
+---
+code: |
+  if facts.tenant_address_is_eviction_address:
+    premises_address = tenant.address.on_one_line()
+  else:
+     premises_address = premises_alternate_address
+---
+code: |
+  tenant.address.geolocate()
+---
+code: |
+  facts.tenant_has_lease = tenancy_type == 'lease'
+---
+comment: |
+  Information about court
+---
+code: |
+  court_is_housing_court = "housing court" in court.name.lower()
+---
+code: |
+  if not local_housing_court is None and local_housing_court != "":
+    transfer_court_name = local_housing_court
+  else:
+    transfer_court_name = transfer_court_name_temp # ask
+
+---
+code: |
+  local_housing_court = macourts.matching_housing_court(tenant.address)
+---
+code: |
+  case.entry_date = case.answer_date + date_interval(days=-7)
+---
+code: |
+  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
+    case.rescheduled_date = case.original_date.plus(days=14)
+    case.on_time = True
+  else:
+    case.rescheduled_date = case.original_date
+    case.on_time = False
+---
+code: |
+  if case.on_time:
+    court_date = case.rescheduled_date
+  else:
+    court_date = case.original_date
+---
+sets: eviction_reason
+code: |
+  if eviction_all_reasons['fault']:
+    eviction_reason = 'fault'
+  elif eviction_all_reasons['nonpayment']:
+    eviction_reason = 'nonpayment'
+  elif eviction_all_reasons['nofault']:
+    eviction_reason = 'nofault'
+  elif eviction_all_reasons['nontq']:
+    eviction_reason = 'nontq'
+  else:
+    eviction_reason = 'unsure'
+    
+  if eviction_all_reasons['nontq']:
+    initial_defense.no_ntq = True
+---
+code: |
+  plead_counterclaims = True
+  if eviction_reason == "fault":
+    plead_counterclaims = False
+    need(fault_basis)
+  if eviction_reason == "nofault":
+    plead_counterclaims = True
+    need(nofault_basis)
+  if (eviction_reason == "nonpayment") or (eviction_reason == "nontq")  or (eviction_reason == "unsure"):
+    plead_counterclaims = True
+  if (eviction_reason == "nontq"):
+    initial_defense.no_ntq = True
+  if eviction_all_reasons['fault'] and eviction_all_reasons['nonpayment']:
+    plead_counterclaims = True
+  
+  set_plead_counterclaims = True
+---
+code: |
+  plead_8a = eviction_reason in ["nofault","nonpayment","unsure"]
+---
+code: |
+  eviction_detailed_reason = "Unknown"
+  if eviction_reason == "fault":
+    eviction_detailed_reason = fault_basis.true_values()
+  elif eviction_reason == "nofault":
+    eviction_detailed_reason = nofault_basis.true_values()
+  elif eviction_reason == "nonpayment":
+    eviction_detailed_reason = "nonpayment of rent"
+  elif eviction_reason == "nontq" or (eviction_reason == "unsure"):
+    eviction_detailed_reason = "unknown"
+
+---
+comment: |  
+  Questions about landlord
+---
+code: |
+  t_landlord_name = str(landlord.name).lower()
+  if ("housing authority" in t_landlord_name):
+    default_landlord_type = "public"
+  elif ("llc" in t_landlord_name) or ("company" in t_landlord_name) or("inc" in t_landlord_name) or ("lp" in t_landlord_name) or ("corp" in t_landlord_name):
+    default_landlord_type = "corporate"
+  elif "trust" in t_landlord_name:
+    default_landlord_type = "trust"
+  else:
+    default_landlord_type = "other"
+---
+comment: |
+  Initial defenses
+---
+sets: 
+  - initial_defense.no_proper_termination
+  - initial_defense.need_ntq
+code: |
+  tenant_type = 'renter'
+  if is_pca:
+    tenant_type = 'pca'
+  if not facts.tenant_has_subsidy and postforeclosure.is_foreclosed and is_pfc_owner:
+    tenant_type = 'pfc_owner'
+
+  initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
+  
+  if tenant_type == 'renter' and tenancy_type == 'lease':
+    initial_defense.need_ntq = not (lease_type == 'fixed_term' and lease_end_date <= date_received_summons) and not (tenancy_type == 'pca')
+  else:
+    initial_defense.need_ntq = True
+
+  # Check to see if the right type of notice was used to match the type of tenancy and basis for termination
+  if notice_type == 'fourteen_day':
+    initial_defense.improper_time_given = (not behind_in_rent) or lease_requires_30_day_notice or (refused_rent_increase)
+  elif notice_type == 'thirty_day':
+    initial_defense.improper_time_given = tenancy_type == 'taw'
+  elif notice_type == 'seventy_two_hour':
+    initial_defense.improper_time_given = not (not facts.tenant_has_subsidy and postforeclosure.is_foreclosed and tenant_type == 'pfc_owner')
+  elif notice_type == 'rental_period':
+    initial_defense.improper_time_given = False
+  else:
+    initial_defense.improper_time_given = True
+  
+  # Tenancy improperly terminated if wrong notice type or defective notice
+  # We're only checking some common scenarios
+  initial_defense.no_proper_termination = (initial_defense.ntq_defective or initial_defense.improper_time_given or (initial_defense.need_ntq and initial_defense.no_ntq))
+---
+sets: initial_defense.new_tenancy
+code: |
+  if post_ntq_waiver['rent'] and not ntq_contains_reservation:
+    initial_defense.new_tenancy = True
+  elif post_ntq_waiver['lease']:
+    initial_defense.new_tenancy = True
+  else:
+    initial_defense.new_tenancy = False
+---
+sets: initial_defense.inconsistent_reasons
+code: |
+  if ntq_matches_summons:
+    initial_defense.inconsistent_reasons = False
+  elif showifdef("summons_eviction_reasons['failure_to_vacate']") or showifdef("summons_eviction_reasons['rent']") and not (showifdef("summons_eviction_reasons['new_fault']")):
+    initial_defense.inconsistent_reasons = False
+  else:
+    initial_defense.inconsistent_reasons = True
+---
+sets: initial_defense.defective_summons
+code: |
+
+  case.entry_date = case.answer_date.plus(days=-7) # The Entry date should be 1 week before the Answer date--don't make the Tenant enter this information
+
+  if defined('date_received_ntq'):
+    initial_defense.summons_served_at_wrong_time = not (case.entry_date >= date_received_ntq.plus(days=7) and case.entry_date <= date_received_ntq.plus(days=30))
+  else:
+    initial_defense.summons_served_at_wrong_time = True
+  
+  initial_defense.summons_missing_information = (tenant.name_different_on_summons and tenant.not_named_on_summons) or ( not (summons_includes_all_tenants and summons_includes_correct_address))
+  initial_defense.defective_summons = (
+        not (summons_in_hand or (summons_mailed and summons_last_and_usual))
+        or initial_defense.summons_missing_information 
+        or initial_defense.summons_served_at_wrong_time)
+---
+comment: |
+  A notice can be 14 day, 30 day, 72 hour, or rental period (a full month).
+  A rental period notice must be at least 30 days and must end on a rent day.
+  We don't need a notice if the tenancy is by lease and the lease has expired.
+sets: 
+  - initial_defense.premature_commencement
+code: |
+  if eviction_all_reasons == 'nontq' or notice_type == 'no_ntq':
+    initial_defense.premature_commencement = not (tenant_type == 'renter' and tenancy_type =='lease' and lease_type == 'fixed_term' and lease_end_date < date_received_summons)
+    premature_commencement_test = 'No notice required for fixed term lease but is for all other tenancy types'
+  else:
+    if notice_type in ['fourteen_day','thirty_day','seventy_two_hour']:
+      premature_commencement_test = 'Notice is required for a fixed number of days'
+      if notice_type == 'fourteen_day':
+        required_notice_time = 14
+      elif notice_type == "thirty_day":
+        required_notice_time = 30
+      elif notice_type == "seventy_two_hour":
+        required_notice_time = 3
+      date_notice_should_be_received_after = date_received_ntq.plus(days=required_notice_time)        
+      initial_defense.premature_commencement = not (date_received_summons >= date_notice_should_be_received_after)
+    else:
+      premature_commencement_test = 'Rental period notice is required'
+      # We don't know what the rent day is but perhaps this should be checked by a lawyer?
+      # Check for the date exactly 2 months after the first day of the month the NTQ was received.
+
+      month_that_begins_next = date_received_ntq.replace(day=1).plus(months=2)
+      notice_greater_than_30_days = ((month_that_begins_next - date_received_ntq).days >= 30)
+      initial_defense.premature_commencement = not (notice_greater_than_30_days and month_that_begins_next <= date_received_summons)
+---
+sets: initial_defense.cure
+code: |
+  if tenancy_type == 'lease':
+    if paid_rent_owed and cure_date <= case.entry_date:
+      initial_defense.cure = True
+    elif paid_rent_owed and cure_date <= case.answer_date and paid_court_fees:
+      initial_defense.cure = True
+    else:
+      initial_defense.cure = False
+  else:
+    if no_ntq_in_12_months and paid_rent_owed and cure_date <= date_received_ntq.plus(days=10):
+      initial_defense.cure = True
+    else:
+      initial_defense.cure = False
+---
+sets: initial_defense.no_standing
+code: |
+  if landlord.is_new and new_landlord_reason == 'My landlord died':
+    initial_defense.no_standing = True
+  elif landlord.is_new and building_sold_after_ntq:
+    initial_defense.no_standing = True
+  else:
+    initial_defense.no_standing = False
+---
+code: |
+  if eviction_reason == 'nontq': 
+    initial_defense.no_ntq = True
+  else:
+    initial_defense.no_ntq = False
+---
+code: |
+  if landlord.organization_type in ['corporate','trust','public'] and not landlord.has_attorney:
+    initial_defense.varney = True
+  else:
+    initial_defense.varney = False
+---
+code: |
+  initial_defense.other = False
+---
+code: |
+  has_defense = ( initial_defense.no_ntq or
+                  initial_defense.premature_commencement or
+                  initial_defense.varney or
+                  initial_defense.defective_summons or
+                  (eviction_reason == 'nonpayment' and initial_defense.cure) or
+                  initial_defense.new_tenancy or
+                  initial_defense.inconsistent_reasons or
+                  initial_defense.no_standing or
+                  initial_defense.no_proper_termination
+                  )          
+---
+comment: |
+  Bad housing conditions
+---
+code: |
+  if bad_conditions.have_conditions or bqe.entered_without_permission:
+    bqe.violated = True
+  else:
+    bqe.violated = False
+---
+code: |
+  bad_conditions.have_conditions = bad_conditions.conditions.any_true()
+---
+code: |
+  other.repair_and_deduct_statute = other.tenant_repaired and other.certified_report and other.no_timely_repairs and other.deducted_repair_cost and other.repair_less_than_4_months
+---
+code: |
+  if tenant.is_discriminated:
+    if discrimination.protected_classes['Family status']:
+      if bad_conditions.conditions['lead paint']:
+        plead_lead_paint = True  
+---
+comment: |
+  Consumer protection 93A
+---
+code: |
+  if (landlord.organization_type in ["corporate","trust","other"]) and plead_counterclaims:
+    plead_93a = True
+  else:
+    plead_93a = False          
+---
+sets: security_deposit.violated
+code: |
+  if (security_deposit.violations.any_true() ):
+    security_deposit.violated = True
+  else:
+    security_deposit.violated = False
+---
+code: |
+    ls_email = ls_case_id + '@gbls.legalserver.org'
+---
+code: |
+  last_months_rent.violated = last_months_rent.over_a_year and (not last_months_rent.paid_interest)
+---
+code: |
+  ma_holidays = holidays.US(state='MA')
+  answer_date_is_holiday = case.answer_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(case.answer_date))
+  answer_date_holiday = ma_holidays.get(case.answer_date)
+  court_date_is_holiday = court_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(court_date))
+  court_date_holiday = ma_holidays.get(court_date)
+  del ma_holidays
+---
+code: |
+  if share_email:
+    if share_attachments and defined('downloads_concat'):
+      sent_sharing_email = send_email(to=share_email,template=sharing_email_template,attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
+    else:
+      sent_sharing_email = send_email(to=share_email,template=sharing_email_template)
+  else:
+    sent_sharing_email = False
+  if share_cell:
+    sent_sharing_text = send_sms(to=share_cell,template=interview_link)
+  else: 
+    sent_sharing_text = False  
+---
+reconsider: True
+code: |
+  household_income_limit = (poverty_base + ((household_size) + 1 * poverty_increment)) * poverty_multiplier
+
+  # We want a soft cutoff--add 1% fudge factor
+  household_income_qualifies = int((household_income_limit * 1.01)/12) >=  int(household_monthly_income)
+---
+code: |
+  household_qualifies = tenant.is_crime_victim or tenant.is_over60 or household_income_qualifies
+---
+code: |
+  household.there_are_any = household_size > 0
+---
+code: |
+  if tenant.has_alias:
+    alias_name_parts = nameparts(tenant.other_name)
+  else:
+    alias_name_parts = nameparts('')
+---
+code: |
+  """
+  61 Federally subsidized housing
+  63 Private landlord/tenant
+  64 Public housing
+  """
+  if facts.tenant_has_subsidy:
+    if subsidy_type == 'public housing':
+      legal_problem_code = "64 Other Public Housing"
+    else:
+      legal_problem_code = "61 Federal Subsidized Housing"
+  else:
+    legal_problem_code = "63 Landlord/ Tenant (Not Public Housing)"
+---
+code: |
+  num_adults_temp = 0 if tenant.age_in_years() < 18 else 1
+  num_children_temp = 0 if tenant.age_in_years() >= 18 else 1
+  for person in household:
+    if person.age_in_years() < 18:
+      num_children_temp += 1
+    else:
+      num_adults_temp += 1
+  num_adults = num_adults_temp
+  num_children = num_children_temp  
+---
+code: |
+  if task_not_yet_performed('create online intake'):
+    r = ls_submit_online_intake( params = {
+        'firstName': tenant.name.first,
+        'lastName': tenant.name.last,
+        'dateOfBirth': tenant.birthdate,
+        'eTransferOrganization': 'Greater Boston Legal Services',
+        'note': ls_case_note_template,
+        'phoneHome': tenant.phone_number,
+        'addressHome': address_to_json(tenant.address),
+        'email': tenant.email,
+        'aliasFirst': alias_name_parts['first'],
+        'aliasLast':alias_name_parts['last'],
+        'aliasMiddle':alias_name_parts['middle'],
+        'race': showifdef('tenant.ethnicity',None),
+        'gender': showifdef('tenant.gender',None),
+        #'language': showifdef('tenant.preferred_language',None),
+        'veteran': showifdef('veteran_status',None),
+        'disabled' : tenant.is_disabled,
+        'legalProblemCode': legal_problem_code,
+        'numberOfAdults': num_adults,
+        'numberOfChildren': num_children,
+        'citizenshipStatus': showifdef('tenant.is_citizen',None),
+        'incomes': incomes.to_json()
+      }, task = 'create online intake')
+    # debug_url = r.request.url
+  created_online_intake = True
+---
+code: |
+  # Set an intial vaue for running an intake, in case user 
+  # was sent link to resume intake later, after completing the interview
+  time_to_do_intake = False
+---
+code: |
+  if task_not_yet_performed('send intake email'):
+    if user_cell:
+      send_sms(to=user_cell,template=intake_reminder_template)
+    elif user_email:
+      send_email(to=user_email,template=intake_reminder_template)
+  sent_take_intake_later_email = True
+---
+code: |
+  try:
+    ntq_pictures_pdf = pdf_concatenate(ntq_pictures)
+  except:
+    ntq_pictures_pdf = DAEmpty()
+---
+event: run_intake
+code: |
+  time_to_do_intake = True

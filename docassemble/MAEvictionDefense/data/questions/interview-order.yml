@@ -1,0 +1,206 @@
+---
+comment: |
+  This block controls the order in which key questions are asked in one place, 
+  instead of several mandatory and need statements.
+  We want this to run before generating discovery selections
+sets: all_answer_variables
+code: |
+  show_instructions = True
+
+  # Overview
+  person_answering
+  prepared_with_aoc
+  if person_answering == 'tenant':
+    how_to_answer
+    overview_video
+  if case.status == "onlyntq":
+    onlyhasntq
+  if case.status == "afj" or case.status == 'late':
+    firstdatepassed
+  
+  tenant.name
+  tenant.name_different_on_summons
+  if tenant.name_different_on_summons and tenant.not_named_on_summons:
+    request_right_to_intervene
+  defendants_name
+  tenant.address
+  tenant.address.geolocate()
+  remind_user
+  landlord.name
+  landlord.organization_type
+  landlord.has_attorney
+
+  set_title(subtitle=case_title)
+
+  court
+  if not court_is_housing_court:
+    transfer_to_housing_court
+    if transfer_to_housing_court:
+      transfer_court_name
+  
+  case.original_date
+  if today() > case.answer_date :
+    firstdatepassed
+    case.status = 'late'
+  case.rescheduled_date
+  if case.on_time:
+    if person_answering == 'tenant':
+      case_is_on_time # Inform the user of postponement
+
+  eviction_reason
+  set_plead_counterclaims
+  if person_answering == 'tenant': 
+    eviction_reason_explanation # Explain 239 s 8A rights
+    
+  facts.tenant_movein
+  # facts.tenant_rent_share # don't need this if they are a PCA/Super
+  if eviction_reason == 'nonpayment':
+    other.vendor_payments
+
+  facts.tenant_has_lease
+
+  if initial_defense.need_ntq:
+    if eviction_reason != 'nontq' and notice_type != 'no_ntq':
+      date_received_ntq
+    ntq_matches_summons
+    
+  has_defense
+  
+  if person_answering == "tenant":
+    show_defense_summary
+  
+  if facts.tenant_has_subsidy:
+    subsidy_type
+    subsidized_housing.no_proper_termination
+    subsidized_housing.improper_rent_calculation 
+    if subsidy_type in ['Section 8 voucher', 'MRVP']:
+      subsidized_housing.pha_pays_rent
+      subsidized_housing.stopped_payment
+    if subsidy_type in ['Section 8 voucher']:
+      subsidized_housing.no_ntq_to_agency
+  
+  if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and is_condo_conversion:
+    more_than_3_units
+
+  if plead_counterclaims:
+    bad_conditions.have_conditions
+    if bad_conditions.have_conditions:
+      bad_conditions.conditions
+      bad_conditions.landlord_notified
+      other.repair_and_deduct_statute
+  
+  if (plead_counterclaims and bad_conditions.have_conditions) or tenant.is_dvvictim or claims.harassment: 
+    retaliation.is_retaliated = True
+  #retaliation.is_retaliated
+  if retaliation.is_retaliated:
+    retaliation.withheld_rent
+    retaliation.badconditions_to_landlord
+    retaliation.badconditions_to_agency
+    retaliation.tenant_union
+    retaliation.protection_or_prevention_order
+    retaliation.domestic_violence
+    retaliation.survivor_rights
+    if show_retaliation_other:
+      retaliation.other
+    retaliation.within_6_months
+
+  if tenant.is_disabled:
+    tenant.is_discriminated = True
+  if tenant.is_discriminated:
+    discrimination.protected_classes
+
+  initial_defense.no_ntq
+  initial_defense.premature_commencement
+  initial_defense.varney
+  initial_defense.defective_summons
+  if eviction_reason == 'nonpayment':
+    initial_defense.cure
+  if eviction_reason == 'fault':
+    fault.did_not_occur
+    fault.not_violation_of_agreement
+    fault.no_control_of_guest
+  initial_defense.new_tenancy
+  initial_defense.no_standing
+  initial_defense.inconsistent_reasons
+  initial_defense.other
+  
+  if plead_counterclaims:
+    paid_deposit
+    if paid_lmr:
+      last_months_rent.violated 
+    
+    bqe.violated
+    if bqe.violated:
+      bqe.heat
+      bqe.hot_water
+      bqe.unpaid_utilities
+      bqe.shutoff_utilities
+      bqe.locked_out
+      bqe.removed_possessions
+      bqe.bad_conditions
+      bqe.entered_without_permission
+      bqe.other
+    # if paid utilities
+    if claims.utilities: 
+      bqe.billed_no_agreement
+      bqe.billed_for_others
+      other.water_violation
+
+    if paid_deposit:
+      security_deposit.amount
+      security_deposit.violated
+      security_deposit.violations
+    if paid_lmr:
+      last_months_rent.violated
+      last_months_rent.amount
+
+    if plead_93a:
+      consumer_protection.late_fees
+      consumer_protection.nonagreed_rent
+      consumer_protection.unlawful_court_fees
+      consumer_protection.unlawful_lease_terms
+  
+  if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and postforeclosure.is_foreclosed:
+    postforeclosure.no_just_cause.bona_fide_protections
+    postforeclosure.no_just_cause.no_binding_purchase
+    postforeclosure.no_just_cause.ntq_or_other_actions
+    postforeclosure.notice_provisions.no_plaintiff_info
+    postforeclosure.notice_provisions.less_than_30_days
+    postforeclosure.notice_provisions.no_right_to_court_notice
+    postforeclosure.notice_provisions.no_written_notice_of_violations
+    postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    postforeclosure.no_standing
+    postforeclosure.failure_to_comply
+    postforeclosure.unfair_loan_mod
+    postforeclosure.unfair_notices
+    postforeclosure.unfair_loan_based_on_income
+  
+  if claims.harassment:
+    discrimination.sexual_harassment.pressured_sexual_favors
+  
+  if initial_defense.other:
+    initial_defense.other_reason
+
+  if tenant.is_discriminated:
+    if discrimination.protected_classes['Family status']:
+      if bad_conditions.conditions['lead paint']:
+        plead_lead_paint
+  
+  if plead_counterclaims and (claims.utilities or bad_conditions.have_conditions or bqe.violated):
+    need_rental_value
+  tenant.is_disabled
+  if tenant.is_disabled:
+    disability.request_reasonable_accommodation
+  
+  if person_answering == 'attorney':
+    initial_defense.custom_reason_for_dismissal 
+    initial_defense.custom_other
+
+  claim_jurytrial
+
+  needs_time_because
+  almost_done
+   
+  all_answer_variables = True

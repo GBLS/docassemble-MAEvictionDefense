@@ -1,0 +1,150 @@
+---
+metadata:
+  interview_identifier: "MADE: Usage Survey"
+  title: |
+    MADE Follow-up Survey
+  short title: |
+    Survey
+  description: |
+    This is a survey about MADE
+  authors:
+    - name: Quinten Steenhuis
+      organization: Greater Boston Legal Services
+  revision_date: 2018-12-26
+
+---
+code: |
+  interview_date = url_args.get('interview_date',None)
+  zip = url_args.get('interview_zip', None)
+---
+imports:
+  - dt_send_answers
+---
+mandatory: True
+code: |
+  interview_date
+  zip
+  survey_questions
+  sent_answers
+  thanks
+---
+code: |
+  dt_send_answers.send_answers(include_logged_in_user=False)
+  sent_answers = True
+---
+decoration: clipboard-list
+question: |
+  Please share your experience using MADE
+subquestion: |
+  This survey is about the self-help eviction defense tool that you used on
+  ${interview_date} and what happened afterwards in your court case. The tool you used
+  is called MADE.
+  
+  This survey is completely anonymous. It will be used to improve this system for
+  other tenants.
+fields:    
+  - Were the advice and paperwork in the guided interview helpful? : user_found_advice_useful
+    datatype: yesnoradio
+  - Would you recommend this service to a friend?: user_would_recommend
+    datatype: yesnoradio
+  - Where did you use the guided interview?: interview_setting
+    input type: radio
+    choices:
+      - In a legal aid clinic with a lawyer supervising
+      - At an agency where I went to get help with my rent
+      - At the courthouse Court Service Center
+      - At home or on my own
+      - Somewhere else with someone helping me
+  - Are you still living in your home? : still_in_home
+    datatype: yesnoradio
+  - Is your case finished?: case_resolved
+    datatype: yesnoradio
+  - Can we contact you again in 6 months? : can_followup
+    datatype: yesnoradio
+    show if:
+      variable: case_resolved
+      is: False
+  - What happened with your case? : case_outcome
+    show if: case_resolved
+    choices:
+      - My case was dismissed (by judge or agreement)
+      - I reached an agreement with my landlord
+      - I had a trial
+      - I defaulted (did not attend court)
+  - What did the agreement say? : case_agreement_outcome
+    datatype: yesnoradio
+    show if: 
+      variable: case_outcome
+      is: 'I reached an agreement with my landlord'
+    choices:
+      - I can stay in the home if I pay back money owed.
+      - I can stay in the home. Nobody owes any money.
+      - I can stay and my landlord owes me money. : agreement_with_money
+      - I will move out and my landlord will pay me money or forgive rent I owe. : moveout_with_money
+      - I will move out but I will not be paid any money.      
+  - What happened at the trial? : case_agreement_outcome
+    datatype: yesnoradio
+    show if: 
+      variable: case_outcome
+      is: 'I had a trial'
+    choices:
+      - I won a trial and my landlord must pay me money. : trial_with_money
+      - I won a trial but no money from my landlord.
+      - I lost a trial or motion to issue execution.
+  - Are you willing to share demographic information with us? : will_share_demographics
+    datatype: yesnoradio
+  - What is your gender? : gender
+    show if: will_share_demographics
+    datatype: combobox
+    choices:
+      - Female
+      - Male
+      - Non-binary/third-gender
+      - Prefer to self-describe
+      - Prefer not to say
+  - What is your age?: user_age
+    show if: will_share_demographics
+    choices:
+      - Under 18
+      - 18-24 years old
+      - 25-34 years old
+      - 35-44 years old
+      - 45-54 years old
+      - 55-64 years old
+      - 65-74 years old
+      - 75 years or older
+  - What is your ethnicity? : ethnicity
+    show if: will_share_demographics  
+    choices: 
+      - White
+      - Hispanic or Latino
+      - Black or African American
+      - Native American or American Indian
+      - Asian / Pacific Islander
+      - Other
+  - What is the highest level of education you have attained?: education
+    show if: will_share_demographics  
+    choices:   
+      - No schooling completed
+      - Nursery school to 8th grade
+      - Some high school, no diploma
+      - High school graduate, diploma or the equivalent (for example: GED)
+      - Some college credit, no degree
+      - Trade/technical/vocational training
+      - Associate degree
+      - Bachelor’s degree
+      - Master’s degree
+      - Professional degree
+      - Doctorate degree
+  - How can MADE be improved? : open_text_feedback
+    datatype: area
+    required: False    
+continue button field: survey_questions
+---
+event: thanks
+question: | 
+  Thank you!
+subquestion: |
+  Thank you for taking the time to respond to this survey.
+  
+  Your answers will be used to help more tenants in the future.

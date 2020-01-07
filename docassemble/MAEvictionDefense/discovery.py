@@ -42,9 +42,14 @@ class DiscoveryDict(DADict):
   def checked_values(self):
     return DAList(elements=[key for key,value in self.iteritems() if value.checked is True])
   def unchecked_values(self):
-    return DAList(elements=[key for key,value in self.iteritems() if value.checked is True])
+    return DAList(elements=[key for key,value in self.iteritems() if value.checked is False])
   def matches_category(self, category):
     return DAList(elements=[key for key,value in self.iteritems() if value.category == category])
+  def any_in_category(self, category):
+      for key in self.elements:
+        if self.elements[key].checked and self.elements[key].category == category:
+          return True
+      return False
   def count_checked(self):
     i = 0
     for key in self.elements:
