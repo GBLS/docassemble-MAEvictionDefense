@@ -318,50 +318,38 @@ subquestion: |
 field: share_success  
 ---
 id: signature
+decoration: file-signature
 question: |
-  Signature
+  Sign your court forms
 subquestion: |
   We are almost ready to print your forms. You will need to sign them before
-  delivering them.
-fields:
-  - How do you want to sign?: signature_choice
-    input type: radio
-    default: phone
-    choices:
-      - Sign on this computer (using the computer's mouse): this device
-      - Print the forms and sign on paper: paper
-      - Send a link to my phone and sign on my phone's touchscreen: phone
-    show if: 
-      code: |
-        device().is_pc      
-  - note: |
-      To sign on your phone, point your phone camera at this barcode and click the 
-      barcode or link icon that appears in the camera view. Click continue on your 
-      phone.
-      
-      <center>
-      ${interview_url_as_qr()}
-      </center>
-
-    show if: 
-      code: |
-        device().is_pc    
-  - Or, text me a link at this phone number: link_cell
-    show if: 
-      code: |
-        device().is_pc        
-    required: false
-  - note: |
-      Once this screen has loaded on your mobile device, click continue.
-    show if: 
-      code: |
-        not device().is_pc            
-continue button field: saw_signature_choice
+  delivering them. We recommend you sign electronically now, before you print. 
+  You can sign using your computer mouse, or sign on your phone with your finger.
+field: signature_choice
+buttons:  
+  - Sign on my phone: phone
+    image: mobile-alt
+  - Sign on this computer: this device
+    image: desktop
+  - Sign after I print: paper
+    image: print
 help: |
-  Many smartphones will automatically find the link on this screen. The link
-  may "float" up from the screen into a small icon you can click.
-  If your phone does not do this, use the text option instead.
-  
+  #### Why do I need to sign it now?
+  We will print several forms for you. You will need to add your signature
+  to each page and then copy each collated set. If you sign now, you can print
+  all of the copies you need at once.
+  #### Will the court accept my digital signature?
+  Yes. Digital signatures are allowed by court rule. See [mass.gov](https://www.mass.gov/supreme-judicial-court-rules/massachusetts-rules-of-electronic-filing-rule-13-electronic-signature).
+  By comment to this rule, the court has expressed their acceptance of digital
+  signatures from MADE whether filed electronically or in person.
+continue button field: saw_signature_choice
+script: |
+  <script>
+    $(document).on('daPageLoad', function(){
+      $(".da-field-buttons > div > .btn-da-custom").last().after("<br>")
+      $(".da-field-buttons > div > .btn-da-custom").first().before("<br>")
+    });
+  </script>
 ---
 id: signature wait screen
 question: |
@@ -379,9 +367,49 @@ subquestion: |
   % endif
   % else:
   Click continue on this screen when you're ready to sign.
-  % endif
-  
+  % endif  
 field: signature_wait_screen
+decoration: file-signature
+---
+id: signature-phone
+question: |
+  Sign your court forms
+fields:
+  - note: |
+      1. Open the camera app or barcode reader app on your phone.
+      2. Point it at the screen.
+      3. Click the link icon that appears on the camera screen.
+      4. Click ${word("continue")} on your phone.
+      
+      <center>
+      ${interview_url_as_qr()}
+      </center>
+
+    show if: 
+      code: |
+        device().is_pc
+  - Text me a link instead: text_link
+    datatype: yesnowide
+    show if: 
+      code: |
+        device().is_pc
+  - label: Cell phone number
+    field: link_cell
+    show if: text_link
+    default: ${showifdef('user_cell_edited')}
+  - note: |
+      Click ${word("continue")} to add your signature.
+  - note: |
+      Click ${word("continue")} to add your signature.
+    show if: 
+      code: |
+        not device().is_pc
+help: |
+  Many smartphones will automatically find the link on this screen when you use
+  the camera app. The link
+  may "float" up from the screen into a small icon you can click.
+  If your phone does not do this, use the text option instead.
+continue button field: saw_signature_qrcode
 ---
 id: signature phone followup
 question: |
@@ -2361,8 +2389,8 @@ subquestion: |
   Because of where you live, you may qualify for free legal help from
   [Greater Boston Legal Services](https://www.gbls.org).
 
-  To find out, we need to ask you a few more questions. You can download your forms
-  at the end.
+  To find out, we need to ask you a few more questions. **You are still responsible
+  for delivering your forms to court and your landlord on your own**.
 
   Would you like to find out more?
 field: ask_intake_questions
@@ -2388,7 +2416,7 @@ field: understands_eligibility
 continue button label: I understand
 ---
 comment: |
-  Skip this page if the tenant said someone living with them is over 60
+  We skip this page if the tenant said someone living with them is over 60
 question: |
   Pre-screening
 subquestion: |
@@ -2434,39 +2462,17 @@ subquestion: |
 
   First, lets review the information you already gave us. Make any changes needed.
 
-  ##### Information about you
-  ${tenant}
-  % if defined('tenant.preferred_language'):
-  Language: ${tenant.preferred_language} 
-  
-  ${action_button_html(url_action('tenant.preferred_language'))}
-  % endif
+   &nbsp; | &nbsp; | &nbsp; 
+  --------|--------|--------
+   Name | ${tenant} | ${action_button_html(url_action('tenant.name.first'))} 
+   Language | ${showifdef('tenant.preferred_language','English')} | ${action_button_html(url_action('tenant.preferred_language'))} 
+   Disability | ${yesno(tenant.is_disabled)} | ${action_button_html(url_action('tenant.is_disabled'))} 
+   Landlord | ${landlord} |  ${action_button_html(url_action('landlord.name.text'))} 
+   Address | ${tenant.address.on_one_line()} | ${action_button_html(url_action('tenant.address.address'))} 
+   Phone | ${showifdef('tenant.phone_number')} | ${action_button_html(url_action('tenant.phone_number'))} 
+   Email | ${showifdef('tenant.email')} |  ${action_button_html(url_action('tenant.email'))} 
+   Landlord type | ${landlord.organization_type} | ${action_button_html(url_action('landlord.organization_type'))} 
 
-  I have a disability: ${yesno(tenant.is_disabled)}
-  
-  ${action_button_html(url_action('tenant.is_disabled'))}
-
-  ##### Landlord
-  ${landlord} 
-  
-  ${action_button_html(url_action('landlord.name.text'))}
-
-  ##### Address
-  ${tenant.address.on_one_line()} ${action_button_html(url_action('tenant.address.address'))}
-
-  ##### Phone number
-  % if defined('tenant.phone_number'):
-  ${tenant.phone_number} 
-  % else:
-  (not provided)
-  % endif
-  
-  ${action_button_html(url_action('tenant.phone_number'))}
-
-  ##### Housing type
-  ${landlord.organization_type} 
-  
-  ${action_button_html(url_action('landlord.organization_type'))}
 field: review_intake_information
 ---
 question: |
@@ -2530,7 +2536,13 @@ fields:
       - Other: Other
   - Amount you get: incomes[i].value
     datatype: currency
+    #hide if:
+    #  variable: incomes[i].type
+    #  is: 'No Income'
   - How often you get it: incomes[i].period
+    #hide if:
+    #  variable: incomes[i].type
+    #  is: 'No Income'
     code: |
       period_list()
 ---
@@ -2606,7 +2618,7 @@ fields:
       Don't tell us anything you already answered earlier in the
       interview. Don't worry about leaving something out. If we
       need to, we will call for more information.
-    datatype: area
+    datatype: area        
 ---
 event: view_intake
 question: |
@@ -2639,12 +2651,28 @@ content: |
   Landlord's attorney: ${landlords_attorney}
   % endif
 
+  #### Tenant contact information
+  % if defined('tenant.phone_number'):
+  Phone: ${tenant.phone_number}
+
+  %endif
+  ${showifdef('tenant.email')}
+  %if defined('tenant.other_contact_method'):
+  Other: 
+
+  ${tenant.other_contact_method}
+  %endif
+
   #### Household members
   % for person in household:
   * ${person} (DOB: ${person.birthdate}, Relationship: ${person.relationship})
   % endfor
 
   #### Case facts
+  % if defined('tenant.preferred_language'):
+  Language: ${tenant.preferred_language}
+  % endif
+
   Address: ${tenant.address.on_one_line()}
 
   Court: ${court}
@@ -2686,6 +2714,31 @@ content: |
   Tenant goals: ${eviction_goal}
 
   Additional information: ${intake_additional_information}
+---
+question: |
+  Contact information
+subquestion: |
+  Before we can help you, we may need to call or email you with questions that 
+  need an answer right away. How can we reach you?
+fields:
+  - Phone number: tenant.phone_number
+    hide if: tenant.no_phone
+  - I don't have a phone number you can call: tenant.no_phone
+    datatype: yesno
+  - Email: tenant.email
+    datatype: email
+    hide if: tenant.no_email
+  - I don't have an email address you can contact me by: tenant.no_email
+    datatype: yesno
+  - Other: tenant.other_contact_method
+    datatype: area
+    required: False
+validation code: |
+  if ((tenant.phone_number.rstrip() == '')
+      and (tenant.email.rstrip() == '')
+      and (not defined('tenant.other_contact_method') or (tenant.other_contact_method.rstrip() == '')) ):
+    validation_error('You must provide at least one way we can reach you.')
+
 ---
 template: intake_reminder_template
 subject: |

@@ -57,7 +57,7 @@ imports:
 objects:
   - tenant: Individual
   - household: DAList.using(object_type=Individual)
-  - incomes: IncomeList.using(there_are_any = True)
+  - incomes: IncomeList.using(there_are_any=True)
   - ntq_pictures: DAFileList.using(there_are_any = True)
   - landlord: Person
   - landlords_attorney: Person
@@ -180,6 +180,7 @@ code: |
     if defined('signature_choice') and signature_choice =='this device':
       tenant.signature
     elif defined('signature_choice') and signature_choice == 'phone':
+      saw_signature_qrcode
       if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
         send_sms(task='send signature link', to=link_cell,template=interview_link)
         signature_wait_screen
@@ -227,6 +228,10 @@ code: |
       does_not_qualify
   else:
     review_intake_information
+    if not defined('tenant.phone_number') or not defined('tenant.email') or (tenant.phone_number.rstrip() == '' or tenant.email.rstrip() == '' ):
+      tenant.no_phone
+      tenant.no_email
+      tenant.other_contact_method
     tenant.birthdate
     household.gather()
     incomes.gather()
