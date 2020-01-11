@@ -199,7 +199,7 @@ code: |
   if url_args.get('clinic', '').lower() == 'gbls':
     ls_case_id
 
-  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic
+  # Ask the tenant if they want to submit an intake if in service area and we're not already in a GBLS clinic
   if in_service_area(tenant) and not url_args.get('clinic', '').lower() == 'gbls':
     ask_intake_questions
     if ask_intake_questions == 'reminder':
