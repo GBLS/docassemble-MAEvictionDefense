@@ -574,11 +574,11 @@ id: your name
 question: What is your name?
 fields:
   - First Name: tenant.name.first
-    default: ${user_info().first_name}
+    default: ${user_info().first_name if user_logged_in() else ''}
   - Middle Name: tenant.name.middle
     required: False
   - Last Name: tenant.name.last
-    default: ${user_info().last_name}
+    default: ${user_info().last_name if user_logged_in() else ''}
   - Suffix: tenant.name.suffix
     required: False
     code: |
