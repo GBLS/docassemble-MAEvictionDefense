@@ -2636,7 +2636,7 @@ subquestion: |
 ---
 template: ls_case_note_template
 content: |
-  Electronic intake from MADE.
+  Electronic intake from MADE upcoming in ${court} on ${case.rescheduled_date}.
 
   View case documents in Docassemble:
   ${interview_url_action('view_intake')}
@@ -2645,23 +2645,41 @@ content: |
 ---
 template: case_facts_template
 content: |
-  Landlord name: ${landlord}
-  % if landlord.has_attorney:
+  #### Intake facts for ${landlord} v. ${tenant}  
+  Case will be heard in **${court}** on **${case.rescheduled_date}**
   
-  Landlord's attorney: ${landlords_attorney}
+  The grounds for eviction are ${eviction_detailed_reason}
+
+  ${landlord} 
+  % if landlord.has_attorney:
+  is represented by ${landlords_attorney}.
+  % else:
+  does not have an attorney.
+  % endif
+
+  This is
+  % if facts.tenant_has_subsidy:
+  a subsidized tenancy (${subsidy_type})
+  % else:
+  is not a subsidized tenancy.
+  % endif
+
+  % if defined('tenant.preferred_language'):
+  Tenant's preferred language is ${tenant.preferred_language}
   % endif
 
   #### Tenant contact information
   % if defined('tenant.phone_number'):
-  Phone: ${tenant.phone_number}
-
+  Phone: ${tenant.phone_number}  
   %endif
-  ${showifdef('tenant.email')}
+  % if defined('tenant.email'):
+  ${tenant.email}  
+  % endif
   %if defined('tenant.other_contact_method'):
-  Other: 
-
-  ${tenant.other_contact_method}
-  %endif
+  Other contact method:  
+  ${tenant.other_contact_method}  
+  % endif
+  Address: ${tenant.address.on_one_line()}
 
   #### Household members
   % for person in household:
@@ -2669,51 +2687,28 @@ content: |
   % endfor
 
   #### Case facts
-  % if defined('tenant.preferred_language'):
-  Language: ${tenant.preferred_language}
-  % endif
+  Type of notice: ${notice_type}  
+  Date of Notice to Quit: ${date_received_ntq}  
 
-  Address: ${tenant.address.on_one_line()}
-
-  Court: ${court}
-
-  Subsidized tenancy: ${yesno(facts.tenant_has_subsidy)}
+  Tenant's rent amount: ${currency(showifdef('facts.tenant_rent_share',0))}  
   %if facts.tenant_has_subsidy:
-
-  ${subsidy_type}
+  Contract rent: ${currency(showifdef('facts.tenant_contract_rent',0))}  
   %endif
-
-  Rescheduled court date: ${case.rescheduled_date}
-
-  Type of notice: ${notice_type}
-
-  Date of Notice to Quit: ${date_received_ntq}
-
-  Reasons for eviction: ${eviction_detailed_reason}
-
-  Tenant's rent amount: ${currency(showifdef('facts.tenant_rent_share',0))}
-  %if facts.tenant_has_subsidy:
-
-  Contract rent: ${currency(showifdef('facts.tenant_contract_rent',0))}
-  %endif
-
   Money owed: ${yesno(owes_money)}
   % if owes_money:
+  , ${currency(amount_owed)}  
+  % endif
 
-  ${currency(amount_owed)}
-  %endif
-
-  Tenant is disabled: ${yesno(tenant.is_disabled)}
   % if tenant.is_disabled:
-
-  ${tenant.disability_type}
+  Tenant has a disability. Their disability is: ${tenant.disability_type}  
   %endif
-
-  Tenant is a crime victim: ${yesno(tenant.is_crime_victim)}
+  % if tenant.is_crime_victim:
+  Tenant is a crime victim  
+  % endif
 
   Tenant goals: ${eviction_goal}
 
-  Additional information: ${intake_additional_information}
+  Tenant's additional statement: ${intake_additional_information}
 ---
 question: |
   Contact information
