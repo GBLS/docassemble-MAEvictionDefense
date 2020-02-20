@@ -39,6 +39,15 @@ review:
       You said your name 
       ${ 'was' if tenant.name_different_on_summons else 'was not'}
       different on the Summons and Complaint.
+  - Additional people who will use this form: additional_tenants.there_are_any
+    button: |
+      % if additional_tenants.there_are_any:
+      You said there are additional tenants.
+
+      % for t in additional_tenants:
+      * ${t} ${action_button_html(url_action(t.name.first)) }
+      % endfor
+      % endif
   - Update motion to intervene:
     - request_right_to_intervene
     button: |
