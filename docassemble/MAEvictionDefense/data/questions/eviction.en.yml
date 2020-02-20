@@ -419,12 +419,13 @@ subquestion: |
   Keep going on the computer you started the interview on.
 field: signature_phone_followup  
 ---
+generic object: Individual
 id: signature
 question: Sign below
 subquestion: |
-signature: tenant.signature
+signature: x.signature
 under: |
-  ${ tenant.name }
+  ${ x }
 ---
 template: interview_link
 content: |
@@ -572,6 +573,8 @@ comment: |
 ---
 id: your name
 question: What is your name?
+subquestion: |
+  We'll ask about anyone else who will use this form with you on the next screen.
 fields:
   - First Name: tenant.name.first
     default: ${user_info().first_name if user_logged_in() else ''}
@@ -585,6 +588,39 @@ fields:
       name_suffix()
 section: About You
 ---
+id: additional tenants
+question: |
+  Additional tenants
+subquestion: |
+  Is there another tenant who lives with you who will also sign this form?
+yesno: additional_tenants.there_are_any
+help: |
+  Not everyone who lives with you needs to sign your answer.
+  Add their names if they are listed on the summons and complaint with you,
+  or if you think they are part of this case.
+---
+id: additional tenant names
+question: |
+  Add the names and current address of each additional tenant who will sign the forms with you
+fields:
+  - First name: additional_tenants[i].name.first
+  - Last name: additional_tenants[i].name.last
+  - Street addres: additional_tenants[i].address.address
+    address autocomplete: True
+    default: ${tenant.address.address}
+  - Unit: additional_tenants[i].address.unit
+    default: ${tenant.address.unit}
+    required: False
+  - City: additional_tenants[i].address.city
+    default: ${tenant.address.city}
+  - State: additional_tenants[i].address.state
+    code: |
+      states_list()
+    default: ${tenant.address.state}
+  - Zip: additional_tenants[i].address.zip
+    default: ${tenant.address.zip}
+list collect: True
+---
 id: how named on summons
 question: |
   How are you named on the court summons?
@@ -594,7 +630,7 @@ subquestion: |
    
   [FILE names_on_summons.png, 100%]
 fields:
-  - Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${tenant.name}"?: tenant.name_different_on_summons
+  - Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${comma_and_list(additional_tenants + [tenant])}"?: tenant.name_different_on_summons
     datatype: yesnoradio
     default: False
   - There are additional names listed. : tenant.more_names_on_summons

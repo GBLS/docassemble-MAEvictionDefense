@@ -56,6 +56,7 @@ imports:
 ---
 objects:
   - tenant: Individual
+  - additional_tenants: DAList.using(object_type=Individual)
   - household: DAList.using(object_type=Individual)
   - incomes: IncomeList.using(there_are_any=True)
   - ntq_pictures: DAFileList.using(there_are_any = True)
@@ -175,16 +176,25 @@ code: |
   if started_on_phone:
     saw_signature_choice = True
     tenant.signature
+    if additional_tenants.there_are_any:
+      for t in additional_tenants:
+        t.signature
   else: 
     saw_signature_choice
     if defined('signature_choice') and signature_choice =='this device':
       tenant.signature
+      if additional_tenants.there_are_any:
+        for t in additional_tenants:
+          t.signature      
     elif defined('signature_choice') and signature_choice == 'phone':
       saw_signature_qrcode
       if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
         send_sms(task='send signature link', to=link_cell,template=interview_link)
         signature_wait_screen
         tenant.signature
+        if additional_tenants.there_are_any:
+          for t in additional_tenants:
+            t.signature        
         if device().is_mobile:
           signature_phone_followup
       else:
