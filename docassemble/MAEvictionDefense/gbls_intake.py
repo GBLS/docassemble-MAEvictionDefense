@@ -41,7 +41,12 @@ def in_service_area(tenant):
             "chelsea",	"newton",	"winchester",
             "cohasset",	"north reading",	"winthrop",
             "concord",	"norwell",	"woburn",
-            "everett",	"quincy"
+            "everett",	"quincy",'allston','back bay',
+            'beacon hill','brighton','charlestown',
+            'chinatown','dorchester','east boston',
+            'fenway','kenmore','hyde park','jamaica plain',
+            'mattapan','north end','roslindale','roxbury',
+            'south boston','south end','west end','west roxbury'
         ]
 
 def ls_submit_online_intake(params, task=None):
