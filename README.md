@@ -5,6 +5,7 @@ name MADE, Massachusetts Defense for Eviction. Generates an Answer form,
 Request for Discovery, and accompanying forms and motions.
 
 ## Changelog'
+* 2020-03-02 Explicitly list Boston neighborhoods for GBLS intake
 * 2020-02-20 Added first draft of optional additional defendants
 * 2020-02-18 Tweaks to intake case preview
 * 2020-01-20 No longer show "Anonymous User" if someone is not logged in
