@@ -1415,6 +1415,12 @@ fields:
     datatype: yesno
 section: Claims and Defenses      
 ---
+id: notice timing2
+question: Timing of notices
+fields:
+  - Date I got the notice to quit: date_received_ntq
+    datatype: date
+---
 id: nonpayment cure
 question: |
   Paying the money owed

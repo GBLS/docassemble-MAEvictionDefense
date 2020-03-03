@@ -468,3 +468,9 @@ code: |
 event: run_intake
 code: |
   time_to_do_intake = True
+---
+comment: |
+  TODO: CHECK THIS LOGIC
+code: |
+  if (eviction_reason == 'nontq') or (notice_type == 'no_ntq'):
+    date_received_ntq = date_received_summons
