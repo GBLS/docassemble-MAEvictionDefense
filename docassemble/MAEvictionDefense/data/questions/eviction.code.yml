@@ -50,7 +50,7 @@ code: |
   if tenant.name_different_on_summons:
     defendants_name = defendant_name_as_listed_on_summons
   else:
-    defendants_name = tenant.name
+    defendants_name = comma_and_list(additional_tenants + [tenant.name])
 ---
 code: |
   if facts.tenant_address_is_eviction_address:
@@ -468,3 +468,9 @@ code: |
 event: run_intake
 code: |
   time_to_do_intake = True
+---
+comment: |
+  TODO: CHECK THIS LOGIC
+code: |
+  if (eviction_reason == 'nontq') or (notice_type == 'no_ntq'):
+    date_received_ntq = date_received_summons

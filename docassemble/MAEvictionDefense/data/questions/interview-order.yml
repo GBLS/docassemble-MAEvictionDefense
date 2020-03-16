@@ -17,13 +17,13 @@ code: |
     onlyhasntq
   if case.status == "afj" or case.status == 'late':
     firstdatepassed
-  
-  tenant.name
+  tenant.address.address  
+  tenant.name.first
+  additional_tenants.there_are_any  
   tenant.name_different_on_summons
   if tenant.name_different_on_summons and tenant.not_named_on_summons:
     request_right_to_intervene
   defendants_name
-  tenant.address
   tenant.address.geolocate()
   remind_user
   landlord.name
