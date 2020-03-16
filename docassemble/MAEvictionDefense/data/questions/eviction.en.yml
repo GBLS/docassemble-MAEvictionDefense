@@ -1415,6 +1415,12 @@ fields:
     datatype: yesno
 section: Claims and Defenses      
 ---
+id: notice timing2
+question: Timing of notices
+fields:
+  - Date I got the notice to quit: date_received_ntq
+    datatype: date
+---
 id: nonpayment cure
 question: |
   Paying the money owed
@@ -2233,7 +2239,8 @@ content: |
   ${court_date} is ${court_date_holiday} so your date may have been
   postponed. If the court didn't tell you the new date, call the court to find out.
   % endif
-Get ready here: https://gbls.org/tactics/12
+  
+  Get ready here: https://gbls.org/tactics/12
    - MADE from GBLS.  
 ---
 template: sharing_email_template
