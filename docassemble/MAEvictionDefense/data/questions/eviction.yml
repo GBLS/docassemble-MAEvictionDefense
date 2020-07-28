@@ -195,7 +195,7 @@ code: |
         if additional_tenants.there_are_any:
           for t in additional_tenants:
             t.signature        
-        if device().is_mobile:
+        if device() and device().is_mobile:
           signature_phone_followup
       else:
         tenant.signature

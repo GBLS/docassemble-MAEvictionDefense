@@ -288,7 +288,7 @@ subquestion: |
   
   Right-click and copy [this link](${interview_url()}).
   
-  % if not device().is_mobile:
+  % if device() and not device().is_mobile:
   Use your phone's camera to point at this barcode. Click the link that appears
   in the camera's viewfinder.
   <center>
@@ -359,7 +359,7 @@ question: |
   Sign on your phone
   % endif
 subquestion: |
-  % if device().is_pc:
+  % if device() and device().is_pc:
   % if defined('tenant.signature'):
   Click continue.
   % else:
@@ -387,12 +387,12 @@ fields:
 
     show if: 
       code: |
-        device().is_pc
+        device() and device().is_pc
   - Text me a link instead: text_link
     datatype: yesnowide
     show if: 
       code: |
-        device().is_pc
+        device() and device().is_pc
   - label: Cell phone number
     field: link_cell
     show if: text_link
@@ -403,7 +403,7 @@ fields:
       Click ${word("continue")} to add your signature.
     show if: 
       code: |
-        not device().is_pc
+        device() and not device().is_pc
 help: |
   Many smartphones will automatically find the link on this screen when you use
   the camera app. The link
@@ -515,6 +515,8 @@ subquestion: |
   ${court_date} is a holiday (${court_date_holiday}), so ask the court
   when your case will be postponed until.
   % endif
+  Because of the Covid-19 emergency, your court date may change. Call
+  the court to be sure.
 
   </li>
   </ol>
@@ -987,7 +989,7 @@ subquestion: |
   Usually you can deliver your answer the day after a holiday and it will still be on
   time.
   % endif
-  
+
   % if court_date_is_holiday:
   The date you should appear is ${court_date}. However, it looks like
   ${court_date} is a holiday, ${court_date_holiday}. You should ask the court what they do about
@@ -995,6 +997,9 @@ subquestion: |
   % else:
   Instead, you must appear on **${format_date(court_date)}**.
   % endif
+  
+  Due to the Covid-19 emergency, your hearing may happen on a different day and time.
+  Call the court to be sure.
 
 buttons:
   - Continue: 
@@ -2221,6 +2226,9 @@ content: |
   
   Don't forget to be at ${court} on ${court_date} (unless the court told you about
   a different date!
+
+  **Due to the Covid emergency, you should call the court to confirm your
+  court date.**
   
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}. 
@@ -2234,7 +2242,9 @@ content: |
 template: attend_court_text
 content: |
   Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
-  at ${court} at 9 AM.   
+  at ${court} at 9 AM. Due to the Covid-19 emergency, call the court to confirm
+  your hearing date.
+
   % if court_date_is_holiday:
   ${court_date} is ${court_date_holiday} so your date may have been
   postponed. If the court didn't tell you the new date, call the court to find out.
@@ -2265,6 +2275,10 @@ content: |
   
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
+
+  Because of the Covid-19 emergency, your court date may be a different day.
+  Call the court to be sure.
+
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}.
   If you didn't get a notice from the court, you may want to call to find out

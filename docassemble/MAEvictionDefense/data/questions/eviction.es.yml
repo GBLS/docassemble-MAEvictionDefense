@@ -237,7 +237,7 @@ subquestion: |
   
   Haga clic-derecho y copie [este link](${interview_url()}).
   
-  % if not device().is_mobile:
+  % if device() and not device().is_mobile:
   Use la cámara de su teléfono para apuntar a este código de barra. Haga clic en el link que aparece en el visor de la cámara.
   <center>
   ${interview_url_as_qr()}
@@ -277,7 +277,7 @@ fields:
       - Envie un link a mi teléfono y fírmelos en la pantalla de mi teléfono: phone
     show if: 
       code: |
-        device().is_pc      
+        device() and device().is_pc      
   - note: |
       Para firmar en su teléfono, apunte su cámara hacia este código de barra y haga clic en el Código o ícono que aparece en la pantalla de la cámara. Cliquée continuar en su teléfono.
       
@@ -287,17 +287,17 @@ fields:
 
     show if: 
       code: |
-        device().is_pc    
+        device() and device().is_pc    
   - O, envíeme vía texto un link a este número de teléfono: link_cell
     show if: 
       code: |
-        device().is_pc        
+        device() and device().is_pc        
     required: false
   - note: |
       Una vez esta pantalla esté montada en su movil, cliquée continuar.
     show if: 
       code: |
-        not device().is_pc            
+        device() and not device().is_pc            
 continue button field: saw_signature_choice
 help: |
   Muchos smartphones automaticamente encuentran el link que se ve en esta pantalla. El link puede que "flote" de la pantalla a un ícono pequeño sobre el cual puede hacer clic. O use la opción de mensaje de texto si su teléfono no hace esto.
@@ -310,7 +310,7 @@ question: |
   Firme en su teléfono
   % endif
 subquestion: |
-  % if device().is_pc:
+  % if device() and device().is_pc:
   % if defined('tenant.signature'):
   Cliquée continuar.
   % else:
