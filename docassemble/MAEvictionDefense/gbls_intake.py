@@ -1,6 +1,6 @@
 from docassemble.base.util import Individual, Address
 from docassemble.base.config import daconfig
-from docassemble.base.functions import task_performed,task_not_yet_performed,mark_task_as_performed,log
+# from docassemble.base.functions import task_performed,task_not_yet_performed,mark_task_as_performed,log
 import requests
 import json
 from nameparser import HumanName
