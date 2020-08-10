@@ -1,20 +1,18 @@
 ---
 event: road_map
 question: |
-  Roadmap
+  Review your answers
 subquestion: |
-  You are currently in the
-  **${ nav.get_section(display=True) }**
-  section.
-
   Click a section to revisit the answers from that section.
 
-  ${ nav.show_sections(style='inline',show_links=True) }
-
-  Press "Continue" to resume the
+  % for section in section_links(nav):
+  * ${section}
+  % endfor
+  
+  Press "${word("Resume")}" to resume the
   interview.
 buttons:
-  Continue: continue
+  ${word("Resume")}: continue
 ---
 event: review_about_you
 question: |

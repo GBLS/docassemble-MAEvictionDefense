@@ -20,12 +20,26 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2020-03-16
+  revision_date: 2020-08-07
+---
+code: |
+  revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
+---
+default screen parts:
   post: |
-    <div style="text-align: right; padding: 2em">
+    % if not user_logged_in():
+    [:sign-in-alt: Sign-in](${url_of('login', next=interview_url())}) or [register](${url_of('register', next=interview_url())}) to save your progress.
+    % endif
+
     Feedback, suggestions, or comments? 
     <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
-    </div>
+
+    ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
+# post: |
+#   <div style="text-align: right; padding: 2em">
+#   Feedback, suggestions, or comments? 
+#   <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
+#   </div>
 ---
 translations:
   - eviction_es.xlsx
@@ -36,6 +50,7 @@ translations:
 ---
 features:
   question help button: True
+  question back button: True
   progress bar: True
   navigation: True
   default icons: material icons
@@ -48,6 +63,7 @@ modules:
   - .discovery
   - .language
   - .gbls_intake
+  - .review
 ---
 imports:
   - holidays
@@ -188,8 +204,11 @@ code: |
           t.signature      
     elif defined('signature_choice') and signature_choice == 'phone':
       saw_signature_qrcode
-      if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
-        send_sms(task='send signature link', to=link_cell,template=interview_link)
+      if defined('link_cell') or defined('link_email'):
+        if defined('link_cell') and link_cell and task_not_yet_performed('send signature link'):
+          send_sms(task='send signature link', to=link_cell,template=interview_link)
+        if defined('link_email') and link_email:
+          send_email(task='send signature link', to=link_email, template=interview_link)
         signature_wait_screen
         tenant.signature
         if additional_tenants.there_are_any:

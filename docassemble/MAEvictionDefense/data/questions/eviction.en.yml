@@ -86,6 +86,13 @@ help: |
 terms: 
   - green word: This is an example. Click it again to hide this definition. 
 section: Getting Started
+right: |
+  % if user_has_saved_answers:
+  ${fa_icon("bell", color="primary", size="sm")}
+  Saved answers available!  
+  
+  ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
+  % endif
 ---
 id: how to answer
 decoration: info-circle
@@ -327,6 +334,8 @@ subquestion: |
   You can sign using your computer mouse, or sign on your phone with your finger.
 field: signature_choice
 buttons:  
+  - Share for signature: phone
+    image: share
   - Sign on my phone: phone
     image: mobile-alt
   - Sign on this computer: this device
@@ -354,20 +363,23 @@ script: |
 id: signature wait screen
 question: |
   % if defined('tenant.signature'):
-  Thank you for signing.
+  Thank you for signing
   % else:
-  Sign on your phone
+  Add your signature
   % endif
 subquestion: |
-  % if device() and device().is_pc:
   % if defined('tenant.signature'):
   Click continue.
   % else:
-  Click continue on this screen once you have finished signing on your phone.
-  % endif
-  % else:
+  % if device() and device().is_mobile:
   Click continue on this screen when you're ready to sign.
-  % endif  
+  % else:
+  Click continue to sign on this device. Wait here if you
+  sent a link to sign to someone else. Click continue
+  when the tenant has finished signing.
+  % endif
+  % endif
+
 field: signature_wait_screen
 decoration: file-signature
 ---
@@ -388,7 +400,14 @@ fields:
     show if: 
       code: |
         device() and device().is_pc
-  - Text me a link instead: text_link
+  - Email a link instead: email_link
+    datatype: yesnowide
+    show if: 
+      code: |
+        device() and device().is_pc
+  - Email address: link_email
+    show if: email_link
+  - Text a link instead: text_link
     datatype: yesnowide
     show if: 
       code: |
@@ -2801,3 +2820,20 @@ content: |
 
   ${interview_url_action('run_intake')}
     - MADE from GBLS (https://www.gbls.org/MADE)
+---
+code: |
+  current_interview_url = user_info().filename
+---
+code: |
+  user_has_saved_answers = len(interview_list(filename=current_interview_url)[0]) > 1 if interview_list(filename=current_interview_url) else False
+---
+id: load saved answers
+event: load_answer
+question: |
+  You have saved answers available for this online form
+subquestion: |
+  % for interview in interview_list(filename=current_interview_url)[0]:
+  * ${'<a class="xyz" href="' + interview_url(i=current_interview_url, session=interview['session']) + '">' +  interview['title'] +  (' (' + interview.get("subtitle",'') + ')' if interview.get('subtitle') else '')  +"</a>" }  Last visited ${format_date(interview['modtime'])}, currently on page **${interview['dict'].get('_internal',{}).get('steps')}**
+  % endfor
+  
+  [View all of your saved online forms](${url_of('interviews')})
