@@ -54,6 +54,8 @@ features:
   progress bar: True
   navigation: True
   default icons: material icons
+  javascript:
+    - fix_back_button.js
 ---
 modules:
   - docassemble.base.util
