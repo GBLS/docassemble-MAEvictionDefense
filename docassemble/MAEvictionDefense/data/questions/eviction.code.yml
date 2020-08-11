@@ -16,7 +16,7 @@ code: |
     landlords_attorney.name.text = ''
 ---
 code: |
-  started_on_phone = device().is_mobile
+  started_on_phone = device() and device().is_mobile
 ---
 code: |
   if remind_user and (tenant.email or tenant.phone_number):
