@@ -88,3 +88,9 @@ claims.utilities,TRUE,ints.utilities_written_agreement,,ints.subsidized_housing_
 ,,,,ints.utilities_shutoff
 ,,,,ints.utilities_written_agreement
 ,,,,ints.witnesses
+fault_basis['health and safety'],TRUE,ints.health_and_safety,Covid-19,ints.health_and_safety
+fault_basis['disturbance of other tenants'],TRUE,ints.complaints,Covid-19,ints.complaints
+fault_basis['disturbance of other tenants'],TRUE,ints.records_of_complaints,Covid-19,ints.records_of_complaints
+fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants,Covid-19,ints.unauthorized_occupants
+fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants_basis,Covid-19,ints.unauthorized_occupants_basis
+fault_basis['arrest or criminal conviction'],TRUE,ints.police_involvement,Covid-19,ints.police_involvement

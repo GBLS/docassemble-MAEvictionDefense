@@ -474,3 +474,10 @@ comment: |
 code: |
   if (eviction_reason == 'nontq') or (notice_type == 'no_ntq'):
     date_received_ntq = date_received_summons
+---
+comment: |
+  COVID-19 defenses and discovery -- always set to True for now
+code: |
+  initial_defense.cares_act = True
+  initial_defense.non_essential_eviction = True
+  non_essential_eviction = True
