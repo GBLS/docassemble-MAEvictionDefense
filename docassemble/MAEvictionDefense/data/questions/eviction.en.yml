@@ -93,6 +93,8 @@ right: |
   
   ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
   % endif
+pre: |
+  Language
 ---
 id: how to answer
 decoration: info-circle
@@ -131,7 +133,10 @@ question: Your tenant rights in Massachusetts
 subquestion: | 
   Watch the video below to learn a little more about the eviction process.
   You can also visit the [MassLegalHelp](http://www.masslegalhelp.org/housing/evictions) website.
-video: "[YOUTUBE TSaTw0Y5OFA]"
+video: |
+  ${ "[YOUTUBE TSaTw0Y5OFA ]" if user_language == "es" else "[YOUTUBE TSaTw0Y5OFA]" }
+comment: |
+  Doesn't look like there's a Spanish language version of this yet. TODO
 field: overview_video
 ---
 question: |
@@ -585,7 +590,7 @@ css: |
     }
   </style>  
 video: |
-  [YOUTUBE mG-JDXOAkJU]
+  ${ "[YOUTUBE Z3RKpU_T4QY]" if user_language == "es" else "[YOUTUBE mG-JDXOAkJU]" }
 progress: 100  
 section: Conclusion
 ---
@@ -1423,7 +1428,7 @@ subquestion: |
 
   Put in the best information you know.
 video: |
-  [YOUTUBE 5gYPl-NHbv0]
+  ${"[YOUTUBE ntwDWOWhdvg]" if user_language == 'es' else "[YOUTUBE 5gYPl-NHbv0]"}
 fields:
   - Date I got the notice to quit: date_received_ntq
     datatype: date
@@ -1626,7 +1631,7 @@ subquestion: |
   known about. For example, they may be liable for problems that existed when you first
   moved in or purchased the building.
 video: |
-  [YOUTUBE DCpIr9ldSsw]
+  ${"[YOUTUBE w-rYKUgW__o]" if user_language == 'es' else "[YOUTUBE DCpIr9ldSsw]"}
 fields:
   - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
     datatype: checkboxes
@@ -1900,7 +1905,7 @@ subquestion: |
   against domestic violence. If you are unsure, you can select "yes" and see more detailed questions on the next
   screen.
 video: |
-  [YOUTUBE Bs-aVV5K-oo]
+  ${"[YOUTUBE 1BYDc6EFTgE]" if user_language == "es" else "[YOUTUBE Bs-aVV5K-oo]"}
 yesno: retaliation.is_retaliated
 section: Claims and Defenses
 help: |
@@ -1980,7 +1985,7 @@ subquestion: |
   If you are unsure, you can select "yes" and see more detailed questions on the next
   screen.
 video: |
-  [YOUTUBE Yxry8Zbmcgs]
+  ${ "[YOUTUBE 3INbS7qS1qI]" if user_language == "es" else "[YOUTUBE Yxry8Zbmcgs]" }
 yesno: tenant.is_discriminated
 section: Claims and Defenses
 help: |

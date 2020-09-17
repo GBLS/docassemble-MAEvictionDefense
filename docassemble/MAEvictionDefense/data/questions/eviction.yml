@@ -35,6 +35,10 @@ default screen parts:
     <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
 
     ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
+  pre: |
+    ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
+  continue button label: |
+    ${word("Next")}    
 # post: |
 #   <div style="text-align: right; padding: 2em">
 #   Feedback, suggestions, or comments? 
