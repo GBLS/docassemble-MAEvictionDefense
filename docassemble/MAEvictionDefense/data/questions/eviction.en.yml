@@ -68,9 +68,6 @@ subquestion: |
   2. the **Notice to Quit** you got from your landlord.
 fields:
   - I accept the [terms of use](https://www.gbls.org/self-help/eviction/terms-of-use): acknowledged_information_use
-    show if:
-      variable: user_language
-      is: "en"
     datatype: checkboxes
     none of the above: False    
     default: "I accept."
@@ -93,8 +90,6 @@ right: |
   
   ${action_button_html(url_action('load_answer'), icon="folder-open", label=word("View answers"), size="sm" )}
   % endif
-pre: |
-  Language
 ---
 id: how to answer
 decoration: info-circle

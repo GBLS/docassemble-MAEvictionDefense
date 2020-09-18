@@ -36,7 +36,9 @@ default screen parts:
 
     ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
   pre: |
+    % if defined('acknowledged_information_use'):
     ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
+    % endif
   continue button label: |
     ${word("Next")}    
 # post: |

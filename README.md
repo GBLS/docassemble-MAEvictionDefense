@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog'
 
+* 2020-09-18 Improved Spanish translation/added Spanish videos
 * 2020-08-18 Incorporate non-essential eviction defenses/discovery
 * 2020-08-10 Make save/load answers easier to see; highlight sign-in link
 * 2020-07-28 Update gbls_intake.py to account for breaking change upstream
