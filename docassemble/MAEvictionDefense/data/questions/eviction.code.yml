@@ -83,13 +83,30 @@ code: |
 code: |
   case.entry_date = case.answer_date + date_interval(days=-7)
 ---
+# TODO: Covid-specific
 code: |
-  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
-    case.rescheduled_date = case.original_date.plus(days=14)
+  if case.covid_hearing_date_assigned:
+    case.original_date = case.covid_first_event
+    case.rescheduled_date = case.covid_first_event
+    case.answer_date = case.covid_first_event.plus(days=-3)
+  else:
+    case.original_date = "TBD"
+    case.rescheduled_date = "TBD"
+    case.answer_date = today().plus(days=1)
+---
+# TODO: covid-specific
+code: |
+  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
     case.on_time = True
   else:
-    case.rescheduled_date = case.original_date
     case.on_time = False
+# code: |
+#   if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
+#     case.rescheduled_date = case.original_date.plus(days=14)
+#     case.on_time = True
+#   else:
+#     case.rescheduled_date = case.original_date
+#     case.on_time = False
 ---
 code: |
   if case.on_time:
@@ -354,12 +371,17 @@ code: |
   last_months_rent.violated = last_months_rent.over_a_year and (not last_months_rent.paid_interest)
 ---
 code: |
-  ma_holidays = holidays.US(state='MA')
-  answer_date_is_holiday = case.answer_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(case.answer_date))
-  answer_date_holiday = ma_holidays.get(case.answer_date)
-  court_date_is_holiday = court_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(court_date))
-  court_date_holiday = ma_holidays.get(court_date)
-  del ma_holidays
+  # TODO: Covid-19 change
+  if isinstance(court_date, str):
+    answer_date_is_holiday = False
+    court_date_is_holiday = False
+  else:    
+    ma_holidays = holidays.US(state='MA')
+    answer_date_is_holiday = case.answer_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(case.answer_date))
+    answer_date_holiday = ma_holidays.get(case.answer_date)
+    court_date_is_holiday = court_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(court_date))
+    court_date_holiday = ma_holidays.get(court_date)  
+    del ma_holidays
 ---
 code: |
   if share_email:

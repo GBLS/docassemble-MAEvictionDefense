@@ -4,8 +4,9 @@ A guided interview for pro se eviction defense in Massachusetts, using the proje
 name MADE, Massachusetts Defense for Eviction. Generates an Answer form, 
 Request for Discovery, and accompanying forms and motions.
 
-## Changelog'
+## Changelog
 
+* 2020-11-09 Update language to reflect Housing Court standing order 6-20
 * 2020-10-14 Integrate Tyler videos
 * 2020-09-18 Improved Spanish translation/added Spanish videos
 * 2020-08-18 Incorporate non-essential eviction defenses/discovery

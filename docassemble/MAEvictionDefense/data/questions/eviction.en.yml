@@ -135,13 +135,13 @@ comment: |
 field: overview_video
 ---
 question: |
-  Upcoming court dates
+  Your eviction case
 subquestion: |
-  Do you have a court date coming up for your case?
+  Did you get a "Summons and Complaint" yet?
 field: case.status
 choices: 
-  - I have a notice from my landlord but I am not scheduled for court yet.: onlyntq
-  - I have a court date scheduled: summons
+  - I have a "notice to quit" from my landlord but I did not get a letter that told me to go to court.: onlyntq
+  - I got a notice of a court case to evict me (summons and complaint): summons
   - I signed an agreement in this case already. I have a new court date coming up.: afj
   - I missed my first court date.: late
 default: summons
@@ -469,11 +469,16 @@ question: |
   Getting paperwork to your landlord
 subquestion: |
   You must give a copy of the forms we are working on to your landlord or their 
-  attorney. They need to _get_ the forms no later than 
+  attorney. 
+  % if case.covid_hearing_date_assigned:
+  They need to _get_ the forms no later than 
   **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   Because ${case.answer_date} is ${answer_date_holiday}, you can
   deliver it the next weekday after ${answer_date_holiday}.
+  % endif
+  % else:
+  Give a copy to your landlord or their attorney as soon as you can.
   % endif
 
   Deliver it in person
@@ -988,62 +993,65 @@ fields:
     choices: |
       [x for x in macourts if "housing court" in x.name.lower()]  
 ---
+# TODO: covid-specific
 id: court date
 question: |
-  Court Date
+  Court date
 subquestion: |
-  To answer this question, please take a look at your Summons and Complaint. 
-  Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
-  
-  [FILE dates.png, 100%]
-  
+  Because of the Covid-19 pandemic, the first notice that tells you to
+  go to court will not include a date. It will say something like
+  "TBD" or "To be determined by the court."
 fields:
-  - What is the date of your first court hearing?: case.original_date
+  - Did you get a letter from the court that tells you what day to go to court?: case.covid_hearing_date_assigned
+    datatype: yesnoradio
+  - When do you need to go to court?: case.covid_first_event
     datatype: date
-    hint: Often a Thursday.
-  - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
-    datatype: date
-    hint: Usually a Monday
-help:
-  Trial dates are usually on a Thursday in many, but not all courts.
-  
-  This information helps us figure out if you are answering to the eviction by 
-  the deadline. If you are filing your [Answer] on time, the court will delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
- 
-section: About Your Court Case
+    show if: case.covid_hearing_date_assigned
+---
+# ---
+# id: court date
+# question: |
+#   Court Date
+# subquestion: |
+#   To answer this question, please take a look at your Summons and Complaint. 
+#   Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
+#   
+#   [FILE dates.png, 100%]
+#   
+# fields:
+#   - What is the date of your first court hearing?: case.original_date
+#     datatype: date
+#     hint: Often a Thursday.
+#   - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
+#     datatype: date
+#     hint: Usually a Monday
+# help:
+#   Trial dates are usually on a Thursday in many, but not all courts.
+#   
+#   This information helps us figure out if you are answering to the eviction by 
+#   the deadline. If you are filing your [Answer] on time, the court will delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
+#  
+# section: About Your Court Case
 ---
 id: case postponed
 event: case_is_on_time
-decoration: thumbs-up
+# decoration: thumbs-up
 question: |
-  Good news!
+  Your hearing date will be assigned soon
 subquestion: |
-  Because you will be filing these forms on-time (no later than ${format_date(case.answer_date)}), your case date will automatically be
-  postponed by two weeks. You do not need to appear in court on ${format_date(case.original_date)}.
-  % if answer_date_is_holiday:
-  It looks like ${case.answer_date} is a holiday, ${answer_date_holiday}. 
-  Usually you can deliver your answer the day after a holiday and it will still be on
-  time.
-  % endif
-
-  % if court_date_is_holiday:
-  The date you should appear is ${court_date}. However, it looks like
-  ${court_date} is a holiday, ${court_date_holiday}. You should ask the court what they do about
-  cases scheduled on this holiday.
-  % else:
-  Instead, you must appear on **${format_date(court_date)}**.
-  % endif
+  Check your mail regularly.
   
-  Due to the Covid-19 emergency, your hearing may happen on a different day and time.
-  Call the court to be sure.
-
+  You will get a notice of your court date in the mail. It will likely be
+  in a few weeks.
+  
+  Because of the Covid-19 pandemic, as of October, 2020, first hearings are
+  usually scheduled for video conference.
+  
+  [Housing Court standing order 6-20](https://www.mass.gov/housing-court-rules/housing-court-standing-order-6-20-temporary-modifications-to-court-operations)
 buttons:
   - Continue: 
       code: |
         case_is_on_time = True  
-help: |
-  The two-week delay is automatic if a tenant files their response to the eviction
-  on-time and requests discovery. See [U.S.P.R. 7(b)](https://www.mass.gov/trial-court-rules/uniform-summary-process-rule-7-discovery).
 section: About Your Court Case
 ---
 id: fault defenses
