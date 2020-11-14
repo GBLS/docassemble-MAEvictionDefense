@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2020-11-13 Added CARES/CDC language to Answer
 * 2020-11-09 Update language to reflect Housing Court standing order 6-20
 * 2020-10-14 Integrate Tyler videos
 * 2020-09-18 Improved Spanish translation/added Spanish videos

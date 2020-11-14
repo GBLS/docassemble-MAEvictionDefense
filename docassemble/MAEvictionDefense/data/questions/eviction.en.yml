@@ -14,6 +14,34 @@ sections:
   - review_discovery: Discovery
   - Conclusion
 ---
+# TODO: covid-19
+id: covid-19
+question: |
+  Covid-19 Defenses
+subquestion: |
+  You may have a defense because of the Covid-19 emergency.
+  
+  Check any answers that are true below. If you're not sure,
+  answer to the best of your knowledge.
+fields:
+  - My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act: covid_cares_has_federal_mortgage
+    datatype: yesno
+  - The mortgage is in forbearance: covid_cares_mortgage_in_forbearance
+    datatype: yesno
+    show if: covid_cares_has_federal_mortgage
+  - I sent my landlord a declaration under the CDC eviction moratorium: covid_cdc_moratorium
+    datatype: yesnoradio
+  - note: |
+      If you have not yet completed the CDC declaration, you can do it for
+      free online [here](https://apps.suffolklitlab.org/start/cdc_moratorium).
+      It takes about 5 minutes.
+    show if: 
+      variable: covid_cdc_moratorium
+      is: False
+  - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
+    datatype: yesno
+  
+---
 id: case number
 question: |
   Case number
@@ -1000,9 +1028,9 @@ question: |
 subquestion: |
   Because of the Covid-19 pandemic, the first notice that tells you to
   go to court will not include a date. It will say something like
-  "TBD" or "To be determined by the court."
+  "To be determined by the court" or "TBD".
 fields:
-  - Did you get a letter from the court that tells you what day to go to court?: case.covid_hearing_date_assigned
+  - Did you get a letter from the court that tells you what **day and time** to go to court yet?: case.covid_hearing_date_assigned
     datatype: yesnoradio
   - When do you need to go to court?: case.covid_first_event
     datatype: date
@@ -1440,6 +1468,13 @@ help: |
   is also likely to change and the summons may list rent due after the original notice.
 section: Claims and Defenses    
 ---
+# I don't know why this was needed
+id: notice timing2
+question: Timing of notices
+fields:
+  - Date I got the notice to quit: date_received_ntq
+    datatype: date
+---
 id: notice timing
 question: Timing of notices
 subquestion: |
@@ -1464,12 +1499,6 @@ fields:
   - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
     datatype: yesno
 section: Claims and Defenses      
----
-id: notice timing2
-question: Timing of notices
-fields:
-  - Date I got the notice to quit: date_received_ntq
-    datatype: date
 ---
 id: nonpayment cure
 question: |

@@ -96,10 +96,12 @@ code: |
 ---
 # TODO: covid-specific
 code: |
-  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
-    case.on_time = True
-  else:
-    case.on_time = False
+  case.on_time = not case.covid_hearing_date_assigned or today() <= case.covid_first_event.plus(days=-3)
+#code: |
+#  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
+#    case.on_time = True
+#  else:
+#    case.on_time = False
 # code: |
 #   if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
 #     case.rescheduled_date = case.original_date.plus(days=14)
