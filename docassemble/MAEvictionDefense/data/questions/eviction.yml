@@ -14,6 +14,8 @@ metadata:
     # We ran into a bug.
     We are very sorry for the inconvenience. 
     
+    [Please tell us more about the bug at this link](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
+    
     1. Try reloading the screen (use the refresh button) and fill in information
     that you left blank.
     2.  You can use the paper forms instead.
@@ -31,11 +33,14 @@ default screen parts:
     [:sign-in-alt: Sign-in](${url_of('login', next=interview_url())}) or [register](${url_of('register', next=interview_url())}) to save your progress.
     % endif
 
-    Feedback, suggestions, or comments? 
-    <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
+    Feedback, suggestions, or comments? [Complete this survey](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
 
     ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
   pre: |
+    % if get_config('debug'):
+    `Page id: ${ user_info().question_id }`
+    % endif
+    
     % if defined('acknowledged_information_use'):
     ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
     % endif
