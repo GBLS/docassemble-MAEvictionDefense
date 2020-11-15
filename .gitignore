@@ -1,0 +1,6 @@
+tests/chromedriver
+*DS_Store*
+node_modules*
+.env
+npm-debug.log
+error*.jpg
