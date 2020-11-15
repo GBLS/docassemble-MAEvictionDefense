@@ -23,6 +23,9 @@ subquestion: |
   
   Check any answers that are true below. If you're not sure,
   answer to the best of your knowledge.
+  
+  You can find out if your landlord has a federally funded mortgage by 
+  [visiting this link](https://www.fhfa.gov/Media/PublicAffairs/Pages/FHFA-Announces-Tools-to-Help-Renters-Find-Out-if-They-are-Protected-from-Eviction.aspx).
 fields:
   - My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act: covid_cares_has_federal_mortgage
     datatype: yesno
