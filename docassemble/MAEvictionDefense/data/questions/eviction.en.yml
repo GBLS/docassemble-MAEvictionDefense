@@ -23,6 +23,9 @@ subquestion: |
   
   Check any answers that are true below. If you're not sure,
   answer to the best of your knowledge.
+  
+  You can find out if your landlord has a federally funded mortgage by 
+  [visiting this link](https://www.fhfa.gov/Media/PublicAffairs/Pages/FHFA-Announces-Tools-to-Help-Renters-Find-Out-if-They-are-Protected-from-Eviction.aspx).
 fields:
   - My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act: covid_cares_has_federal_mortgage
     datatype: yesno
@@ -1073,9 +1076,9 @@ subquestion: |
   in a few weeks.
   
   Because of the Covid-19 pandemic, as of October, 2020, first hearings are
-  usually scheduled for video conference.
+  usually scheduled for video conference. The notice will give you the details. 
   
-  [Housing Court standing order 6-20](https://www.mass.gov/housing-court-rules/housing-court-standing-order-6-20-temporary-modifications-to-court-operations)
+  The court has issued new rules for this -- [Housing Court standing order 6-20](https://www.mass.gov/housing-court-rules/housing-court-standing-order-6-20-temporary-modifications-to-court-operations)
 buttons:
   - Continue: 
       code: |

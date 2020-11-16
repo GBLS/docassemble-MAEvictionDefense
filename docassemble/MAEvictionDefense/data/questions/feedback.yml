@@ -1,0 +1,315 @@
+---
+metadata:
+  title: MADE Feedback Form
+  short title: Feedback
+---
+modules:
+  - docassemble.GithubFeedbackForm.github_issue
+---
+# This is the repository that Github issue will be created on if
+# the repository is not passed as a URL argument
+code: default_repository = 'docassemble-MAEvictionDefense'  
+---
+code: default_github_user_or_organization = 'gbls'
+---
+comment: |
+  For security reasons, you should limit
+  the ability of this script to create issues to any repositories
+  that you control.
+variable name: allowed_github_users
+data:
+  - "nonprofittechy"
+  - "masslegalhelp"
+  - "GBLSMA"
+  - "gbls"
+---
+features:
+  labels above fields: True   
+  question back button: True
+---
+mandatory: True
+code: |
+  intro
+  # Temporary override
+  #default_github_user_or_organization = "suffolklitlab-issues"
+  #default_repository = "demo"
+  
+  if reason == 'bug':
+    bug_details
+    issue_template = bug_report
+  elif reason == 'confusing':
+    confusing_details
+    issue_template = confusing_report
+  elif reason == 'else':
+    other_feedback
+    issue_template = other_feedback_report
+  elif reason == 'help':
+    gentle_exit
+  send_to_github
+  prevent_going_back()
+  store_variables_snapshot() # this is mostly just for backup reasons
+  end_results
+---
+code: github_user = url_args.get('github_user', default_github_user_or_organization)
+---
+code: github_repo = url_args.get('github_repo', default_repository)
+---
+code: variable = url_args.get('variable')
+---
+code: question_id = url_args.get('question_id')
+---
+code: |
+  if not task_performed('sent to github', persistent=True):
+    if github_user in allowed_github_users:
+      issue_url = make_github_issue(github_user, github_repo, template=issue_template)
+    mark_task_as_performed('sent to github', persistent=True)
+  send_to_github = True
+---
+id: intro
+question: |
+  Tell us how we're doing
+subquestion: |
+  [CENTER][FILE gbls_logo.png]
+
+  The information you type here will be publicly available. That means anyone
+  will be able to see it. Use this form to give us information that does not
+  include any personal details.
+
+  If you need more help, these are free resources:
+
+  - For help with a non-criminal legal problem in Massachusetts, use the 
+  [Massachusetts Legal Resource Finder](http://masslegalhelp.org/find-legal-aid)
+
+  - If your income is low enough, try the [Mass Legal Answers Online](http://masslao.org/) website where volunteer lawyers answer questions
+  about your personal civil legal problems. 
+
+  Thank you for telling us about your experience using MADE.
+fields:
+  - "**What would you like to tell us about?**": reason
+    input type: radio
+    choices:
+      - I found a bug: bug
+      - Part of the form was confusing or missing information: confusing
+      - I need more help: help      
+      - I have something else to tell you: else
+continue button field: intro  
+---
+id: bug
+question: |
+  Tell us about the bug
+subquestion: |
+  Please be specific about the problem you ran into. The more you tell
+  us, the more we can do to try to fix it.
+  
+  Do not type any private information. Your bug report will be visible
+  on a public website.
+fields:
+  #- label: |
+  #    **What form were you using?**
+  #  field: form_title
+  #  show if:
+  #    code: |
+  #      github_repo == default_repository
+  - label: |
+      **What was the title at the top of the page where
+      the bug happened?**
+    field: page_title
+    show if:
+      code: |
+        not question_id
+  - label: |
+      **Tell us the steps that you followed before you noticed the problem.** [BR]
+      For example: 1. I opened the interview. 2. On the first page, I put in just my first name. 3. On the second page, I put in my phone number. 4. I pressed a button to go to the next page.
+    field: reproduce_bug
+    datatype: area
+    rows: 4
+  - "**What did you expect to happen?**": bug_expected_behavior
+    datatype: area
+    rows: 4
+  - "**What happened instead? Be specific.**": bug_details
+    datatype: area
+    rows: 4
+  - label: |
+      **What else would you like to tell us?**
+    field: share_other_details   
+    datatype: area
+    required: False
+  - label: |
+      **Share my specific answers with an administrator**[BR]
+      You can optionally share your answers on the online form with an
+      administrator. Only authorized employees can view
+      this information. It will not be made public.
+      [BR]
+      If you say no, it may be harder for us to track down the problem,
+      but we will still try our best.
+      We will not contact you either way.
+    field: share_interview_answers
+    datatype: yesnoradio
+---
+id: confusing
+question: |
+  Tell us about your experience
+subquestion: |
+  Tell us about your experience. The more specific you are, the more
+  helpful we can be.
+  
+  Do not include private information about your case. The information you
+  type on this form will be visible on a public website.
+fields:
+  #- label: |
+  #    **What form were you using?**
+  #  field: form_title
+  #  show if:
+  #    code: |
+  #      github_repo == default_repository
+  - label: |
+      **What was the title at the top of the page where
+      the bug happened?**
+    field: page_title
+    show if:
+      code: |
+        not question_id    
+  - label: |
+      **What was confusing or missing information? **
+    field: confusing_details
+    datatype: area
+    rows: 4
+  - label: |
+      **What else would you like to tell us?**
+    field: share_other_details   
+    datatype: area
+    required: False
+---
+id: other thoughts
+question: |
+  Tell us your thoughts
+subquestion: |
+  Do not include private information about your case. The information you
+  type on this form will be visible on a public website.
+fields:
+  - How helpful were the advice and paperwork in MADE?: how_helpful
+    datatype: radio
+    choices:
+      - Very helpful
+      - Somewhat helpful
+      - Not helpful at all
+  - What is the best way to describe you?: user_type
+    datatype: radio
+    choices:
+      - Tenant
+      - Friend or family member of tenant
+      - Social worker
+      - Tenant organizer
+      - Attorney or paralegal
+      - Other: other
+  - Other (please specify): user_type
+    show if:
+      variable: user_type
+      is: other
+  #- label: |
+  #    **What form were you using?**
+  #  field: form_title
+  #  show if:
+  #    code: |
+  #      github_repo == default_repository
+  - label: |
+      **What would you like to tell us?**
+    field: other_feedback   
+    datatype: area
+  # - On a scale of 1-5, how likely are you to recommend this tool to someone else?: net_promoter
+  #  datatype: range
+  #  min: 1
+  #  max: 5
+---
+id: exit
+event: gentle_exit
+question: |
+  How to get more help
+subquestion: |
+  We are sorry that we couldn't do more to help you.
+  
+  If you need more help, these are free resources:
+
+  - For help with a non-criminal legal problem in Massachusetts, use the 
+  [Massachusetts Legal Resource Finder](http://masslegalhelp.org/find-legal-aid)
+
+  - If your income is low enough, try the [Mass Legal Answers Online](http://masslao.org/) website where volunteer lawyers answer questions
+  about your personal civil legal problems. 
+buttons:
+  - Exit: exit
+    url: https://www.gbls.org/MADE
+---
+id: end_results
+event: end_results
+question: |
+  Thank you for your feedback
+subquestion: |
+  We appreciate you letting us know how we are doing.
+  
+  % if defined('issue_url'):
+  If you would like to track this issue, you can [follow 
+  it](${issue_url}) on GitHub.
+  % endif
+buttons:
+  - Exit: exit
+    url: https://www.gbls.org/MADE
+---
+template: bug_report
+subject: |
+  User: Bug report
+content: |
+  &nbsp; | &nbsp;
+  -------|------------------------------------
+  % if question_id:
+  Question ID | `${ question_id }`
+  % else:  
+  Page title | ${ page_title }
+  % endif
+  Steps to reproduce | ${ reproduce_bug }
+  Expected behavior | ${ bug_expected_behavior }
+  What happened instead | ${ bug_details }
+  Other information | ${ share_other_details }
+  % if variable:
+  Variable being sought | `${ variable }`
+  % endif
+---
+template: confusing_report
+subject: |
+  User: part of the form was confusing
+content: |
+  &nbsp; | &nbsp;
+  -------|------------------------------------
+  % if question_id:
+  Question ID | `${ question_id }`
+  % else:  
+  Page title | ${ page_title }
+  % endif  
+  What was confusing | ${ confusing_details }
+  Other information | ${ share_other_details }
+  % if variable:
+  Variable being sought | `${ variable }`
+  % endif  
+---
+template: other_feedback_report
+subject: |
+  User: other feedback
+content: | 
+  ## How helpful was MADE?
+  Choices are "very helpful", "somewhat helpful", "not helpful at all".
+  
+  ${ how_helpful }
+  
+  ## What best describes you?
+  
+  ${ user_type }
+  
+  ## User feedback:  
+  > ${ other_feedback }
+  
+  % if question_id:
+  Question id: `${ question_id }`
+  % endif
+  
+  % if variable:
+  Variable being sought: `${ variable }`
+  % endif  

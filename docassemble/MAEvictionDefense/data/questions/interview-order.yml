@@ -15,8 +15,8 @@ code: |
     overview_video
   if case.status == "onlyntq":
     onlyhasntq
-    # if case.status == "afj" or case.status == 'late':
-    #  firstdatepassed
+  if case.status == "afj" or case.status == 'late':
+    firstdatepassed
   tenant.address.address  
   tenant.name.first
   additional_tenants.there_are_any  
@@ -46,6 +46,9 @@ code: |
   case.rescheduled_date
   if not case.covid_hearing_date_assigned:
     case_is_on_time # explain court will assign a date
+  elif case.covid_hearing_date_assigned and today() > case.covid_first_event:
+    firstdatepassed
+    case.status = 'late'
   # if case.on_time:
   #  if person_answering == 'tenant':
   #    case_is_on_time # Inform the user of postponement
