@@ -447,7 +447,7 @@ code: |
     r = ls_submit_online_intake( params = {
         'firstName': tenant.name.first,
         'lastName': tenant.name.last,
-        'dateOfBirth': tenant.birthdate,
+        'dateOfBirth': tenant.birthdate.format('yyyy-MM-dd'),
         'eTransferOrganization': 'Greater Boston Legal Services',
         'note': ls_case_note_template,
         'phoneHome': tenant.phone_number,
@@ -465,8 +465,9 @@ code: |
         'numberOfAdults': num_adults,
         'numberOfChildren': num_children,
         'citizenshipStatus': showifdef('tenant.is_citizen',None),
-        'incomes': incomes.to_json()
-      }, task = 'create online intake')
+        'incomes': incomes.to_json(), # [{"type": income.type, "frequency": income.period, "amount": income.value} for income in incomes]
+      }, 
+      task = 'create online intake')
     # debug_url = r.request.url
   created_online_intake = True
 ---
