@@ -264,7 +264,7 @@ code: |
     download_forms
 ---
 code: |
-  store_variables_snapshot(persistent=True, data={"zip": tenant.address.zip, "city": tenant.address.city, "tenancy_type": tenancy_type, "eviction_detailed_reason": eviction_detailed_reason, "user_language": user_language, 'court': str(court), 'rent_amount': showifdef('facts.tenant_rent_share'), 'contract_rent': showifdef('facts.tenant_contract_rent'), "person_answering": person_answering })
+  store_variables_snapshot(persistent=True, data={"zip": tenant.address.zip, "city": tenant.address.city, "tenancy_type": tenancy_type, "eviction_reason": eviction_reason, "eviction_detailed_reason": str(eviction_detailed_reason), "user_language": user_language, 'court': str(court), 'rent_amount': showifdef('facts.tenant_rent_share'), 'contract_rent': showifdef('facts.tenant_contract_rent'), "person_answering": person_answering })
   store_made_snapshot = True
 ---
 code: |
