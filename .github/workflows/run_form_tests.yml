@@ -1,0 +1,39 @@
+on: [push]
+
+jobs:
+  
+  puppeteer-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    env:
+      PLAYGROUND_EMAIL: ${{ secrets.PLAYGROUND_EMAIL }}
+      PLAYGROUND_PASSWORD: ${{ secrets.PLAYGROUND_PASSWORD }}
+      PLAYGROUND_ID: ${{ secrets.PLAYGROUND_ID }}
+      BASE_URL: https://interviews-dev.gbls.org
+      REPO_URL: https://github.com/plocket/docassemble-MAEvictionDefense
+      BRANCH_PATH: ${{ github.ref }}
+
+    name: Run Puppeteer tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm run setup
+      - run: npm run cucumber
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() }}
+        with:
+          name: screenshots
+          path: ./**/error-*.jpg
+      - name: Cleanup
+        if: ${{ always() }}
+        run: npm run takedown

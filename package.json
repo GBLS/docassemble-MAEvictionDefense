@@ -1,0 +1,36 @@
+{
+  "name": "docassemble-MAEvictionDefense",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo 'These tests are fake. Use `local`' && mocha tests --timeout 10000",
+    "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",
+    "setup": "node_modules/.bin/da-setup",
+    "takedown": "node_modules/.bin/da-takedown",
+    "local": "npm run setup && npm run cucumber; npm run takedown"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plocket/docassemble-MAEvictionDefense.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plocket/docassemble-MAEvictionDefense/issues"
+  },
+  "homepage": "https://github.com/plocket/docassemble-MAEvictionDefense#readme",
+  "dependencies": {
+    "bufferutil": "^4.0.1",
+    "chai": "^4.2.0",
+    "cucumber": "^6.0.5",
+    "docassemble-cucumber": "^0.4.42",
+    "dotenv": "^8.2.0",
+    "mocha": "^7.2.0",
+    "puppeteer": "^3.1.0",
+    "utf-8-validate": "^5.0.2"
+  }
+}
