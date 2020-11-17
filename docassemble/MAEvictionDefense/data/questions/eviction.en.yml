@@ -571,7 +571,12 @@ subquestion: |
   % endif
   </li>
   <li>
+  % if case.covid_hearing_date_assigned:
   <b>Get ready for court and show up on ${court_date}.</b>
+  % else:
+  <b>Check the mail for a letter that tells you when to go to court. It should
+  arrive soon.</b>
+  % endif
   % if court_date_is_holiday:
   ${court_date} is a holiday (${court_date_holiday}), so ask the court
   when your case will be postponed until.
