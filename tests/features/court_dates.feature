@@ -163,6 +163,7 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   # None can't be page id
   When I tap the button "Skip"
   Then the question id should be "download screen"
+  Then I click on the link "Download"
 
 
 #Scenario: User has a public housing voucher.
