@@ -1103,13 +1103,13 @@ subquestion: |
   If you do not agree with the landlord's allegation of ${eviction_detailed_reason}, you may have a defense.
   Select all that apply below.
 fields:
-  - I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong): fault.did_not_occur
+  - I did not do everything my landlord says that I did. (My landlord is wrong): fault.did_not_occur
     datatype: yesno
     default: True
-  - The ${capitalize(eviction_detailed_reason)} is not a violation of my lease.: fault.not_violation_of_agreement
+  - At least part of what my landlord says that I did is not a violation of my lease.: fault.not_violation_of_agreement
     datatype: yesno
     default: True
-  - The ${eviction_detailed_reason} was the fault of a guest that I had no control over.: fault.no_control_of_guest
+  - At least part of what my landlord says that I did was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
 section: Claims and Defenses
 ---
