@@ -496,7 +496,7 @@ subquestion: |
   If you need to change anything, click one of the section labels on the left
   to update your answers.
 field: almost_done
-section: Conclusion
+section: Discovery
 progress: 95
 ---
 id: method of service
@@ -1690,15 +1690,29 @@ comment: |
 id: bad conditions
 question: Bad Housing Conditions
 subquestion: | 
-  List any problems with the apartment you live in now. Think about problems over the last
+  List any problems with the apartment you live in now. 
+  % if facts.tenant_movein < today().plus(years=-6):
+  Think about problems over the last
   6 years, whether they are currently repaired or not.
+  % else:
+  Think about problems since you first moved into the apartment, whether they
+  are currently repaired or not.
+  % endif
   Your landlord will only be liable for problems that they knew about or should have
   known about. For example, they may be liable for problems that existed when you first
   moved in or purchased the building.
 video: |
   ${"[YOUTUBE w-rYKUgW__o]" if user_language == 'es' else "[YOUTUBE DCpIr9ldSsw]"}
 fields:
-  - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
+  - label: |
+        % if facts.tenant_movein < today().plus(years=-6):
+        Select any conditions you have had over the last
+        6 years, whether they are currently repaired or not.
+        % else:
+        Select any conditions you have had since you first moved into the 
+        apartment, whether they are currently repaired or not.
+        % endif
+    field: bad_conditions.conditions
     datatype: checkboxes
     choices:
       - Insects: insects
