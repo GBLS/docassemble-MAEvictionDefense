@@ -179,6 +179,7 @@ comment: |
 id: parent_interview_flow
 mandatory: True
 code: |
+  nav.set_section('start')
   multi_user = True
   allow_cron = True
   speak_text = True
@@ -197,11 +198,13 @@ code: |
     default_lang = ''
 
   all_answer_variables # refers to variables listed in interview-order.yml
+  nav.set_section('review_discovery')
   loaded_discovery
   if person_answering == 'attorney' or tenant_review_discovery:
     interrogatory_questions
     drq_questions
   
+  nav.set_section('review_signature')
   if started_on_phone:
     saw_signature_choice = True
     tenant.signature
@@ -237,6 +240,7 @@ code: |
       signature_phone_followup
       signature_choice = 'phone'
 
+  nav.set_section('conclusion')
   method_of_service
   if url_args.get('clinic', '').lower() == 'gbls':
     ls_case_id

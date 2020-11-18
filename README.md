@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2020-11-18 Translate section labels
 * 2020-11-17 Integrate feedback from housing coalition
 * 2020-11-14 New feedback form that creates Github issues
 * 2020-11-13 Added CARES/CDC language to Answer

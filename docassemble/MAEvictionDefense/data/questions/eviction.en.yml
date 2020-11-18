@@ -4,24 +4,35 @@
 comment: |
   Overview screens
 ---
+# language: en
 sections:
-  - Getting Started
+  - start: Getting Started
   - review_about_you: About You
   - review_about_landlord: About Your Landlord
   - review_about_court: About Your Court Case 
   - review_about_tenancy: About Your Tenancy
   - review_claims: Claims and Defenses
   - review_discovery: Discovery
-  - Conclusion
+  - review_signature: Signature
+  - conclusion: Conclusion
+---
+language: es
+sections:
+  - start: Empezando
+  - review_about_you: Sobre ti
+  - review_about_landlord: Sobre su dueño
+  - review_about_court: Sobre su caso de desalojo
+  - review_about_tenancy: Sobre su arrendamiento
+  - review_claims: Reclamaciones y defensas legales
+  - review_discovery: Descubrimiento
+  - conclusion: Conclusión    
 ---
 # TODO: covid-19
 id: covid-19
 question: |
   Covid-19 Defenses
 subquestion: |
-  You may have a defense because of the Covid-19 emergency. 
-  Learn more about [your rights as a tenant under the Covid-19 
-  emergency](https://www.masslegalhelp.org/covid-19/housing).
+  You may have a defense because of the Covid-19 emergency.
   
   Check any answers that are true below. If you're not sure,
   answer to the best of your knowledge.
@@ -34,14 +45,12 @@ fields:
   - The mortgage is in forbearance: covid_cares_mortgage_in_forbearance
     datatype: yesno
     show if: covid_cares_has_federal_mortgage
-    help: |
-      Forbearance means a temporary postponement of mortgage payments.
   - I sent my landlord a declaration under the CDC eviction moratorium: covid_cdc_moratorium
     datatype: yesnoradio
   - note: |
       If you have not yet completed the CDC declaration, you can do it for
       free online [here](https://apps.suffolklitlab.org/start/cdc_moratorium).
-      It takes about 5 minutes. [Learn more](https://www.masslegalhelp.org/covid-19/housing).
+      It takes about 5 minutes.
     show if: 
       variable: covid_cdc_moratorium
       is: False
@@ -117,7 +126,7 @@ help: |
   Click "[Back to question]" to go to the previous screen and continue the interview.
 terms: 
   - green word: This is an example. Click it again to hide this definition. 
-section: Getting Started
+# section: Getting Started
 right: |
   % if user_has_saved_answers:
   ${fa_icon("bell", color="primary", size="sm")}
@@ -148,7 +157,7 @@ subquestion: |
 field: how_to_answer  
 buttons: 
   - I agree: continue
-section: Getting Started
+# section: Getting Started
 ---
 id: who is using
 question: |
@@ -169,6 +178,7 @@ comment: |
   Doesn't look like there's a Spanish language version of this yet. TODO
 field: overview_video
 ---
+id: your eviction case
 question: |
   Your eviction case
 subquestion: |
@@ -185,7 +195,7 @@ help:
   
   If your first court date has passed, you may be able to use a special form called a 
   "Motion to File Late Answer." This interview will help you decide. 
-section: Getting Started
+# section: Getting Started
 ---
 id: only ntq
 event: onlyhasntq
@@ -251,7 +261,7 @@ field: claim_jurytrial
 buttons:
   - Keep my jury trial: True
   - Give up my right to a jury: False
-section: Getting Started
+# section: Getting Started
 decoration: users
 help: |
   Either the landlord or the tenant can choose a jury trial any time up until the
@@ -404,13 +414,13 @@ question: |
   % endif
 subquestion: |
   % if defined('tenant.signature'):
-  Click next.
+  Click continue.
   % else:
   % if device() and device().is_mobile:
-  Click next on this screen when you're ready to sign.
+  Click continue on this screen when you're ready to sign.
   % else:
-  Click next to sign on this device. Wait here if you
-  sent a link to sign to someone else. Click next
+  Click continue to sign on this device. Wait here if you
+  sent a link to sign to someone else. Click continue
   when the tenant has finished signing.
   % endif
   % endif
@@ -426,7 +436,7 @@ fields:
       1. Open the camera app or barcode reader app on your phone.
       2. Point it at the screen.
       3. Click the link icon that appears on the camera screen.
-      4. Click ${word("next")} on your phone.
+      4. Click ${word("continue")} on your phone.
       
       <center>
       ${interview_url_as_qr()}
@@ -452,9 +462,9 @@ fields:
     show if: text_link
     default: ${showifdef('user_cell_edited')}
   - note: |
-      Click ${word("next")} to add your signature.
+      Click ${word("continue")} to add your signature.
   - note: |
-      Click ${word("next")} to add your signature.
+      Click ${word("continue")} to add your signature.
     show if: 
       code: |
         device() and not device().is_pc
@@ -496,7 +506,7 @@ subquestion: |
   If you need to change anything, click one of the section labels on the left
   to update your answers.
 field: almost_done
-section: Discovery
+# section: Conclusion
 progress: 95
 ---
 id: method of service
@@ -506,27 +516,25 @@ subquestion: |
   You must give a copy of the forms we are working on to your landlord or their 
   attorney. 
   % if case.covid_hearing_date_assigned:
-  They need to _get_ the forms no later than the Answer date.
-  The Answer date is 3 days before the hearing the court scheduled,
-  **${format_date(case.answer_date)}**
+  They need to _get_ the forms no later than 
+  **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   Because ${case.answer_date} is ${answer_date_holiday}, you can
   deliver it the next weekday after ${answer_date_holiday}.
   % endif
   % else:
-  You must give a copy of the forms we are working on to your landlord or their
-  attorney. They must **receive** forms on or before your answer date. 
-  
-  The answer date is three days before the date the court assigns for your
-  first hearing. You said you do not have a date yet. Just get it to your landlord
-  or their attorney as soon as you can.
+  Give a copy to your landlord or their attorney as soon as you can.
   % endif
-  
-  If your
-  landlord has an attorney, because of the COVID-19 state of emergency, you can
-  send their attorney the paperwork by email and they must accept it. If your
-  landlord does not have an attorney, they may agree to accept the paperwork by
-  fax or email, but you need to get their permission first.
+
+  Deliver it in person
+  if you can. Your landlord may agree to get the paperwork by fax or email,
+  but you need to get their permission first. 
+  % if format_date(case.answer_date) == format_date(today()):
+  It's too late to mail the paperwork.
+  % else:
+  Only mail it if you know
+  your landlord will get it on or before ${format_date(case.answer_date)}.
+  % endif
 fields: 
   - Delivery method: method_of_service
     code: |
@@ -539,7 +547,7 @@ fields:
         
   - Date of delivery: service_date
     datatype: date
-section: Conclusion
+# section: Conclusion
 ---
 id: download screen
 reconsider: 
@@ -571,12 +579,7 @@ subquestion: |
   % endif
   </li>
   <li>
-  % if case.covid_hearing_date_assigned:
   <b>Get ready for court and show up on ${court_date}.</b>
-  % else:
-  <b>Check the mail for a letter that tells you when to go to court. It should
-  arrive soon.</b>
-  % endif
   % if court_date_is_holiday:
   ${court_date} is a holiday (${court_date_holiday}), so ask the court
   when your case will be postponed until.
@@ -651,7 +654,7 @@ under: |
   
   [YOUTUBE wBAlE3YI4Ew]
 progress: 100  
-section: Conclusion
+# section: Conclusion
 ---
 comment: |
   Questions about Tenant
@@ -671,7 +674,7 @@ fields:
     required: False
     code: |
       name_suffix()
-section: About You
+# section: About You
 ---
 id: additional tenants
 question: |
@@ -792,7 +795,7 @@ fields:
       - month-to-month or week-to-week (tenancy at will, written or oral): taw
       - I don't have one: taw
       - I don't know: taw
-section: About Your Tenancy
+# section: About Your Tenancy
 help: |
   Your tenancy situation and the type of agreement you have to live at your address
   may affect your rights. For example, a live in aide or caretaker is entitled
@@ -873,7 +876,7 @@ fields:
     datatype: yesno
   - I am a survivor of domestic violence.: tenant.is_dvvictim
     datatype: yesno
-section: About You
+# section: About You
 help: |
   You may have special defenses depending on facts about you. For example,
   you have the right to an interpreter if you need one.
@@ -931,7 +934,7 @@ fields:
     show if:
       code: |
         plead_counterclaims  
-section: About You
+# section: About You
 help: |
   Even in a simple case, your rights may depend on actions your landlord took or
   failed to take during the time that you lived in your home.
@@ -960,7 +963,7 @@ fields:
     datatype: object
     default: local_housing_court
     choices: macourts
-section: About Your Court Case
+# section: About Your Court Case
 ---
 id: transfer
 question: |
@@ -1094,7 +1097,7 @@ buttons:
   - Continue: 
       code: |
         case_is_on_time = True  
-section: About Your Court Case
+# section: About Your Court Case
 ---
 id: fault defenses
 question: |
@@ -1103,15 +1106,15 @@ subquestion: |
   If you do not agree with the landlord's allegation of ${eviction_detailed_reason}, you may have a defense.
   Select all that apply below.
 fields:
-  - I did not do everything my landlord says that I did. (My landlord is wrong): fault.did_not_occur
+  - I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong): fault.did_not_occur
     datatype: yesno
     default: True
-  - At least part of what my landlord says that I did is not a violation of my lease.: fault.not_violation_of_agreement
+  - The ${capitalize(eviction_detailed_reason)} is not a violation of my lease.: fault.not_violation_of_agreement
     datatype: yesno
     default: True
-  - At least part of what my landlord says that I did was the fault of a guest that I had no control over.: fault.no_control_of_guest
+  - The ${eviction_detailed_reason} was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 id: eviction reason
 question: Reason for eviction
@@ -1136,7 +1139,7 @@ help: |
   best answer you can from the information on the notice. There is no special
   language that your landlord must use when telling you the reason for the eviction.
   It can sometimes be written in a confusing or unclear way.
-section: About Your Court Case
+# section: About Your Court Case
 ---
 id: no fault reason
 question: | 
@@ -1152,7 +1155,7 @@ fields:
       - They want the apartment for a family member: moving in a family member
       - My landlord did not give a reason: no reason
       - Other: other
-section: About Your Court Case
+# section: About Your Court Case
 ---
 id: fault reason
 question: | 
@@ -1177,7 +1180,7 @@ fields:
       - Arrest or conviction for a crime: arrest or criminal conviction
       - Disturbing health and safety of tenants or others: health and safety
       - Other lease violation: other lease violation
-section: About Your Court Case
+# section: About Your Court Case
 ---
 id: defense overview
 decoration: info-circle
@@ -1242,7 +1245,7 @@ subquestion: |
   [FILE landlord_name.png, 100%]
 fields:
   - Landlord's name (as written on the Summons): landlord.name.text
-section: About Your Landlord
+# section: About Your Landlord
 ---
 id: landlord information
 question: |
@@ -1275,7 +1278,7 @@ help: |
   to file their case.
   If your landlord has changed since you first moved in, we will also ask
   them different questions to help you prepare for court.
-section: About Your Landlord
+# section: About Your Landlord
 ---
 id: landlords attorney
 question: |
@@ -1348,7 +1351,7 @@ fields:
         notice_type == 'fourteen_day'
   - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
-section: Claims and Defenses  
+# section: Claims and Defenses  
 ---
 id: notice to quit facts
 question: |
@@ -1398,7 +1401,7 @@ help:
   You can learn more at
   [MassLegalHelp](http://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf)
   and if you aren't sure, you can probably talk to a lawyer at the Attorney for the Day table at your local court.
-section: Claims and Defenses  
+# section: Claims and Defenses  
 ---
 id: waiver
 question: |
@@ -1437,7 +1440,7 @@ help: |
   either in the notice to quit or in a written notice when they accept your check for rent.
 
   There is a brief discussion of waiver in [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-evictions.pdf).
-section: Claims and Defenses  
+# section: Claims and Defenses  
 ---
 id: summons facts
 question: |
@@ -1480,7 +1483,7 @@ help: |
   after a proper notice to quit". It's always OK for the summons and complaint to list
   rent even if rent was not the reason for the notice to quit. The rent amount
   is also likely to change and the summons may list rent due after the original notice.
-section: Claims and Defenses    
+# section: Claims and Defenses    
 ---
 # I don't know why this was needed
 id: notice timing2
@@ -1512,9 +1515,8 @@ fields:
     datatype: yesno
   - The summons and complaint was left at my apartment (usually taped or tacked on door): summons_last_and_usual
     datatype: yesno
-section: Claims and Defenses      
+# section: Claims and Defenses      
 ---
-# TODO: covid-19
 id: nonpayment cure
 question: |
   Paying the money owed
@@ -1522,8 +1524,7 @@ subquestion: |
   You may have the right to stop the eviction if you paid all of the money that you owed the landlord
   no later than  
   % if tenancy_type == 'lease':
-  the answer date. The answer date is 3 days before your first hearing with the
-  court
+  the answer date, ${case.answer_date}.
   % else:
   10 days after you got the notice to quit
   ${', ' + str(date_received_ntq.plus(days=10)) if (defined('date_received_ntq') and date_received_ntq != '') else ''}
@@ -1555,7 +1556,7 @@ help:
   the section titled "Paying the Rent Owed" 
   and ["Receiving Proper Notice"](https://www.masslegalhelp.org/receiving-proper-notice).
   Also see [G.L. 186 s. 11](https://malegislature.gov/Laws/GeneralLaws/PartII/TitleI/Chapter186/Section11).  
-section: Claims and Defenses  
+# section: Claims and Defenses  
  
 ---
 id: new landlord
@@ -1590,7 +1591,7 @@ fields:
   - I have other defenses or counterclaims as follows: initial_defense.custom_other
     datatype: area
     required: False
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 id: have a defense
 sets: show_defense_summary
@@ -1637,7 +1638,7 @@ subquestion: |
 field: show_defense_summary
 buttons:
   - Continue: continue  
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Please see [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims) for more information.
 ---
@@ -1690,29 +1691,15 @@ comment: |
 id: bad conditions
 question: Bad Housing Conditions
 subquestion: | 
-  List any problems with the apartment you live in now. 
-  % if facts.tenant_movein < today().plus(years=-6):
-  Think about problems over the last
+  List any problems with the apartment you live in now. Think about problems over the last
   6 years, whether they are currently repaired or not.
-  % else:
-  Think about problems since you first moved into the apartment, whether they
-  are currently repaired or not.
-  % endif
   Your landlord will only be liable for problems that they knew about or should have
   known about. For example, they may be liable for problems that existed when you first
   moved in or purchased the building.
 video: |
   ${"[YOUTUBE w-rYKUgW__o]" if user_language == 'es' else "[YOUTUBE DCpIr9ldSsw]"}
 fields:
-  - label: |
-        % if facts.tenant_movein < today().plus(years=-6):
-        Select any conditions you have had over the last
-        6 years, whether they are currently repaired or not.
-        % else:
-        Select any conditions you have had since you first moved into the 
-        apartment, whether they are currently repaired or not.
-        % endif
-    field: bad_conditions.conditions
+  - "Select any conditions you have had in the last 6 years, even if fixed now": bad_conditions.conditions
     datatype: checkboxes
     choices:
       - Insects: insects
@@ -1747,7 +1734,7 @@ help: |
   that made the apartment unlivable, you may be entitled to 1 to 3 months of rent.
 
   Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 id: repair and deduct
 question: |
@@ -1794,7 +1781,7 @@ fields:
       - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).: All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
   - Other: bad_conditions.other
     required: False
-section: Claims and Defenses
+# section: Claims and Defenses
 
 ---
 id: breach of quiet enjoyment
@@ -1830,7 +1817,7 @@ fields:
     datatype: yesno
   - Interfered in some other way (specify): bqe.other
     required: False
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about getting repairs made on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-pullout-8-getting-repairs-made).
 ---
@@ -1847,7 +1834,7 @@ fields:
     datatype: yesno
   - My landlord charged me for water in violation of G.L. c. 186, §22.. : other.water_violation
     datatype: yesno
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 comment: |
   Foreclosure defenses
@@ -1864,7 +1851,7 @@ fields:
     datatype: yesno
   - My loan was predatory, unfair, and/or was unaffordable based on my income.  : postforeclosure.unfair_loan_based_on_income
     datatype: yesno
-section: Claims and Defenses
+# section: Claims and Defenses
 
 ---
 id: foreclosure tenants
@@ -1895,7 +1882,7 @@ fields:
     datatype: yesno
   - I ask the court to declare the foreclosure void. : relief.void_foreclosure
     datatype: yesno
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 comment: |
   Subsidized tenancy
@@ -1940,7 +1927,7 @@ fields:
     datatype: yesno
   - My landlord charged me more rent than allowed by the housing authority (side payments). : subsidized_housing.landlord_overcharged
     datatype: yesno
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 id: subsidy defenses 2
 question: Subsidized Housing Defenses
@@ -1967,7 +1954,7 @@ fields:
   - I have a defense under the Violence Against Women Act. : subsidized_housing.vawa
     datatype: yesnoradio
     default: ${claims.harassment or tenant.is_dvvictim}
-section: Claims and Defenses
+# section: Claims and Defenses
 ---
 comment: |
   Retaliation
@@ -1986,7 +1973,7 @@ subquestion: |
 video: |
   ${"[YOUTUBE 1BYDc6EFTgE]" if user_language == "es" else "[YOUTUBE Bs-aVV5K-oo]"}
 yesno: retaliation.is_retaliated
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)
 
@@ -2038,7 +2025,7 @@ fields:
     datatype: yesnoradio
     required: False
     default: True
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)  
 ---
@@ -2066,7 +2053,7 @@ subquestion: |
 video: |
   ${ "[YOUTUBE 3INbS7qS1qI]" if user_language == "es" else "[YOUTUBE Yxry8Zbmcgs]" }
 yesno: tenant.is_discriminated
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
@@ -2101,7 +2088,7 @@ fields:
     datatype: yesno
   - "Other:": discrimination.other
     show if: discrimination.show_other
-section: Claims and Defenses
+# section: Claims and Defenses
 comment: |
   Setting the dictionary of defaults, Disability is a 
   default if tenant.is_disabled is true, and false if it is false.
@@ -2117,7 +2104,7 @@ subquestion: |
   a defense to the eviction.
   Would you like to ask for a reasonable accommodation?
 yesno: disability.request_reasonable_accommodation
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
@@ -2135,7 +2122,7 @@ fields:
   - The harassment made me feel unsafe or uncomfortable. : discrimination.sexual_harassment.unsafe_or_uncomfortable
     datatype: yesno
    
-section: Claims and Defenses
+# section: Claims and Defenses
 
 ---
 id: consumer protection
@@ -2157,7 +2144,7 @@ fields:
     datatype: yesno
   - Other violation: consumer_protection.other_reason
     show if: consumer_protection.other
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   The Massachusetts Consumer Protection law, [G.L. c. 93A](https://malegislature.gov/Laws/GeneralLaws/PartI/TitleXV/Chapter93A),
   protects tenants from violations of local, state and federal law.
@@ -2185,7 +2172,7 @@ fields:
       - Failed to pay interest on each anniversary of your deposit or give me a credit on my rent: Failed to pay interest on each anniversary of your deposit or give me a credit on my rent
       - Failed to provide a statement of conditions: Failed to provide a statement of conditions
       - Did not take responsibility for the deposit paid to a former landlord: Did not take responsibility for the deposit paid to a former landlord
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about the rules for handling a security deposit on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
 ---
@@ -2213,7 +2200,7 @@ fields:
   - Did your landlord pay you interest each year for your prepaid rent?: last_months_rent.paid_interest
     datatype: yesnoradio
     show if: last_months_rent.over_a_year
-section: Claims and Defenses
+# section: Claims and Defenses
 help: |
   Learn more about the rules for handling pre-paid last month's rent on [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-chapter-3-security-deposit.pdf).
 ---
@@ -2233,6 +2220,7 @@ fields:
   code: ints_fields
 continue button field: interrogatory_questions  
 ---
+id: discovery
 question: |
   Discovery: Getting ready for court
 subquestion: |
@@ -2265,7 +2253,7 @@ help: |
   you have the right to ask the judge to order them to give it to you.
   Part of the packet you deliver will include a motion form you can use to ask for
   discovery if your landlord doesn't give it to you.
-section: Discovery
+# section: Discovery
 ---
 id: document requests
 question: |
@@ -2366,7 +2354,6 @@ content: |
   
   Click [here](${interview_url()}) to keep working on the interview.
 ---
-# TODO: covid-19
 template: interview_complete_email
 subject: |
   You finished the eviction interview! Keep this for your records (Massachusetts Defense for Eviction) for ${landlord} v. ${tenant}
@@ -2378,19 +2365,22 @@ content: |
   
   If you want to go back to your interview, click here ${interview_url()}.
   
-  % if case.covid_hearing_date_assigned:
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
-  % else:
-  Keep your eyes out for a letter from the court. The court will tell you
-  when your hearing is and how it will happen. Most hearings happen by
-  video or phone.
+
+  Because of the Covid-19 emergency, your court date may be a different day.
+  Call the court to be sure.
+
+  % if court_date_is_holiday:
+  It looks like ${court_date} is a holiday, ${court_date_holiday}.
+  If you didn't get a notice from the court, you may want to call to find out
+  when your case will be heard.
   % endif
-  
+
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
   has information that can help you be prepared.  
 
-  Was MADE helpful? [Tell us here](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ).
+  Was MADE helpful? [Tell us here](https://www.surveymonkey.com/r/8T2KZBV).
 ---
 template: interview_complete_text
 content: |
@@ -2529,6 +2519,7 @@ auto terms:
 comment: |
   Intake questions
 ---
+id: intake out of service area
 question: |
   You may qualify for free legal help
 subquestion: |
@@ -2542,6 +2533,7 @@ subquestion: |
   the interview.
 field: out_of_service_area
 ---
+id: intake opener
 question: |
   It looks like you may qualify for free legal help
 subquestion: |
@@ -2565,6 +2557,7 @@ help: |
   Not everyone who qualifies will be assigned an attorney. Because of funding, GBLS can only represent about
   1 in 3 tenants who qualify for our help.
 ---
+id: intake intro
 question: |
   Application overview
 subquestion: |
@@ -2574,6 +2567,7 @@ subquestion: |
 field: understands_eligibility
 continue button label: I understand
 ---
+id: intake prescreen
 comment: |
   We skip this page if the tenant said someone living with them is over 60
 question: |
@@ -2588,6 +2582,7 @@ fields:
   - Are you a victim of crime, or a _survivor_ of a victim of crime? : tenant.is_crime_victim
     datatype: yesnoradio
 ---
+id: intake dont qualify
 question: |
   Pre-screening
 subquestion: |
@@ -2610,6 +2605,7 @@ help: |
   information. If this looks wrong or out of date, please email [MADE@gbls.org](mailto:made@gbls.org) so we can fix this.
 field: does_not_qualify
 ---
+id: intake review
 question: |
   Review (1 of 7)
 subquestion: |
@@ -2634,6 +2630,7 @@ subquestion: |
 
 field: review_intake_information
 ---
+id: intake alias
 question: |
   Information about you (2 of 7)
 fields:
@@ -2647,6 +2644,7 @@ help: |
   We need to know this information to make sure we do not
   have a conflict of interest in representing you.    
 ---
+id: intake household
 question: |
   Your household (3 of 7)
 subquestion: |
@@ -2673,6 +2671,7 @@ fields:
       - Other: Other
 list collect: True
 ---
+id: intake income
 question: |
   Income (4 of 7)
 subquestion: |
@@ -2705,6 +2704,7 @@ fields:
     code: |
       period_list()
 ---
+id: intake demographics
 question: |
   Demographics (5 of 7)
 subquestion: |
@@ -2739,6 +2739,7 @@ fields:
       - Yes: Citizen
       - No: Eligible Alien
 ---
+id: intake upload paperwork
 question: |
   Your paperwork (optional) (6 of 7)
 subquestion: |
@@ -2751,6 +2752,7 @@ fields:
     required: False
 list collect: True
 ---
+id: intake facts
 question: |
   Facts about your case (7 of 7)
 subquestion: |
@@ -2779,6 +2781,7 @@ fields:
       need to, we will call for more information.
     datatype: area        
 ---
+id: intake view
 event: view_intake
 question: |
   Intake information for ${tenant}
@@ -2869,6 +2872,7 @@ content: |
 
   Tenant's additional statement: ${intake_additional_information}
 ---
+id: intake contact information
 question: |
   Contact information
 subquestion: |

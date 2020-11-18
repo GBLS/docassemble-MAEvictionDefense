@@ -54,11 +54,14 @@ review:
   - Update address: tenant.address.address
     button: |
       You said your address was ${tenant.address.block()}
+--- 
+event: review_signature
+question: |
+  Review your signature
+review:  
   - Edit signature: tenant.signature
     button: |
       This is your signature: ${ tenant.signature}
-      
-section: Review Answers
 ---
 event: review_about_landlord
 question: |

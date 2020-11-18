@@ -8,6 +8,7 @@ code: |
   show_instructions = True
 
   # Overview
+  nav.set_section('review_about_you')
   person_answering
   prepared_with_aoc
   if person_answering == 'tenant':
@@ -26,12 +27,14 @@ code: |
   defendants_name
   tenant.address.geolocate()
   remind_user
+  nav.set_section('review_about_landlord')
   landlord.name
   landlord.organization_type
   landlord.has_attorney
 
   set_title(subtitle=case_title)
 
+  nav.set_section('review_about_court')
   court
   if not court_is_housing_court:
     transfer_to_housing_court
@@ -61,6 +64,7 @@ code: |
   # TODO: covid-19
   covid_cares_has_federal_mortgage
   
+  nav.set_section('review_about_tenancy')
   facts.tenant_movein
   # facts.tenant_rent_share # don't need this if they are a PCA/Super
   if eviction_reason == 'nonpayment':
@@ -91,6 +95,7 @@ code: |
   if not (facts.tenant_has_subsidy and subsidy_type == 'public housing') and is_condo_conversion:
     more_than_3_units
 
+  nav.set_section('review_claims')
   if plead_counterclaims:
     bad_conditions.have_conditions
     if bad_conditions.have_conditions:
