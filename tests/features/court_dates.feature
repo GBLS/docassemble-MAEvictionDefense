@@ -73,7 +73,7 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I set the "Last Name" text field to "User"
   When I tap the button "Next"
   Then the question id should be "additional tenants"
-  When I tap the button "No"  # other tenants
+  When I tap the button "No"
   Then the question id should be "how named on summons"
   When I tap the button "Next"
   Then the question id should be "reminders"
@@ -163,7 +163,8 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   # None can't be page id
   When I tap the button "Skip"
   Then the question id should be "download screen"
-  Then I click on the link "Download"
+  Then I wait 40 seconds
+  Then I tap the "in Microsoft Word format" link to download "Eviction_Forms.zip"
 
 
 #Scenario: User has a public housing voucher.
