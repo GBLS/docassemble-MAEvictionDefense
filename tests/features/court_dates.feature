@@ -29,15 +29,15 @@ Feature: MADE tests
 #Scenario: User does NOT have a court date scheduled
 #  # Cannot examine PDF
 
-Scenario: User's court date has passed
-  Given I start the interview at "eviction"
-  When I tap the button "Next"
-  When I tap the button "Tenant"
-  When I tap the button "I agree"
-  When I tap the button "Next"
-  When I tap the "missed" choice
-  When I tap the button "Next"
-  Then I should see the phrase "Exit"
+#Scenario: User's court date has passed
+#  Given I start the interview at "eviction"
+#  When I tap the button "Next"
+#  When I tap the button "Tenant"
+#  When I tap the button "I agree"
+#  When I tap the button "Next"
+#  When I tap the "missed" choice
+#  When I tap the button "Next"
+#  Then I should see the phrase "Exit"
 
 #Scenario: User has a federal mortgage and a 14 day notice to quit.
 #  # Cannot examine PDF
@@ -164,7 +164,7 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I tap the button "Skip"
   Then the question id should be "download screen"
   Then I wait 40 seconds
-  Then I tap the "in Microsoft Word format" link to download "Eviction_Forms.zip"
+  Then I download "Eviction_Forms.zip"
 
 
 #Scenario: User has a public housing voucher.
