@@ -6,12 +6,22 @@ import json
 from nameparser import HumanName
 
 
-__all__ = ['in_service_area','ls_submit_online_intake','nameparts','address_to_json']
+__all__ = ['in_service_area','ls_submit_online_intake','nameparts','address_to_json','address_to_dict']
 
 def nameparts(name):
     return HumanName(name)
 
 
+def address_to_dict(address):
+    addr = {
+        "zip": address.zip,
+        "address1": address.address,
+        "address2": address.unit,
+        "city":address.city,
+        "state": address.state
+    }
+    return {key:value for (key,value) in addr.items() if not value is None}
+  
 def address_to_json(address): 
     """Returns a JSON string appropriate for Legal Server, given a Docassemble Address object"""
     addr = {
@@ -25,7 +35,12 @@ def address_to_json(address):
     return json.dumps(addr)
 
 def in_service_area(tenant):
-    return tenant.address.city.lower() in [
+    tenant.address.geolocate()
+    if hasattr(tenant.address, 'norm_long'):
+      address_to_compare = tenant.address.norm_long
+    else:
+      address_to_compare = tenant.address
+    return address_to_compare.city.lower() in [
             "acton","harvard",	"randolph",
             "arlington", "hingham", "reading",
             "bedford",	"holbrook",	"revere",
@@ -60,8 +75,11 @@ def ls_submit_online_intake(params, task=None):
 def _ls_submit_online_intake(servername, username, password, params, task=None):
     # remove any empty parameters
     params = {key:value for (key,value) in params.items() if not value is None}
+    headers = {
+      'Accept': "application/json"
+    }
     try:
-        r = requests.get(servername + "/matter/api/online_intake_import",auth=(username,password),params=params)
+        r = requests.get(servername + "/matter/api/online_intake_import",auth=(username,password),params=params, headers=headers)
     except requests.exceptions.RequestException as e:
         return e
     if not task is None:

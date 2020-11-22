@@ -28,9 +28,10 @@ code: |
   import time
   from random import randint, random
   time.sleep(random())
-
+  
   # Only run cron jobs below if the tenant reached the service screen. No need to email people who didn't finish interview
   if defined('method_of_service'):
+    store_made_snapshot  
     if remind_user and today() >= date_discovery_due and today() <= date_motion_to_compel_due:
       compel_discovery_needed = True
       if user_email and task_not_yet_performed('discovery reminder'):

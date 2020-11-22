@@ -25,72 +25,79 @@ fault_basis,overcrowding,drq.household_members,,
 bad_conditions.have_conditions,TRUE,drq.insurance,,
 tenant.is_discriminated,TRUE,drq.lawsuits,,
 bad_conditions.have_conditions,TRUE,drq.lead_paint,,
-tenant.is_nonnativespeaker,TRUE,drq.lep_plan,,drq.landlords_purchase
-bad_conditions.have_conditions,TRUE,drq.maintenance,,drq.lawsuits
-bad_conditions.have_conditions,TRUE,drq.management,,drq.lead_paint
-always_true,TRUE,drq.notices_to_quit,,drq.lep_plan
-eviction_reason,nonpayment,drq.other_records,,drq.maintenance
-eviction_reason,nonpayment,drq.rent_payment_records,,drq.management
-need_rental_value,TRUE,drq.rental_value,,drq.notices_to_quit
-security_deposit.violated,TRUE,drq.security_deposit_last_months_rent,,drq.other_records
-last_months_rent.violated,TRUE,drq.security_deposit_last_months_rent,,drq.rent_payment_records
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_communication_with_pha,,drq.rental_documents
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_describe_subsidy,,drq.rental_value
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_grievance,,drq.security_deposit_last_months_rent
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_rent_calculation,,drq.subsidized_housing_communication_with_pha
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_rent_increase_request,,drq.subsidized_housing_describe_subsidy
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_tenant_file,,drq.subsidized_housing_grievance
-facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_use_restrictions,,drq.subsidized_housing_rent_calculation
-eviction_reason,nonpayment,drq.third_party_payment,,drq.subsidized_housing_rent_increase_request
-claims.utilities,TRUE,drq.utilities_common_area_accounts,,drq.subsidized_housing_tenant_file
-claims.utilities,TRUE,drq.utilities_outside_unit,,drq.subsidized_housing_use_restrictions
-claims.utilities,TRUE,drq.utilities_shutoff,,drq.third_party_payment
-claims.utilities,TRUE,drq.utilities_written_agreement,,drq.utilities_common_area_accounts
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_attempted_repairs,,drq.utilities_outside_unit
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_describe_maintenance,,drq.utilities_shutoff
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_inspections,,drq.utilities_written_agreement
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_landlord_entered_premises,,ints.all_property_owned
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_need_for_repair,,ints.bad_conditions_attempted_repairs
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_prepurchase_inspections,,ints.bad_conditions_describe_maintenance
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_tenant_damaged,,ints.bad_conditions_inspections
-bad_conditions.have_conditions,TRUE,ints.bad_conditions_tenant_hindered,,ints.bad_conditions_landlord_entered_premises
-always_true,TRUE,ints.describe_conversations,,ints.bad_conditions_need_for_repair
-landlord.organization_type,trust,ints.describe_trust,,ints.bad_conditions_prepurchase_inspections
-landlord.organization_type,other,ints.describe_trust,,ints.bad_conditions_tenant_damaged
-tenant.is_disabled,TRUE,ints.disability_knowledge,,ints.bad_conditions_tenant_hindered
-tenant.is_disabled,TRUE,ints.disability_ra,,ints.condo_or_coop
-tenant.is_disabled,TRUE,ints.disability_ra_reasonable,,ints.describe_conversations
-tenant.is_disabled,TRUE,ints.disability_ra_response,,ints.describe_trust
-discrimination.protected_classes['Receipt of public or rental assistance'],TRUE,ints.discrimination_subsidy_receipt,,ints.disability_knowledge
-fault_basis['overcrowding'],TRUE,ints.household_members,,ints.disability_ra
-plead_lead_paint,TRUE,ints.lead_paint,,ints.disability_ra_reasonable
-always_true,TRUE,ints.persons_with_knowledge,,ints.disability_ra_response
-nofault_basis,rent_increase,ints.rent_increase_request,,ints.discrimination_subsidy_receipt
-eviction_reason,nonpayment,ints.rent_owed,,ints.eviction_reasons
-eviction_reason,nofault,ints.rent_owed,,ints.household_members
-eviction_reason,nonpayment,ints.rent_paid_after_ntq,,ints.lead_paint
-need_rental_value,TRUE,ints.rental_value,,ints.owners
-retaliation.is_retaliated,TRUE,ints.retaliation,,ints.person_answering
-security_deposit.violated,TRUE,ints.security_deposit_last_months_rent,,ints.persons_with_knowledge
-last_months_rent.violated,TRUE,ints.security_deposit_last_months_rent,,ints.rent_increase_request
-tenancy.is_subsidized,TRUE,ints.steps_for_termination,,ints.rent_owed
-tenancy.is_subsidized,TRUE,ints.subsidized_housing_basic_facts,,ints.rent_paid_after_ntq
-tenancy.is_subsidized,TRUE,ints.subsidized_housing_rent_increase_request,,ints.rental_value
-eviction_reason,nonpayment,ints.third_party_payment,,ints.retaliation
-claims.utilities,TRUE,ints.utilities_common_area_accounts,,ints.security_deposit_last_months_rent
-claims.utilities,TRUE,ints.utilities_outside_unit,,ints.steps_for_termination
-claims.utilities,TRUE,ints.utilities_shutoff,,ints.subsidized_housing_basic_facts
-claims.utilities,TRUE,ints.utilities_written_agreement,,ints.subsidized_housing_rent_increase_request
-,,,,ints.tenancy_terms
-,,,,ints.third_party_payment
-,,,,ints.utilities_common_area_accounts
-,,,,ints.utilities_outside_unit
-,,,,ints.utilities_shutoff
-,,,,ints.utilities_written_agreement
-,,,,ints.witnesses
-fault_basis['health and safety'],TRUE,ints.health_and_safety,Covid-19,ints.health_and_safety
-fault_basis['disturbance of other tenants'],TRUE,ints.complaints,Covid-19,ints.complaints
-fault_basis['disturbance of other tenants'],TRUE,ints.records_of_complaints,Covid-19,ints.records_of_complaints
-fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants,Covid-19,ints.unauthorized_occupants
-fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants_basis,Covid-19,ints.unauthorized_occupants_basis
-fault_basis['arrest or criminal conviction'],TRUE,ints.police_involvement,Covid-19,ints.police_involvement
+tenant.is_nonnativespeaker,TRUE,drq.lep_plan,,
+bad_conditions.have_conditions,TRUE,drq.maintenance,,
+bad_conditions.have_conditions,TRUE,drq.management,,
+always_true,TRUE,drq.notices_to_quit,,
+eviction_reason,nonpayment,drq.other_records,,
+eviction_reason,nonpayment,drq.rent_payment_records,,
+need_rental_value,TRUE,drq.rental_value,,
+security_deposit.violated,TRUE,drq.security_deposit_last_months_rent,,
+last_months_rent.violated,TRUE,drq.security_deposit_last_months_rent,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_communication_with_pha,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_describe_subsidy,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_grievance,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_rent_calculation,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_rent_increase_request,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_tenant_file,,
+facts.tenant_has_subsidy,TRUE,drq.subsidized_housing_use_restrictions,,
+eviction_reason,nonpayment,drq.third_party_payment,,
+claims.utilities,TRUE,drq.utilities_common_area_accounts,,
+claims.utilities,TRUE,drq.utilities_outside_unit,,
+claims.utilities,TRUE,drq.utilities_shutoff,,
+claims.utilities,TRUE,drq.utilities_written_agreement,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_attempted_repairs,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_describe_maintenance,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_inspections,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_landlord_entered_premises,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_need_for_repair,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_prepurchase_inspections,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_tenant_damaged,,
+bad_conditions.have_conditions,TRUE,ints.bad_conditions_tenant_hindered,,
+always_true,TRUE,ints.describe_conversations,,
+landlord.organization_type,trust,ints.describe_trust,,
+landlord.organization_type,other,ints.describe_trust,,
+tenant.is_disabled,TRUE,ints.disability_knowledge,,
+tenant.is_disabled,TRUE,ints.disability_ra,,
+tenant.is_disabled,TRUE,ints.disability_ra_reasonable,,
+tenant.is_disabled,TRUE,ints.disability_ra_response,,
+discrimination.protected_classes['Receipt of public or rental assistance'],TRUE,ints.discrimination_subsidy_receipt,,
+fault_basis['overcrowding'],TRUE,ints.household_members,,
+plead_lead_paint,TRUE,ints.lead_paint,,
+always_true,TRUE,ints.persons_with_knowledge,,
+nofault_basis,rent_increase,ints.rent_increase_request,,
+eviction_reason,nonpayment,ints.rent_owed,,
+eviction_reason,nofault,ints.rent_owed,,
+eviction_reason,nonpayment,ints.rent_paid_after_ntq,,
+need_rental_value,TRUE,ints.rental_value,,
+retaliation.is_retaliated,TRUE,ints.retaliation,,
+security_deposit.violated,TRUE,ints.security_deposit_last_months_rent,,
+last_months_rent.violated,TRUE,ints.security_deposit_last_months_rent,,
+tenancy.is_subsidized,TRUE,ints.steps_for_termination,,
+tenancy.is_subsidized,TRUE,ints.subsidized_housing_basic_facts,,
+tenancy.is_subsidized,TRUE,ints.subsidized_housing_rent_increase_request,,
+eviction_reason,nonpayment,ints.third_party_payment,,
+claims.utilities,TRUE,ints.utilities_common_area_accounts,,
+claims.utilities,TRUE,ints.utilities_outside_unit,,
+claims.utilities,TRUE,ints.utilities_shutoff,,
+claims.utilities,TRUE,ints.utilities_written_agreement,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+fault_basis['health and safety'],TRUE,ints.health_and_safety,Covid-19,
+fault_basis['disturbance of other tenants'],TRUE,ints.complaints,Covid-19,
+fault_basis['disturbance of other tenants'],TRUE,ints.records_of_complaints,Covid-19,
+fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants,Covid-19,
+fault_basis['unauthorized occupants'],TRUE,ints.unauthorized_occupants_basis,Covid-19,
+fault_basis['arrest or criminal conviction'],TRUE,ints.police_involvement,Covid-19,
+notice_type,fourteen_day,ints.cares_mortgage,Covid-19, 
+covid_cares_has_federal_mortgage,TRUE,ints.cares_assistance,Covid-20,
+covid_cares_has_federal_mortgage,TRUE,ints.cares_voucher,Covid-21,
+covid_cdc_moratorium,TRUE,ints.cares_declaration,Covid-22,
+covid_cdc_moratorium,TRUE,ints.cares_declaration_admit_or_deny,Covid-23,
+covid_cdc_moratorium,TRUE,drq.cdc_declaration,Covid-24,
+notice_type,fourteen_day,drq.cares_mortgage,Covid-25,
