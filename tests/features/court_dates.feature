@@ -6,7 +6,7 @@ Feature: MADE tests
 - [ ] User has a federal mortgage and a 14 day notice to quit. (Expected: Defense on for CARES act should appear on the Answer. It should say that the wrong NTQ type was used.)
 - [ ] User does not have a federal mortgage. Has filed the CDC declaration. (Expected: Should get a defense related to CDC declaration printed on the Answer.)
 - [ ] User has not filed the CDC declaration. (Expected: No CDC defense should appear on the Answer.)
-- [ ] User has a "fault" case (something other than non-payment of rent) (Expected: No bugs along the way)
+- [√] User has a "fault" case (something other than non-payment of rent) (Expected: No bugs along the way)
 - [ ] User has a public housing voucher. (Expected: No bugs along the way)
 - [ ] User has a delay in receiving RAFT rental assistance which caused to fall behind in rent. (Expected: Cauxses 2 paragraphs to appear in the answer: RAFT defense should appear on the answer. Relief requested should include a delay in the case until RAFT is completed.)
 
@@ -73,11 +73,7 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I set the "Last Name" text field to "User"
   When I tap the button "Next"
   Then the question id should be "additional tenants"
-<<<<<<< HEAD
   When I tap the button "No"
-=======
-  When I tap the button "No"  # other tenants
->>>>>>> master
   Then the question id should be "how named on summons"
   When I tap the button "Next"
   Then the question id should be "reminders"
@@ -167,11 +163,8 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   # None can't be page id
   When I tap the button "Skip"
   Then the question id should be "download screen"
-<<<<<<< HEAD
   Then I wait 40 seconds
   Then I tap the "in Microsoft Word format" link to download "Eviction_Forms.zip"
-=======
->>>>>>> master
 
 
 #Scenario: User has a public housing voucher.
