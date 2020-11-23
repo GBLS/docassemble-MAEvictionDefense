@@ -69,8 +69,7 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I set the "zip" text field to "02118"
   When I tap the button "Next"
   Then the question id should be "your name"
-  When I set the "First Name" text field to "Uli"
-  When I set the "Last Name" text field to "User"
+  When I set the name of "tenant" to "Uli Ula Ulther III"
   When I tap the button "Next"
   Then the question id should be "additional tenants"
   When I tap the button "No"  # other tenants
