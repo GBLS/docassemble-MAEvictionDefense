@@ -102,13 +102,12 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I tap the button "Next"
   Then the question id should be "tenant facts"
   When I tap the button "Next"
-  When I wait 1 second
   Then the question id should be "rental agreement"
   When I set the "move in" text field to "01/01/2019"
   When I set the "What do you pay" text field to "1"
   When I select "a lease" from the "rental agreement" dropdown
-  When I wait 1 second
   When I tap the button "Next"
+  When I wait 1 second
   Then the question id should be "tenancy facts"
   When I tap the button "Next"
   Then the question id should be "notice to quit facts"
