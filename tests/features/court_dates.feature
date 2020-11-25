@@ -62,15 +62,10 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I tap the "I got a notice" choice
   When I tap the button "Next"
   Then the question id should be "address"
-  When I set the "address" text field to "112 Southampton St"
-  When I set the "unit" text field to "1"
-  When I set the "city" text field to "Boston"
-  When I select "Massachusetts" from the "state" dropdown
-  When I set the "zip" text field to "02118"
+  When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
   When I tap the button "Next"
   Then the question id should be "your name"
-  When I set the "First Name" text field to "Uli"
-  When I set the "Last Name" text field to "User"
+  When I set the name of the variable "tenant" to "Uli Ula Ulther III"
   When I tap the button "Next"
   Then the question id should be "additional tenants"
   When I tap the button "No"
@@ -107,14 +102,13 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   When I tap the button "Next"
   Then the question id should be "tenant facts"
   When I tap the button "Next"
-  When I wait 1 second
   Then the question id should be "rental agreement"
   When I set the "move in" text field to "01/01/2019"
   When I set the "What do you pay" text field to "1"
   And I set the var "facts.tenant_rent_frequency" to "week"
   When I select "a lease" from the "rental agreement" dropdown
-  When I wait 1 second
   When I tap the button "Next"
+  When I wait 1 second
   Then the question id should be "tenancy facts"
   When I tap the button "Next"
   Then the question id should be "notice to quit facts"
@@ -163,6 +157,8 @@ Scenario: User has a "fault" case (something other than non-payment of rent)
   # None can't be page id
   When I tap the button "Skip"
   Then the question id should be "download screen"
+  Then I wait 40 seconds
+  Then I download "Eviction_Forms.zip"
 
 Scenario: User has a public housing voucher.
   Given I start the interview at "eviction"
