@@ -7,7 +7,7 @@ Feature: MADE tests
 - [ ] User does not have a federal mortgage. Has filed the CDC declaration. (Expected: Should get a defense related to CDC declaration printed on the Answer.)
 - [ ] User has not filed the CDC declaration. (Expected: No CDC defense should appear on the Answer.)
 - [√] User has a "fault" case (something other than non-payment of rent) (Expected: No bugs along the way)
-- [ ] User has a public housing voucher. (Expected: No bugs along the way)
+- [√] User has a public housing voucher. (Expected: No bugs along the way)
 - [ ] User has a delay in receiving RAFT rental assistance which caused to fall behind in rent. (Expected: Cauxses 2 paragraphs to appear in the answer: RAFT defense should appear on the answer. Relief requested should include a delay in the case until RAFT is completed.)
 
 #Scenario: User HAS a court date scheduled
@@ -227,6 +227,7 @@ Scenario: User has a public housing voucher.
   And I set the var "facts.tenant_rent_frequency" to "week"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
+  And I wait 1 second
   Then the question id should be "notice to quit facts"
   When I tap to continue
   Then the question id should be "nonpayment defenses"
