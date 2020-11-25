@@ -29,15 +29,15 @@ Feature: MADE tests
 #Scenario: User does NOT have a court date scheduled
 #  # Cannot examine PDF
 
-#Scenario: User's court date has passed
-#  Given I start the interview at "eviction"
-#  When I tap the button "Next"
-#  When I tap the button "Tenant"
-#  When I tap the button "I agree"
-#  When I tap the button "Next"
-#  When I tap the "missed" choice
-#  When I tap the button "Next"
-#  Then I should see the phrase "Exit"
+Scenario: User's court date has passed
+  Given I start the interview at "eviction"
+  When I tap the button "Next"
+  When I tap the button "Tenant"
+  When I tap the button "I agree"
+  When I tap the button "Next"
+  When I tap the "missed" choice
+  When I tap the button "Next"
+  Then I should see the phrase "Exit"
 
 #Scenario: User has a federal mortgage and a 14 day notice to quit.
 #  # Cannot examine PDF
