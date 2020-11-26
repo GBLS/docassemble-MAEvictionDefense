@@ -7,11 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo 'These tests are fake. Use `local`' && mocha tests --timeout 10000",
+    "langs": "npm run build_langs && npm run cucumber",
+    "build_langs": "node_modules/.bin/da-langs 'tests/features/*.feature'",
     "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",
+    "local_langs": "npm run build_langs && npm run local",
+    "local": "npm run setup && npm run cucumber; npm run takedown",
     "setup": "node_modules/.bin/da-setup",
-    "takedown": "node_modules/.bin/da-takedown",
-    "local": "npm run setup && npm run cucumber; npm run takedown"
+    "takedown": "node_modules/.bin/da-takedown"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,7 @@
     "bufferutil": "^4.0.1",
     "chai": "^4.2.0",
     "cucumber": "^6.0.5",
-    "docassemble-cucumber": "0.4.60",
+    "docassemble-cucumber": "0.4.60.langs-1",
     "dotenv": "^8.2.0",
     "mocha": "^7.2.0",
     "puppeteer": "^3.1.0",

@@ -6,3 +6,4 @@ npm-debug.log
 error*.jpg
 screenshots_*.jpg
 downloads_*
+*_lang_*.feature
