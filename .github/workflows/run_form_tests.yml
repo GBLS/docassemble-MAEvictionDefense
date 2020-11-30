@@ -1,4 +1,13 @@
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: 'Optional. A list of comma separated button or link text that will be on the page. These are meant to be the buttons/links that change the language of the interview. These will override your LANGUAGES repo secret. "default" will prevent anything other than the default language.'
+    #   tags:
+    #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
+    #   url:
+    #     description: 'Optional. Override the generated interview url'
 
 jobs:
   
@@ -16,6 +25,7 @@ jobs:
       BASE_URL: https://interviews-dev.gbls.org
       REPO_URL: https://github.com/plocket/docassemble-MAEvictionDefense
       BRANCH_PATH: ${{ github.ref }}
+      LANGUAGES: ${{ github.event.inputs.languages || secrets.LANGUAGES }}
 
     name: Run Puppeteer tests
     steps:
@@ -27,7 +37,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run cucumber
+      - run: npm run test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
