@@ -35,7 +35,7 @@ jobs:
       #  run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages != '' && github.event.inputs.extra_languages || secrets.EXTRA_LANGUAGES }}"
       #  if: ${{ github.event.inputs.extra_languages }}
       - name: languages
-        run: echo "Extra langues to test are ${{ github.event.inputs.extra_languages }}"
+        run: echo "Extra langues to test are ${{ $EXTRA_LANGUAGES }}"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup environment
