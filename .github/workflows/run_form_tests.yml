@@ -39,7 +39,7 @@ jobs:
       - run: npm install
       - run: npm run setup
       - name: languages
-        run: echo "Extra langues to test: ${{ $extra_languages }}"
+        run: echo "Extra langues to test are ${{ $extra_languages }}"
       - run: npm run test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
