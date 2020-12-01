@@ -4,6 +4,7 @@ on:
     inputs:
       extra_languages:
         description: 'Optional. A list of comma separated language names visible on buttons or links that change the language of the interview. Overrides the LANGUAGES repo secret.'
+        default: ''
         # "default" will prevent anything other than the default language.'
     #   tags:
     #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
@@ -30,6 +31,11 @@ jobs:
 
     name: Run Puppeteer tests
     steps:
+      #- name: Set languages
+      #  run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages != '' && github.event.inputs.extra_languages || secrets.EXTRA_LANGUAGES }}"
+      #  if: ${{ github.event.inputs.extra_languages }}
+      - name: languages
+        run: echo "Extra langues to test are ${{ github.event.inputs.extra_languages }}"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup environment
@@ -38,11 +44,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      #- name: use default languages if needed
-      #  run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages }}"
-      #  if: ${{ github.event.inputs.extra_languages }}
-      - name: languages
-        run: echo "Extra langues to test are ${{ github.event.inputs.extra_languages }}"
       - run: npm run test
       - name: upload artifacts
         uses: actions/upload-artifact@v2
