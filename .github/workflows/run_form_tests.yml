@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
     inputs:
       extra_languages:
-        description: 'Optional. A list of comma separated button or link text that will be on the page. These are meant to be the buttons/links that change the language of the interview. These will override your LANGUAGES repo secret. "default" will prevent anything other than the default language.'
-        default: ${{ secrets.EXTRA_LANGUAGES }}
+        description: 'Optional. A list of comma separated language names visible on buttons or links that change the language of the interview. Overrides the LANGUAGES repo secret.'
+        # "default" will prevent anything other than the default language.'
     #   tags:
     #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
     #   url:
@@ -26,7 +26,7 @@ jobs:
       BASE_URL: https://interviews-dev.gbls.org
       REPO_URL: https://github.com/plocket/docassemble-MAEvictionDefense
       BRANCH_PATH: ${{ github.ref }}
-      EXTRA_LANGUAGES: ${{ github.event.inputs.extra_languages }}
+      EXTRA_LANGUAGES: ${{ secrets.EXTRA_LANGUAGES }}
 
     name: Run Puppeteer tests
     steps:
@@ -38,6 +38,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
+      #- name: use default languages if needed
+      #  run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages }}"
+      #  if: ${{ github.event.inputs.extra_languages }}
       - name: languages
         run: echo "Extra langues to test are ${{ github.event.inputs.extra_languages }}"
       - run: npm run test
