@@ -7,7 +7,6 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "npm run setup && npm run langs; npm run takedown",
     "langs": "npm run build_langs && npm run cucumber",
     "build_langs": "node_modules/.bin/da-langs 'tests/features/*.feature'",
     "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",

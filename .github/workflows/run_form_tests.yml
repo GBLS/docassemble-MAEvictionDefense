@@ -31,12 +31,11 @@ jobs:
 
     name: Run Puppeteer tests
     steps:
-      #- name: Set languages
-      #  run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages != '' && github.event.inputs.extra_languages || secrets.EXTRA_LANGUAGES }}"
-      #  if: ${{ github.event.inputs.extra_languages }}
-      - name: languages
-        run: echo Extra languaes to test are $EXTRA_LANGUAGES
-        run: echo Extra languaes from secrets are ${{ secrets.EXTRA_LANGUAGES }}
+      - name: Set languages
+        run: echo "::set-env name=EXTRA_LANGUAGES::env value ${{ github.event.inputs.extra_languages != '' && github.event.inputs.extra_languages || secrets.EXTRA_LANGUAGES }}"
+        if: ${{ github.event.inputs.extra_languages }}
+      - name: List languages
+        run: echo "Extra languages to test are $EXTRA_LANGUAGES"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup environment
@@ -45,7 +44,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run test
+      - run: npm run langs
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
