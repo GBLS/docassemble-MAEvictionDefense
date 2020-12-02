@@ -33,7 +33,7 @@ jobs:
     steps:
       - name: Set languages
         run: echo "EXTRA_LANGUAGES=${{ github.event.inputs.extra_languages }}" >> $GITHUB_ENV
-        if: ${{ github.event.inputs.extra_languages }}
+        if: ${{ github.event.inputs.extra_languages != '' }}
       - name: List languages
         run: echo "Extra languages to test are $EXTRA_LANGUAGES"
       - name: Checkout
