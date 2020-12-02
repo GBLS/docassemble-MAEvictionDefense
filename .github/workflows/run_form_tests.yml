@@ -1,4 +1,13 @@
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+    # inputs:
+    #   language:
+    #     description: 'Optional. Test just one language. The language your interview opens on is just called "default"'
+    #   tags:
+    #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
+    #   url:
+    #     description: 'Optional. Override the automatic url'
 
 jobs:
   
@@ -28,12 +37,22 @@ jobs:
       - run: npm install
       - run: npm run setup
       - run: npm run cucumber
-      - name: upload artifacts
+      - name: upload error artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
         with:
-          name: screenshots
+          name: errors
           path: ./**/error-*.jpg
+      - name: upload screenshot steps
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: ./**/screenshot*.jpg
+      - name: upload downloads
+        uses: actions/upload-artifact@v2
+        with:
+          name: downloads
+          path: ./**/downloads_*
       - name: Cleanup
         if: ${{ always() }}
         run: npm run takedown
