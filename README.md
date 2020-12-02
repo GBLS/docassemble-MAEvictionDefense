@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2020-12-02 Language tweaks, compatibility with docassemble 1.2.7
 * 2020-11-18 Translate section labels
 * 2020-11-17 Integrate feedback from housing coalition
 * 2020-11-14 New feedback form that creates Github issues
