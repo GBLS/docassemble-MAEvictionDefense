@@ -23,7 +23,7 @@ jobs:
       PLAYGROUND_PASSWORD: ${{ secrets.PLAYGROUND_PASSWORD }}
       PLAYGROUND_ID: ${{ secrets.PLAYGROUND_ID }}
       BASE_URL: https://interviews-dev.gbls.org
-      REPO_URL: https://github.com/plocket/docassemble-MAEvictionDefense
+      REPO_URL: https://github.com/GBLS/docassemble-MAEvictionDefense
       BRANCH_PATH: ${{ github.ref }}
 
     name: Run Puppeteer tests
