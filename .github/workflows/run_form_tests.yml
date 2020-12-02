@@ -1,3 +1,5 @@
+name: Test the interview
+
 on:
   push:
   workflow_dispatch:
