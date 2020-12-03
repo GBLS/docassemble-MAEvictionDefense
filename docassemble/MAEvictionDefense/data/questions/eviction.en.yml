@@ -45,7 +45,7 @@ fields:
   - The mortgage is in forbearance: covid_cares_mortgage_in_forbearance
     datatype: yesno
     show if: covid_cares_has_federal_mortgage
-  - I sent my landlord a declaration under the CDC eviction moratorium: covid_cdc_moratorium
+  - I sent my landlord a declaration under the [CDC eviction moratorium](https://www.masslegalhelp.org/covid-19/housing): covid_cdc_moratorium
     datatype: yesnoradio
   - note: |
       If you have not yet completed the CDC declaration, you can do it for
@@ -74,21 +74,31 @@ id: time to move
 question: |
   Requesting Time to Move
 subquestion: |
-  We don't know yet who will win your case. If your case goes to a trial, the judge or jury can decide in favor
-  of you or your landlord.
-
-  If the judge does decide that your landlord has the right to the apartment, the judge can give you more time to move.
-  The judge will likely expect that you continue to pay rent while you stay in the apartment.
+  Tell the judge if you need more time to move.
   
-  The judge will consider your disability and whether anyone who lives with you is over the age of 60.
-  Use your own words to explain any special circumstances about _your_ situation and why you need more time than
-  a typical tenant. For example, if you need more time to find an accessible apartment or if your child has an IEP 
-  in the local school district.
+  The judge will consider what you have to say if you lose your case. You will
+  also have a chance to explain more in court.
 fields:
   - Explain in your own words why you need more time to move.: needs_time_because
     required: False
     datatype: area
     maxlength: 500
+help:
+  label: |
+    What should I say?
+  content: |
+    If you want, you can explain to the judge why you need more time to move
+    if you lose your case. You may automatically get more time if you have 
+    a disability or if you are over the age of 60. But the judge decides.
+    
+    For example:
+    
+    1. You have a child who has an IEP in your local school.
+    1. You have a custody arrangement that makes it hard to spend time with your
+    children if you had to move.
+    
+    If you are over the age of 60 or if you have a disability, the judge can 
+    give you up to 1 year. Otherwise, the judge can give you up to 6 months.
 ---
 id: intro screen
 decoration: home
@@ -593,11 +603,11 @@ subquestion: |
   
   ### Your Forms (${comma_and_list(download_titles)})
   <ul style="list-style-type:none">
-  <li> [:file-pdf: Forms to print and file today](${downloads_concat.url_for()})</li>
+  <li> <a href="${downloads_concat.url_for()}">:file-pdf: Forms to print and file today</a></li>
   % if not remind_user or didnt_provide_contact_info:
-  <li> [:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due})](${compel_discovery_with_instructions.pdf.url_for()})</li>
+  <li> <a href="${compel_discovery_with_instructions.pdf.url_for()}">:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due}</a></li>
   % endif
-  <li> [:file-archive: **Optional**: Download a copy in Microsoft Word format to edit](${downloads_zip.url_for()})</li>
+  <li> <a href="${downloads_zip.url_for()}">:file-archive: <b>Optional</b>: Download a copy in Microsoft Word format to edit</a></li>
   </ul>
 right: |
   ${action_button_html("https://www.surveymonkey.com/r/8T2KZBV",icon="comment-alt",label="Take our survey",color="success",size="md")}
@@ -1779,8 +1789,13 @@ fields:
       - All or some of the conditions existed when I moved in.: All or some of the conditions existed when I moved in.
       - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.: All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
       - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).: All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
+      - Other: other
   - Other: bad_conditions.other
     required: False
+    show if: bad_conditions.landlord_notified['other']
+validation code: |
+  if not bad_conditions.landlord_notified['other']:
+    bad_conditions.other = ''
 # section: Claims and Defenses
 
 ---
