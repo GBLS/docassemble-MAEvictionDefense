@@ -1,13 +1,18 @@
+
+name: Test the interview
+
 on:
   push:
   workflow_dispatch:
-    # inputs:
-    #   language:
-    #     description: 'Optional. Test just one language. The language your interview opens on is just called "default"'
+    inputs:
+      extra_languages:
+        description: 'Optional. A list of comma separated language names visible on buttons or links that change the language of the interview. Overrides the EXTRA_LANGUAGES repo secret.'
+        default: ''
+        # "default" will prevent anything other than the default language.'
     #   tags:
     #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
     #   url:
-    #     description: 'Optional. Override the automatic url'
+    #     description: 'Optional. Override the generated interview url'
 
 jobs:
   
@@ -25,9 +30,15 @@ jobs:
       BASE_URL: https://interviews-dev.gbls.org
       REPO_URL: https://github.com/plocket/docassemble-MAEvictionDefense
       BRANCH_PATH: ${{ github.ref }}
+      EXTRA_LANGUAGES: ${{ secrets.EXTRA_LANGUAGES }}
 
     name: Run Puppeteer tests
     steps:
+      - name: Set languages
+        run: echo "EXTRA_LANGUAGES=${{ github.event.inputs.extra_languages }}" >> $GITHUB_ENV
+        if: ${{ github.event.inputs.extra_languages != '' }}
+      - name: List languages
+        run: echo "Extra languages to test are $EXTRA_LANGUAGES"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup environment
@@ -36,7 +47,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run cucumber
+      - run: npm run langs
       - name: upload error artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}

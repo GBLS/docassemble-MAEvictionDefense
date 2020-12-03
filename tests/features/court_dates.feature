@@ -37,7 +37,7 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   When I set the var "how_to_answer" to "continue"
   Then the question id should be "tenant rights"
   When I tap to continue
-  #None (update to "your eviction case" when update to master)
+  Then the question id should be "your eviction case"
   When I tap the var "case.status" with the value "summons"
   When I tap to continue
   Then the question id should be "address"
@@ -151,7 +151,7 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   When I set the var "how_to_answer" to "continue"
   Then the question id should be "tenant rights"
   When I tap to continue
-  #None (update to "your eviction case" when update to master)
+  Then the question id should be "your eviction case"
   When I tap the var "case.status" with the value "summons"
   When I tap to continue
   Then the question id should be "address"
@@ -502,7 +502,7 @@ Scenario: User fell behind because of RAFT delay
   When I set the var "how_to_answer" to "continue"
   Then the question id should be "tenant rights"
   When I tap to continue
-  #None (update to "your eviction case" when update to master)
+  Then the question id should be "your eviction case"
   When I tap the var "case.status" with the value "summons"
   When I tap to continue
   Then the question id should be "address"
