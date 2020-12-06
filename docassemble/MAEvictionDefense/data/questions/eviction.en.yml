@@ -100,8 +100,11 @@ help:
     If you are over the age of 60 or if you have a disability, the judge can 
     give you up to 1 year. Otherwise, the judge can give you up to 6 months.
 ---
+images:
+  house-drawing: house.svg
+---
 id: intro screen
-decoration: home
+decoration: house-drawing
 question: |
   MADE: Massachusetts Defense for Eviction
 subquestion: |
@@ -124,10 +127,10 @@ fields:
   - I accept the [terms of use](https://www.gbls.org/self-help/eviction/terms-of-use): acknowledged_information_use
     datatype: checkboxes
     none of the above: False    
-    default: "I accept."
+    default: user_accepts
     minlength: 1
     choices:
-      - I accept.
+      - I accept.: user_accepts
     validation messages:
       minlength: |
         You cannot continue unless you agree to the terms of service.      
