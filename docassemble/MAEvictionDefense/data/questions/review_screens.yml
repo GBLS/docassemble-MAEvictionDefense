@@ -55,13 +55,31 @@ review:
     button: |
       You said your address was ${tenant.address.block()}
 --- 
+need: additional_tenants.table
 event: review_signature
 question: |
   Review your signature
 review:  
-  - Edit signature: tenant.signature
+  - Edit your signature: tenant.signature
     button: |
       This is your signature: ${ tenant.signature}
+  - note: |
+      #### Edit additional signatures
+      
+      ${ additional_tenants.table }
+    show if: len(additional_tenants)
+---
+event: additional_tenants.edit_table
+question: |
+  Additional tenant signatures
+---
+table: additional_tenants.table
+rows: additional_tenants
+columns:
+  - Name: row_item
+  - Signature: row_item.signature
+edit:
+  - signature
 ---
 event: review_about_landlord
 question: |
