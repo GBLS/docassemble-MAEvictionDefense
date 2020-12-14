@@ -27,7 +27,6 @@ jobs:
       PLAYGROUND_PASSWORD: ${{ secrets.PLAYGROUND_PASSWORD }}
       PLAYGROUND_ID: ${{ secrets.PLAYGROUND_ID }}
       BASE_URL: https://interviews-dev.gbls.org
-      REPO_URL: https://github.com/GBLS/docassemble-MAEvictionDefense
       BRANCH_PATH: ${{ github.ref }}
       EXTRA_LANGUAGES: ${{ secrets.EXTRA_LANGUAGES }}
 
@@ -36,8 +35,8 @@ jobs:
       - name: Set languages
         run: echo "EXTRA_LANGUAGES=${{ github.event.inputs.extra_languages }}" >> $GITHUB_ENV
         if: ${{ github.event.inputs.extra_languages != '' }}
-      - name: List languages
-        run: echo "Extra languages to test are $EXTRA_LANGUAGES"
+      - run: echo "REPO_URL=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" >> $GITHUB_ENV
+      - run: echo "Repo address is $REPO_URL"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup environment
@@ -46,20 +45,24 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run langs
+      - run: npm run test
       - name: upload error artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
         with:
           name: errors
-          path: ./**/error-*.jpg
+          path: ./**/error*.jpg
       - name: upload screenshot steps
         uses: actions/upload-artifact@v2
+        # They will upload even if a previosu step has failed
+        if: ${{ always() }}
         with:
           name: screenshots
           path: ./**/screenshot*.jpg
       - name: upload downloads
         uses: actions/upload-artifact@v2
+        # They will upload even if a previous step has failed
+        if: ${{ always() }}
         with:
           name: downloads
           path: ./**/downloads_*
