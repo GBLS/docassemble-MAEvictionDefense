@@ -4,6 +4,6 @@ node_modules*
 .env
 npm-debug.log
 error*.jpg
-screenshots_*.jpg
+screenshot_*.jpg
 downloads_*
 *_lang_*.feature
