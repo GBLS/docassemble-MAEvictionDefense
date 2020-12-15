@@ -7,10 +7,11 @@
     "test": "tests"
   },
   "scripts": {
-    "langs": "npm run build_langs && npm run cucumber",
-    "build_langs": "node_modules/.bin/da-langs 'tests/features/*.feature'",
+    "test": "npm run langs_setup && npm run cucumber",
     "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",
-    "local_langs": "npm run build_langs && npm run local",
+    "langs": "npm run langs_setup && ./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*__lang*.feature",
+    "langs_setup": "node_modules/.bin/da-langs 'tests/features/*.feature'",
+    "langs_local": "npm run langs_setup && npm run local",
     "local": "npm run setup && npm run cucumber; npm run takedown",
     "setup": "node_modules/.bin/da-setup",
     "takedown": "node_modules/.bin/da-takedown"
