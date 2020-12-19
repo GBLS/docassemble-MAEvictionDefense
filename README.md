@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2020-12-10 Edit additional tenant signature
 * 2020-12-02 Language tweaks, compatibility with docassemble 1.2.7
 * 2020-11-18 Translate section labels
 * 2020-11-17 Integrate feedback from housing coalition
