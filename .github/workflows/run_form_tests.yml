@@ -2,6 +2,8 @@ name: Test the interview
 
 on:
   push:
+    inputs:
+      tags: 'not @long_running'
   workflow_dispatch:
     inputs:
       extra_languages:
@@ -46,7 +48,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run test -- ${{ github.event.inputs.tags && format('--tags "{}"', github.event.inputs.tags) }}
+      - run: npm run test -- ${{ github.event.inputs.tags && format('--tags "{0}"', github.event.inputs.tags) }}
       - name: upload error artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
