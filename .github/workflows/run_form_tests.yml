@@ -3,7 +3,9 @@ name: Test the interview
 on:
   push:
     inputs:
-      tags: 'not @long_running'
+      tags:
+        description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
+        default: 'not @long_running'
   workflow_dispatch:
     inputs:
       extra_languages:
