@@ -9,7 +9,7 @@ on:
         # "default" will prevent anything other than the default language.'
       tags:
         description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
-        default: 'not @long_running'
+        default: ''
     #   url:
     #     description: 'Optional. Override the generated interview url'
 
