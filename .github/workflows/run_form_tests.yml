@@ -1,6 +1,7 @@
 name: Test the interview
 
 on:
+  #push:
   workflow_dispatch:
     inputs:
       extra_languages:
