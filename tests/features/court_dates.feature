@@ -25,7 +25,6 @@ Scenario: User's court date has passed
   When I tap the var "case.status" with the value "late"
   And I tap to continue
   Then the question id should be "not right interview"
-  Then I should see the phrase "Exit"
 
 Scenario: User has a federal mortgage and a 14 day notice to quit
   Given I start the interview at "eviction"
