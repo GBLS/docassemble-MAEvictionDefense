@@ -136,9 +136,9 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   And I set the var "service_date" to "01/01/2024"
   And I tap to continue
   Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
 
 Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   Given I start the interview at "eviction"
@@ -249,9 +249,9 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   And I set the var "service_date" to "01/01/2024"
   And I tap to continue
   Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
 
 Scenario: User has a "fault" case with NO court date and NO CDC declaration
   Given I start the interview at "eviction"
@@ -362,9 +362,9 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   And I set the var "service_date" to "01/01/2024"
   And I tap to continue
   Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
 
 Scenario: User has a public housing voucher with a court date
   Given I start the interview at "eviction"
@@ -487,9 +487,9 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "service_date" to "01/01/2024"
   And I tap to continue
   Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
 
 Scenario: User fell behind because of RAFT delay
   Given I start the interview at "eviction"
@@ -601,6 +601,6 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "service_date" to "01/01/2024"
   And I tap to continue
   Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
