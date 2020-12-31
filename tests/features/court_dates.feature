@@ -104,7 +104,6 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   Then the question id should be "lease type"
   When I set the var "lease_type" to "fixed_term"
   When I set the var "lease_end_date" to "01/01/2026"
-  And I wait 60 seconds
   And I tap to continue
   Then the question id should be "notice timing"
   When I set the var "date_received_ntq" to "01/01/2020"
@@ -143,16 +142,17 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   When I set the var "tenant_review_discovery" to "False"
   Then the question id should be "signature"
   When I set the var "signature_choice" to "this device"
-  #And I sign
-  #And I tap to continue
-  #Then the question id should be "method of service"
-  #When I set the var "method_of_service" to "emailed"
-  #And I set the var "service_date" to "01/01/2024"
-  #And I tap to continue
-  #Then the question id should be "intake opener"
-  #When I set the var "ask_intake_questions" to "skip"
-  #Then the question id should be "download screen"
-  #Then I download "Eviction_Forms.zip"
+  And I sign
+  And I tap to continue
+  Then the question id should be "method of service"
+  When I set the var "method_of_service" to "emailed"
+  And I set the var "service_date" to "01/01/2024"
+  And I tap to continue
+  Then the question id should be "intake opener"
+  And I wait 280 seconds
+  When I set the var "ask_intake_questions" to "skip"
+  Then the question id should be "download screen"
+  Then I download "Eviction_Forms.zip"
 
 #Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
 #  Given I start the interview at "eviction"
