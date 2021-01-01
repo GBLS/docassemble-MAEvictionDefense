@@ -88,7 +88,7 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
   And I set the "True" choice of var "ntq_includes_tenant_name" to "true" # Default missing
@@ -214,7 +214,7 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
   And I set the "True" choice of var "ntq_includes_tenant_name" to "true"
@@ -345,7 +345,7 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   And I set the var "facts.tenant_rent_frequency" to "week"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "tenancy facts"
   When I tap to continue
   Then the question id should be "notice to quit facts"
@@ -473,7 +473,7 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "facts.tenant_rent_frequency" to "week"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
   And I set the "True" choice of var "ntq_includes_tenant_name" to "true" # Default missing
@@ -608,7 +608,7 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
   And I set the "True" choice of var "ntq_includes_tenant_name" to "true"
