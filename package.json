@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run langs_setup && npm run cucumber",
     "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",
-    "langs": "npm run langs_setup && ./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*__lang*.feature",
+    "langs": "npm run langs_setup && ./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*_lang*.feature",
     "langs_setup": "node_modules/.bin/da-langs 'tests/features/*.feature'",
     "langs_local": "npm run langs_setup && npm run local",
     "local": "npm run setup && npm run cucumber; npm run takedown",
@@ -30,7 +30,7 @@
     "bufferutil": "^4.0.1",
     "chai": "^4.2.0",
     "cucumber": "^6.0.5",
-    "docassemble-cucumber": "0.4.64",
+    "docassemble-cucumber": "0.4.65.htcn-3",
     "dotenv": "^8.2.0",
     "mocha": "^7.2.0",
     "puppeteer": "^3.1.0",
