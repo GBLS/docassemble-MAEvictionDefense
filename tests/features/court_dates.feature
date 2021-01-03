@@ -22,10 +22,9 @@ Scenario: User's court date has passed
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "late"
+  When I set the "late" choice of var "case.status" to "true"
   And I tap to continue
   Then the question id should be "not right interview"
-  Then I should see the phrase "Exit"
 
 Scenario: User has a federal mortgage and a 14 day notice to quit
   Given I start the interview at "eviction"
@@ -38,10 +37,11 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "summons"
+  When I set the "summons" choice of var "case.status" to "true"
   When I tap to continue
   Then the question id should be "address"
   When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
+  And I set the "True" choice of var "facts.tenant_address_is_eviction_address" to "true" # Default missing
   And I tap to continue
   Then the question id should be "your name"
   When I set the name of the variable "tenant" to "Uli Ula Ulther III"
@@ -49,33 +49,36 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   Then the question id should be "additional tenants"
   When I set the var "additional_tenants.there_are_any" to "False"
   Then the question id should be "how named on summons"
-  When I tap to continue
+  When I set the "False" choice of var "tenant.name_different_on_summons" to "true" # Default missing
+  And I tap to continue
   Then the question id should be "reminders"
-  When I tap the checkbox var "remind_user"
-  And I tap the checkbox var "survey_user"
-  And I tap the checkbox var "edit_contact_info"
+  When I set the var "remind_user" to "true"
+  And I set the var "survey_user" to "true"
+  And I set the var "edit_contact_info" to "true"
   When I tap to continue
   Then the question id should be "landlords name"
   When I set the var "landlord.name.text" to "Len Lessor"
   When I tap to continue
   Then the question id should be "landlord information"
-  When I tap to continue
+  When I set the var "landlord.is_new" to "false" # Default missing
+  And I tap to continue
   Then the question id should be "landlords attorney"
+  When I set the "False" choice of var "landlord.has_attorney" to "true" # Default missing
   When I tap to continue
   Then the question id should be "court information"
   When I tap to continue
   Then the question id should be "court date"
-  When I tap the var "case.covid_hearing_date_assigned" with the value "True"
+  When I set the "True" choice of var "case.covid_hearing_date_assigned" to "true"
   And I set the var "case.covid_first_event" to "01/01/2025"
   When I tap to continue
   Then the question id should be "eviction reason"
-  When I tap the checkbox var "eviction_all_reasons" with the value "nonpayment"
+  When I set the "nonpayment" choice of var "eviction_all_reasons" to "true"
   When I tap to continue
   Then the question id should be "defense overview"
   When I tap to continue
   Then the question id should be "covid-19"
-  When I tap the var "covid_cares_has_federal_mortgage"
-  When I tap the var "covid_cdc_moratorium" with the value "False"
+  When I set the var "covid_cares_has_federal_mortgage" to "true"
+  When I set the "False" choice of var "covid_cdc_moratorium" to "true"
   And I tap to continue
   Then the question id should be "tenant facts"
   When I tap to continue
@@ -85,11 +88,16 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
+  And I set the "True" choice of var "ntq_includes_tenant_name" to "true" # Default missing
+  And I set the "True" choice of var "ntq_includes_all_tenants" to "true" # Default missing
+  And I set the "True" choice of var "ntq_includes_correct_address" to "true" # Default missing
   And I tap to continue
   Then the question id should be "nonpayment defenses"
+  When I set the "True" choice of var "dont_owe_rent" to "true"  # Default missing
+  And I set the "True" choice of var "behind_in_rent" to "true"  # Default missing
   And I tap to continue
   Then the question id should be "tenancy facts"
   When I tap to continue
@@ -102,16 +110,20 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   And I set the var "date_received_summons" to "02/01/2020"
   And I tap to continue
   Then the question id should be "summons facts"
+  When I set the "True" choice of var "ntq_matches_summons" to "true"
+  And I set the "True" choice of var "summons_includes_all_tenants" to "true"
+  And I set the "True" choice of var "summons_includes_correct_address" to "true"
   When I tap to continue
   Then the question id should be "nonpayment cure"
   When I tap to continue
   Then the question id should be "waiver"
+  When I set the "True" choice of var "ntq_contains_reservation" to "true" # Default missing
   When I tap to continue
   Then the question id should be "have a defense"
   When I tap to continue
   Then the question id should be "bad conditions"
   # The below doesn't really need "None", but it's probably a bit confusing otherwise
-  When I tap the var "bad_conditions.conditions" with the value "None"
+  When I set the "None of the above" choice of var "bad_conditions.conditions" to "true"
   And I tap to continue
   Then the question id should be "retaliation splash"
   When I set the var "retaliation.is_retaliated" to "False"
@@ -152,10 +164,11 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "summons"
+  When I set the "summons" choice of var "case.status" to "true"
   When I tap to continue
   Then the question id should be "address"
   When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
+  And I set the "True" choice of var "facts.tenant_address_is_eviction_address" to "true"
   And I tap to continue
   Then the question id should be "your name"
   When I set the name of the variable "tenant" to "Uli Ula Ulther III"
@@ -163,32 +176,35 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   Then the question id should be "additional tenants"
   When I set the var "additional_tenants.there_are_any" to "False"
   Then the question id should be "how named on summons"
+  When I set the "False" choice of var "tenant.name_different_on_summons" to "true" # Default missing
   When I tap to continue
   Then the question id should be "reminders"
-  When I tap the checkbox var "remind_user"
-  And I tap the checkbox var "survey_user"
-  And I tap the checkbox var "edit_contact_info"
+  When I set the var "remind_user" to "true"
+  And I set the var "survey_user" to "true"
+  And I set the var "edit_contact_info" to "true"
   When I tap to continue
   Then the question id should be "landlords name"
   When I set the var "landlord.name.text" to "Len Lessor"
   When I tap to continue
   Then the question id should be "landlord information"
-  When I tap to continue
+  When I set the var "landlord.is_new" to "false"
+  And I tap to continue
   Then the question id should be "landlords attorney"
+  When I set the "False" choice of var "landlord.has_attorney" to "true"
   When I tap to continue
   Then the question id should be "court information"
   When I tap to continue
   Then the question id should be "court date"
-  When I tap the var "case.covid_hearing_date_assigned" with the value "True"
+  When I set the "True" choice of var "case.covid_hearing_date_assigned" to "true"
   And I set the var "case.covid_first_event" to "01/01/2025"
   When I tap to continue
   Then the question id should be "eviction reason"
-  When I tap the checkbox var "eviction_all_reasons" with the value "nonpayment"
+  When I set the "nonpayment" choice of var "eviction_all_reasons" to "true"
   When I tap to continue
   Then the question id should be "defense overview"
   When I tap to continue
   Then the question id should be "covid-19"
-  When I tap the var "covid_cdc_moratorium" with the value "True"
+  When I set the "True" choice of var "covid_cdc_moratorium" to "true"
   And I tap to continue
   Then the question id should be "tenant facts"
   When I tap to continue
@@ -198,11 +214,16 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
+  And I set the "True" choice of var "ntq_includes_tenant_name" to "true"
+  And I set the "True" choice of var "ntq_includes_all_tenants" to "true"
+  And I set the "True" choice of var "ntq_includes_correct_address" to "true"
   And I tap to continue
   Then the question id should be "nonpayment defenses"
+  When I set the "True" choice of var "dont_owe_rent" to "true"
+  And I set the "True" choice of var "behind_in_rent" to "true"
   And I tap to continue
   Then the question id should be "tenancy facts"
   When I tap to continue
@@ -215,16 +236,20 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   And I set the var "date_received_summons" to "02/01/2020"
   And I tap to continue
   Then the question id should be "summons facts"
+  When I set the "True" choice of var "ntq_matches_summons" to "true"
+  And I set the "True" choice of var "summons_includes_all_tenants" to "true"
+  And I set the "True" choice of var "summons_includes_correct_address" to "true"
   When I tap to continue
   Then the question id should be "nonpayment cure"
   When I tap to continue
   Then the question id should be "waiver"
+  When I set the "True" choice of var "ntq_contains_reservation" to "true"
   When I tap to continue
   Then the question id should be "have a defense"
   When I tap to continue
   Then the question id should be "bad conditions"
   # The below doesn't really need "None", but it's probably a bit confusing otherwise
-  When I tap the var "bad_conditions.conditions" with the value "None"
+  When I set the "None of the above" choice of var "bad_conditions.conditions" to "true"
   And I tap to continue
   Then the question id should be "retaliation splash"
   When I set the var "retaliation.is_retaliated" to "False"
@@ -265,10 +290,11 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "summons"
+  When I set the "summons" choice of var "case.status" to "true"
   When I tap to continue
   Then the question id should be "address"
   When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
+  And I set the "True" choice of var "facts.tenant_address_is_eviction_address" to "true"
   When I tap to continue
   Then the question id should be "your name"
   When I set the name of the variable "tenant" to "Uli Ula Ulther III"
@@ -276,37 +302,40 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   Then the question id should be "additional tenants"
   When I set the var "additional_tenants.there_are_any" to "False"
   Then the question id should be "how named on summons"
+  When I set the "False" choice of var "tenant.name_different_on_summons" to "true" # Default missing
   When I tap to continue
   Then the question id should be "reminders"
-  When I tap the checkbox var "remind_user"
-  And I tap the checkbox var "survey_user"
-  And I tap the checkbox var "edit_contact_info"
+  When I set the var "remind_user" to "true"
+  And I set the var "survey_user" to "true"
+  And I set the var "edit_contact_info" to "true"
   When I tap to continue
   Then the question id should be "landlords name"
   When I set the var "landlord.name.text" to "Len Lessor"
   When I tap to continue
   Then the question id should be "landlord information"
-  When I tap to continue
+  When I set the var "landlord.is_new" to "false"
+  And I tap to continue
   Then the question id should be "landlords attorney"
+  When I set the "False" choice of var "landlord.has_attorney" to "true"
   When I tap to continue
   Then the question id should be "court information"
   When I tap to continue
   Then the question id should be "court date"
-  When I tap the var "case.covid_hearing_date_assigned" with the value "False"
+  When I set the "False" choice of var "case.covid_hearing_date_assigned" to "true"
   When I tap to continue
   Then the question id should be "case postponed"
   When I tap to continue
   Then the question id should be "eviction reason"
   # Fault branch-off
-  When I tap the var "eviction_all_reasons" with the value "fault"
+  When I set the "fault" choice of var "eviction_all_reasons" to "true"
   When I tap to continue
   Then the question id should be "fault reason"
-  When I tap the var "fault_basis" with the value "overcrowding"
+  When I set the "overcrowding" choice of var "fault_basis" to "true"
   When I tap to continue
   Then the question id should be "defense overview"
   When I tap to continue
   Then the question id should be "covid-19"
-  When I tap the var "covid_cdc_moratorium" with the value "False"
+  When I set the "False" choice of var "covid_cdc_moratorium" to "true"
   And I tap to continue
   Then the question id should be "tenant facts"
   When I tap to continue
@@ -316,11 +345,14 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   And I set the var "facts.tenant_rent_frequency" to "week"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "tenancy facts"
   When I tap to continue
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
+  And I set the "True" choice of var "ntq_includes_tenant_name" to "true"
+  And I set the "True" choice of var "ntq_includes_all_tenants" to "true"
+  And I set the "True" choice of var "ntq_includes_correct_address" to "true"
   And I tap to continue
   Then the question id should be "lease type"
   When I set the var "lease_type" to "fixed_term"
@@ -331,11 +363,17 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   And I set the var "date_received_summons" to "02/01/2020"
   And I tap to continue
   Then the question id should be "nonpayment defenses"
-  When I tap the var "behind_in_rent" with the value "False"
+  When I set the "True" choice of var "dont_owe_rent" to "true"
+  And I set the "True" choice of var "behind_in_rent" to "true"
+  When I set the "False" choice of var "behind_in_rent" to "true"
   And I tap to continue
   Then the question id should be "summons facts"
+  When I set the "True" choice of var "ntq_matches_summons" to "true"
+  And I set the "True" choice of var "summons_includes_all_tenants" to "true"
+  And I set the "True" choice of var "summons_includes_correct_address" to "true"
   When I tap to continue
   Then the question id should be "waiver"
+  When I set the "True" choice of var "ntq_contains_reservation" to "true"
   When I tap to continue
   Then the question id should be "have a defense"
   When I tap to continue
@@ -378,10 +416,11 @@ Scenario: User has a public housing voucher with a court date
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "summons"
+  When I set the "summons" choice of var "case.status" to "true"
   When I tap to continue
   Then the question id should be "address"
   When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
+  And I set the "True" choice of var "facts.tenant_address_is_eviction_address" to "true"
   And I tap to continue
   Then the question id should be "your name"
   When I set the name of the variable "tenant" to "Uli Ula Ulther III"
@@ -389,39 +428,42 @@ Scenario: User has a public housing voucher with a court date
   Then the question id should be "additional tenants"
   When I set the var "additional_tenants.there_are_any" to "False"
   Then the question id should be "how named on summons"
+  When I set the "False" choice of var "tenant.name_different_on_summons" to "true" # Default missing
   When I tap to continue
   Then the question id should be "reminders"
-  When I tap the checkbox var "remind_user"
-  And I tap the checkbox var "survey_user"
-  And I tap the checkbox var "edit_contact_info"
+  When I set the var "remind_user" to "true"
+  And I set the var "survey_user" to "true"
+  And I set the var "edit_contact_info" to "true"
   When I tap to continue
   Then the question id should be "landlords name"
   When I set the var "landlord.name.text" to "Len Lessor"
   When I tap to continue
   Then the question id should be "landlord information"
-  When I tap to continue
+  When I set the var "landlord.is_new" to "false"
+  And I tap to continue
   Then the question id should be "landlords attorney"
+  When I set the "False" choice of var "landlord.has_attorney" to "true"
   When I tap to continue
   Then the question id should be "court information"
   When I tap to continue
   Then the question id should be "court date"
-  When I tap the var "case.covid_hearing_date_assigned" with the value "True"
+  When I set the "True" choice of var "case.covid_hearing_date_assigned" to "true"
   And I set the var "case.covid_first_event" to "01/01/2025"
   When I tap to continue
   Then the question id should be "eviction reason"
-  When I tap the checkbox var "eviction_all_reasons" with the value "nonpayment"
+  When I set the "nonpayment" choice of var "eviction_all_reasons" to "true"
   When I tap to continue
   Then the question id should be "defense overview"
   When I tap to continue
   Then the question id should be "covid-19"
-  When I tap the var "covid_cdc_moratorium" with the value "False"
+  When I set the "False" choice of var "covid_cdc_moratorium" to "true"
   And I tap to continue
   # Subsidy branch-off
   Then the question id should be "tenant facts"
-  When I tap the var "facts.tenant_has_subsidy"
+  When I set the var "facts.tenant_has_subsidy" to "true"
   And I tap to continue
   Then the question id should be "subsidy facts"
-  When I tap the var "subsidy_type" with the value "Section 8 voucher"
+  When I set the "Section 8 voucher" choice of var "subsidy_type" to "true"
   And I tap to continue
   Then the question id should be "rental agreement"
   When I set the var "facts.tenant_movein" to "01/01/2019"
@@ -431,10 +473,16 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "facts.tenant_rent_frequency" to "week"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
+  When I set the var "notice_type" to "fourteen_day"
+  And I set the "True" choice of var "ntq_includes_tenant_name" to "true" # Default missing
+  And I set the "True" choice of var "ntq_includes_all_tenants" to "true" # Default missing
+  And I set the "True" choice of var "ntq_includes_correct_address" to "true" # Default missing
   When I tap to continue
   Then the question id should be "nonpayment defenses"
+  When I set the "True" choice of var "dont_owe_rent" to "true"
+  And I set the "True" choice of var "behind_in_rent" to "true"
   When I tap to continue
   Then the question id should be "lease type"
   When I set the var "lease_type" to "self_extending"
@@ -444,10 +492,14 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "date_received_summons" to "01/02/2020"
   And I tap to continue
   Then the question id should be "summons facts"
+  When I set the "True" choice of var "ntq_matches_summons" to "true"
+  And I set the "True" choice of var "summons_includes_all_tenants" to "true"
+  And I set the "True" choice of var "summons_includes_correct_address" to "true"
   When I tap to continue
   Then the question id should be "nonpayment cure"
   When I tap to continue
   Then the question id should be "waiver"
+  When I set the "True" choice of var "ntq_contains_reservation" to "true"
   When I tap to continue
   Then the question id should be "have a defense"
   When I tap to continue
@@ -455,14 +507,16 @@ Scenario: User has a public housing voucher with a court date
   When I tap to continue
   # Just for subsidy?
   Then the question id should be "subsidy defenses 2"
-  When I tap the var "subsidized_housing.no_ntq_to_agency" with the value "False"
+  When I set the "True" choice of var "subsidized_housing.no_proper_termination" to "true" # Default missing
+  And I set the "True" choice of var "subsidized_housing.no_just_cause" to "true" # Default missing
+  And I set the "False" choice of var "subsidized_housing.no_ntq_to_agency" to "true"  # How to do conditional default?
   And I tap to continue
   Then the question id should be "subsidy defenses 1"
   And I tap to continue
   # End just for subsidy
   Then the question id should be "bad conditions"
   # The below doesn't really need "None", but it's probably a bit confusing otherwise
-  When I tap the var "bad_conditions.conditions" with the value "None"
+  When I set the "None of the above" choice of var "bad_conditions.conditions" to "true"
   And I tap to continue
   Then the question id should be "retaliation splash"
   When I set the var "retaliation.is_retaliated" to "False"
@@ -503,10 +557,11 @@ Scenario: User fell behind because of RAFT delay
   Then the question id should be "tenant rights"
   When I tap to continue
   Then the question id should be "your eviction case"
-  When I tap the var "case.status" with the value "summons"
+  When I set the "summons" choice of var "case.status" to "true"
   When I tap to continue
   Then the question id should be "address"
   When I set the address of the var "tenant" to "112 Southampton St., Unit 1, Boston, MA 02118"
+  And I set the "True" choice of var "facts.tenant_address_is_eviction_address" to "true"
   And I tap to continue
   Then the question id should be "your name"
   When I set the name of the variable "tenant" to "Uli Ula Ulther III"
@@ -514,33 +569,36 @@ Scenario: User fell behind because of RAFT delay
   Then the question id should be "additional tenants"
   When I set the var "additional_tenants.there_are_any" to "False"
   Then the question id should be "how named on summons"
+  When I set the "False" choice of var "tenant.name_different_on_summons" to "true" # Default missing
   When I tap to continue
   Then the question id should be "reminders"
-  When I tap the checkbox var "remind_user"
-  And I tap the checkbox var "survey_user"
-  And I tap the checkbox var "edit_contact_info"
+  When I set the var "remind_user" to "true"
+  And I set the var "survey_user" to "true"
+  And I set the var "edit_contact_info" to "true"
   When I tap to continue
   Then the question id should be "landlords name"
   When I set the var "landlord.name.text" to "Len Lessor"
   When I tap to continue
   Then the question id should be "landlord information"
-  When I tap to continue
+  When I set the var "landlord.is_new" to "false"
+  And I tap to continue
   Then the question id should be "landlords attorney"
+  When I set the "False" choice of var "landlord.has_attorney" to "true"
   When I tap to continue
   Then the question id should be "court information"
   When I tap to continue
   Then the question id should be "court date"
-  When I tap the var "case.covid_hearing_date_assigned" with the value "True"
+  When I set the "True" choice of var "case.covid_hearing_date_assigned" to "true"
   And I set the var "case.covid_first_event" to "01/01/2025"
   When I tap to continue
   Then the question id should be "eviction reason"
-  When I tap the checkbox var "eviction_all_reasons" with the value "nonpayment"
+  When I set the "nonpayment" choice of var "eviction_all_reasons" to "true"
   When I tap to continue
   Then the question id should be "defense overview"
   When I tap to continue
   Then the question id should be "covid-19"
-  When I tap the var "covid_cdc_moratorium" with the value "False"
-  And I tap the var "delay_in_raft" with the value "True"
+  When I set the "False" choice of var "covid_cdc_moratorium" to "true"
+  And I set the "True" choice of var "delay_in_raft" to "true"
   And I tap to continue
   Then the question id should be "tenant facts"
   When I tap to continue
@@ -550,11 +608,16 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "facts.tenant_rent_frequency" to "month"
   And I set the var "tenancy_type" to "lease"
   And I tap to continue
-  And I wait 2 seconds
+  And I wait 3 seconds
   Then the question id should be "notice to quit facts"
   When I set the var "notice_type" to "fourteen_day"
+  And I set the "True" choice of var "ntq_includes_tenant_name" to "true"
+  And I set the "True" choice of var "ntq_includes_all_tenants" to "true"
+  And I set the "True" choice of var "ntq_includes_correct_address" to "true"
   And I tap to continue
   Then the question id should be "nonpayment defenses"
+  When I set the "True" choice of var "dont_owe_rent" to "true"
+  And I set the "True" choice of var "behind_in_rent" to "true"
   And I tap to continue
   Then the question id should be "tenancy facts"
   When I tap to continue
@@ -567,16 +630,20 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "date_received_summons" to "02/01/2020"
   And I tap to continue
   Then the question id should be "summons facts"
+  When I set the "True" choice of var "ntq_matches_summons" to "true"
+  And I set the "True" choice of var "summons_includes_all_tenants" to "true"
+  And I set the "True" choice of var "summons_includes_correct_address" to "true"
   When I tap to continue
   Then the question id should be "nonpayment cure"
   When I tap to continue
   Then the question id should be "waiver"
+  When I set the "True" choice of var "ntq_contains_reservation" to "true"
   When I tap to continue
   Then the question id should be "have a defense"
   When I tap to continue
   Then the question id should be "bad conditions"
   # The below doesn't really need "None", but it's probably a bit confusing otherwise
-  When I tap the var "bad_conditions.conditions" with the value "None"
+  When I set the "None of the above" choice of var "bad_conditions.conditions" to "true"
   And I tap to continue
   Then the question id should be "retaliation splash"
   When I set the var "retaliation.is_retaliated" to "False"
