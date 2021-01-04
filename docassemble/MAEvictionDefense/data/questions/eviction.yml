@@ -22,7 +22,7 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2020-11-13
+  revision_date: 2021-01-04
 ---
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
@@ -207,17 +207,23 @@ code: |
   nav.set_section('review_signature')
   if started_on_phone:
     saw_signature_choice = True
-    tenant.signature
-    if additional_tenants.there_are_any:
-      for t in additional_tenants:
-        t.signature
-  else: 
-    saw_signature_choice
-    if defined('signature_choice') and signature_choice =='this device':
+    if person_answering == 'attorney' and representation_type == 'entering_appearance':
+      tenants_attorney.signature
+    else:
       tenant.signature
       if additional_tenants.there_are_any:
         for t in additional_tenants:
-          t.signature      
+          t.signature
+  else: 
+    saw_signature_choice
+    if defined('signature_choice') and signature_choice =='this device':
+      if person_answering == 'attorney' and representation_type == 'entering_appearance':
+        tenants_attorney.signature
+      else:
+        tenant.signature
+        if additional_tenants.there_are_any:
+          for t in additional_tenants:
+            t.signature
     elif defined('signature_choice') and signature_choice == 'phone':
       saw_signature_qrcode
       if defined('link_cell') or defined('link_email'):
@@ -226,17 +232,32 @@ code: |
         if defined('link_email') and link_email:
           send_email(task='send signature link', to=link_email, template=interview_link)
         signature_wait_screen
-        tenant.signature
-        if additional_tenants.there_are_any:
-          for t in additional_tenants:
-            t.signature        
+        if person_answering == 'attorney' and representation_type == 'entering_appearance':
+          tenants_attorney.signature
+        else:
+          tenant.signature
+          if additional_tenants.there_are_any:
+            for t in additional_tenants:
+              t.signature
         if device() and device().is_mobile:
           signature_phone_followup
       else:
-        tenant.signature
+        if person_answering == 'attorney' and representation_type == 'entering_appearance':
+          tenants_attorney.signature
+        else:
+          tenant.signature
+          if additional_tenants.there_are_any:
+            for t in additional_tenants:
+              t.signature
     # Handle situation where someone uses the QR code    
     if saw_signature_choice and not defined('signature_choice'):
-      tenant.signature
+      if person_answering == 'attorney' and representation_type == 'entering_appearance':
+        tenants_attorney.signature
+      else:
+        tenant.signature
+        if additional_tenants.there_are_any:
+          for t in additional_tenants:
+            t.signature    
       signature_phone_followup
       signature_choice = 'phone'
 
