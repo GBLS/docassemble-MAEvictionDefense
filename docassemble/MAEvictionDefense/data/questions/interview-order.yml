@@ -15,10 +15,10 @@ code: |
     how_to_answer
     overview_video
   else:
-    representation_type
-    prefill_attorney_address_and_name
-    if tenant_attorney_name.isnumeric():
-      confirm_attorney_contact_information
+    if representation_type == 'entering_appearance':
+      prefill_attorney_address_and_name
+      if tenant_attorney_name.isnumeric():
+        confirm_attorney_contact_information
     explain_pronouns      
   if case.status == "onlyntq":
     onlyhasntq
