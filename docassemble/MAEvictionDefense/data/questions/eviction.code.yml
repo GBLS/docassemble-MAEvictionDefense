@@ -23,7 +23,9 @@ code: |
   if tenant_attorney_name.isnumeric() and int(tenant_attorney_name) < len(attorneys):
     map_attorney_info(attorneys[int(tenant_attorney_name)], tenants_attorney)
   else:
-    map_name(tenant_attorney_name, tenants_attorney.name)  
+    map_name(tenant_attorney_name, tenants_attorney.name)
+  # Make sure address was triggered    
+  tenants_attorney.address.address    
   prefill_attorney_address_and_name = True        
 ---
 code: |

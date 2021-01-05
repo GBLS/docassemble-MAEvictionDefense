@@ -3083,6 +3083,15 @@ fields:
       - Northeast Legal Aid
       - South Coastal Counties Legal Services
       - Volunteer Lawyers Project
+  - Street address: tenants_attorney.address.address
+    address autocomplete: True
+  - Unit: tenants_attorney.address.unit
+    required: False
+  - City: tenants_attorney.address.city
+  - State: tenants_attorney.address.state
+    code: |
+      states_list()
+  - Zip: tenants_attorney.address.zip
 ---
 id: confirm contact information
 continue button field: confirm_attorney_contact_information
