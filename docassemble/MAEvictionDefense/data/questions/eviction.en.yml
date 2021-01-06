@@ -180,6 +180,75 @@ buttons:
   - Tenant or helper: tenant
   - Attorney: attorney
 ---
+objects:
+  - tenants_attorney: Individual
+---
+id: ghostwriting
+question: |
+  Should the tenant's attorney's name appear on this pleading?
+fields:
+  - no label: representation_type
+    input type: radio
+    choices:
+      - Yes. I am entering an appearance.: entering_appearance
+      - No. I am only helping "ghostwrite" this document.: ghostwriting
+  - note: |
+      **Okay. Each form will state "Prepared with Assistance of Counsel"**
+    show if:
+      variable: representation_type
+      is: ghostwriting
+  - note: |
+      **Name of tenant's attorney**
+    show if:
+      variable: representation_type
+      is: entering_appearance
+  - First name: tenants_attorney.name.first
+    show if:
+      variable: representation_type
+      is: entering_appearance  
+  - Middle name: tenants_attorney.name.middle
+    required: False
+    show if:
+      variable: representation_type
+      is: entering_appearance    
+  - Last name: tenants_attorney.name.last
+    show if:
+      variable: representation_type
+      is: entering_appearance  
+  - Suffix: tenants_attorney.name.suffix
+    code: |
+      name_suffix()
+    required: False      
+    show if:
+      variable: representation_type
+      is: entering_appearance    
+  - BBO Number: tenants_attorney.bbo_number
+    show if:
+      variable: representation_type
+      is: entering_appearance  
+  - Email: tenants_attorney.email
+    required: False
+    show if:
+      variable: representation_type
+      is: entering_appearance    
+  - Office name (type or select from list): tenants_attorney.office_name
+    input type: combobox
+    show if:
+      variable: representation_type
+      is: entering_appearance    
+    choices:
+      - Community Legal Aid
+      - De Novo Center for Justice and Healing
+      - Disability Law Center
+      - Greater Boston Legal Services
+      - Massachusetts Law Reform Institute
+      - MetroWest Legal Services
+      - National Consumer Law Center
+      - Northeast Legal Aid
+      - South Coastal Counties Legal Services
+      - Volunteer Lawyers Project
+
+---
 id: tenant rights
 question: Your tenant rights in Massachusetts
 subquestion: | 
@@ -2942,3 +3011,100 @@ subquestion: |
   % endfor
   
   [View all of your saved online forms](${url_of('interviews')})
+---
+id: explain pronouns
+question: |
+  You said you are an attorney representing a tenant
+subquestion: |
+  Most of the questions in this tool will use the word "you" to refer
+  to the **tenant**, not to you as their attorney. Answer as if you are the
+  tenant.
+continue button field: explain_pronouns
+---
+id: representation type
+question: |
+  Should the tenant's attorney's name appear on this pleading?
+fields:
+  - no label: representation_type
+    input type: radio
+    choices:
+      - Yes. I am entering an appearance.: entering_appearance
+      - No. I am only helping "ghostwrite" this document.: ghostwriting
+  - note: |
+      **Okay. Each form will state "Prepared with Assistance of Counsel"**
+    show if:
+      variable: representation_type
+      is: ghostwriting
+  - note: |
+      **Name of tenant's attorney**  
+      If you are an attorney at a Massachusetts Legal Aid agency, you can
+      provide your information using this [Google Form](https://forms.gle/ZR7cP4BPMiH8yzTL6).
+      
+      You can provide an office address, phone number, and BBO number to be
+      saved for future use. Contact made@gbls.org to request corrections.
+    show if:
+      variable: representation_type
+      is: entering_appearance
+  - Attorney's Full Name (select an existing name or type a new name): tenant_attorney_name
+    datatype: combobox
+    code: |
+      [{index: attorney.get('Attorney Name')} for index, attorney in enumerate(attorneys)]
+    show if:
+      variable: representation_type
+      is: entering_appearance      
+---
+id: verify attorney information
+question: |
+  Contact information for attorney ${ tenants_attorney }
+fields:
+  - First name: tenants_attorney.name.first
+  - Middle name: tenants_attorney.name.middle
+    required: False
+  - Last name: tenants_attorney.name.last
+  - Suffix: tenants_attorney.name.suffix
+    required: False
+  - BBO Number: tenants_attorney.bbo
+    required: False
+  - Email: tenants_attorney.email
+    required: False
+  - Phone number: tenants_attorney.phone_number
+  - Fax number: tenants_attorney.fax_number
+    required: False
+  - Office name (type or select from list): tenants_attorney.office
+    input type: combobox
+    choices:
+      - Community Legal Aid
+      - De Novo Center for Justice and Healing
+      - Disability Law Center
+      - Greater Boston Legal Services
+      - Massachusetts Law Reform Institute
+      - MetroWest Legal Services
+      - National Consumer Law Center
+      - Northeast Legal Aid
+      - South Coastal Counties Legal Services
+      - Volunteer Lawyers Project
+  - Street address: tenants_attorney.address.address
+    address autocomplete: True
+  - Unit: tenants_attorney.address.unit
+    required: False
+  - City: tenants_attorney.address.city
+  - State: tenants_attorney.address.state
+    code: |
+      states_list()
+  - Zip: tenants_attorney.address.zip
+---
+id: confirm contact information
+continue button field: confirm_attorney_contact_information
+question: |
+  Confirm your contact information
+subquestion: |
+  
+  ${ tenants_attorney }  
+  BBO # ${ tenants_attorney.bbo }  
+  ${ tenants_attorney.office }  
+  ${ tenants_attorney.address.block() }  
+  ${ tenants_attorney.email }  
+  ${ tenants_attorney.phone_number }  
+  ${ tenants_attorney.fax_number }  
+  
+  [Edit contact information](${ url_action('tenants_attorney.office')})

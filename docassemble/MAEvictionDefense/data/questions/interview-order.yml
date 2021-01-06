@@ -14,6 +14,12 @@ code: |
   if person_answering == 'tenant':
     how_to_answer
     overview_video
+  else:
+    if representation_type == 'entering_appearance':
+      prefill_attorney_address_and_name
+      if tenant_attorney_name.isnumeric():
+        confirm_attorney_contact_information
+    explain_pronouns      
   if case.status == "onlyntq":
     onlyhasntq
   if case.status == "afj" or case.status == 'late':

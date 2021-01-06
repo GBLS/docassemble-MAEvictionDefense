@@ -5,8 +5,31 @@ code: |
 code: |
   attempted_cure = attempted_full_cure or attempted_offered_cure
 ---
+objects:
+  - tenants_attorney: Individual
+---
+modules:
+  - .connect_gsheets_data
+---
 code: |
-  prepared_with_aoc = url_args.get('clinic',False) == 'GBLS' or person_answering == 'attorney'
+  try:
+    attorneys = read_sheet("GBLS Eviction Defense System", "Attorneys")
+  except:
+    attorneys = []
+---
+code: |
+  # Did someone choose an existing name from the combobox, or type something
+  # custom in?
+  if tenant_attorney_name.isnumeric() and int(tenant_attorney_name) < len(attorneys):
+    map_attorney_info(attorneys[int(tenant_attorney_name)], tenants_attorney)
+  else:
+    map_name(tenant_attorney_name, tenants_attorney.name)
+  # Make sure address was triggered    
+  tenants_attorney.address.address    
+  prefill_attorney_address_and_name = True        
+---
+code: |
+  prepared_with_aoc = url_args.get('clinic',False) == 'GBLS' or person_answering == 'attorney' and representation_type == 'ghostwriting'
 ---
 sets: 
   - landlords_attorney.name.text

@@ -6,6 +6,9 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2020-01-05 Bug fix when using new attorney name
+* 2020-01-04 Add support for attorney entering appearance
+* 2020-01-03 Integrate language files
 * 2020-12-10 Edit additional tenant signature
 * 2020-12-02 Language tweaks, compatibility with docassemble 1.2.7
 * 2020-11-18 Translate section labels
