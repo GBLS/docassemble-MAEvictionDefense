@@ -12,6 +12,7 @@ Since the tests are so long and many scenarios don't conflict, some have been co
 - [√] User has a public housing voucher. (Expected: No bugs along the way)
 - [√] User has a delay in receiving RAFT rental assistance which caused to fall behind in rent. (Expected: Causes 2 paragraphs to appear in the answer: RAFT defense should appear on the answer. Relief requested should include a delay in the case until RAFT is completed.)
 
+@fast
 Scenario: User's court date has passed
   Given I start the interview at "eviction"
   When I tap to continue
@@ -26,6 +27,7 @@ Scenario: User's court date has passed
   And I tap to continue
   Then the question id should be "not right interview"
 
+@long_running
 Scenario: User has a federal mortgage and a 14 day notice to quit
   Given I start the interview at "eviction"
   Then the question id should be "intro screen"
@@ -153,6 +155,7 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   Then the question id should be "download screen"
   Then I download "Eviction_Forms.zip"
 
+@long_running
 Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   Given I start the interview at "eviction"
   Then the question id should be "intro screen"
@@ -279,6 +282,7 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   Then the question id should be "download screen"
   Then I download "Eviction_Forms.zip"
 
+@long_running
 Scenario: User has a "fault" case with NO court date and NO CDC declaration
   Given I start the interview at "eviction"
   Then the question id should be "intro screen"
@@ -405,6 +409,7 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   Then the question id should be "download screen"
   Then I download "Eviction_Forms.zip"
 
+@long_running
 Scenario: User has a public housing voucher with a court date
   Given I start the interview at "eviction"
   Then the question id should be "intro screen"
@@ -546,6 +551,7 @@ Scenario: User has a public housing voucher with a court date
   Then the question id should be "download screen"
   Then I download "Eviction_Forms.zip"
 
+@long_running
 Scenario: User fell behind because of RAFT delay
   Given I start the interview at "eviction"
   Then the question id should be "intro screen"

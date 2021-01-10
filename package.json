@@ -7,8 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "npm run langs_setup && npm run cucumber",
-    "cucumber": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*.feature",
+    "test": "npm run langs_setup && npm run cucumber -- $@",
+    "cucumber_base": "./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js",
+    "cucumber": "run_cucumber(){ npm run cucumber_base -- \"$@\" tests/features/*.feature; }; run_cucumber",
     "langs": "npm run langs_setup && ./node_modules/.bin/cucumber-js --require ./node_modules/docassemble-cucumber/lib/index.js tests/features/*_lang*.feature",
     "langs_setup": "node_modules/.bin/da-langs 'tests/features/*.feature'",
     "langs_local": "npm run langs_setup && npm run local",

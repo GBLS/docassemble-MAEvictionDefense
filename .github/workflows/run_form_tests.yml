@@ -8,8 +8,9 @@ on:
         description: 'Optional. A list of comma separated language names visible on buttons or links that change the language of the interview. Overrides the EXTRA_LANGUAGES repo secret.'
         default: ''
         # "default" will prevent anything other than the default language.'
-    #   tags:
-    #     description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
+      tags:
+        description: 'Optional. Use a "tag expression" specify which tagged tests to run (https://cucumber.io/docs/cucumber/api/#tag-expressions)'
+        default: ''
     #   url:
     #     description: 'Optional. Override the generated interview url'
 
@@ -45,7 +46,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run setup
-      - run: npm run test
+      - run: npm run test -- ${{ github.event.inputs.tags && format('"--tags" "{0}"', github.event.inputs.tags) }}
       - name: upload error artifacts
         uses: actions/upload-artifact@v2
         if: ${{ failure() }}
