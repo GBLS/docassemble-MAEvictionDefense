@@ -17,20 +17,13 @@ code: |
   interview_date = url_args.get('interview_date',None)
   zip = url_args.get('interview_zip', None)
 ---
-imports:
-  - dt_send_answers
----
 mandatory: True
 code: |
   interview_date
   zip
   survey_questions
-  sent_answers
+  # sent_answers
   thanks
----
-code: |
-  dt_send_answers.send_answers(include_logged_in_user=False)
-  sent_answers = True
 ---
 decoration: clipboard-list
 question: |

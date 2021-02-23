@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2021-02-23 Add 257 form defense; remove references to dt_send_answers (From Community Lawyer)
 * 2021-01-05 Bug fix when using new attorney name
 * 2021-01-04 Add support for attorney entering appearance
 * 2021-01-03 Integrate language files
