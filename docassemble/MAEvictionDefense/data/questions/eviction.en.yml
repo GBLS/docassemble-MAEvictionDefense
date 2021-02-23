@@ -56,6 +56,10 @@ fields:
       is: False
   - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
     datatype: yesno
+  - My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form: initial_defense.no_257_notice
+    datatype: yesno
+    help: |
+      [FILE form257.png, 100%]
   
 ---
 id: case number

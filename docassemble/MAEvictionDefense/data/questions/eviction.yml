@@ -80,8 +80,6 @@ modules:
 ---
 imports:
   - holidays
-  - dt_send_answers
-  #- re
 ---
 objects:
   - tenant: Individual
@@ -283,8 +281,8 @@ code: |
     send_user_email
     send_ls_email
     # Only send responses from the live site
-    if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
-      sent_answers # will only send once, so doesn't account for revisions
+    #if not interface() == 'cron' and not get_config('url root') == "https://interviews-dev.gbls.org":
+    #  sent_answers # will only send once, so doesn't account for revisions
     store_made_snapshot
     download_forms
 ---
@@ -312,18 +310,3 @@ code: |
     intake_additional_information
     # view_intake
   asked_intake_questions = True
----
-code: |
-  case.case_id = ''
-  #dt_send_answers.send_answers(['landlords_attorney','case.case_id'])
-  sent_answers = True
----
-comment: |
-  Send interview responses to community.lawyer
-reconsider: True
-code: |
-  # import dt_send_answers
-
-  # Workarounds for dt_send_answers
-  #case.case_id = "" # Needed for dt-sendanswers
-  answers_response = ''
