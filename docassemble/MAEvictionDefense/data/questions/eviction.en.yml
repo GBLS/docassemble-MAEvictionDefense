@@ -108,7 +108,7 @@ images:
   house-drawing: house.svg
 ---
 id: intro screen
-decoration: house-drawing
+decoration: house-user
 question: |
   MADE: Massachusetts Defense for Eviction
 subquestion: |

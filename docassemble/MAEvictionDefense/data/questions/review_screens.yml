@@ -472,6 +472,616 @@ review:
     field: drq_questions
     button: |
       You requested ${ drq.count_checked() } kinds of documents.
-    
+---
+event: review_everything
+question: |
+  Review everything
+review:
+  - Edit: covid_cares_has_federal_mortgage
+    button: |
+      My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act : ${ word(yesno(covid_cares_has_federal_mortgage)) }
+  - Edit: covid_cares_mortgage_in_forbearance
+    button: |
+      The mortgage is in forbearance : ${ word(yesno(covid_cares_mortgage_in_forbearance)) }
+  - Edit: covid_cdc_moratorium
+    button: |
+      I sent my landlord a declaration under the [CDC eviction moratorium](https://www.masslegalhelp.org/covid-19/housing) : ${ covid_cdc_moratorium }
+  - Edit: delay_in_raft
+    button: |
+      I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }
+  - Edit: initial_defense.no_257_notice
+    button: |
+      My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form : ${ word(yesno(initial_defense.no_257_notice)) }
+  - Edit: ls_case_id
+    button: |
+      Case number : ${ ls_case_id }
+  - Edit: needs_time_because
+    button: |
+      Explain in your own words why you need more time to move. : ${ needs_time_because }
+  - Edit: person_answering
+    button: |
+      Who is completing this interview?
+       : ${ person_answering }
+  - Edit: case.status
+    button: |
+      Your eviction case status : ${ case.status }
+  - Edit: claim_jurytrial
+    button: |
+      Your right to a jury trial: ${ claim_jurytrial }
+  - Edit: remind_user
+    button: |
+      Remind me about deadlines : ${ word(yesno(remind_user)) }
+  - Edit: survey_user
+    button: |
+      Send me a survey after my first court date. : ${ word(yesno(survey_user)) }
+  - Edit: edit_contact_info
+    button: |
+      Edit my contact information : ${ word(yesno(edit_contact_info)) }
+      % if edit_contact_info:
+      Mobile phone number for text messaging : ${ user_cell_edited }
+      Email address : ${ user_email_edited }
+      % endif
+  - Edit: x.signature
+    button: |
+      Your signature : ${ x.signature }
+  - Edit: method_of_service
+    button: |
+      Delivery method : ${ method_of_service }
+  - Edit: service_date
+    button: |
+      Date of delivery : ${ service_date }
+  - Edit: tenant.name.first
+    button: |
+      Your name : ${ tenant }
+  - Edit: additional_tenants.there_are_any
+    button: |
+      Additional tenants
+       : ${ word(yesno(additional_tenants.there_are_any)) }
+  - Edit: additional_tenants.revisit
+    button: |
+      Additional tenant names: ${ additional_tenants }
+  - Edit: tenant.name_different_on_summons
+    button: |
+      Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${comma_and_list(additional_tenants + [tenant])}"? : ${ tenant.name_different_on_summons }
+  - Edit: tenant.more_names_on_summons
+    button: |
+      There are additional names listed. : ${ word(yesno(tenant.more_names_on_summons)) }
+  - Edit: tenant.name_misspelled
+    button: |
+      My name is misspelled on the summons. : ${ word(yesno(tenant.name_misspelled)) }
+  - Edit: tenant.not_named_on_summons
+    button: |
+      My name is missing from the summons. : ${ word(yesno(tenant.not_named_on_summons)) }
+  - Edit: defendant_name_as_listed_on_summons
+    button: |
+      Exact contents of the line "To Defendants / Tenants / Occupants" : ${ defendant_name_as_listed_on_summons }
+  - Edit: tenant.address.address
+    button: |
+      Your address : ${ tenant.address.on_one_line() }
+  - Edit: tenant.phone_number
+    button: |
+      Phone number : ${ tenant.phone_number }
+  - Edit: tenant.email
+    button: |
+      Email address : ${ tenant.email }
+  - Edit: facts.tenant_address_is_eviction_address
+    button: |
+      This is also the address I am being evicted from : ${ facts.tenant_address_is_eviction_address }
+  - Edit: premises_alternate_address
+    button: |
+      What address are you being evicted from? (all on one line) : ${ premises_alternate_address }
+  - Edit: facts.tenant_movein
+    button: |
+      When did you move in? (best date you know) : ${ facts.tenant_movein }
+  - Edit: is_pca
+    button: |
+      I live in the property as a caretaker (PCA, handyman, or Superintendent) and do not pay rent. : ${ word(yesno(is_pca)) }
+  - Edit: facts.tenant_rent_share
+    button: |
+      What do you pay for rent? : ${ facts.tenant_rent_share }
+  - Edit: facts.tenant_rent_frequency
+    button: |
+      How often is your rent paid? : ${ facts.tenant_rent_frequency }
+  - Edit: facts.tenant_contract_rent
+    button: |
+      What is the full "contract" or "market" rent? : ${ currency(facts.tenant_contract_rent) }
+  - Edit: tenancy_type
+    button: |
+      My rental agreement is : ${ tenancy_type }
+  - Edit: lease_type
+    button: |
+      When the original lease period is over (usually 1 year), my lease ... : ${ lease_type }
+  - Edit: lease_end_date
+    button: |
+      Date my lease ends : ${ lease_end_date }
+  - Edit: facts.tenant_has_subsidy
+    button: |
+      I live in public housing, have a housing voucher, or my rent is subsidized. : ${ word(yesno(facts.tenant_has_subsidy)) }
+  - Edit: tenant.is_nonnativespeaker
+    button: |
+      English is not my first language. : ${ word(yesno(tenant.is_nonnativespeaker)) }
+  - Edit: tenant.needs_interpreter
+    button: |
+      I need an interpreter. : ${ word(yesno(tenant.needs_interpreter)) }
+  - Edit: tenant.preferred_language
+    button: |
+      I need an interpreter who speaks: : ${ tenant.preferred_language }
+  - Edit: tenant.is_disabled
+    button: |
+      I or someone who lives with me has a disability : ${ word(yesno(tenant.is_disabled)) }
+  - Edit: tenant.is_under6
+    button: |
+      I or someone who lives with me is under the age of 6 : ${ word(yesno(tenant.is_under6)) }
+  - Edit: tenant.is_over60
+    button: |
+      I or someone who lives with me is over the age of 60 : ${ word(yesno(tenant.is_over60)) }
+  - Edit: tenant.is_dvvictim
+    button: |
+      I am a survivor of domestic violence. : ${ word(yesno(tenant.is_dvvictim)) }
+  - Edit: postforeclosure.is_foreclosed
+    button: |
+      ${tenant.address.address} has been foreclosed on. : ${ word(yesno(postforeclosure.is_foreclosed)) }
+  - Edit: is_pfc_owner
+    button: |
+      I am or I was the owner before the foreclosure. : ${ word(yesno(is_pfc_owner)) }
+  - Edit: bqe.locked_out
+    button: |
+      ${landlord.name} has tried to lock me out. : ${ word(yesno(bqe.locked_out)) }
+  - Edit: bqe.entered_without_permission
+    button: |
+      ${landlord.name} or an employee has entered my home without permission or without advance notice. : ${ word(yesno(bqe.entered_without_permission)) }
+  - Edit: claims.harassment
+    button: |
+      ${landlord.name} or their employee has sexually harassed me. : ${ word(yesno(claims.harassment)) }
+  - Edit: claims.utilities
+    button: |
+      I pay for one or more utilities. : ${ word(yesno(claims.utilities)) }
+  - Edit: is_condo_conversion
+    button: |
+      ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
+  - Edit: paid_deposit
+    button: |
+      I paid a security deposit. : ${ word(yesno(paid_deposit)) }
+  - Edit: paid_lmr
+    button: |
+      I pre-paid last month's rent when I first moved in. : ${ word(yesno(paid_lmr)) }
+  - Edit: court
+    button: |
+      Court name : ${ court }
+  - Edit: transfer_to_housing_court
+    button: |
+      Transfer to Housing Court
+       : ${ transfer_to_housing_court }
+  - Edit: request_right_to_intervene
+    button: |
+      Would you like to ask permission to participate in this case? : ${ request_right_to_intervene }
+  - Edit: intervention_reason
+    button: |
+      Briefly explain why you should be allowed to participate: : ${ intervention_reason }
+  - Edit: intervention_harm
+    button: |
+      Briefly explain why you would be harmed if you are not allowed to participate: : ${ intervention_harm }
+  - Edit: landlord.address.address
+    button: |
+      Landlord's address: 
+      ${ landlord.address.on_one_line() }
+  - Edit: case.covid_hearing_date_assigned
+    button: |
+      Did you get a letter from the court that tells you what **day and time** to go to court yet? : ${ case.covid_hearing_date_assigned }
+  - Edit: case.covid_first_event
+    button: |
+      When do you need to go to court? : ${ case.covid_first_event }
+  - Edit: fault.did_not_occur
+    button: |
+      I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong) : ${ word(yesno(fault.did_not_occur)) }
+  - Edit: fault.not_violation_of_agreement
+    button: |
+      The ${capitalize(eviction_detailed_reason)} is not a violation of my lease. : ${ word(yesno(fault.not_violation_of_agreement)) }
+  - Edit: fault.no_control_of_guest
+    button: |
+      The ${eviction_detailed_reason} was the fault of a guest that I had no control over. : ${ word(yesno(fault.no_control_of_guest)) }
+  - Edit: eviction_all_reasons
+    button: |
+      Choose all reasons listed on your Notice to Quit that apply. : ${ eviction_all_reasons }
+  - Edit: nofault_basis
+    button: |
+      Select all that apply : ${ nofault_basis }
+  - Edit: fault_basis
+    button: |
+      Select all that apply : ${ fault_basis }
+  - Edit: landlord.name.text
+    button: |
+      Landlord's name (as written on the Summons) : ${ landlord.name.text }
+  - Edit: landlord.organization_type
+    button: |
+      What type of landlord do you have? : ${ landlord.organization_type }
+  - Edit: landlord.is_new
+    button: |
+      My landlord has changed since I first moved in. : ${ word(yesno(landlord.is_new)) }
+  - Edit: landlord.has_attorney
+    button: |
+      My landlord has an attorney. : ${ landlord.has_attorney }
+  - Edit: landlords_attorney.name.text
+    button: |
+      Attorney's name : ${ landlords_attorney.name.text }
+  - Edit: landlords_attorney.address.address
+    button: |
+      Landlord's attorney's address: ${ landlords_attorney.address.on_one_line() }
+  - Edit: dont_owe_rent
+    button: |
+      I do not owe the amount of money my landlord says I owe. : ${ word(yesno(dont_owe_rent)) }
+  - Edit: behind_in_rent
+    button: |
+      I was behind in rent when I got the 14-day notice. : ${ behind_in_rent }
+  - Edit: refused_rent_increase
+    button: |
+      I never agreed to pay the amount of rent the landlord put in the 14-day notice : ${ word(yesno(refused_rent_increase)) }
+  - Edit: attempted_full_cure
+    button: |
+      I gave the landlord the full amount of money I owed. : ${ word(yesno(attempted_full_cure)) }
+  - Edit: attempted_offered_cure
+    button: |
+      I offered to pay the full amount of money I owed. : ${ word(yesno(attempted_offered_cure)) }
+  - Edit: other.vendor_payments
+    button: |
+      My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : ${ word(yesno(other.vendor_payments)) }
+  - Edit: notice_type
+    button: |
+      Kind of notice to quit : ${ notice_type }
+  - Edit: ntq_includes_tenant_name
+    button: |
+      The notice to quit has my name on it. : ${ ntq_includes_tenant_name }
+  - Edit: ntq_includes_all_tenants
+    button: |
+      The notice to quit includes the names of everyone who signed the lease. : ${ ntq_includes_all_tenants }
+  - Edit: ntq_includes_correct_address
+    button: |
+      The notice to quit has my correct address. : ${ ntq_includes_correct_address }
+  - Edit: lease_requires_30_day_notice
+    button: |
+      My lease requires a 30-day notice even for non-payment of rent. : ${ word(yesno(lease_requires_30_day_notice)) }
+  - Edit: ntq_leaves_off_required_language
+    button: |
+      The notice to quit leaves out language that is required by my lease, by law, or by the requirements of a subsidy program. : ${ word(yesno(ntq_leaves_off_required_language)) }
+  - Edit: post_ntq_waiver
+    button: |
+      Did any of the following happen after you got the notice to quit${' on ' + format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else ''}? : ${ post_ntq_waiver }
+  - Edit: ntq_contains_reservation
+    button: |
+      Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language? : ${ ntq_contains_reservation }
+  - Edit: ntq_matches_summons
+    button: |
+      It matches the notice to quit. : ${ ntq_matches_summons }
+  - Edit: summons_eviction_reasons
+    button: |
+      Select all reasons listed on the summons and complaint that are not listed on the notice to quit. : ${ summons_eviction_reasons }
+  - Edit: summons_includes_all_tenants
+    button: |
+      The summons and complaint includes the names of all adult tenants who signed the lease. : ${ summons_includes_all_tenants }
+  - Edit: summons_includes_correct_address
+    button: |
+      The summons and complaint has my correct address. : ${ summons_includes_correct_address }
+  - Edit: date_received_ntq
+    button: |
+      Date I got the notice to quit : ${ date_received_ntq }
+  - Edit: date_received_ntq
+    button: |
+      Date I got the notice to quit : ${ date_received_ntq }
+  - Edit: date_received_summons
+    button: |
+      Date I got the notice to go to court (Summons and Complaint). : ${ date_received_summons }
+  - Edit: summons_in_hand
+    button: |
+      I got the summons and complaint by someone handing it to me or an adult in my household. : ${ word(yesno(summons_in_hand)) }
+  - Edit: summons_mailed
+    button: |
+      The summons and complaint was mailed to me. : ${ word(yesno(summons_mailed)) }
+  - Edit: summons_last_and_usual
+    button: |
+      The summons and complaint was left at my apartment (usually taped or tacked on door) : ${ word(yesno(summons_last_and_usual)) }
+  - Edit: paid_rent_owed
+    button: |
+      I paid all of the rent that I owed my landlord, or I offered to pay it and they refused to accept it. : ${ word(yesno(paid_rent_owed)) }
+  - Edit: paid_court_fees
+    button: |
+      I also paid the court costs (typically between $180-$200). : ${ word(yesno(paid_court_fees)) }
+  - Edit: no_ntq_in_12_months
+    button: |
+      In the last twelve months, this was the first or only time I received a notice to quit. : ${ word(yesno(no_ntq_in_12_months)) }
+  - Edit: cure_date
+    button: |
+      The date I paid my landlord was : ${ cure_date }
+  - Edit: new_landlord_reason
+    button: |
+      Why do you have a new landlord? : ${ new_landlord_reason }
+  - Edit: building_sold_after_ntq
+    button: |
+      The building was sold after I got the notice to quit : ${ word(yesno(building_sold_after_ntq)) }
+  - Edit: initial_defense.custom_reason_for_dismissal
+    button: |
+      The Landlord's case should be dismissed because : ${ initial_defense.custom_reason_for_dismissal }
+  - Edit: initial_defense.custom_other
+    button: |
+      I have other defenses or counterclaims as follows : ${ initial_defense.custom_other }
+  - Edit: more_than_3_units
+    button: |
+      My apartment building has more than 3 units. : ${ word(yesno(more_than_3_units)) }
+  - Edit: condo_violations
+    button: |
+      My landlord failed to follow state condo conversion law as follows : ${ condo_violations }
+  - Edit: condo_local_violations
+    button: |
+      My landlord failed to follow local condo conversion ordinances as follows : ${ condo_local_violations }
+  - Edit: bad_conditions.conditions
+    button: |
+      Select any conditions you have had in the last 6 years, even if fixed now : ${ bad_conditions.conditions }
+  - Edit: bad_conditions.other_condition
+    button: |
+      Other conditions : ${ bad_conditions.other_condition }
+  - Edit: other.tenant_repaired
+    button: |
+      I paid for repairs to the bad conditions at my own cost. : ${ word(yesno(other.tenant_repaired)) }
+  - Edit: other.certified_report
+    button: |
+      Before I made repairs, the Board of Health or Inspectional Services Division gave the landlord a certified report about bad housing conditions. : ${ word(yesno(other.certified_report)) }
+  - Edit: other.no_timely_repairs
+    button: |
+      The landlord did not make or contract to make the repairs that they were ordered to make in a reasonable amount of time (14 days, or less if ordered by ISD or Board of Health). : ${ word(yesno(other.no_timely_repairs)) }
+  - Edit: other.deducted_repair_cost
+    button: |
+      I deducted the cost of repairs from my rent. : ${ word(yesno(other.deducted_repair_cost)) }
+  - Edit: other.repair_less_than_4_months
+    button: |
+      The total amount I deducted for repairs was less than four months of rent. : ${ word(yesno(other.repair_less_than_4_months)) }
+  - Edit: bad_conditions.landlord_notified
+    button: |
+      How did you tell your landlord about the bad housing conditions? : ${ bad_conditions.landlord_notified }
+  - Edit: bad_conditions.other
+    button: |
+      Other : ${ bad_conditions.other }
+  - Edit: bqe.heat
+    button: |
+      Failed to provide adequate heat : ${ word(yesno(bqe.heat)) }
+  - Edit: bqe.hot_water
+    button: |
+      Failed to provide adequate hot water : ${ word(yesno(bqe.hot_water)) }
+  - Edit: bqe.unpaid_utilities
+    button: |
+      Did not pay for utilities that were the landlord's responsibility : ${ word(yesno(bqe.unpaid_utilities)) }
+  - Edit: bqe.shutoff_utilities
+    button: |
+      Shut off my utilities : ${ word(yesno(bqe.shutoff_utilities)) }
+  - Edit: bqe.locked_out
+    button: |
+      Locked me out of my home : ${ word(yesno(bqe.locked_out)) }
+  - Edit: bqe.removed_possessions
+    button: |
+      Took my belongings out of my apartment without a court order : ${ word(yesno(bqe.removed_possessions)) }
+  - Edit: bqe.bad_conditions
+    button: |
+      Allowed bad conditions to exist in my home : ${ word(yesno(bqe.bad_conditions)) }
+  - Edit: bqe.entered_without_permission
+    button: |
+      Entered my home without permission or notice : ${ word(yesno(bqe.entered_without_permission)) }
+  - Edit: bqe.other
+    button: |
+      Interfered in some other way (specify) : ${ bqe.other }
+  - Edit: bqe.billed_no_agreement
+    button: |
+      I have been billed for heat, hot water, electricity or gas without an agreement in writing. : ${ word(yesno(bqe.billed_no_agreement)) }
+  - Edit: bqe.billed_for_others
+    button: |
+      I have been billed for one or more utilities that cover the common area or other people's apartments (cross metering or cross wiring). : ${ word(yesno(bqe.billed_for_others)) }
+  - Edit: other.water_violation
+    button: |
+      My landlord charged me for water in violation of G.L. c. 186, §22.. : ${ word(yesno(other.water_violation)) }
+  - Edit: postforeclosure.failure_to_comply
+    button: |
+      The foreclosure is void due to violations of the power of sale in the mortgage; statutory or regulatory foreclosure requirements; or requirements for note holding or transfer requirements. : ${ word(yesno(postforeclosure.failure_to_comply)) }
+  - Edit: postforeclosure.unfair_loan_mod
+    button: |
+      I was treated unfairly with respect to loan modification and/or alternatives to foreclosure. : ${ word(yesno(postforeclosure.unfair_loan_mod)) }
+  - Edit: postforeclosure.unfair_notices
+    button: |
+      I was treated unfairly with respect to pre-foreclosure notices. : ${ word(yesno(postforeclosure.unfair_notices)) }
+  - Edit: postforeclosure.unfair_loan_based_on_income
+    button: |
+      My loan was predatory, unfair, and/or was unaffordable based on my income. : ${ word(yesno(postforeclosure.unfair_loan_based_on_income)) }
+  - Edit: postforeclosure.no_just_cause.bona_fide_protections
+    button: |
+      I am a bona fide tenant entitled to the protections of G.L. c. 186A. : ${ word(yesno(postforeclosure.no_just_cause.bona_fide_protections)) }
+  - Edit: postforeclosure.no_just_cause.no_binding_purchase
+    button: |
+      Because the plaintiff does not have just cause to evict me and there is no binding purchase and sale agreement on the property as required by G.L. c. 186A, §2, this case should be dismissed. : ${ word(yesno(postforeclosure.no_just_cause.no_binding_purchase)) }
+  - Edit: postforeclosure.no_just_cause.ntq_or_other_actions
+    button: |
+      The plaintiff's service of a Notice to Quit or other actions to force me to vacate the premises without just cause or without a contract for sale on the property violate G.L. c. 186A, §2; c. 186, §14; and c. 93A. : ${ word(yesno(postforeclosure.no_just_cause.ntq_or_other_actions)) }
+  - Edit: postforeclosure.notice_provisions.no_plaintiff_info
+    button: |
+      The plaintiff failed to post, deliver, or slide under my door a notice containing contact information and information about who to call for repairs. : ${ word(yesno(postforeclosure.notice_provisions.no_plaintiff_info)) }
+  - Edit: postforeclosure.notice_provisions.less_than_30_days
+    button: |
+      The plaintiff served me with a Notice to Quit less than 30 days after it posted and delivered the required contact information in violation of G.L. c. 186A, §§3 and 4. : ${ word(yesno(postforeclosure.notice_provisions.less_than_30_days)) }
+  - Edit: postforeclosure.notice_provisions.no_right_to_court_notice
+    button: |
+      The plaintiff did not provide me with a written notice about my right to a court hearing in violation of G.L. c. 186A, §§3 and 4. : ${ word(yesno(postforeclosure.notice_provisions.no_right_to_court_notice)) }
+  - Edit: postforeclosure.notice_provisions.no_written_notice_of_violations
+    button: |
+      The plaintiff did not give me written notice claiming that I had substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : ${ word(yesno(postforeclosure.notice_provisions.no_written_notice_of_violations)) }
+  - Edit: postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    button: |
+      The plaintiff did not give me 30 days to cure the claim that I substantially violated my lease or tenancy in violation of G.L. c. 186A, §4. : ${ word(yesno(postforeclosure.notice_provisions.no_30_days_to_cure_claims)) }
+  - Edit: postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    button: |
+      The plaintiff did not inform me of the amount of monthly rent it claims and to whom the rent should be paid in violation of G.L. c. 186A, §§3 and 4. : ${ word(yesno(postforeclosure.notice_provisions.plaintiff_did_not_inform_amount)) }
+  - Edit: postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    button: |
+      Because the plaintiff did not comply with the notice requirements of G.L. c. 186A, §§3 and 4, this case should be dismissed. : ${ word(yesno(postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements)) }
+  - Edit: postforeclosure.no_standing
+    button: |
+      The plaintiff's case should be dismissed because it does not have proper title to the property and therefore it cannot prove a superior right to possession of the property and the foreclosure is void. Wayne Inv. Corp. v. Abbott, 350 Mass. 775 (1966) (title defects can be raised as defense in summary process); G.L. c. 239, §1 (summary process available to plaintiff only if foreclosure carried out according to law). : ${ word(yesno(postforeclosure.no_standing)) }
+  - Edit: relief.void_foreclosure
+    button: |
+      I ask the court to declare the foreclosure void. : ${ word(yesno(relief.void_foreclosure)) }
+  - Edit: subsidy_type
+    button: |
+      What type of subsidy do you have?
+       : ${ subsidy_type }
+  - Edit: subsidized_housing.pha_pays_rent
+    button: |
+      A portion of my rent is paid for by a public housing authority. : ${ word(yesno(subsidized_housing.pha_pays_rent)) }
+  - Edit: subsidized_housing.stopped_payment
+    button: |
+      The public housing authority stopped payment to the landlord due to bad conditions. : ${ word(yesno(subsidized_housing.stopped_payment)) }
+  - Edit: subsidized_housing.improper_rent_calculation
+    button: |
+      My landlord or the housing authority improperly calculated my rent share. : ${ word(yesno(subsidized_housing.improper_rent_calculation)) }
+  - Edit: subsidized_housing.landlord_overcharged
+    button: |
+      My landlord charged me more rent than allowed by the housing authority (side payments). : ${ word(yesno(subsidized_housing.landlord_overcharged)) }
+  - Edit: subsidized_housing.no_proper_termination
+    button: |
+      My landlord failed to follow the rules for my subsidy program. : ${ subsidized_housing.no_proper_termination }
+  - Edit: subsidized_housing.no_just_cause
+    button: |
+      My landlord does not have good cause to evict me. : ${ subsidized_housing.no_just_cause }
+  - Edit: subsidized_housing.no_ntq_to_agency
+    button: |
+      The landlord did not send a copy of the notice to quit to my housing authority at the same time as they sent it to me. : ${ subsidized_housing.no_ntq_to_agency }
+  - Edit: subsidized_housing.no_hearing_or_conference
+    button: |
+      I was never offered a chance to discuss the eviction with my landlord in a "private conference" or "grievance hearing". : ${ subsidized_housing.no_hearing_or_conference }
+  - Edit: subsidized_housing.vawa
+    button: |
+      I have a defense under the Violence Against Women Act. : ${ subsidized_housing.vawa }
+  - Edit: retaliation.is_retaliated
+    button: |
+      Retaliation
+       : ${ word(yesno(retaliation.is_retaliated)) }
+  - Edit: retaliation.withheld_rent
+    button: |
+      I withheld rent because of bad conditions. : ${ word(yesno(retaliation.withheld_rent)) }
+  - Edit: retaliation.badconditions_to_landlord
+    button: |
+      I reported bad conditions in writing to the landlord. : ${ word(yesno(retaliation.badconditions_to_landlord)) }
+  - Edit: retaliation.badconditions_to_agency
+    button: |
+      I reported bad conditions orally or in writing to a public agency. : ${ word(yesno(retaliation.badconditions_to_agency)) }
+  - Edit: retaliation.tenant_union
+    button: |
+      I am a member of a tenants union or participated in tenant organizing meetings. : ${ word(yesno(retaliation.tenant_union)) }
+  - Edit: retaliation.brought_claim
+    button: |
+      I sued my landlord or brought a claim against my landlord. : ${ word(yesno(retaliation.brought_claim)) }
+  - Edit: retaliation.protection_or_prevention_order
+    button: |
+      I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E). : ${ word(yesno(retaliation.protection_or_prevention_order)) }
+  - Edit: retaliation.domestic_violence
+    button: |
+      I or someone in my household reported an incident of domestic violance, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order. : ${ word(yesno(retaliation.domestic_violence)) }
+  - Edit: retaliation.survivor_rights
+    button: |
+      I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons. : ${ word(yesno(retaliation.survivor_rights)) }
+  - Edit: show_retaliation_other
+    button: |
+      Other : ${ word(yesno(show_retaliation_other)) }
+  - Edit: retaliation.other
+    button: |
+      Other : ${ retaliation.other }
+  - Edit: retaliation.within_6_months
+    button: |
+      One or more of the above happened in the last 6 months. : ${ retaliation.within_6_months }
+  - Edit: tenant.is_discriminated
+    button: |
+      Protected classes and discrimination : ${ word(yesno(tenant.is_discriminated)) }
+  - Edit: discrimination.protected_classes
+    button: |
+      Select the protected class that you believe is the reason for your landlord's discrimination. Select if the class applies to you or someone else in your family. : ${ discrimination.protected_classes }
+  - Edit: discrimination.show_other
+    button: |
+      Other : ${ word(yesno(discrimination.show_other)) }
+  - Edit: discrimination.other
+    button: |
+      Other: : ${ discrimination.other }
+  - Edit: disability.request_reasonable_accommodation
+    button: |
+      Discrimination on basis of disability
+       : ${ word(yesno(disability.request_reasonable_accommodation)) }
+  - Edit: discrimination.sexual_harassment.pressured_sexual_favors
+    button: |
+      My landlord asked/pressured me or someone I live with for sexual favors. : ${ word(yesno(discrimination.sexual_harassment.pressured_sexual_favors)) }
+  - Edit: discrimination.sexual_harassment.tenancy_terms_changed
+    button: |
+      My landlord changed the terms of my tenancy because of my response to harassment. : ${ word(yesno(discrimination.sexual_harassment.tenancy_terms_changed)) }
+  - Edit: discrimination.sexual_harassment.unsafe_or_uncomfortable
+    button: |
+      The harassment made me feel unsafe or uncomfortable. : ${ word(yesno(discrimination.sexual_harassment.unsafe_or_uncomfortable)) }
+  - Edit: consumer_protection.late_fees
+    button: |
+      I was charged illegal late fees (unreasonably high, or before rent was 30 days late). : ${ word(yesno(consumer_protection.late_fees)) }
+  - Edit: consumer_protection.nonagreed_rent
+    button: |
+      I was charged an amount of rent that I never agreed to pay. : ${ word(yesno(consumer_protection.nonagreed_rent)) }
+  - Edit: consumer_protection.unlawful_court_fees
+    button: |
+      I was charged court fees or constable fees unlawfully. : ${ word(yesno(consumer_protection.unlawful_court_fees)) }
+  - Edit: consumer_protection.unlawful_lease_terms
+    button: |
+      There are unlawful terms in my lease. : ${ word(yesno(consumer_protection.unlawful_lease_terms)) }
+  - Edit: consumer_protection.other
+    button: |
+      Other : ${ word(yesno(consumer_protection.other)) }
+  - Edit: consumer_protection.other_reason
+    button: |
+      Other violation : ${ consumer_protection.other_reason }
+  - Edit: security_deposit.amount
+    button: |
+      Amount of security deposit : ${ security_deposit.amount }
+  - Edit: security_deposit.violations
+    button: |
+      Violations : ${ security_deposit.violations }
+  - Edit: last_months_rent.amount
+    button: |
+      Amount of your prepaid last month's rent : ${ last_months_rent.amount }
+  - Edit: last_months_rent.to_whom
+    button: |
+      Was the payment to your current or former landlord? : ${ last_months_rent.to_whom }
+  - Edit: last_months_rent.over_a_year
+    button: |
+      Have you lived in the apartment for longer than 1 year? : ${ last_months_rent.over_a_year }
+  - Edit: last_months_rent.paid_interest
+    button: |
+      Did your landlord pay you interest each year for your prepaid rent? : ${ last_months_rent.paid_interest }
+  - Edit: representation_type
+    button: |
+      Representation type : ${ representation_type }
+  - Edit: tenants_attorney.name.first
+    button: |
+      Tenant's attorney's name: ${ tenants_attorney }  
+      BBO Number : ${ tenants_attorney.bbo }  
+      Email : ${ tenants_attorney.email }  
+      Phone number : ${ tenants_attorney.phone_number }  
+      Fax number : ${ tenants_attorney.fax_number }  
+      Office name (type or select from list) : ${ tenants_attorney.office }
+
+      Address: ${ tenants_attorney.address.on_one_line() }
+---
+table: additional_tenants.review_table
+rows: additional_tenants
+columns:
+  - Name: |
+      row_item
+  - Address: |
+      row_item.address.on_one_line()  
+edit:
+  - name.first
+---
+continue button field: additional_tenants.revisit
+question: |
+  Additional tenants
+subquestion: |
+  ${ additional_tenants.review_table }
+  ${ additional_tenants.add_action() }
+  
     
     
