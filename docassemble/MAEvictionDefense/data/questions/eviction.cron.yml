@@ -1,9 +1,9 @@
 ---
 code: |
-  if user_email and task_not_yet_performed("interview complete email"):
+  if email_after_completion and user_email and task_not_yet_performed("interview complete email"):
       # background_action('background_email')
       send_email(task="interview complete email",to=user_email, template=interview_complete_email, attachments=[zip_file(downloads_docx, downloads_pdf, filename="Eviction_Forms.zip"),downloads_concat])
-  if user_cell and task_not_yet_performed('interview complete text'):
+  if email_after_completion and user_cell and task_not_yet_performed('interview complete text'):
       send_sms(to=phone_number_in_e164(user_cell), template=interview_complete_text, task='interview complete text')
   send_user_email = True
 ---

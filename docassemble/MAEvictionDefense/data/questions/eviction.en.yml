@@ -378,6 +378,9 @@ subquestion: |
   **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
   % endif  
 fields:
+  - Email or text me a copy of what I create today: email_after_completion
+    datatype: yesno
+    default: True
   - Remind me about deadlines: remind_user
     datatype: yesno
     default: True
