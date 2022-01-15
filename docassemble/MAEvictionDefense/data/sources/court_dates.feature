@@ -79,12 +79,13 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 300
+  And the max seconds for each step is 420
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
     | service_date | 01/01/2024 |  |
     | ask_intake_questions | skip |  |
+  And I wait 1 second
   Then I download "Eviction_Forms.zip"
 
 @slow @3 @cdc
@@ -143,12 +144,13 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 300
+  And the max seconds for each step is 420
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
     | service_date | 01/01/2024 |  |
     | ask_intake_questions | skip |  |
+  And I wait 1 second
   Then I download "Eviction_Forms.zip"
 
 @slow @4 @fault
@@ -206,12 +208,13 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 300
+  And the max seconds for each step is 420
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
     | service_date | 01/01/2024 |  |
     | ask_intake_questions | skip |  |
+  And I wait 1 second
   Then I download "Eviction_Forms.zip"
 
 @slow @5 @publichousing
@@ -275,12 +278,13 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 300
+  And the max seconds for each step is 420
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
     | service_date | 01/01/2024 |  |
     | ask_intake_questions | skip |  |
+  And I wait 1 second
   Then I download "Eviction_Forms.zip"
 
 @slow @6 @raft
@@ -341,10 +345,11 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 300
+  And the max seconds for each step is 420
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
     | service_date | 01/01/2024 |  |
     | ask_intake_questions | skip |  |
+  And I wait 1 second
   Then I download "Eviction_Forms.zip"
