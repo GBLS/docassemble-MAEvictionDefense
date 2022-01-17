@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2021-01-17 Updated with December 2021 discovery language; removed reference to CDC moratorium
 * 2021-03-30 Updated CDC moratorium date
 * 2021-03-24 Style tweaks, add more comprehensive edit button
 * 2021-02-23 Add 257 form defense; remove references to dt_send_answers (From Community Lawyer)

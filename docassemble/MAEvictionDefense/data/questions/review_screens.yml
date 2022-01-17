@@ -483,9 +483,6 @@ review:
   - Edit: covid_cares_mortgage_in_forbearance
     button: |
       The mortgage is in forbearance : ${ word(yesno(covid_cares_mortgage_in_forbearance)) }
-  - Edit: covid_cdc_moratorium
-    button: |
-      I sent my landlord a declaration under the [CDC eviction moratorium](https://www.masslegalhelp.org/covid-19/housing) : ${ covid_cdc_moratorium }
   - Edit: delay_in_raft
     button: |
       I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }

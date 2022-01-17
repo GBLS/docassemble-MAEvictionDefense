@@ -45,15 +45,6 @@ fields:
   - The mortgage is in forbearance: covid_cares_mortgage_in_forbearance
     datatype: yesno
     show if: covid_cares_has_federal_mortgage
-  - I sent my landlord a declaration under the [CDC eviction moratorium](https://www.masslegalhelp.org/covid-19/housing): covid_cdc_moratorium
-    datatype: yesnoradio
-  - note: |
-      If you have not yet completed the CDC declaration, you can do it for
-      free online [here](https://apps.suffolklitlab.org/start/cdc_moratorium).
-      It takes about 5 minutes.
-    show if: 
-      variable: covid_cdc_moratorium
-      is: False
   - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
     datatype: yesno
   - My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form: initial_defense.no_257_notice
