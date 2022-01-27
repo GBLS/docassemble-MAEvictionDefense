@@ -320,7 +320,7 @@ sets: initial_defense.no_standing
 code: |
   if landlord.is_new and new_landlord_reason == 'My landlord died':
     initial_defense.no_standing = True
-  elif landlord.is_new and building_sold_after_ntq:
+  elif landlord.is_new and new_landlord_reason =="My landlord sold the building" and building_sold_after_ntq:
     initial_defense.no_standing = True
   else:
     initial_defense.no_standing = False
