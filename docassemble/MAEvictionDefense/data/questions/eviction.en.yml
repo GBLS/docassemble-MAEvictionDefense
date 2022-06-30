@@ -368,6 +368,8 @@ subquestion: |
   We can use the contact information you just listed, **${tenant.email}** and
   **(${ phone_number_part(tenant.phone_number,0)})-${ phone_number_part(tenant.phone_number,1)}-${ phone_number_part(tenant.phone_number,2)}**.
   % endif  
+  
+  The reminder will use the best information that we have today.
 fields:
   - Email or text me a copy of what I create today: email_after_completion
     datatype: yesno
@@ -2401,12 +2403,13 @@ content: |
   Hi ${ tenant.name.first }! This is MADE (Massachusetts Defense for Eviction) from Greater Boston
   Legal Services.
   
-  Don't forget to be at ${court} on ${court_date} (unless the court told you about
-  a different date!
-
-  **Due to the Covid emergency, you should call the court to confirm your
-  court date.**
+  Your court date in ${landlord} v. ${tenant} is ${format_date(court_date)}!
   
+  Check the court event notice you got from the court to find out:
+  
+  - if the hearing is in person or virtual
+  - the time and place to attend court
+    
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}. 
   If you didn't get a notice from the court, you may want to call to find out
@@ -2418,17 +2421,18 @@ content: |
 ---
 template: attend_court_text
 content: |
-  Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)} 
-  at ${court} at 9 AM. Due to the Covid-19 emergency, call the court to confirm
-  your hearing date.
+  Reminder: your court date in ${landlord} v. ${tenant} is ${format_date(court_date)}!
 
   % if court_date_is_holiday:
   ${court_date} is ${court_date_holiday} so your date may have been
   postponed. If the court didn't tell you the new date, call the court to find out.
   % endif
   
+  Check the court event notice you got from the court to find out if the hearing is in 
+  person or virtual and the time and place to attend court.
+  
   Get ready here: https://gbls.org/tactics/12
-   - MADE from GBLS.  
+   - MADE from GBLS
 ---
 template: sharing_email_template
 subject: |
@@ -2452,9 +2456,14 @@ content: |
   
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
+  
+  Once you have a case ID number (docket number), you can also sign up
+  to [get notices directly from the court](https://www.mass.gov/forms/ereminder-court-date-notification-system).
 
-  Because of the Covid-19 emergency, your court date may be a different day.
-  Call the court to be sure.
+  You will likely get a "notice of court event" from the court that tells you:
+  
+  - whether to appear in person or virtually
+  - the time of your hearing
 
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}.
@@ -2470,7 +2479,7 @@ content: |
 template: interview_complete_text
 content: |
   Congrats on finishing the interview! Don't forget:
-  File your paperwork and go to court on ${ format_date(court_date) }.
+  File your paperwork and attend court on ${ format_date(court_date) }.
   % if court_date_is_holiday:
   Because ${court_date} is a holiday, ${court_date_holiday},
   ask the court what date to appear.

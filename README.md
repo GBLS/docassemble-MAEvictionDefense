@@ -6,6 +6,7 @@ Request for Discovery, and accompanying forms and motions.
 
 ## Changelog
 
+* 2022-06-30 Updated SMS reminder of court date (clarify virtual hearing possibility)
 * 2021-01-18 Updated with December 2021 Answer revisions
 * 2021-01-17 Updated with December 2021 discovery language; removed reference to CDC moratorium
 * 2021-03-30 Updated CDC moratorium date
