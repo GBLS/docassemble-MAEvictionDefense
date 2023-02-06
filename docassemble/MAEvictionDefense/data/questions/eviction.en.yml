@@ -1425,12 +1425,12 @@ fields:
     datatype: yesno
     show if:
       code: |
-        notice_type == 'fourteen_day'
+        eviction_reason == 'nonpayment'
   - I offered to pay the full amount of money I owed.: attempted_offered_cure
     datatype: yesno
     show if:
       code: |
-        notice_type == 'fourteen_day'
+        eviction_reason == 'nonpayment'
   - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
 # section: Claims and Defenses  
