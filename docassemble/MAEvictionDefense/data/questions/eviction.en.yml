@@ -1505,7 +1505,7 @@ fields:
     datatype: checkboxes
     choices:
       - I paid rent after ${format_date(date_received_ntq) if (defined('date_received_ntq') and date_received_ntq != '') else 'I received the notice to quit'}: rent
-        default: ${attempted_cure}
+        default: ${attempted_cure if eviction_reason == 'nonpayment' else False}
       - I signed a new lease (do not include annual recertification of income paperwork if you live in subsidized housing).: lease
   - Does the notice to quit say "rent will be accepted for use and occupancy only" or similar language?: ntq_contains_reservation
     datatype: yesnoradio

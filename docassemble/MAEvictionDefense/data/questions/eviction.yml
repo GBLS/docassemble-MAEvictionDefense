@@ -68,7 +68,6 @@ features:
   navigation: True
   default icons: material icons
   javascript:
-    - fix_back_button.js
     - al_audio.js
   css:
     - al_audio.css    
