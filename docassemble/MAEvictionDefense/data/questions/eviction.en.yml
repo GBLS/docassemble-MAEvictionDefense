@@ -99,9 +99,8 @@ images:
   house-drawing: house.svg
 ---
 id: intro screen
-decoration: house-user
 question: |
-  MADE: Massachusetts Defense for Eviction
+  <img src="${ large_logo.url_for() }" alt="MADE: Massachusetts Defense for Eviction" style="width: 100%;"/>
 subquestion: |
   ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current='en')}
 

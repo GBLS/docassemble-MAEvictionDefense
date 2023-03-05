@@ -27,6 +27,11 @@ metadata:
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
 ---
+objects:
+  - logo: DAStaticFile.using(filename="MADElogoREV-horiz.svg")
+  - short_logo: DAStaticFile.using(filename="MADElogoMark-REV.svg")
+  - large_logo: DAStaticFile.using(filename="MADElogo-horizontal.svg")
+---
 default screen parts:
   post: |
     % if not user_logged_in():
@@ -48,6 +53,11 @@ default screen parts:
     % endif
   continue button label: |
     ${word("Next")}    
+  logo: |
+    <img src="${ logo.url_for() }" alt="Home - Massachusetts Defense for Eviction" style="height: 40px;"/><div class="title"></div>
+  short logo: |
+    <img src="${ short_logo.url_for() }" alt="Home - Massachusetts Defense for Eviction" style="height: 40px;"/><div class="title"></div>
+      
 # post: |
 #   <div style="text-align: right; padding: 2em">
 #   Feedback, suggestions, or comments? 
@@ -66,12 +76,14 @@ features:
   question back button: True
   progress bar: True
   navigation: True
+  small screen navigation: dropdown
   default icons: material icons
   javascript:
     - fix_back_button.js
     - al_audio.js
   css:
-    - al_audio.css    
+    - al_audio.css   
+  bootstrap theme: made.bootstrap.css 
 ---
 modules:
   - docassemble.base.util

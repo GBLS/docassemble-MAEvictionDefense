@@ -1,0 +1,22 @@
+$white: #ffffff;
+$blue: #231155;
+
+.bg-dark {
+  background-color: #be404d !important;
+}
+
+$enable-dark-mode: false;
+
+$theme-colors: (
+    "light":      #d0f2fc,
+    "dark":       #231155,
+    "primary":    #be404d,
+    "secondary":  #fbb040,
+    "info":       #64a89f,
+    "success":    #6db91b,
+    "warning":    #fec785,
+    "danger":     #fa0c6b,
+);
+
+@import "bootstrap";
+// need to still manually edit bg-dark
