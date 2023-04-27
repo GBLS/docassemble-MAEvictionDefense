@@ -3,7 +3,7 @@ code: |
   case_title = landlord.name.full() + ' v. ' + tenant.name.full()
 ---
 code: |
-  attempted_cure = eviction_reason == 'nonpayment' and (attempted_full_cure or attempted_offered_cure)
+  attempted_cure = attempted_full_cure or attempted_offered_cure
 ---
 objects:
   - tenants_attorney: Individual
