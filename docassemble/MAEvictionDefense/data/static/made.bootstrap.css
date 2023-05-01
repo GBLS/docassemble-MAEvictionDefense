@@ -3495,7 +3495,7 @@ textarea.form-control-lg {
   justify-content: flex-start;
 }
 .btn-toolbar .input-group {
-  width: auto;
+  width: auto;  ````````````
 }
 
 .btn-group {

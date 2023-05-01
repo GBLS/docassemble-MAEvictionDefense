@@ -10,6 +10,10 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
+ 
+
+  footer: |
+          <a href="#"> Massachusetts Defense for Eviction name </a>
   error help: |
     # We ran into a bug.
     We are very sorry for the inconvenience. 
@@ -43,6 +47,7 @@ default screen parts:
     ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
   right: |
     ${ action_button_html(url_action('review_everything'), label="Edit answers", color="info", icon="pencil-alt") }  
+
   pre: |
     % if get_config('debug'):
     `Page id: ${ user_info().question_id }`
@@ -56,8 +61,7 @@ default screen parts:
   logo: |
     <img src="${ logo.url_for() }" alt="Home - Massachusetts Defense for Eviction" style="height: 40px;"/><div class="title"></div>
   short logo: |
-    <img src="${ short_logo.url_for() }" alt="Home - Massachusetts Defense for Eviction" style="height: 40px;"/><div class="title"></div>
-      
+    <img src="${ short_logo.url_for() }" alt="Home - Massachusetts Defense for Eviction"         style="height: 40px;"/><div class="title"></div>
 # post: |
 #   <div style="text-align: right; padding: 2em">
 #   Feedback, suggestions, or comments? 

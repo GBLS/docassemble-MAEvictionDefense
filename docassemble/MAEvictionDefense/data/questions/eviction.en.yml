@@ -15,6 +15,7 @@ sections:
   - review_discovery: Discovery
   - review_signature: Signature
   - conclusion: Conclusion
+  
 ---
 language: es
 sections:
