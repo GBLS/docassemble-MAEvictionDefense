@@ -39,7 +39,7 @@ default screen parts:
     [:comment-dots: Feedback](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}
   pre: |
     % if get_config('debug'):
-    `Page id: ${ user_info().question_id }`
+    `id: ${ user_info().question_id }`
     % endif
   continue button label: |
     ${word("Next")}    
