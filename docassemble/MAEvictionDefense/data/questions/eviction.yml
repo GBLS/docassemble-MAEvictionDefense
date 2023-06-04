@@ -27,32 +27,30 @@ metadata:
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
 ---
+objects:
+  - logo: DAStaticFile.using(filename="MADElogoREV-horiz.svg")
+  - short_logo: DAStaticFile.using(filename="MADElogoMark-REV.svg")
+  - large_logo: DAStaticFile.using(filename="MADElogo-horizontal.svg")
+---
 default screen parts:
-  post: |
-    % if not user_logged_in():
-    [:sign-in-alt: Sign-in](${url_of('login', next=interview_url())}) or [register](${url_of('register', next=interview_url())}) to save your progress.
-    % endif
-
-    Feedback, suggestions, or comments? [Complete this survey](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
-
-    ${action_button_html(revisit_sharing_url, icon="share", color="success", label="Share")}
-  right: |
-    ${ action_button_html(url_action('review_everything'), label="Edit answers", color="info", icon="pencil-alt") }  
+  footer: |
+    [:share-alt-square: Share](${ revisit_sharing_url })
+    [:info-circle: About](${ url_action('about_this_interview') })
+    [:comment-dots: Feedback](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}
   pre: |
     % if get_config('debug'):
     `Page id: ${ user_info().question_id }`
     % endif
-    
-    % if defined('acknowledged_information_use'):
-    ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
-    % endif
   continue button label: |
     ${word("Next")}    
-# post: |
-#   <div style="text-align: right; padding: 2em">
-#   Feedback, suggestions, or comments? 
-#   <a href="mailto:made@gbls.org">contact MADE@GBLS.org</a>
-#   </div>
+  logo: |
+    <img src="${ logo.url_for() }" alt="Home - Massachusetts Defense for Eviction" style="height: 40px;"/><div class="title"></div>
+  short logo: |
+    <img src="${ short_logo.url_for() }" alt="Home - Massachusetts Defense for Eviction"         style="height: 40px;"/><div class="title"></div>
+  navigation bar html: |
+    % if defined('acknowledged_information_use'):
+    ${ get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language) }
+    % endif
 ---
 translations:
   - eviction_es.xlsx
@@ -66,11 +64,16 @@ features:
   question back button: True
   progress bar: True
   navigation: True
+  small screen navigation: dropdown
   default icons: material icons
   javascript:
+    - fix_back_button.js
     - al_audio.js
+    - favicon.js
   css:
-    - al_audio.css    
+    - al_audio.css
+    - custom.css
+  bootstrap theme: made.bootstrap.css 
 ---
 modules:
   - docassemble.base.util
@@ -185,9 +188,8 @@ code: |
   multi_user = True
   allow_cron = True
   speak_text = True
-  menu_items = [action_menu_item('Review Answers', 'road_map')]
+  menu_items = [action_menu_item('Edit answers', 'review_everything')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
-  menu_items.append(action_menu_item('Language','language'))
   set_live_help_status(availability='available', mode='help',partner_roles='advocate')
   
   started_on_phone # check to see what the starting device is

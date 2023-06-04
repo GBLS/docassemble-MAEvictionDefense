@@ -38,7 +38,7 @@ code: |
   landlord.organization_type
   landlord.has_attorney
 
-  set_parts(subtitle=case_title)
+  set_title(subtitle=case_title)
 
   nav.set_section('review_about_court')
   court

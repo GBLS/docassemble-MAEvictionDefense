@@ -2,3 +2,44 @@
 .daaudiovideo-control.al_custom_media_controls ~ form .da-page-header {
   margin: 20px 0 20px;
 }
+
+.play{
+  border-color: black;
+  border-style: solid;
+  background: white;
+  color: black
+}
+
+.pause{
+  border-color: black;
+  border-style: solid;
+  background: white;
+  color: black;
+
+}
+
+.restart{
+  border-color: black;
+  border-style: solid;
+  background: white;
+  color: black;
+
+}
+
+.stop{
+  border-color: black;
+  border-style: solid;
+  background: white;
+  color: black;
+
+}
+
+.nav-link.active {
+ background: #ffc107 !important;
+}
+button.danonsubmit{
+   background: #ffc107 !important;
+}
+.dafooter{
+ background-color: #be404d !important;
+}

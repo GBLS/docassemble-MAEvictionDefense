@@ -6,6 +6,7 @@ from distutils.util import convert_path
 
 standard_exclude = ('*.pyc', '*~', '.*', '*.bak', '*.swp*')
 standard_exclude_directories = ('.*', 'CVS', '_darcs', './build', './dist', 'EGG-INFO', '*.egg-info')
+
 def find_package_data(where='.', package='', exclude=standard_exclude, exclude_directories=standard_exclude_directories):
     out = {}
     stack = [(convert_path(where), '', package)]
@@ -53,7 +54,7 @@ setup(name='docassemble.MAEvictionDefense',
       url='https://www.gbls.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.MACourts>=0.0.58.2', 'docassemble.income>=0.0.36', 'holidays>=0.14.2', 'nameparser>=1.1.1'],
+      install_requires=['docassemble.MACourts>=0.59.1', 'docassemble.income>=0.0.36', 'holidays>=0.21.13', 'nameparser>=1.1.2'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/MAEvictionDefense/', package='docassemble.MAEvictionDefense'),
      )
