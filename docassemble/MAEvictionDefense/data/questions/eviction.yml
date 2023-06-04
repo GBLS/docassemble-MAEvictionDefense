@@ -10,10 +10,6 @@ metadata:
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
- 
-
-  footer: |
-          <a href="#"> Massachusetts Defense for Eviction name </a>
   error help: |
     # We ran into a bug.
     We are very sorry for the inconvenience. 
