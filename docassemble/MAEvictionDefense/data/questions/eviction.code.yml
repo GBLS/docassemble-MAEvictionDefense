@@ -12,6 +12,9 @@ modules:
   - .connect_gsheets_data
 ---
 code: |
+  poverty_multiplier = 2.0
+---
+code: |
   try:
     attorneys = read_sheet("GBLS Eviction Defense System", "Attorneys")
   except:
@@ -423,10 +426,7 @@ code: |
 ---
 reconsider: True
 code: |
-  household_income_limit = (poverty_base + ((household_size) + 1 * poverty_increment)) * poverty_multiplier
-
-  # We want a soft cutoff--add 1% fudge factor
-  household_income_qualifies = int((household_income_limit * 1.01)/12) >=  int(household_monthly_income)
+  household_income_qualifies = poverty_scale_income_qualifies(household_monthly_income, household_size=household_size +1, multiplier=poverty_multiplier)
 ---
 code: |
   household_qualifies = tenant.is_crime_victim or tenant.is_over60 or household_income_qualifies
@@ -495,7 +495,7 @@ code: |
   created_online_intake = True
 ---
 code: |
-  # Set an intial vaue for running an intake, in case user 
+  # Set an initial value for running an intake, in case user 
   # was sent link to resume intake later, after completing the interview
   time_to_do_intake = False
 ---

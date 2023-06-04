@@ -475,61 +475,34 @@ review:
 ---
 event: review_everything
 question: |
-  Review everything
+  Edit your answers
+subquestion: |
+  Below is a list of all of your answers so far in this interview.
+
+  Click the "edit" button to change your response.
 review:
-  - Edit: covid_cares_has_federal_mortgage
-    button: |
-      My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act : ${ word(yesno(covid_cares_has_federal_mortgage)) }
-  - Edit: covid_cares_mortgage_in_forbearance
-    button: |
-      The mortgage is in forbearance : ${ word(yesno(covid_cares_mortgage_in_forbearance)) }
-  - Edit: delay_in_raft
-    button: |
-      I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }
-  - Edit: initial_defense.no_257_notice
-    button: |
-      My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form : ${ word(yesno(initial_defense.no_257_notice)) }
-  - Edit: ls_case_id
-    button: |
-      Case number : ${ ls_case_id }
-  - Edit: needs_time_because
-    button: |
-      Explain in your own words why you need more time to move. : ${ needs_time_because }
+  - note: |
+      <h2 class="h4">About you</h2>
   - Edit: person_answering
     button: |
       Who is completing this interview?
        : ${ person_answering }
-  - Edit: case.status
+  - Edit: representation_type
     button: |
-      Your eviction case status : ${ case.status }
-  - Edit: claim_jurytrial
+      Representation type : ${ representation_type }
+  - Edit: tenants_attorney.name.first
     button: |
-      Your right to a jury trial: ${ claim_jurytrial }
-  - Edit: remind_user
-    button: |
-      Remind me about deadlines : ${ word(yesno(remind_user)) }
-  - Edit: survey_user
-    button: |
-      Send me a survey after my first court date. : ${ word(yesno(survey_user)) }
-  - Edit: edit_contact_info
-    button: |
-      Edit my contact information : ${ word(yesno(edit_contact_info)) }
-      % if edit_contact_info:
-      Mobile phone number for text messaging : ${ user_cell_edited }
-      Email address : ${ user_email_edited }
-      % endif
-  - Edit: x.signature
-    button: |
-      Your signature : ${ x.signature }
-  - Edit: method_of_service
-    button: |
-      Delivery method : ${ method_of_service }
-  - Edit: service_date
-    button: |
-      Date of delivery : ${ service_date }
+      Tenant's attorney's name: ${ tenants_attorney }  
+      BBO Number : ${ tenants_attorney.bbo }  
+      Email : ${ tenants_attorney.email }  
+      Phone number : ${ tenants_attorney.phone_number }  
+      Fax number : ${ tenants_attorney.fax_number }  
+      Office name (type or select from list) : ${ tenants_attorney.office }
+
+      Address: ${ tenants_attorney.address.on_one_line() }
   - Edit: tenant.name.first
     button: |
-      Your name : ${ tenant }
+      Tenant's name : ${ tenant }
   - Edit: additional_tenants.there_are_any
     button: |
       Additional tenants
@@ -555,6 +528,19 @@ review:
   - Edit: tenant.address.address
     button: |
       Your address : ${ tenant.address.on_one_line() }
+  - Edit: remind_user
+    button: |
+      Remind me about deadlines : ${ word(yesno(remind_user)) }
+  - Edit: survey_user
+    button: |
+      Send me a survey after my first court date. : ${ word(yesno(survey_user)) }
+  - Edit: edit_contact_info
+    button: |
+      Contact information for reminders: 
+      % if edit_contact_info:
+      Mobile phone number for text messaging : ${ user_cell_edited }
+      Email address : ${ user_email_edited }
+      % endif
   - Edit: tenant.phone_number
     button: |
       Phone number : ${ tenant.phone_number }
@@ -567,6 +553,65 @@ review:
   - Edit: premises_alternate_address
     button: |
       What address are you being evicted from? (all on one line) : ${ premises_alternate_address }
+
+  - note: |
+      <h2 class="h4 mt-4">About your landlord</h2>
+  - Edit: landlord.name.text
+    button: |
+      Landlord's name (as written on the Summons) : ${ landlord.name.text }
+  - Edit: landlord.organization_type
+    button: |
+      What type of landlord do you have? : ${ landlord.organization_type }
+  - Edit: landlord.is_new
+    button: |
+      My landlord has changed since I first moved in. : ${ word(yesno(landlord.is_new)) }
+  - Edit: landlord.has_attorney
+    button: |
+      My landlord has an attorney. : ${ landlord.has_attorney }
+  - Edit: landlords_attorney.name.text
+    button: |
+      Attorney's name : ${ landlords_attorney.name.text }
+  - Edit: landlords_attorney.address.address
+    button: |
+      Landlord's attorney's address: ${ landlords_attorney.address.on_one_line() }
+  - Edit: landlord.address.address
+    button: |
+      Landlord's address: 
+      ${ landlord.address.on_one_line() }
+
+  - note: |
+      <h2 class="h4 mt-4">About your court case</h2>
+  - Edit: case.status
+    button: |
+      Your eviction case status : ${ case.status }
+  - Edit: claim_jurytrial
+    button: |
+      Your right to a jury trial: ${ claim_jurytrial }      
+  - Edit: case.covid_hearing_date_assigned
+    button: |
+      Did you get a letter from the court that tells you what **day and time** to go to court yet? : ${ case.covid_hearing_date_assigned }
+  - Edit: case.covid_first_event
+    button: |
+      When do you need to go to court? : ${ case.covid_first_event }
+  - Edit: court
+    button: |
+      Court name : ${ court }
+  - Edit: transfer_to_housing_court
+    button: |
+      Transfer to Housing Court
+       : ${ transfer_to_housing_court }
+  - Edit: request_right_to_intervene
+    button: |
+      Would you like to ask permission to participate in this case? : ${ request_right_to_intervene }
+  - Edit: intervention_reason
+    button: |
+      Briefly explain why you should be allowed to participate: : ${ intervention_reason }
+  - Edit: intervention_harm
+    button: |
+      Briefly explain why you would be harmed if you are not allowed to participate: : ${ intervention_harm }
+
+  - note: |
+      <h2 class="h4 mt-4">About your tenancy</h2>
   - Edit: facts.tenant_movein
     button: |
       When did you move in? (best date you know) : ${ facts.tenant_movein }
@@ -621,89 +666,18 @@ review:
   - Edit: is_pfc_owner
     button: |
       I am or I was the owner before the foreclosure. : ${ word(yesno(is_pfc_owner)) }
-  - Edit: bqe.locked_out
-    button: |
-      ${landlord.name} has tried to lock me out. : ${ word(yesno(bqe.locked_out)) }
-  - Edit: bqe.entered_without_permission
-    button: |
-      ${landlord.name} or an employee has entered my home without permission or without advance notice. : ${ word(yesno(bqe.entered_without_permission)) }
-  - Edit: claims.harassment
-    button: |
-      ${landlord.name} or their employee has sexually harassed me. : ${ word(yesno(claims.harassment)) }
-  - Edit: claims.utilities
-    button: |
-      I pay for one or more utilities. : ${ word(yesno(claims.utilities)) }
-  - Edit: is_condo_conversion
-    button: |
-      ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
-  - Edit: paid_deposit
-    button: |
-      I paid a security deposit. : ${ word(yesno(paid_deposit)) }
-  - Edit: paid_lmr
-    button: |
-      I pre-paid last month's rent when I first moved in. : ${ word(yesno(paid_lmr)) }
-  - Edit: court
-    button: |
-      Court name : ${ court }
-  - Edit: transfer_to_housing_court
-    button: |
-      Transfer to Housing Court
-       : ${ transfer_to_housing_court }
-  - Edit: request_right_to_intervene
-    button: |
-      Would you like to ask permission to participate in this case? : ${ request_right_to_intervene }
-  - Edit: intervention_reason
-    button: |
-      Briefly explain why you should be allowed to participate: : ${ intervention_reason }
-  - Edit: intervention_harm
-    button: |
-      Briefly explain why you would be harmed if you are not allowed to participate: : ${ intervention_harm }
-  - Edit: landlord.address.address
-    button: |
-      Landlord's address: 
-      ${ landlord.address.on_one_line() }
-  - Edit: case.covid_hearing_date_assigned
-    button: |
-      Did you get a letter from the court that tells you what **day and time** to go to court yet? : ${ case.covid_hearing_date_assigned }
-  - Edit: case.covid_first_event
-    button: |
-      When do you need to go to court? : ${ case.covid_first_event }
-  - Edit: fault.did_not_occur
-    button: |
-      I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong) : ${ word(yesno(fault.did_not_occur)) }
-  - Edit: fault.not_violation_of_agreement
-    button: |
-      The ${capitalize(eviction_detailed_reason)} is not a violation of my lease. : ${ word(yesno(fault.not_violation_of_agreement)) }
-  - Edit: fault.no_control_of_guest
-    button: |
-      The ${eviction_detailed_reason} was the fault of a guest that I had no control over. : ${ word(yesno(fault.no_control_of_guest)) }
+
+  - note: |
+      <h2 class="h4 mt-4">Claims and defenses</h2>
   - Edit: eviction_all_reasons
     button: |
       Choose all reasons listed on your Notice to Quit that apply. : ${ eviction_all_reasons }
   - Edit: nofault_basis
     button: |
-      Select all that apply : ${ nofault_basis }
+      Select all that apply : ${ nofault_basis.true_values() }
   - Edit: fault_basis
     button: |
-      Select all that apply : ${ fault_basis }
-  - Edit: landlord.name.text
-    button: |
-      Landlord's name (as written on the Summons) : ${ landlord.name.text }
-  - Edit: landlord.organization_type
-    button: |
-      What type of landlord do you have? : ${ landlord.organization_type }
-  - Edit: landlord.is_new
-    button: |
-      My landlord has changed since I first moved in. : ${ word(yesno(landlord.is_new)) }
-  - Edit: landlord.has_attorney
-    button: |
-      My landlord has an attorney. : ${ landlord.has_attorney }
-  - Edit: landlords_attorney.name.text
-    button: |
-      Attorney's name : ${ landlords_attorney.name.text }
-  - Edit: landlords_attorney.address.address
-    button: |
-      Landlord's attorney's address: ${ landlords_attorney.address.on_one_line() }
+      Select all that apply : ${ fault_basis.true_values() }
   - Edit: dont_owe_rent
     button: |
       I do not owe the amount of money my landlord says I owe. : ${ word(yesno(dont_owe_rent)) }
@@ -722,6 +696,15 @@ review:
   - Edit: other.vendor_payments
     button: |
       My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : ${ word(yesno(other.vendor_payments)) }
+  - Edit: fault.did_not_occur
+    button: |
+      I deny the landlord's allegation of ${eviction_detailed_reason}. (My landlord is wrong) : ${ word(yesno(fault.did_not_occur)) }
+  - Edit: fault.not_violation_of_agreement
+    button: |
+      The ${capitalize(eviction_detailed_reason)} is not a violation of my lease. : ${ word(yesno(fault.not_violation_of_agreement)) }
+  - Edit: fault.no_control_of_guest
+    button: |
+      The ${eviction_detailed_reason} was the fault of a guest that I had no control over. : ${ word(yesno(fault.no_control_of_guest)) }
   - Edit: notice_type
     button: |
       Kind of notice to quit : ${ notice_type }
@@ -1036,7 +1019,7 @@ review:
       Amount of security deposit : ${ security_deposit.amount }
   - Edit: security_deposit.violations
     button: |
-      Violations : ${ security_deposit.violations }
+      Violations : ${ security_deposit.violations.true_values() }
   - Edit: last_months_rent.amount
     button: |
       Amount of your prepaid last month's rent : ${ last_months_rent.amount }
@@ -1049,19 +1032,76 @@ review:
   - Edit: last_months_rent.paid_interest
     button: |
       Did your landlord pay you interest each year for your prepaid rent? : ${ last_months_rent.paid_interest }
-  - Edit: representation_type
+  - Edit: bqe.locked_out
     button: |
-      Representation type : ${ representation_type }
-  - Edit: tenants_attorney.name.first
+      ${landlord.name} has tried to lock me out. : ${ word(yesno(bqe.locked_out)) }
+  - Edit: bqe.entered_without_permission
     button: |
-      Tenant's attorney's name: ${ tenants_attorney }  
-      BBO Number : ${ tenants_attorney.bbo }  
-      Email : ${ tenants_attorney.email }  
-      Phone number : ${ tenants_attorney.phone_number }  
-      Fax number : ${ tenants_attorney.fax_number }  
-      Office name (type or select from list) : ${ tenants_attorney.office }
+      ${landlord.name} or an employee has entered my home without permission or without advance notice. : ${ word(yesno(bqe.entered_without_permission)) }
+  - Edit: claims.harassment
+    button: |
+      ${landlord.name} or their employee has sexually harassed me. : ${ word(yesno(claims.harassment)) }
+  - Edit: claims.utilities
+    button: |
+      I pay for one or more utilities. : ${ word(yesno(claims.utilities)) }
+  - Edit: is_condo_conversion
+    button: |
+      ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
+  - Edit: paid_deposit
+    button: |
+      I paid a security deposit. : ${ word(yesno(paid_deposit)) }
+  - Edit: paid_lmr
+    button: |
+      I pre-paid last month's rent when I first moved in. : ${ word(yesno(paid_lmr)) }
+  - Edit: covid_cares_has_federal_mortgage
+    button: |
+      My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act : ${ word(yesno(covid_cares_has_federal_mortgage)) }
+  - Edit: covid_cares_mortgage_in_forbearance
+    button: |
+      The mortgage is in forbearance : ${ word(yesno(covid_cares_mortgage_in_forbearance)) }
+  - Edit: delay_in_raft
+    button: |
+      I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }
+  - Edit: initial_defense.no_257_notice
+    button: |
+      My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form : ${ word(yesno(initial_defense.no_257_notice)) }
+  - Edit: ls_case_id
+    button: |
+      Case number : ${ ls_case_id }
+  - Edit: needs_time_because
+    button: |
+      Explain in your own words why you need more time to move. : ${ needs_time_because }
+  
+  - note: |
+      <h2 class="h4 mt-4">Discovery</h2>
+  - label: Edit
+    field: tenant_review_discovery
+    button: |
+      You ${ 'wanted' if tenant_review_discovery else 'did not want'} to 
+      customize the discovery.
+  - label: Edit
+    field: interrogatory_questions
+    button: |
+      ${ ints.count_checked() } interrogatories are already selected.
+  - label: Edit
+    field: drq_questions
+    button: |
+      You requested ${ drq.count_checked() } kinds of documents.
 
-      Address: ${ tenants_attorney.address.on_one_line() }
+  - note: |
+      <h2 class="h4 mt-4">Getting the documents served</h2>
+  - Edit: method_of_service
+    button: |
+      Delivery method : ${ method_of_service }
+  - Edit: service_date
+    button: |
+      Date of delivery : ${ service_date }
+
+  - note: |
+      <h2 class="h4 mt-4">Signature</h2>
+  - Edit: x.signature
+    button: |
+      Your signature : ${ x.signature }
 ---
 table: additional_tenants.review_table
 rows: additional_tenants

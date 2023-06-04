@@ -701,7 +701,7 @@ subquestion: |
   <ul style="list-style-type:none">
   <li> <a href="${downloads_concat.url_for()}">:file-pdf: Forms to print and file today</a></li>
   % if not remind_user or didnt_provide_contact_info:
-  <li> <a href="${compel_discovery_with_instructions.pdf.url_for()}">:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due}</a></li>
+  <li> <a href="${compel_discovery_with_instructions.pdf.url_for()}">:file-pdf: Motion to Compel Discovery (save this until after ${date_discovery_due})</a></li>
   % endif
   <li> <a href="${downloads_zip.url_for()}">:file-archive: <b>Optional</b>: Download a copy in Microsoft Word format to edit</a></li>
   </ul>
@@ -2635,7 +2635,7 @@ auto terms:
     
 ---
 comment: |
-  Intake questions
+  ############################# Intake questions ###############################################
 ---
 id: intake out of service area
 question: |
@@ -2711,13 +2711,14 @@ subquestion: |
 
   You can open this link now but don't forget to come back and finish
   the interview.
-help: |
+
+  <h2 class="h4">Why we think you do not qualify</h2>
   You told us that your household size is ${household_size + 1} and your income is about ${currency(household_monthly_income*12)}/year.
 
-  GBLS can accept clients earning up to ${poverty_multiplier * 100}% of the current Federal Poverty Level. We think that is ${currency(household_income_limit)}/year
+  GBLS can accept clients earning up to ${ poverty_multiplier * 100 }% of the current Federal Poverty Level. We think that is ${ currency(poverty_scale_get_income_limit(household_size + 1, multiplier=poverty_multiplier)) }/year
   for your household.
 
-  Based on the ${poverty_level_update} Federal Poverty Guidelines, it looks like your income is too high. Please take a look at
+  Based on the ${ get_poverty_scale_data().get("poverty_level_update_year") } Federal Poverty Guidelines, it looks like your income is too high. Please take a look at
   [GBLS's eligibility guidelines](https://www.gbls.org/get-legal-help/towns-served) and the 
   [Health and Human Services website](https://aspe.hhs.gov/poverty-guidelines) for up-to-date
   information. If this looks wrong or out of date, please email [MADE@gbls.org](mailto:made@gbls.org) so we can fix this.
@@ -2812,6 +2813,7 @@ fields:
       - Other: Other
   - Amount you get: incomes[i].value
     datatype: currency
+    min: 1
     #hide if:
     #  variable: incomes[i].type
     #  is: 'No Income'

@@ -84,6 +84,7 @@ modules:
   - .language
   - .gbls_intake
   - .review
+  - docassemble.PovertyScale.poverty
 ---
 imports:
   - holidays
@@ -165,7 +166,6 @@ include:
 #  - help.yml
   - discovery-logic.yml
   - compel_discovery.yml
-  - federal_poverty_level.yml
 ---
 comment: |
   Transition to MACourt object from Court
@@ -277,7 +277,8 @@ code: |
       sent_take_intake_later_email
     if ask_intake_questions == "ask_now" or (ask_intake_questions == 'reminder' and time_to_do_intake):
       asked_intake_questions
-      created_online_intake
+      if household_qualifies:
+        created_online_intake
   else:
     out_of_service_area
   
