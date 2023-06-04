@@ -24,6 +24,8 @@ code: |
     onlyhasntq
   if case.status == "afj" or case.status == 'late':
     firstdatepassed
+  if case.status in ("need-emergency-repair", "self-help-eviction"):
+    redirect_to_uptocode
   tenant.address.address  
   tenant.name.first
   additional_tenants.there_are_any  
