@@ -21,9 +21,16 @@ def get_tuples(lang_codes):
 def get_language_list(languages, current=''):
   """ given a list of ordered tuples with (Description, language_code), returns
     an Bootstrap-formatted unordered inline list. The current language will not be a link."""
-  list_start = '<ul class="list-inline">'
-  list_start += '<li class="list-inline-item"><b>Language</b>:</li>'
-  list_end = '</ul>'
+  list_start = """<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-light" href="#" id="languageSelector" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fa-solid fa-language"></i>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="languageSelector">
+  """
+  list_end = """
+    </div>
+  </li>
+  """
   for language in languages:
     if language[1] == current:
       list_start += get_language_list_item(language, link=False)
@@ -32,6 +39,29 @@ def get_language_list(languages, current=''):
   return list_start + list_end      
 
 def get_language_list_item(language, link=True):
+  """ Given an ordered tuple, returns a link to the current interview with lang=language code and the link title
+    given in the first part of the tuple."""
+  
+  if link:
+    return f"""<a class="dropdown-item" href="{ url_action('change_language', lang = language[1]) }">{ language[0] }</a>"""
+  else:
+    return f'<span class="dropdown-item-text">{ language[0] }</span>'
+  
+
+def get_language_list_inline(languages, current=''):
+  """ given a list of ordered tuples with (Description, language_code), returns
+    an Bootstrap-formatted unordered inline list. The current language will not be a link."""
+  list_start = '<ul class="list-inline">'
+  list_start += '<li class="list-inline-item"><b>Language</b>:</li>'
+  list_end = '</ul>'
+  for language in languages:
+    if language[1] == current:
+      list_start += get_language_list_item_inline(language, link=False)
+    else:
+      list_start += get_language_list_item_inline(language)
+  return list_start + list_end      
+
+def get_language_list_item_inline(language, link=True):
   """ Given an ordered tuple, returns a link to the current interview with lang=language code and the link title
     given in the first part of the tuple."""
   li_start = '<li class="list-inline-item">'

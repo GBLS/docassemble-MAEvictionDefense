@@ -103,15 +103,15 @@ id: intro screen
 question: |
   <img src="${ large_logo.url_for() }" alt="MADE: Massachusetts Defense for Eviction" style="width: 100%;"/>
 subquestion: |
-  ${get_language_list(get_tuples(['en','es','vi','pt','zh-t','ht']),current='en')}
+  ${get_language_list_inline(get_tuples(['en','es','vi','pt','zh-t','ht']),current='en')}
 
   MADE is a free tool to help tenants defend against an eviction in court.
   When you finish, you need to print and deliver paperwork to
   court and to your landlord or their attorney.
     
   You can click on a {green word} to learn what it means. Click "Help" to learn
-  more about a question. Click "Back" or on one of the section headings to change
-  an earlier answer.
+  more about a question. Use the menu in the top navigation area and select "edit 
+  answers" to change an earlier answer.
   
   Set aside :stopwatch: 25-90 minutes to finish this interview. You can login and save your work
   to return to later. We recommend that before you start you find:
@@ -2501,63 +2501,63 @@ content: |
   
     - MADE from GBLS
 ---
-interview help:
-  heading: |
-    About this interview
-  content: |
-    This interview is meant to help Massachusetts residents respond to an eviction.
+continue button field: about_this_interview
+question: |
+  About this interview
+subquestion: |
+  This interview is meant to help Massachusetts residents respond to an eviction.
 
-    There are 7 forms available in this interview:
+  There are 7 forms available in this interview:
+  
+  1. Answer (your response to the eviction)
+  1. Request for Discovery (your chance to get information to be prepared for court)
+  1. Motion to compel discovery
+  1. Late Answer request
+  1. Transfer to Housing Court (if your case is not in a housing court, you can move it for free)
+  1. Intervene (if you are not named in the eviction, you can ask for permission to defend against the eviction in court)
+  1. Interpreter notice (if you do not speak English, you have the right to an interpreter)
     
-    1. Answer (your response to the eviction)
-    1. Request for Discovery (your chance to get information to be prepared for court)
-    1. Motion to compel discovery
-    1. Late Answer request
-    1. Transfer to Housing Court (if your case is not in a housing court, you can move it for free)
-    1. Intervene (if you are not named in the eviction, you can ask for permission to defend against the eviction in court)
-    1. Interpreter notice (if you do not speak English, you have the right to an interpreter)
-     
-    At the end of this interview, you will have documents that you can file in court. 
-    This interview does _not_ file them for you.
-    You need to 
-    give a copy of the documents to your landlord or your landlord's attorney.
-    
-    ### Documentation
-    You can read more detailed instructions about how to use this interview [here](https://www.gbls.org/MADE/documentation).
-    
-    ### Contributors:
-    This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited
-    by [Massachusetts Law Reform Institute](https://www.mlri.org), with additional assistance and videos
-    funded by Massachusetts Law Reform Institute.
+  At the end of this interview, you will have documents that you can file in court. 
+  This interview does _not_ file them for you.
+  You need to 
+  give a copy of the documents to your landlord or your landlord's attorney.
+  
+  ### Documentation
+  You can read more detailed instructions about how to use this interview [here](https://www.gbls.org/MADE/documentation).
+  
+  ### Contributors:
+  This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited
+  by [Massachusetts Law Reform Institute](https://www.mlri.org), with additional assistance and videos
+  funded by Massachusetts Law Reform Institute.
 
-    1. Quinten Steenhuis, Esq. ([Greater Boston Legal Services](https://www.gbls.org))
-    1. Rina Padua ([Greater Boston Legal Services](https://www.gbls.org) and Harvard University [Phillips Brooks House](http://pbha.org/))
-    1. Caroline Robinson ([Massachusetts Law Reform Institute](http://www.mlri.org))
-    1. Mariah Jennings-Rampsi, Esq. ([Volunteer Lawyer's Project](https://www.vlpnet.org/))
-    
-    ### Feedback, comments, or want to improve this interview?
-    View or [submit issues](https://github.com/nonprofittechy/docassemble-MAEvictionDefense/issues) on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
-    
-    [Take a survey](https://www.surveymonkey.com/r/8T2KZBV).
+  1. Quinten Steenhuis, Esq. ([Greater Boston Legal Services](https://www.gbls.org))
+  1. Rina Padua ([Greater Boston Legal Services](https://www.gbls.org) and Harvard University [Phillips Brooks House](http://pbha.org/))
+  1. Caroline Robinson ([Massachusetts Law Reform Institute](http://www.mlri.org))
+  1. Mariah Jennings-Rampsi, Esq. ([Volunteer Lawyer's Project](https://www.vlpnet.org/))
+  
+  ### Feedback, comments, or want to improve this interview?
+  View or [submit issues](https://github.com/gbls/docassemble-MAEvictionDefense/issues) on [GitHub](https://github.com/gbls/docassemble-MAEvictionDefense).
+  
+  [Take a survey](https://www.surveymonkey.com/r/8T2KZBV).
 
-    Email made@gbls.org
+  Email made@gbls.org
 
-    ### Run into a problem?
-    We are very sorry for the inconvenience. 
-    
-    1. Try reloading the screen (use the refresh button) or click "back" and fill in information
-    that you left blank.
-    2.  You can use the paper forms instead.
-    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
-    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
-    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-    
-    ### Copyright Notice
-    This interview is copyright 2018-2019 Greater Boston Legal Services and open source 
-    contributors. It is released under the MIT open source license and code is available
-    on [GitHub](https://github.com/nonprofittechy/docassemble-MAEvictionDefense).
-    
-    *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
+  ### Run into a problem?
+  We are very sorry for the inconvenience. 
+  
+  1. Try reloading the screen (use the refresh button) or click "back" and fill in information
+  that you left blank.
+  2.  You can use the paper forms instead.
+  Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+  and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+  You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+  
+  ### Copyright Notice
+  This interview is copyright 2018-2023 Greater Boston Legal Services and open source 
+  contributors. It is released under the MIT open source license and code is available
+  on [GitHub](https://github.com/gbls/docassemble-MAEvictionDefense).
+  
+  *Last updated ${format_date(all_variables(special='metadata')['revision_date'])}*
 ---
 auto terms:
   notice to quit: |
