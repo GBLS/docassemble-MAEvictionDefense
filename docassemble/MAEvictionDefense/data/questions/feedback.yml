@@ -22,6 +22,7 @@ data:
   - "masslegalhelp"
   - "GBLSMA"
   - "gbls"
+  - "lemmalegalconsulting"
 ---
 features:
   labels above fields: True   
@@ -256,7 +257,7 @@ buttons:
 ---
 template: bug_report
 subject: |
-  User: Bug report
+  User: Bug report on ${ question_id if question_id else page_title }
 content: |
   &nbsp; | &nbsp;
   -------|------------------------------------
@@ -275,7 +276,7 @@ content: |
 ---
 template: confusing_report
 subject: |
-  User: part of the form was confusing
+  User: confusing language on ${ question_id if question_id else page_title }
 content: |
   &nbsp; | &nbsp;
   -------|------------------------------------
@@ -292,7 +293,7 @@ content: |
 ---
 template: other_feedback_report
 subject: |
-  User: other feedback
+  User: feedback on ${ question_id if question_id else page_title }
 content: | 
   ## How helpful was MADE?
   Choices are "very helpful", "somewhat helpful", "not helpful at all".
