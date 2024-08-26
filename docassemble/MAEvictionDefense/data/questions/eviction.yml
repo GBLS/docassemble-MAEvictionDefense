@@ -1,28 +1,39 @@
 ---
 metadata:
-  interview_identifier: "MADE: Massachusetts Defense for Eviction (Launch)"
   title: |
     MADE: Massachusetts Defense for Eviction
   short title: |
     MADE (Eviction)
   description: |
-    This interview helps you complete a summary process answer and request for discovery.
-  authors:
-    - name: Quinten Steenhuis
-      organization: Greater Boston Legal Services
-  error help: |
-    # We ran into a bug.
-    We are very sorry for the inconvenience. 
-    
-    [Please tell us more about the bug at this link](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
-    
-    1. Try reloading the screen (use the refresh button) and fill in information
-    that you left blank.
-    2.  You can use the paper forms instead.
-    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
-    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
-    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2023-06-04
+    This interview helps you understand important rights that will let you win your eviction case.
+  can_I_use_this_form: |
+    You can use this interview if you are a tenant, an attorney, or an advocate or social worker who is helping a tenant. A helper can send the form to a tenant to sign remotely on their phone as part of the form-filling process.
+  before_you_start: |
+    Before you start, you need to get documents from your case, including:
+    * The Summons and Complaint
+    * The Notice to Quit you got from your landlord
+  maturity: production
+  estimated_completion_minutes: 60
+  estimated_completion_delta: 30
+  languages:
+    - en
+  help_page_url: https://www.gbls.org/MADE
+  help_page_title: Massachusetts Defense for Eviction (Made) Self-Guided Eviction Help
+  LIST_topics: 
+    - HO-00-00-00-00
+  tags: 
+    - HO-02-00-00-00
+  jurisdiction: NAM-US-US+MA
+  original_form: https://www.mass.gov/doc/summary-process-eviction-answer-form-housing-court-0/download
+  original_form_published_on: n/a
+  review_date: 2024-08-01
+  form_titles:
+    - Motion to Stay Eviction
+  form_numbers:
+    - Affidavit of Indigency (3/23)
+  fees:
+    - Filing fee: 0.00
+  update_notes: |
 ---
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
