@@ -5,9 +5,22 @@ metadata:
   short title: |
     MADE (Eviction)
   description: |
-    This interview helps you understand important rights that will let you win your eviction case.
+    If you are getting evicted in Massachusetts, you can use MADE to defend against your eviction case. It will help you make an 
+    Answer form and other forms you may need to file in court. MADE will also help you gather information 
+    to help you defend your case.
+
+    There are also special defenses in MADE for homeowners after a foreclosure.
+
+    Most tenants who use MADE will get an extension of 2 weeks in their court hearing date in order to allow
+    them to get more information to defend their case.
   can_I_use_this_form: |
-    You can use this interview if you are a tenant, an attorney, or an advocate or social worker who is helping a tenant. A helper can send the form to a tenant to sign remotely on their phone as part of the form-filling process.
+    If your eviction case has been filed in court, you can use this interview to defend against the case, even if
+    you missed the first deadline to answer.
+
+    You need to wait to use this interview until you get a Summons and Complaint or you learn
+    another way that the case has been filed in court.
+
+    This tool is designed to be used by tenants, attorneys, and other helpers.
   before_you_start: |
     Before you start, you need to get documents from your case, including:
     * The Summons and Complaint
@@ -20,20 +33,25 @@ metadata:
   help_page_url: https://www.gbls.org/MADE
   help_page_title: Massachusetts Defense for Eviction (Made) Self-Guided Eviction Help
   LIST_topics: 
-    - HO-00-00-00-00
-  tags: 
     - HO-02-00-00-00
+  tags: 
+    - Housing
   jurisdiction: NAM-US-US+MA
   original_form: https://www.mass.gov/doc/summary-process-eviction-answer-form-housing-court-0/download
-  original_form_published_on: n/a
+  original_form_published_on: 2023
   review_date: 2024-08-01
   form_titles:
-    - Motion to Stay Eviction
-  form_numbers:
-    - Affidavit of Indigency (3/23)
+    - Eviction Answer (Booklet 3)
+    - Late Answer (Booklet 3a)
+    - Eviction Discovery (Booklet 4)
+    - Notice of Transfer to Housing Court (Booklet 5)
+    - Motion to Compel Discovery
+    - Motion to Intervene
+    - Interpreter Notice
   fees:
     - Filing fee: 0.00
   update_notes: |
+    This does not yet include updates to the Answer and Discovery released in Spring of 2024.
 ---
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
