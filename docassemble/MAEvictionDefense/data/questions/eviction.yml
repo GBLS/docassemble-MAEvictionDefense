@@ -1,12 +1,9 @@
 ---
 metadata:
-  interview_identifier: "MADE: Massachusetts Defense for Eviction (Launch)"
   title: |
     MADE: Massachusetts Defense for Eviction
   short title: |
     MADE (Eviction)
-  description: |
-    This interview helps you complete a summary process answer and request for discovery.
   authors:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
@@ -22,7 +19,56 @@ metadata:
     Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
     and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
     You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
-  revision_date: 2023-06-04
+  revision_date: 2023-06-04    
+  description: |
+    If you are getting evicted in Massachusetts, you can use MADE to defend against your eviction case 
+    (also called summary process). It will help you make an 
+    Answer and Discovery form and other forms you may need to file in court. MADE will also help you gather information 
+    to help you defend your case.
+
+    There are also special defenses in MADE for homeowners after a foreclosure.
+
+    Most tenants who use MADE will get an extension of 2 weeks in their court hearing date in order to allow
+    them to get more information to defend their case.
+  can_I_use_this_form: |
+    If your eviction case has been filed in court, you can use this interview to defend against the case, even if
+    you missed the first deadline to answer.
+
+    You need to wait to use this interview until you get a Summons and Complaint or you learn
+    another way that the case has been filed in court.
+
+    This tool is designed to be used by tenants, attorneys, and other helpers.
+  before_you_start: |
+    Before you start, you need to get documents from your case, including:
+    * The Summons and Complaint
+    * The Notice to Quit you got from your landlord
+  maturity: production
+  estimated_completion_minutes: 60
+  estimated_completion_delta: 30
+  languages:
+    - en
+  help_page_url: https://www.gbls.org/MADE
+  help_page_title: Massachusetts Defense for Eviction (Made) Self-Guided Eviction Help
+  LIST_topics: 
+    - HO-02-00-00-00
+  tags: 
+    - Housing
+  jurisdiction: NAM-US-US+MA
+  original_form: https://www.masslegalhelp.org/housing-apartments-shelter/eviction/fighting-eviction-court
+  original_form_published_on: 2023
+  review_date: 2024-08-01
+  form_titles:
+    - Eviction Answer (Booklet 3)
+    - Late Answer (Booklet 3a)
+    - Eviction Discovery (Booklet 4)
+    - Notice of Transfer to Housing Court (Booklet 5)
+    - Motion to Compel Discovery
+    - Motion to Intervene
+    - Interpreter Notice
+  fees:
+    - Filing fee: 0.00
+  update_notes: |
+    This does not yet include updates to the Answer and Discovery released in Spring of 2024.
 ---
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
