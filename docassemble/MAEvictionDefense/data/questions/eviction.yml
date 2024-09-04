@@ -4,9 +4,26 @@ metadata:
     MADE: Massachusetts Defense for Eviction
   short title: |
     MADE (Eviction)
+  authors:
+    - name: Quinten Steenhuis
+      organization: Greater Boston Legal Services
+  error help: |
+    # We ran into a bug.
+    We are very sorry for the inconvenience. 
+    
+    [Please tell us more about the bug at this link](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
+    
+    1. Try reloading the screen (use the refresh button) and fill in information
+    that you left blank.
+    2.  You can use the paper forms instead.
+    Please download the [Answer](https://www.masslegalhelp.org/housing/lt1-booklet-3-answer.pdf) 
+    and the [Request for Discovery](https://www.masslegalhelp.org/housing/lt1-booklet-4-discovery.pdf).
+    You can follow the [instructions](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf) here.
+  revision_date: 2023-06-04    
   description: |
-    If you are getting evicted in Massachusetts, you can use MADE to defend against your eviction case. It will help you make an 
-    Answer form and other forms you may need to file in court. MADE will also help you gather information 
+    If you are getting evicted in Massachusetts, you can use MADE to defend against your eviction case 
+    (also called summary process). It will help you make an 
+    Answer and Discovery form and other forms you may need to file in court. MADE will also help you gather information 
     to help you defend your case.
 
     There are also special defenses in MADE for homeowners after a foreclosure.
@@ -37,7 +54,7 @@ metadata:
   tags: 
     - Housing
   jurisdiction: NAM-US-US+MA
-  original_form: https://www.mass.gov/doc/summary-process-eviction-answer-form-housing-court-0/download
+  original_form: https://www.masslegalhelp.org/housing-apartments-shelter/eviction/fighting-eviction-court
   original_form_published_on: 2023
   review_date: 2024-08-01
   form_titles:
