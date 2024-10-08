@@ -2867,10 +2867,10 @@ subquestion: |
   you can upload a picture of them now. If it's not easy to do this now,
   you can skip this step.
 fields:
-  - Upload or take a picture of any paperwork you want GBLS to review: ntq_pictures[i]
-    datatype: file
+  - Upload or take a picture of any paperwork you want GBLS to review: ntq_pictures
+    datatype: files
     required: False
-list collect: True
+#list collect: True
 ---
 id: intake facts
 question: |
