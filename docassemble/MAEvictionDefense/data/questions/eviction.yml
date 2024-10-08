@@ -140,7 +140,7 @@ objects:
   - additional_tenants: DAList.using(object_type=Individual)
   - household: DAList.using(object_type=Individual)
   - incomes: IncomeList.using(there_are_any=True)
-  - ntq_pictures: DAFileList.using(there_are_any = True)
+  #- ntq_pictures: DAFileList.using(there_are_any = True)
   - landlord: Person
   - landlords_attorney: Person
   - court: MACourt
@@ -359,7 +359,7 @@ code: |
     household.gather()
     incomes.gather()
     tenant.gender
-    ntq_pictures.gather()
+    ntq_pictures
     intake_additional_information
     # view_intake
   asked_intake_questions = True
