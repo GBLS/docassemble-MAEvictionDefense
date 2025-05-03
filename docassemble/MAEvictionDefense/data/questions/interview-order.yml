@@ -55,9 +55,9 @@ code: |
   #   firstdatepassed
   #  case.status = 'late'
   case.rescheduled_date
-  if not case.covid_hearing_date_assigned:
+  if not case.hearing_date_assigned:
     case_is_on_time # explain court will assign a date
-  elif case.covid_hearing_date_assigned and today() > case.covid_first_event:
+  elif case.hearing_date_assigned and today() > case.first_event:
     firstdatepassed
     case.status = 'late'
   # if case.on_time:
@@ -70,7 +70,10 @@ code: |
     eviction_reason_explanation # Explain 239 s 8A rights
       
   # TODO: covid-19
-  covid_cares_has_federal_mortgage
+  # covid_cares_has_federal_mortgage
+  if eviction_reason == 'nonpayment':
+    tenant_got_accompanying_form
+    delay_in_raft
   
   nav.set_section('review_about_tenancy')
   facts.tenant_movein

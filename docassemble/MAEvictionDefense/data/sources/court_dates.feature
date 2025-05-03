@@ -47,8 +47,8 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
-    | case.covid_hearing_date_assigned | True |  |
-    | case.covid_first_event | 01/01/2025 |  |
+    | case.hearing_date_assigned | True |  |
+    | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | covid_cares_has_federal_mortgage | True |  |
     | covid_cdc_moratorium | False |  |
@@ -113,8 +113,8 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
-    | case.covid_hearing_date_assigned | True |  |
-    | case.covid_first_event | 01/01/2025 |  |
+    | case.hearing_date_assigned | True |  |
+    | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | covid_cdc_moratorium | True |  |
     | facts.tenant_movein | 01/01/2019 |  |
@@ -178,7 +178,7 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
-    | case.covid_hearing_date_assigned | False |  |
+    | case.hearing_date_assigned | False |  |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
     | covid_cdc_moratorium | False |  |
@@ -242,8 +242,8 @@ Scenario: User has a public housing voucher with a court date
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
-    | case.covid_hearing_date_assigned | True |  |
-    | case.covid_first_event | 01/01/2025 |  |
+    | case.hearing_date_assigned | True |  |
+    | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | covid_cdc_moratorium | False |  |
     | facts.tenant_has_subsidy | True |  |
@@ -312,8 +312,8 @@ Scenario: User fell behind because of RAFT delay
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
-    | case.covid_hearing_date_assigned | True |  |
-    | case.covid_first_event | 01/01/2025 |  |
+    | case.hearing_date_assigned | True |  |
+    | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | covid_cdc_moratorium | False |  |
     | delay_in_raft | True |  |
