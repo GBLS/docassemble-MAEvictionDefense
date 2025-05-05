@@ -41,7 +41,7 @@ code: |
         send_sms(to=phone_number_in_e164(user_cell), template=compel_discovery_text, task='discovery reminder text')
         mark_task_as_performed('discovery reminder text')
     # TODO: covid-specific logic
-    if case.covid_hearing_date_assigned and remind_user and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :    
+    if case.hearing_date_assigned and remind_user and date_difference(starting=court_date).days >= -1 and date_difference(starting=court_date).days < 1 :    
       if user_email and task_not_yet_performed('court reminder'):
         send_email(to=user_email, template=court_reminder_email, task='court reminder')
         mark_task_as_performed('court reminder')

@@ -28,31 +28,42 @@ sections:
   - review_discovery: Descubrimiento
   - conclusion: Conclusión    
 ---
-# TODO: covid-19
-id: covid-19
+id: RAFT or other rental assistance
 question: |
-  Covid-19 Defenses
+  Delay due to rental assistance
 subquestion: |
-  You may have a defense because of the Covid-19 emergency.
-  
-  Check any answers that are true below. If you're not sure,
-  answer to the best of your knowledge.
-  
-  You can find out if your landlord has a federally funded mortgage by 
-  [visiting this link](https://www.fhfa.gov/Media/PublicAffairs/Pages/FHFA-Announces-Tools-to-Help-Renters-Find-Out-if-They-are-Protected-from-Eviction.aspx).
+  If you are waiting to learn if you will get rental assistance, you may
+  have a defense or a right to a delay in your eviction.
 fields:
-  - My landlord has a federally funded mortgage or I live in federally assisted property that is covered by the CARES act: covid_cares_has_federal_mortgage
-    datatype: yesno
-  - The mortgage is in forbearance: covid_cares_mortgage_in_forbearance
-    datatype: yesno
-    show if: covid_cares_has_federal_mortgage
   - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
-    datatype: yesno
-  - My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form: initial_defense.no_257_notice
-    datatype: yesno
-    help: |
-      [FILE form257.png, 100%]
-  
+    datatype: yesnoradio
+---
+code: |
+  # 2025-04-30
+  # TODO: remove these obsolete defenses, after 2025-11-01
+  covid_cares_has_federal_mortgage = False
+  covid_cares_mortgage_in_forbearance = False
+  initial_defense.no_257_notice = False
+---
+id: notice to quit accompanying form pursuant to G.L. c.186 § 31
+question: |
+  Accompanying form to Notice to Quit
+subquestion: |
+  All landlords in a nonpayment of rent eviction must
+  give their tenant a form that includes the following information:
+
+  1. Information about help you may be able to get to pay back your
+     rent, including information about RAFT (Rental Assistance for Families in Transition)
+  1. Basic information about the eviction process
+  1. Information about your rights in the eviction process
+  1. If you signed a repayment agreement with your landlord, information about
+     that agreement.
+
+  This form is called the "accompanying form." You should have gotten a form
+  like this at the same time you got the notice to quit.
+fields:
+  - Did you get a "accompanying form" with the notice to quit from your landlord?: tenant_got_accompanying_form
+    datatype: yesnomaybe
 ---
 id: case number
 question: |
@@ -621,7 +632,7 @@ question: |
 subquestion: |
   You must give a copy of the forms we are working on to your landlord or their 
   attorney. 
-  % if case.covid_hearing_date_assigned:
+  % if case.hearing_date_assigned:
   They need to _get_ the forms no later than 
   **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
@@ -1149,40 +1160,16 @@ id: court date
 question: |
   Court date
 subquestion: |
-  Because of the Covid-19 pandemic, the first notice that tells you to
-  go to court will not include a date. It will say something like
-  "To be determined by the court" or "TBD".
+  Before your case can be decided by a judge or jury, the court will schedule
+  you for a mandatory chance to settle your case.
+
+  This may be called a "Tier 1" event.
 fields:
-  - Did you get a letter from the court that tells you what **day and time** to go to court yet?: case.covid_hearing_date_assigned
+  - Did you get a letter from the court that tells you what **day and time** to go to court yet?: case.hearing_date_assigned
     datatype: yesnoradio
-  - When do you need to go to court?: case.covid_first_event
+  - When do you need to go to court?: case.first_event
     datatype: date
-    show if: case.covid_hearing_date_assigned
----
-# ---
-# id: court date
-# question: |
-#   Court Date
-# subquestion: |
-#   To answer this question, please take a look at your Summons and Complaint. 
-#   Find the line that begins with NOTICE TO EACH DEFENDANT/TENANT.
-#   
-#   [FILE dates.png, 100%]
-#   
-# fields:
-#   - What is the date of your first court hearing?: case.original_date
-#     datatype: date
-#     hint: Often a Thursday.
-#   - What is the date it says the court must have your Answer? (This is usually a Monday): case.answer_date
-#     datatype: date
-#     hint: Usually a Monday
-# help:
-#   Trial dates are usually on a Thursday in many, but not all courts.
-#   
-#   This information helps us figure out if you are answering to the eviction by 
-#   the deadline. If you are filing your [Answer] on time, the court will delay your hearing by 2 weeks. It will also help us figure out when you need to go to court. 
-#  
-# section: About Your Court Case
+    show if: case.hearing_date_assigned
 ---
 id: case postponed
 event: case_is_on_time
@@ -1193,12 +1180,7 @@ subquestion: |
   Check your mail regularly.
   
   You will get a notice of your court date in the mail. It will likely be
-  in a few weeks.
-  
-  Because of the Covid-19 pandemic, as of October, 2020, first hearings are
-  usually scheduled for video conference. The notice will give you the details. 
-  
-  The court has issued new rules for this -- [Housing Court standing order 6-20](https://www.mass.gov/housing-court-rules/housing-court-standing-order-6-20-temporary-modifications-to-court-operations)
+  in a few weeks.  
 buttons:
   - Continue: 
       code: |
@@ -2478,8 +2460,12 @@ content: |
   
   If you want to go back to your interview, click here ${interview_url()}.
   
+  % if case.hearing_date_assigned:
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
+  % else:
+  You will get a notice from the court about your hearing date.
+  % endif
   
   Once you have a case ID number (docket number), you can also sign up
   to [get notices directly from the court](https://www.mass.gov/forms/ereminder-court-date-notification-system).
@@ -2489,10 +2475,12 @@ content: |
   - whether to appear in person or virtually
   - the time of your hearing
 
+  % if case.hearing_date_assigned:
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}.
   If you didn't get a notice from the court, you may want to call to find out
   when your case will be heard.
+  % endif
   % endif
 
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
@@ -2503,10 +2491,15 @@ content: |
 template: interview_complete_text
 content: |
   Congrats on finishing the interview! Don't forget:
+  % if case.hearing_date_assigned:
   File your paperwork and attend court on ${ format_date(court_date) }.
   % if court_date_is_holiday:
   Because ${court_date} is a holiday, ${court_date_holiday},
   ask the court what date to appear.
+  % endif
+  % else:
+  Look for a notice from the court about your hearing date and
+  be sure to attend court when you are scheduled to do so.
   % endif
 
   Get ready here: https://gbls.org/tactics/12

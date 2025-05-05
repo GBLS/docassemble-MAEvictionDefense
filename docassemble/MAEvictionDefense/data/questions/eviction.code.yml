@@ -111,10 +111,10 @@ code: |
 ---
 # TODO: Covid-specific
 code: |
-  if case.covid_hearing_date_assigned:
-    case.original_date = case.covid_first_event
-    case.rescheduled_date = case.covid_first_event
-    case.answer_date = case.covid_first_event.plus(days=-3)
+  if case.hearing_date_assigned:
+    case.original_date = case.first_event
+    case.rescheduled_date = case.first_event
+    case.answer_date = case.first_event.plus(days=-3)
   else:
     case.original_date = "TBD"
     case.rescheduled_date = "TBD"
@@ -122,7 +122,7 @@ code: |
 ---
 # TODO: covid-specific
 code: |
-  case.on_time = not case.covid_hearing_date_assigned or today() <= case.covid_first_event.plus(days=-3)
+  case.on_time = not case.hearing_date_assigned or today() <= case.first_event.plus(days=-3)
 #code: |
 #  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
 #    case.on_time = True

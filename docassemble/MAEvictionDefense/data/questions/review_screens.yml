@@ -587,12 +587,12 @@ review:
   - Edit: claim_jurytrial
     button: |
       Your right to a jury trial: ${ claim_jurytrial }      
-  - Edit: case.covid_hearing_date_assigned
+  - Edit: case.hearing_date_assigned
     button: |
-      Did you get a letter from the court that tells you what **day and time** to go to court yet? : ${ case.covid_hearing_date_assigned }
-  - Edit: case.covid_first_event
+      Did you get a letter from the court that tells you what **day and time** to go to court yet? : ${ case.hearing_date_assigned }
+  - Edit: case.first_event
     button: |
-      When do you need to go to court? : ${ case.covid_first_event }
+      When do you need to go to court? : ${ case.first_event }
   - Edit: court
     button: |
       Court name : ${ court }
