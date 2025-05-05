@@ -2460,8 +2460,12 @@ content: |
   
   If you want to go back to your interview, click here ${interview_url()}.
   
+  % if case.hearing_date_assigned:
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
+  % else:
+  You will get a notice from the court about your hearing date.
+  % endif
   
   Once you have a case ID number (docket number), you can also sign up
   to [get notices directly from the court](https://www.mass.gov/forms/ereminder-court-date-notification-system).
@@ -2471,10 +2475,12 @@ content: |
   - whether to appear in person or virtually
   - the time of your hearing
 
+  % if case.hearing_date_assigned:
   % if court_date_is_holiday:
   It looks like ${court_date} is a holiday, ${court_date_holiday}.
   If you didn't get a notice from the court, you may want to call to find out
   when your case will be heard.
+  % endif
   % endif
 
   Get ready for court! [MassLegalHelp](https://www.masslegalhelp.org/housing/lt1-booklet-1-representing-yourself.pdf)
@@ -2485,10 +2491,15 @@ content: |
 template: interview_complete_text
 content: |
   Congrats on finishing the interview! Don't forget:
+  % if case.hearing_date_assigned:
   File your paperwork and attend court on ${ format_date(court_date) }.
   % if court_date_is_holiday:
   Because ${court_date} is a holiday, ${court_date_holiday},
   ask the court what date to appear.
+  % endif
+  % else:
+  Look for a notice from the court about your hearing date and
+  be sure to attend court when you are scheduled to do so.
   % endif
 
   Get ready here: https://gbls.org/tactics/12
