@@ -36,8 +36,7 @@ subquestion: |
   have a defense or a right to a delay in your eviction.
 fields:
   - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
-     datatype: yesno
-
+    datatype: yesnoradio
 ---
 code: |
   # 2025-04-30
