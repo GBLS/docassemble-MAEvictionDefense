@@ -54,7 +54,7 @@ setup(name='docassemble.MAEvictionDefense',
       url='https://www.gbls.org',
       packages=find_packages(),
       namespace_packages=['docassemble'],
-      install_requires=['docassemble.MACourts>=0.59.4', 'docassemble.PovertyScale>=2024.0.0', 'docassemble.income>=0.0.36', 'holidays>=0.45', 'nameparser>=1.1.3'],
+      install_requires=['docassemble.MACourts>=0.59.4', 'docassemble.PovertyScale>=2024.0.0', 'docassemble.income>=0.0.36', 'docassemble.ALToolbox>=0.4.0', 'holidays>=0.45', 'nameparser>=1.1.3'],
       zip_safe=False,
       package_data=find_package_data(where='docassemble/MAEvictionDefense/', package='docassemble.MAEvictionDefense'),
      )

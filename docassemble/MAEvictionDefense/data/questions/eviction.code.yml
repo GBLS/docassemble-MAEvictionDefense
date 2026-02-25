@@ -1,28 +1,5 @@
 ---
 code: |
-  from datetime import timedelta
-  
-  def business_days_before(target_date, num_days=3):
-    """Calculate the date that is num_days business days before target_date.
-    Excludes weekends (Saturday=5, Sunday=6) and MA holidays but not Evacuation Day which courts observe inconsistently.
-    """
-    ma_holidays = holidays.US(state='MA')
-    if hasattr(target_date, 'date'):
-      current = target_date.date()
-    else:
-      current = target_date
-    
-    days_subtracted = 0
-    while days_subtracted < num_days:
-      current = current - timedelta(days=1)
-      if current.weekday() >= 5:
-        continue
-      if current in ma_holidays and 'Evacuation Day' not in ma_holidays.get(current, ''):
-        continue
-      days_subtracted += 1
-    return current
----
-code: |
   case_title = landlord.name.full() + ' v. ' + tenant.name.full()
 ---
 code: |
@@ -33,6 +10,7 @@ objects:
 ---
 modules:
   - .connect_gsheets_data
+  - docassemble.ALToolbox.business_days
 ---
 code: |
   poverty_multiplier = 2.0
@@ -137,8 +115,12 @@ code: |
   if case.hearing_date_assigned:
     case.original_date = case.first_event
     case.rescheduled_date = case.first_event
-    # Calculate 3 business days before mediation, accounting for weekends and holidays
-    case.answer_date = as_datetime(business_days_before(case.first_event, 3))
+    case.answer_date = get_date_n_business_days(
+      start_date=case.first_event, 
+      wait_n_days=-3,
+      subdiv='MA',
+      remove_holidays=["Patriots' Day"]
+      )
   else:
     case.original_date = "TBD"
     case.rescheduled_date = "TBD"
@@ -147,7 +129,12 @@ code: |
 # TODO: covid-specific
 code: |
   # Check if today is on or before the deadline (3 business days before mediation)
-  case.on_time = not case.hearing_date_assigned or today() <= as_datetime(business_days_before(case.first_event, 3))
+  case.on_time = not case.hearing_date_assigned or today() <= get_date_n_business_days(
+      start_date=case.first_event, 
+      wait_n_days=-3,
+      subdiv='MA',
+      remove_holidays=["Patriots' Day"]
+      )
 #code: |
 #  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
 #    case.on_time = True
@@ -428,12 +415,23 @@ code: |
   if isinstance(court_date, str):
     answer_date_is_holiday = False
     court_date_is_holiday = False
+    answer_date_holiday = ""
+    court_date_holiday = ""
   else:    
+    answer_date_is_holiday = not is_business_day(
+      date=case.answer_date,
+      subdiv='MA',
+      remove_holidays=["Patriots' Day"]
+      )
+    court_date_is_holiday = not is_business_day(
+      date=court_date,
+      subdiv='MA',
+      remove_holidays=["Patriots' Day"]
+      )
+    # Get holiday names for display in templates
     ma_holidays = holidays.US(state='MA')
-    answer_date_is_holiday = case.answer_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(case.answer_date))
-    answer_date_holiday = ma_holidays.get(case.answer_date)
-    court_date_is_holiday = court_date in ma_holidays and (not 'Evacuation Day' in ma_holidays.get(court_date))
-    court_date_holiday = ma_holidays.get(court_date)  
+    answer_date_holiday = ma_holidays.get(case.answer_date, "")
+    court_date_holiday = ma_holidays.get(court_date, "")
     del ma_holidays
 ---
 code: |
