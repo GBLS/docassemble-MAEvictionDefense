@@ -1090,6 +1090,16 @@ review:
 
   - note: |
       <h2 class="h4 mt-4">Getting the documents served</h2>
+  - Edit: service_delivered_by
+    button: |
+      Who serves : ${ "GBLS attorney or paralegal" if service_delivered_by == 'gbls_staff' else "The tenant" }
+    show if: |
+      person_answering == 'attorney'
+  - Edit: service_recipient
+    button: |
+      Send to : ${ "Landlord's attorney" if service_recipient == 'landlord_attorney' else "Landlord" }
+    show if: |
+      landlord.has_attorney
   - Edit: method_of_service
     button: |
       Delivery method : ${ method_of_service }

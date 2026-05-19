@@ -628,43 +628,63 @@ progress: 95
 ---
 id: method of service
 question: |
-  Getting paperwork to your landlord
+  Serving the paperwork
 subquestion: |
-  You must give a copy of the forms we are working on to your landlord or their 
-  attorney. 
+  % if person_answering == 'attorney':
+  GBLS staff will serve a copy of these forms on behalf of the tenant.
+  % else:
+  You must give a copy of these forms to your landlord or their attorney.
+  % endif
   % if case.hearing_date_assigned:
-  They need to _get_ the forms no later than 
+  They need to _receive_ the forms no later than
   **${format_date(case.answer_date)}**.
   % if answer_date_is_holiday:
   Because ${case.answer_date} is ${answer_date_holiday}, you can
   deliver it the next weekday after ${answer_date_holiday}.
   % endif
   % else:
-  Give a copy to your landlord or their attorney as soon as you can.
+  Deliver as soon as you can.
   % endif
 
-  Deliver it in person
-  if you can. Your landlord may agree to get the paperwork by fax or email,
-  but you need to get their permission first. 
+  Deliver in person if you can. Your landlord may agree to receive the paperwork
+  by fax or email, but you need to get their permission first.
   % if format_date(case.answer_date) == format_date(today()):
-  It's too late to mail the paperwork.
+  It is too late to mail the paperwork today.
   % else:
-  Only mail it if you know
-  your landlord will get it on or before ${format_date(case.answer_date)}.
+  Only mail it if you know your landlord will get it on or before
+  ${format_date(case.answer_date)}.
   % endif
-fields: 
+fields:
+  - Who will serve the documents?: service_delivered_by
+    input type: radio
+    choices:
+      - An attorney or paralegal at GBLS: gbls_staff
+      - The tenant: tenant
+    show if:
+      code: |
+        person_answering == 'attorney'
+  - Send to: service_recipient
+    input type: radio
+    choices:
+      - Landlord: landlord
+      - Landlord's attorney: landlord_attorney
+    show if: landlord.has_attorney
   - Delivery method: method_of_service
-    code: |
-      [{"delivered in-hand": "Delivering by hand" },
-            {"emailed":"Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
-            {"Delivering by hand":"delivered in-hand"},
-            {"emailed": "Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}]
-        
+    input type: radio
+    choices:
+      - Mail: mailed
+      - Deliver by hand: delivered in-hand
+      - Email (with permission of my landlord): emailed
+      - Fax (with permission of my landlord): faxed
   - Date of delivery: service_date
     datatype: date
 # section: Conclusion
+---
+code: |
+  if not landlord.has_attorney:
+    service_recipient = 'landlord'
+  if not person_answering == 'attorney':
+    service_delivered_by = 'tenant'
 ---
 id: download screen
 reconsider: 

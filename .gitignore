@@ -39,3 +39,4 @@ sdist/
 var/
 wheels/
 share/python-wheels/
+*.bak
