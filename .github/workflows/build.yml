@@ -1,0 +1,13 @@
+name: Build and check docassemble package
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-n-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: SuffolkLITLab/ALActions/da_build@main
