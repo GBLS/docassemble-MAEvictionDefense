@@ -24,3 +24,9 @@ Homepage = "https://www.gbls.org"
 
 [tool.setuptools.packages.find]
 where = ["."]
+
+[dependency-groups]
+dev = [
+    "mypy",
+    "pytest",
+]
