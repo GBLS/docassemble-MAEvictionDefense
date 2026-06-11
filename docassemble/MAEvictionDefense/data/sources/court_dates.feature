@@ -50,6 +50,7 @@ Scenario: User has a federal mortgage and a 14 day notice to quit
     | case.hearing_date_assigned | True |  |
     | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
+    | tenant_got_accompanying_form | False |  |
     | covid_cares_has_federal_mortgage | True |  |
     | covid_cdc_moratorium | False |  |
     | facts.tenant_movein | 01/01/2019 |  |
@@ -116,6 +117,7 @@ Scenario: User has NO federal mortgage, but HAS filed the CDC declaration
     | case.hearing_date_assigned | True |  |
     | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
+    | tenant_got_accompanying_form | False |  |
     | covid_cdc_moratorium | True |  |
     | facts.tenant_movein | 01/01/2019 |  |
     | facts.tenant_rent_share | 1 |  |
@@ -181,6 +183,9 @@ Scenario: User has a "fault" case with NO court date and NO CDC declaration
     | case.hearing_date_assigned | False |  |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
+    | fault.did_not_occur | True |  |
+    | fault.not_violation_of_agreement | True |  |
+    | fault.no_control_of_guest | False |  |
     | covid_cdc_moratorium | False |  |
     | facts.tenant_movein | 01/01/2019 |  |
     | facts.tenant_rent_share | 1 |  |
@@ -245,6 +250,7 @@ Scenario: User has a public housing voucher with a court date
     | case.hearing_date_assigned | True |  |
     | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
+    | tenant_got_accompanying_form | False |  |
     | covid_cdc_moratorium | False |  |
     | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
@@ -315,6 +321,7 @@ Scenario: User fell behind because of RAFT delay
     | case.hearing_date_assigned | True |  |
     | case.first_event | 01/01/2025 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
+    | tenant_got_accompanying_form | False |  |
     | covid_cdc_moratorium | False |  |
     | delay_in_raft | True |  |
     | facts.tenant_movein | 01/01/2019 |  |
