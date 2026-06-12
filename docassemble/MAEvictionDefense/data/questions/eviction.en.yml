@@ -44,6 +44,9 @@ code: |
   covid_cares_has_federal_mortgage = False
   covid_cares_mortgage_in_forbearance = False
   initial_defense.no_257_notice = False
+  if eviction_reason != 'nonpayment':
+    delay_in_raft = False
+    tenant_got_accompanying_form = False
 ---
 id: notice to quit accompanying form pursuant to G.L. c.186 § 31
 question: |
