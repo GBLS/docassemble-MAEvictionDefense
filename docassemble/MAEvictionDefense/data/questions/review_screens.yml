@@ -1,5 +1,6 @@
 ---
 event: road_map
+id: review_answers_screen
 question: |
   Review your answers
 subquestion: |
@@ -15,6 +16,7 @@ buttons:
   ${word("Resume")}: continue
 ---
 event: review_about_you
+id: review_about_you_screen
 question: |
   About You
 subquestion: |   
@@ -57,6 +59,7 @@ review:
 --- 
 need: additional_tenants.table
 event: review_signature
+id: review_signature_screen
 question: |
   Review your signature
 review:  
@@ -70,6 +73,7 @@ review:
     show if: len(additional_tenants)
 ---
 event: additional_tenants.edit_table
+id: review_additional_tenant_signatures
 question: |
   Additional tenant signatures
 ---
@@ -82,6 +86,7 @@ edit:
   - signature
 ---
 event: review_about_landlord
+id: review_about_landlord_screen
 question: |
   About your landlord
 subquestion: |
@@ -104,6 +109,7 @@ review:
       % endif
 ---
 event: review_about_court
+id: review_about_court_case
 question: |
   About your court case
 subquestion: |
@@ -188,6 +194,7 @@ review:
       You said you will deliver the paperwork on ${service_date} by ${method_of_service}      
 ---
 event: review_about_tenancy
+id: review_about_tenancy_screen
 question: About your tenancy
 subquestion: |
   So far, you have provided the following information about your tenancy.
@@ -243,6 +250,7 @@ review:
       of domestic violence.
 ---
 event: review_claims
+id: review_claims_defenses
 question: |
   Review Claims and Defenses
 subquestion: |
@@ -453,6 +461,7 @@ review:
       
 ---
 event: review_discovery
+id: review_discovery_screen
 question: Review Discovery
 subquestion: |
   You provided the following information about discovery so far.
@@ -474,6 +483,7 @@ review:
       You requested ${ drq.count_checked() } kinds of documents.
 ---
 event: review_everything
+id: edit_answers_screen
 question: |
   Edit your answers
 subquestion: |
@@ -1062,6 +1072,7 @@ review:
   - Edit: delay_in_raft
     button: |
       I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }
+    show if: eviction_reason == 'nonpayment'
   - Edit: initial_defense.no_257_notice
     button: |
       My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form : ${ word(yesno(initial_defense.no_257_notice)) }
@@ -1114,6 +1125,7 @@ edit:
   - name.first
 ---
 continue button field: additional_tenants.revisit
+id: review_additional_tenants
 question: |
   Additional tenants
 subquestion: |

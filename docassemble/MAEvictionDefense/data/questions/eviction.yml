@@ -106,6 +106,7 @@ translations:
   - eviction_ht.xlsx
 ---
 features:
+  tagged pdf: True
   question help button: True
   question back button: True
   progress bar: True
@@ -212,14 +213,6 @@ include:
 #  - help.yml
   - discovery-logic.yml
   - compel_discovery.yml
----
-comment: |
-  Transition to MACourt object from Court
-mandatory: True
-id: macourt_transition
-code: |
-  if defined('court.county'):
-    del court
 ---
 comment: |
   This block controls the overall interview flow.

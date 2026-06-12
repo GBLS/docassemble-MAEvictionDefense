@@ -1,4 +1,7 @@
 ---
+features:
+  tagged pdf: True
+---
 reconsider: case_title
 comment: |
   Clean up the filename so that you can download a file.
@@ -59,6 +62,7 @@ attachment:
     language: en
     filename: InterpreterNotice
     variable name: interpreter_notice
+    tagged pdf: True
     docx template file: InterpreterNotice.docx
 ---
 attachment:
@@ -66,6 +70,7 @@ attachment:
     language: en
     filename: NextSteps
     variable name: instructions
+    tagged pdf: True
     docx template file: NextSteps.docx
 ---
 attachment: 
@@ -73,6 +78,7 @@ attachment:
     language: en
     filename: LateAnswerMotion
     variable name: late_answer
+    tagged pdf: True
     docx template file: LateAnswerMotion.docx
 ---
 attachments:
@@ -80,11 +86,13 @@ attachments:
     language: en
     filename: Answer
     variable name: answer
+    tagged pdf: True
     docx template file: SummaryProcessAnswer.docx
   - name: Request for Discovery
     language: en
     variable name: discovery
     filename: Discovery
+    tagged pdf: True
     docx template file: SummaryProcessDiscovery.docx
 ---
 attachment:
@@ -92,6 +100,7 @@ attachment:
     language: en
     filename: TransferNotice
     variable name: transfer_notice
+    tagged pdf: True
     docx template file: TransferNotice.docx
 ---
 attachment:
@@ -99,6 +108,7 @@ attachment:
     language: en
     filename: Intervene
     variable name: intervene_motion
+    tagged pdf: True
     docx template file: InterveneMotion.docx
 ---
 attachment: 
@@ -106,6 +116,7 @@ attachment:
     language: en
     filename: CoverLetter
     variable name: cover_letter
+    tagged pdf: True
     docx template file: CoverLetter.docx    
 ---
 attachment:
@@ -113,4 +124,5 @@ attachment:
     language: en
     filename: MotionToCompelDiscovery
     variable name: compel_discovery_with_instructions
+    tagged pdf: True
     docx template file: CompelDiscoveryWithInstructions.docx

@@ -70,7 +70,7 @@ id: intro
 question: |
   Tell us how we're doing
 subquestion: |
-  [CENTER][FILE gbls_logo.png]
+  [CENTER][FILE gbls_logo.png, 100%, GBLS Logo]
 
   The information you type here will be publicly available. That means anyone
   will be able to see it. Use this form to give us information that does not
