@@ -117,6 +117,7 @@ Scenario: User has a public housing voucher with a court date
     | tenant_got_accompanying_form | False |  |
     | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
+    | delay_in_raft | False |  |
     | facts.tenant_movein | 01/01/2019 |  |
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_contract_rent | 100 |  |
@@ -138,6 +139,7 @@ Scenario: User has a public housing voucher with a court date
     | subsidized_housing.no_proper_termination | True |  |
     | subsidized_housing.no_just_cause | True |  |
     | subsidized_housing.no_ntq_to_agency | False |  |
+    | subsidized_housing.vawa | False |  |
     | bad_conditions.conditions['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
@@ -187,7 +189,12 @@ Scenario: User fell behind because of RAFT delay
     | tenant_got_accompanying_form | False |  |
     | delay_in_raft | True |  |
     | facts.tenant_movein | 01/01/2019 |  |
+    | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
+    | subsidized_housing.no_proper_termination | True |  |
+    | subsidized_housing.no_just_cause | True |  |
+    | subsidized_housing.no_ntq_to_agency | False |  |
+    | subsidized_housing.vawa | False |  |
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_rent_frequency | month |  |
     | tenancy_type | lease |  |
