@@ -11,6 +11,13 @@ metadata:
     - name: Quinten Steenhuis
       organization: Greater Boston Legal Services
   revision_date: 2018-12-26
+  can_I_use_this_form: |
+    Anyone who has used MADE can fill out this survey.
+  before_you_start: |
+    It will only take a few minutes.
+  LIST_topics:
+    - HO-02-00-00-00
+  jurisdiction: NAM-US-US+MA
 
 ---
 code: |
@@ -26,6 +33,7 @@ code: |
   thanks
 ---
 decoration: clipboard-list
+id: survey_intro
 question: |
   Please share your experience using MADE
 subquestion: |
@@ -114,7 +122,7 @@ fields:
       - Black or African American
       - Native American or American Indian
       - Asian / Pacific Islander
-      - Other
+      - Other ethnicity: Other
   - What is the highest level of education you have attained?: education
     show if: will_share_demographics  
     choices:   
@@ -135,6 +143,7 @@ fields:
 continue button field: survey_questions
 ---
 event: thanks
+id: survey_thanks
 question: | 
   Thank you!
 subquestion: |

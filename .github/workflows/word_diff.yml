@@ -1,0 +1,24 @@
+name: Diff Word documents
+
+on:
+  pull_request:
+    paths:
+      - '**/*.docx'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.docx'
+  workflow_dispatch:
+
+jobs:
+  docx-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Diff Word documents
+        uses: SuffolkLITLab/ALActions/word_diff@main

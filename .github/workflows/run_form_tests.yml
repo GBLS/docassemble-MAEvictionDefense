@@ -2,6 +2,9 @@ name: ALKiln v5 tests
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
   workflow_dispatch:
     inputs:
       tags:
@@ -25,4 +28,5 @@ jobs:
         with:
           SERVER_URL: "${{ secrets.SERVER_URL }}"
           DOCASSEMBLE_DEVELOPER_API_KEY: "${{ secrets.DOCASSEMBLE_DEVELOPER_API_KEY }}"
+          DOCASSEMBLECLI_VERSION: "0.0.26"
       - run: echo "Finished running ALKiln tests"
