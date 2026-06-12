@@ -1072,6 +1072,8 @@ review:
   - Edit: delay_in_raft
     button: |
       I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet. : ${ word(yesno(delay_in_raft)) }
+    show if: |
+      eviction_reason == 'nonpayment'
   - Edit: initial_defense.no_257_notice
     button: |
       My landlord did not send a copy of the Form to Accompany the Residential Notice to Quit, commonly referred to as the 257 form : ${ word(yesno(initial_defense.no_257_notice)) }

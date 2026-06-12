@@ -13,6 +13,7 @@ Since the tests are so long and many scenarios don't conflict, some have been co
 
 Scenario: User's court date has passed
   Given I start the interview at "eviction"
+  And the max seconds for each step is 200
   Then I get to the question id "not right interview" with this data:
     | var | value | trigger |
     | person_answering | tenant |  |
