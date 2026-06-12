@@ -133,9 +133,6 @@ modules:
   - .review
   - docassemble.PovertyScale.poverty
 ---
-imports:
-  - holidays
----
 objects:
   - tenant: Individual
   - additional_tenants: DAList.using(object_type=Individual)
