@@ -38,13 +38,9 @@ testpaths = ["tests"]
 module = [
     "bs4",
     "docassemble.*",
-    "geopandas",
     "gspread",
     "nameparser",
     "oauth2client.*",
     "requests",
-    "shapely.*",
-    "usaddress",
-    "uszipcode",
 ]
 ignore_missing_imports = true
