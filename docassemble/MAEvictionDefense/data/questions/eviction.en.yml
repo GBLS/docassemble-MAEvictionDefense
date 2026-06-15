@@ -44,6 +44,9 @@ code: |
   covid_cares_has_federal_mortgage = False
   covid_cares_mortgage_in_forbearance = False
   initial_defense.no_257_notice = False
+  if eviction_reason != 'nonpayment':
+    delay_in_raft = False
+    tenant_got_accompanying_form = False
 ---
 id: notice to quit accompanying form pursuant to G.L. c.186 § 31
 question: |
@@ -120,7 +123,7 @@ subquestion: |
   When you finish, you need to print and deliver paperwork to
   court and to your landlord or their attorney.
     
-  You can click on a {green word} to learn what it means. Click "Help" to learn
+  You can click on a {highlighted word} to learn what it means. Click "Help" to learn
   more about a question. Use the menu in the top navigation area and select "edit 
   answers" to change an earlier answer.
   
@@ -144,7 +147,7 @@ help: |
   This is an example help page.
   Click "[Back to question]" to go to the previous screen and continue the interview.
 terms: 
-  - green word: This is an example. Click it again to hide this definition. 
+  - highlighted word: This is an example. Click it again to hide this definition. 
 # section: Getting Started
 right: |
   % if user_has_saved_answers:
@@ -601,7 +604,7 @@ subquestion: |
 field: signature_phone_followup  
 ---
 generic object: Individual
-id: signature
+id: signature_pad
 question: Sign below
 subquestion: |
 signature: x.signature
@@ -658,7 +661,7 @@ fields:
       [{"delivered in-hand": "Delivering by hand" },
             {"emailed":"Email (with permission of my landlord)"},
             {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
-            {"Delivering by hand":"delivered in-hand"},
+            {"delivered (or caused to be delivered)":"delivered in-hand"},
             {"emailed": "Email (with permission of my landlord)"},
             {"faxed":"Fax (with permission of my landlord)"}]
         
@@ -798,7 +801,9 @@ question: |
   Additional tenants
 subquestion: |
   Is there another tenant who lives with you who will also sign this form?
-yesno: additional_tenants.there_are_any
+fields:
+  - no label: additional_tenants.there_are_any
+    datatype: yesno
 help: |
   Not everyone who lives with you needs to sign your answer.
   Add their names if they are listed on the summons and complaint with you,
@@ -833,7 +838,7 @@ subquestion: |
   Look at the Summons and Complaint when answering this question. Find the line labeled
    "To Defendants / Tenants / Occupants"
    
-  [FILE names_on_summons.png, 100%]
+  [FILE names_on_summons.png, 100%, Names on Summons]
 fields:
   - Does the line "To Defendants / Tenants / Occupants" contains something in addition to or other than "${comma_and_list(additional_tenants + [tenant])}"?: tenant.name_different_on_summons
     datatype: yesnoradio
@@ -1074,7 +1079,7 @@ subquestion: |
   Look at the upper-right-hand corner of the Summons and Complaint form. If the information doesn't match,
   change the court name to match the information on your Summons and Complaint.
 
-  [FILE court_and_county.png, 100%]
+  [FILE court_and_county.png, 100%, Court and County]
 fields:
   - Court name: court
     datatype: object
@@ -1093,7 +1098,7 @@ subquestion: |
   Depending on your city or town, the housing court may be more difficult to get to.
   You should come up with a plan to get to court on time.
 
-  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  Check the [Massachusetts Housing Court](https://www.mass.gov/orgs/housing-court) website
   to learn where the ${local_housing_court} sits for your city or town.
 
   #### Why transfer your case to housing court? 
@@ -1147,7 +1152,7 @@ id: transfer court
 question: |
   Which Housing Court are you transferring your case to?
 subquestion: |
-  Check the [Housing Court For All](http://www.housingcourt4all.org/where-the-housing-court-sits.html) website
+  Check the [Massachusetts Housing Court](https://www.mass.gov/orgs/housing-court) website
   to learn where the court sits for your city or town.
 fields: 
   - no label: transfer_court_name_temp
@@ -1330,7 +1335,7 @@ subquestion: |
   name _exactly_ the same way it is written on the line "...defend against the complaint
   of Plaintiff / Landlord / Owner"
 
-  [FILE landlord_name.png, 100%]
+  [FILE landlord_name.png, 100%, Landlord Name]
 fields:
   - Landlord's name (as written on the Summons): landlord.name.text
 # section: About Your Landlord
@@ -1868,7 +1873,7 @@ fields:
       - All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.: All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
       - All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).: All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
       - Other: other
-  - Other: bad_conditions.other
+  - Other condition: bad_conditions.other
     required: False
     show if: bad_conditions.landlord_notified['other']
 validation code: |
@@ -2065,7 +2070,9 @@ subquestion: |
   screen.
 video: |
   ${"[YOUTUBE 1BYDc6EFTgE]" if user_language == "es" else "[YOUTUBE Bs-aVV5K-oo]"}
-yesno: retaliation.is_retaliated
+fields:
+  - no label: retaliation.is_retaliated
+    datatype: yesno
 # section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)
@@ -2109,9 +2116,9 @@ fields:
     datatype: yesno
   - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons.: retaliation.survivor_rights
     datatype: yesno
-  - Other: show_retaliation_other
+  - Other reason: show_retaliation_other
     datatype: yesno
-  - Other: retaliation.other
+  - Other retaliation: retaliation.other
     required: False
     show if: show_retaliation_other
   - One or more of the above happened in the last 6 months.: retaliation.within_6_months
@@ -2145,10 +2152,12 @@ subquestion: |
   screen.
 video: |
   ${ "[YOUTUBE 3INbS7qS1qI]" if user_language == "es" else "[YOUTUBE Yxry8Zbmcgs]" }
-yesno: tenant.is_discriminated
+fields:
+  - no label: tenant.is_discriminated
+    datatype: yesno
 # section: Claims and Defenses
 help: |
-  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+  [Learn more about discrimination law](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
 id: discrimination
 question: |
@@ -2177,16 +2186,16 @@ fields:
     default: 
       code: |
         dict(disability = tenant.is_disabled)
-  - Other: discrimination.show_other
+  - Other class: discrimination.show_other
     datatype: yesno
-  - "Other:": discrimination.other
+  - "Other discrimination class:": discrimination.other
     show if: discrimination.show_other
 # section: Claims and Defenses
 comment: |
   Setting the dictionary of defaults, Disability is a 
   default if tenant.is_disabled is true, and false if it is false.
 help: |
-  Learn more about discrimination law [here](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
+  [Learn more about discrimination law](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
 ---
 id: disability discrimination
 question: | 
@@ -2196,7 +2205,9 @@ subquestion: |
   you may have the right to a "reasonable accommodation" from your landlord. This may be
   a defense to the eviction.
   Would you like to ask for a reasonable accommodation?
-yesno: disability.request_reasonable_accommodation
+fields:
+  - no label: disability.request_reasonable_accommodation
+    datatype: yesno
 # section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
@@ -2233,7 +2244,7 @@ fields:
     datatype: yesno
   - There are unlawful terms in my lease. : consumer_protection.unlawful_lease_terms
     datatype: yesno
-  - Other : consumer_protection.other
+  - Other consumer protection violation : consumer_protection.other
     datatype: yesno
   - Other violation: consumer_protection.other_reason
     show if: consumer_protection.other
@@ -2519,6 +2530,7 @@ content: |
     - MADE from GBLS
 ---
 event: about_this_interview
+id: about_interview_screen
 question: |
   About this interview
 subquestion: |
@@ -2540,7 +2552,7 @@ subquestion: |
   give a copy of the documents to your landlord or your landlord's attorney.
   
   ### Documentation
-  You can read more detailed instructions about how to use this interview [here](https://www.gbls.org/MADE/documentation).
+  Read [more detailed instructions about how to use this interview](https://www.gbls.org/MADE/documentation).
   
   ### Contributors:
   This interview was created by [Greater Boston Legal Services](https://www.gbls.org) based on forms edited
@@ -2549,7 +2561,7 @@ subquestion: |
 
   1. Quinten Steenhuis, Esq. ([Greater Boston Legal Services](https://www.gbls.org))
   1. Rina Padua ([Greater Boston Legal Services](https://www.gbls.org) and Harvard University [Phillips Brooks House](http://pbha.org/))
-  1. Caroline Robinson ([Massachusetts Law Reform Institute](http://www.mlri.org))
+  1. Caroline Robinson ([Massachusetts Law Reform Institute](https://www.mlri.org))
   1. Mariah Jennings-Rampsi, Esq. ([Volunteer Lawyer's Project](https://www.vlpnet.org/))
   
   ### Feedback, comments, or want to improve this interview?
@@ -2884,7 +2896,7 @@ fields:
     choices:
       - Stay
       - Move
-      - Other
+      - Other goal: Other
     required: False
   - field: intake_additional_information
     label: |
@@ -3001,7 +3013,7 @@ fields:
     hide if: tenant.no_email
   - I don't have an email address you can contact me by: tenant.no_email
     datatype: yesno
-  - Other: tenant.other_contact_method
+  - Other contact method: tenant.other_contact_method
     datatype: area
     required: False
 validation code: |

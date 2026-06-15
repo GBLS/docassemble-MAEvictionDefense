@@ -1,4 +1,5 @@
 ---
+id: following_up
 question: |
   Following up on your questions to your landlord
 subquestion: |
@@ -9,16 +10,22 @@ subquestion: |
   Did you get any mail from your landlord or their attorney after you
   first used this interview or attended eviction clinic?
   
-yesno: received_correspondence
+fields:
+  - no label: received_correspondence
+    datatype: yesno
 ---
+id: was_mail_response
 question: |
   Was the mail a response to your request for discovery?
 subquestion: |
   Does the mail say something like "Plaintiff's response to Defendant's
   Request for Discovery" or "Plaintiff's response to Defendant's Interrogatories /
   Document Requests"?
-yesno: looks_like_discovery_response
+fields:
+  - no label: looks_like_discovery_response
+    datatype: yesno
 ---
+id: landlord_answered_all
 question: |
   Did your landlord answer all of the questions that they were supposed to answer?
 subquestion: |
@@ -43,6 +50,7 @@ fields:
     datatype: yesno
     show if: objected
 ---
+id: what_court_should_do
 question: |
   What do you want the court to do?
 fields:
@@ -57,6 +65,7 @@ fields:
       ]
 ---
 event: compel_discovery_motion
+id: compel_motion_download
 question: |
   Here is your motion
 subquestion: |
