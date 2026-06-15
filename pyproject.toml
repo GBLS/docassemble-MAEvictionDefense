@@ -11,10 +11,10 @@ authors = [
     { name="Quinten Steenhuis, Greater Boston Legal Services", email="qsteenhuis@gbls.org" },
 ]
 dependencies = [
+    "docassemble.ALToolbox>=0.17.0",
     "docassemble.MACourts>=0.59.4",
-    "docassemble.PovertyScale>=2024.0.0",
+    "docassemble.PovertyScale>=2026.0.0",
     "docassemble.income>=0.0.36",
-    "holidays>=0.45",
     "nameparser>=1.1.3",
 ]
 license = { text = "MIT" }
@@ -38,13 +38,9 @@ testpaths = ["tests"]
 module = [
     "bs4",
     "docassemble.*",
-    "geopandas",
     "gspread",
     "nameparser",
     "oauth2client.*",
     "requests",
-    "shapely.*",
-    "usaddress",
-    "uszipcode",
 ]
 ignore_missing_imports = true
