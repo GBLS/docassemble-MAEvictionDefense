@@ -5,7 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 credential_info = json.loads(get_config('google').get('service account credentials'), strict=False)
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
-import usaddress
+import usaddress  # type: ignore
 import nameparser
 
 __all__ = ['read_sheet','map_address','map_name','map_attorney_info']
