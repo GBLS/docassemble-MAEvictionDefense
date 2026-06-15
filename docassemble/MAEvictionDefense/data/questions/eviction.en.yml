@@ -661,7 +661,7 @@ fields:
       [{"delivered in-hand": "Delivering by hand" },
             {"emailed":"Email (with permission of my landlord)"},
             {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
-            {"Delivering by hand":"delivered in-hand"},
+            {"delivered (or caused to be delivered)":"delivered in-hand"},
             {"emailed": "Email (with permission of my landlord)"},
             {"faxed":"Fax (with permission of my landlord)"}]
         
