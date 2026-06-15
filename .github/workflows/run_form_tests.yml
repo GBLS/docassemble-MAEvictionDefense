@@ -10,6 +10,10 @@ on:
       tags:
         description: 'Optional. Use a "tag expression" specify which tagged tests to run. See https://cucumber.io/docs/cucumber/api/#tag-expressions for syntax.'
         default: ''
+      show_docker_output:
+        description: 'Show and save the temporary docassemble server logs. The logs may contain sensitive configuration details.'
+        default: false
+        type: boolean
   # To run your tests on a schedule, delete the first "#" symbol at the beginning of each line below.
   ## Also see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
   ## Also see https://crontab.guru/examples.html
@@ -20,13 +24,20 @@ jobs:
 
   interview-testing:
     runs-on: ubuntu-latest
-    name: Run interview tests
+    name: Run interview tests on an isolated server
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Start an isolated temporary docassemble server
+        id: github_server
+        uses: SuffolkLITLab/ALKiln/action_for_github_server@v5
+        with:
+          SHOW_DOCKER_OUTPUT: "${{ inputs.show_docker_output || false }}"
+          DOCASSEMBLECLI_VERSION: "0.0.26"
       - name: Use ALKiln to run tests
         uses: SuffolkLITLab/ALKiln@v5
         with:
-          SERVER_URL: "${{ secrets.SERVER_URL }}"
-          DOCASSEMBLE_DEVELOPER_API_KEY: "${{ secrets.DOCASSEMBLE_DEVELOPER_API_KEY }}"
-          DOCASSEMBLECLI_VERSION: "0.0.26"
+          SERVER_URL: "${{ steps.github_server.outputs.SERVER_URL }}"
+          DOCASSEMBLE_DEVELOPER_API_KEY: "${{ steps.github_server.outputs.DOCASSEMBLE_DEVELOPER_API_KEY }}"
+          INSTALL_METHOD: "server"
+          ALKILN_TAG_EXPRESSION: "${{ inputs.tags || '' }}"
       - run: echo "Finished running ALKiln tests"
