@@ -23,6 +23,7 @@ Scenario: User's court date has passed
 @slow @4 @fault
 Scenario: User has a "fault" case with NO court date
   Given I start the interview at "eviction"
+  And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
     | person_answering | tenant |  |
@@ -77,7 +78,6 @@ Scenario: User has a "fault" case with NO court date
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 200
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
@@ -89,6 +89,7 @@ Scenario: User has a "fault" case with NO court date
 @slow @5 @publichousing
 Scenario: User has a public housing voucher with a court date
   Given I start the interview at "eviction"
+  And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
     | person_answering | tenant |  |
@@ -149,7 +150,6 @@ Scenario: User has a public housing voucher with a court date
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 200
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
@@ -161,6 +161,7 @@ Scenario: User has a public housing voucher with a court date
 @slow @6 @raft
 Scenario: User fell behind because of RAFT delay
   Given I start the interview at "eviction"
+  And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
     | person_answering | tenant |  |
@@ -221,7 +222,6 @@ Scenario: User fell behind because of RAFT delay
   And I set the var "signature_choice" to "this device"
   And I sign
   And I tap to continue
-  And the max seconds for each step is 200
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
