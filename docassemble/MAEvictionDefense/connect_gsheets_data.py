@@ -2,7 +2,6 @@ import gspread
 import json
 from docassemble.base.util import get_config
 from oauth2client.service_account import ServiceAccountCredentials
-credential_info = json.loads(get_config('google').get('service account credentials'), strict=False)
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/drive']
 import usaddress  # type: ignore
@@ -11,6 +10,11 @@ import nameparser
 __all__ = ['read_sheet','map_address','map_name','map_attorney_info']
 
 def read_sheet(sheet_name, worksheet_title):
+  google_config = get_config('google') or {}
+  credentials = google_config.get('service account credentials')
+  if not credentials:
+    raise RuntimeError("Google service account credentials are not configured")
+  credential_info = json.loads(credentials, strict=False)
   creds = ServiceAccountCredentials.from_json_keyfile_dict(credential_info, scope)
   client = gspread.authorize(creds)
   sheet = client.open(sheet_name).worksheet(worksheet_title)
