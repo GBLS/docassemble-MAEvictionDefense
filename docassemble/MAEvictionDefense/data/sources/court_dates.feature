@@ -62,7 +62,7 @@ Scenario: User has a "fault" case with NO court date
     | dont_owe_rent | True |  |
     | behind_in_rent | False |  |
     | lease_type | fixed_term |  |
-    | lease_end_date | 01/01/2026 |  |
+    | lease_end_date | today + 365 |  |
     | date_received_ntq | 01/01/2020 |  |
     | date_received_summons | 02/01/2020 |  |
     | ntq_matches_summons | True |  |
@@ -205,7 +205,7 @@ Scenario: User fell behind because of RAFT delay
     | dont_owe_rent | True |  |
     | behind_in_rent | True |  |
     | lease_type | fixed_term |  |
-    | lease_end_date | 01/01/2026 |  |
+    | lease_end_date | today + 365 |  |
     | date_received_ntq | 01/01/2020 |  |
     | date_received_summons | 02/01/2020 |  |
     | ntq_matches_summons | True |  |
