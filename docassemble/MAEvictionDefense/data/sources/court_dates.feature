@@ -55,16 +55,12 @@ Scenario: User has a "fault" case with NO court date
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_rent_frequency | week |  |
     | tenancy_type | lease |  |
-    | notice_type | fourteen_day |  |
+    | notice_type | thirty_day |  |
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
     | lease_requires_30_day_notice | False |  |
     | ntq_leaves_off_required_language | False |  |
-    | dont_owe_rent | True |  |
-    | behind_in_rent | False |  |
-    | refused_rent_increase | False |  |
-    | other.vendor_payments | False |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
     | date_received_ntq | 01/01/2020 |  |
