@@ -715,6 +715,9 @@ review:
   - Edit: fault.no_control_of_guest
     button: |
       The ${eviction_detailed_reason} was the fault of a guest that I had no control over. : ${ word(yesno(fault.no_control_of_guest)) }
+  - Edit: initial_defense.avoidance_of_forfeiture
+    button: |
+      Based on principles of equity and fairness, it is unfair to evict me. (Tenant Should Not Lose Their Apartment / Avoidance of Forfeiture) : ${ word(yesno(initial_defense.avoidance_of_forfeiture)) }
   - Edit: notice_type
     button: |
       Kind of notice to quit : ${ notice_type }
