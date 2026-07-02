@@ -1247,6 +1247,7 @@ fields:
     datatype: checkboxes
     choices:
       - I refused to pay a higher rent: refusal of rent increase
+      - They want to sell the building: desire to sell
       - They want to renovate: desire to renovate
       - They want the apartment for a family member: moving in a family member
       - My landlord did not give a reason: no reason
