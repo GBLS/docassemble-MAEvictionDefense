@@ -188,6 +188,7 @@ Scenario: User fell behind because of RAFT delay
     | eviction_all_reasons['nonpayment'] | True |  |
     | tenant_got_accompanying_form | False |  |
     | delay_in_raft | True |  |
+    | discrimination.raft_refusal | True |  |
     | facts.tenant_movein | 01/01/2019 |  |
     | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
