@@ -1218,6 +1218,9 @@ fields:
     default: True
   - The ${eviction_detailed_reason} was the fault of a guest that I had no control over.: fault.no_control_of_guest
     datatype: yesno
+  - Based on principles of equity and fairness, it is unfair to evict me. (Tenant Should Not Lose Their Apartment / Avoidance of Forfeiture): initial_defense.avoidance_of_forfeiture
+    datatype: yesno
+    default: True
 # section: Claims and Defenses
 ---
 id: eviction reason
@@ -1306,7 +1309,8 @@ subquestion: |
   did.
   
   You may have other defenses that can stop the eviction. Common defenses include
-  disability, mistakes by the landlord, and an eviction for a bad (illegal) reason.  
+  disability, mistakes by the landlord, an eviction for a bad (illegal) reason,
+  and unfair forfeiture (tenant should not lose their apartment).
   
   % else:
   In a case like yours, you may win your case if you have at least one claim against your
@@ -1455,6 +1459,9 @@ fields:
         eviction_reason == 'nonpayment'
   - My rent is paid by the Department of Transitional Assistance, and DTA failed to make the payments at no fault of my own. : other.vendor_payments
     datatype: yesno
+  - Based on principles of equity and fairness, it is unfair to evict me. (Tenant Should Not Lose Their Apartment / Avoidance of Forfeiture): initial_defense.avoidance_of_forfeiture
+    datatype: yesno
+    default: True
 # section: Claims and Defenses  
 ---
 id: notice to quit facts
@@ -1738,6 +1745,9 @@ subquestion: |
   % endif
   % if initial_defense.no_standing:
   * Your landlord may not be the right person to evict you
+  % endif
+  % if initial_defense.avoidance_of_forfeiture:
+  * Based on principles of equity and fairness, it may be unfair to evict you (tenant should not lose their apartment)
   % endif
 field: show_defense_summary
 buttons:
