@@ -149,6 +149,11 @@ review:
       % if case.on_time:
       If correct, this makes your rescheduled court date ${ case.rescheduled_date }
       % endif
+  - Update late answer motion:
+    - include_late_answer_motion
+    button: |
+      You said you ${'want' if include_late_answer_motion else 'do not want'} to include
+      a Motion to File Late Answer and Discovery in your document bundle.
   - Update timing of notices:
       - date_received_ntq
       - date_received_summons

@@ -1190,6 +1190,24 @@ buttons:
   - Continue: 
       code: |
         case_is_on_time = True  
+---
+id: late answer motion
+question: |
+  Motion to file a late answer and discovery
+subquestion: |
+  % if late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None):
+  Your answer deadline has passed, but your court date has not happened yet.
+
+  You may want to include a Motion to File Late Answer and Discovery with your
+  Answer and Discovery forms.
+  % else:
+  You can choose to include a Motion to File Late Answer and Discovery if you want
+  to ask the court for permission to file your Answer and Discovery late.
+  % endif
+fields:
+  - Include the Motion to File Late Answer and Discovery: include_late_answer_motion
+    datatype: yesno
+    default: ${ late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None) }
 # section: About Your Court Case
 ---
 id: fault defenses
