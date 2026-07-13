@@ -74,6 +74,8 @@ code: |
   if eviction_reason == 'nonpayment':
     tenant_got_accompanying_form
     delay_in_raft
+    if delay_in_raft:
+      discrimination.raft_refusal
   
   nav.set_section('review_about_tenancy')
   facts.tenant_movein
@@ -129,7 +131,7 @@ code: |
       retaliation.other
     retaliation.within_6_months
 
-  if tenant.is_disabled:
+  if tenant.is_disabled or (eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal):
     tenant.is_discriminated = True
   if tenant.is_discriminated:
     discrimination.protected_classes

@@ -38,6 +38,17 @@ fields:
   - I have asked for help from RAFT or another rental help program and my rent is late because RAFT has not paid my rent yet.: delay_in_raft
     datatype: yesnoradio
 ---
+id: refusal to accept RAFT
+question: |
+  Refusal to accept RAFT or other rental assistance
+subquestion: |
+  If your landlord refuses, or you expect your landlord to refuse, to accept
+  RAFT or other rental assistance, you may have a discrimination defense and
+  counterclaim.
+fields:
+  - Has your landlord refused, or do you expect your landlord to refuse, to accept RAFT or other rental assistance?: discrimination.raft_refusal
+    datatype: yesnoradio
+---
 code: |
   # 2025-04-30
   # TODO: remove these obsolete defenses, after 2025-11-01
@@ -2196,7 +2207,10 @@ fields:
       - My skin color: skin color
     default: 
       code: |
-        dict(disability = tenant.is_disabled)
+        {
+          'disability': tenant.is_disabled,
+          'receipt of rental assistance': eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal,
+        }
   - Other class: discrimination.show_other
     datatype: yesno
   - "Other discrimination class:": discrimination.other
