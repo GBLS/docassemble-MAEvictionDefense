@@ -134,7 +134,10 @@ code: |
       retaliation.other
     retaliation.within_6_months
 
-  if tenant.is_disabled or (eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal):
+  if tenant.is_disabled:
+    disability.request_reasonable_accommodation
+
+  if (eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal) or (tenant.is_disabled and disability.unfairly_denied_accommodation):
     tenant.is_discriminated = True
   if tenant.is_discriminated:
     discrimination.protected_classes
@@ -223,8 +226,6 @@ code: |
   if plead_counterclaims and (claims.utilities or bad_conditions.have_conditions or bqe.violated):
     need_rental_value
   tenant.is_disabled
-  if tenant.is_disabled:
-    disability.request_reasonable_accommodation
   
   if person_answering == 'attorney':
     initial_defense.custom_reason_for_dismissal 

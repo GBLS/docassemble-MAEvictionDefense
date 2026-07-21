@@ -1005,6 +1005,10 @@ review:
     button: |
       Discrimination on basis of disability
        : ${ word(yesno(disability.request_reasonable_accommodation)) }
+  - Edit: disability.unfairly_denied_accommodation
+    button: |
+      Landlord refused, or is expected to refuse, reasonable accommodation
+       : ${ word(yesno(disability.unfairly_denied_accommodation)) }
   - Edit: discrimination.sexual_harassment.pressured_sexual_favors
     button: |
       My landlord asked/pressured me or someone I live with for sexual favors. : ${ word(yesno(discrimination.sexual_harassment.pressured_sexual_favors)) }
