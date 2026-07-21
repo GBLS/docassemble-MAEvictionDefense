@@ -803,7 +803,7 @@ subquestion: |
   Is there another tenant who lives with you who will also sign this form?
 fields:
   - no label: additional_tenants.there_are_any
-    datatype: yesno
+    datatype: yesnoradio
 help: |
   Not everyone who lives with you needs to sign your answer.
   Add their names if they are listed on the summons and complaint with you,
@@ -2100,7 +2100,7 @@ video: |
   ${"[YOUTUBE 1BYDc6EFTgE]" if user_language == "es" else "[YOUTUBE Bs-aVV5K-oo]"}
 fields:
   - no label: retaliation.is_retaliated
-    datatype: yesno
+    datatype: yesnoradio
 # section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)
