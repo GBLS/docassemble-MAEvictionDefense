@@ -1765,6 +1765,9 @@ subquestion: |
   % if initial_defense.no_standing:
   * Your landlord may not be the right person to evict you
   % endif
+  % if initial_defense.local_occupancy_ordinance:
+  * Your landlord may not have been allowed to collect rent without the required local permit or certification
+  % endif
   % if initial_defense.avoidance_of_forfeiture:
   * Based on principles of equity and fairness, it may be unfair to evict you (tenant should not lose their apartment)
   % endif
@@ -2301,7 +2304,33 @@ help: |
   Consumer protection applies to landlords who are "in the business" of being a landlord.
   It doesn't apply to a government agency, such as a housing authority, or to a 
   homeowner who rents out a room or second unit in a small building of less than 4 units.
-  
+---
+id: local occupancy ordinance
+question: |
+  ${ local_occupancy_ordinance_name }
+subquestion: |
+  ${ local_occupancy_ordinance_requirement }
+
+  If your landlord was collecting rent without this required permit or certification,
+  that may give you a defense to the eviction and may also support a counterclaim.
+fields:
+  - I believe my landlord did not have the required permit or certification while collecting rent.: occupancy_ordinance_applies
+    datatype: yesno
+  - I want to include this as a defense to the eviction.: occupancy_ordinance_use_as_defense
+    datatype: yesno
+    default: True
+    show if: occupancy_ordinance_applies
+  - I want to include this as a counterclaim or claim for relief.: occupancy_ordinance_use_as_counterclaim
+    datatype: yesno
+    default: ${ plead_counterclaims }
+    show if:
+      code: |
+        occupancy_ordinance_applies and plead_counterclaims
+# section: Claims and Defenses
+help: |
+  Local ordinances in some cities require landlords to get an occupancy permit or apartment certification
+  before they can legally collect rent. Bring any permit, inspection, certification, or city notices you have to court.
+
 ---
 id: security deposit
 question: Security Deposit

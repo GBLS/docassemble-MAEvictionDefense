@@ -86,6 +86,74 @@ Scenario: User has a "fault" case with NO court date
   And I wait 1 second
   Then I download "Eviction_Forms.zip"
 
+@slow @7 @occupancy-ordinance
+Scenario: User raises a city-specific occupancy permit defense
+  Given I start the interview at "eviction"
+  Then I get to the question id "signature" with this data:
+    | var | value | trigger |
+    | person_answering | tenant |  |
+    | how_to_answer | continue |  |
+    | case.status | summons |  |
+    | tenant.address.address | 123 Union St. |  |
+    | tenant.address.unit | 2 |  |
+    | tenant.address.city | Lynn |  |
+    | tenant.address.state | MA |  |
+    | tenant.address.zip | 01901 |  |
+    | facts.tenant_address_is_eviction_address | True |  |
+    | tenant.name.first | Lina |  |
+    | tenant.name.last | Tenant |  |
+    | additional_tenants.there_are_any | False |  |
+    | tenant.name_different_on_summons | False |  |
+    | remind_user | True |  |
+    | survey_user | True |  |
+    | edit_contact_info | True |  |
+    | landlord.name.text | Len Lessor |  |
+    | landlord.is_new | False |  |
+    | court | macourts[31] |  |
+    | landlord.has_attorney | False |  |
+    | case.hearing_date_assigned | True |  |
+    | case.first_event | 01/01/2025 |  |
+    | eviction_all_reasons['nonpayment'] | True |  |
+    | tenant_got_accompanying_form | False |  |
+    | facts.tenant_movein | 01/01/2019 |  |
+    | facts.tenant_rent_share | 1500 |  |
+    | facts.tenant_rent_frequency | month |  |
+    | tenancy_type | lease |  |
+    | notice_type | fourteen_day |  |
+    | ntq_includes_tenant_name | True |  |
+    | ntq_includes_all_tenants | True |  |
+    | ntq_includes_correct_address | True |  |
+    | dont_owe_rent | True |  |
+    | behind_in_rent | True |  |
+    | lease_type | fixed_term |  |
+    | lease_end_date | today + 365 |  |
+    | date_received_ntq | 01/01/2020 |  |
+    | date_received_summons | 02/01/2020 |  |
+    | ntq_matches_summons | True |  |
+    | summons_includes_all_tenants | True |  |
+    | summons_includes_correct_address | True |  |
+    | ntq_contains_reservation | True |  |
+    | occupancy_ordinance_applies | True |  |
+    | occupancy_ordinance_use_as_defense | True |  |
+    | occupancy_ordinance_use_as_counterclaim | True |  |
+    | bad_conditions.conditions['None'] | True |  |
+    | retaliation.is_retaliated | False |  |
+    | tenant.is_discriminated | False |  |
+    | claim_jurytrial | False |  |
+    | needs_time_because | Busy |  |
+    | tenant_review_discovery | False |  |
+  And I set the var "signature_choice" to "this device"
+  And I sign
+  And I tap to continue
+  And the max seconds for each step is 200
+  Then I get to the question id "download screen" with this data:
+    | var | value | trigger |
+    | method_of_service | emailed |  |
+    | service_date | 01/01/2024 |  |
+    | ask_intake_questions | skip |  |
+  And I wait 1 second
+  Then I download "Eviction_Forms.zip"
+
 @slow @5 @publichousing
 Scenario: User has a public housing voucher with a court date
   Given I start the interview at "eviction"

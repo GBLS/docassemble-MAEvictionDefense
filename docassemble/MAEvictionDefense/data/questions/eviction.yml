@@ -73,6 +73,9 @@ metadata:
 code: |
   revisit_sharing_url = url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']} ])
 ---
+code: |
+  occupancy_ordinance_url = 'docassemble.MAEvictionDefense:data/sources/occupancy_ordinances.csv'
+---
 objects:
   - logo: DAStaticFile.using(filename="MADElogoREV-horiz.svg")
   - short_logo: DAStaticFile.using(filename="MADElogoMark-REV.svg")

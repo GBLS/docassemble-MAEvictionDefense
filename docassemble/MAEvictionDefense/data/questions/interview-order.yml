@@ -155,6 +155,9 @@ code: |
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
   initial_defense.other
+
+  if has_city_specific_occupancy_ordinance:
+    occupancy_ordinance_applies
   
   if plead_counterclaims:
     paid_deposit
