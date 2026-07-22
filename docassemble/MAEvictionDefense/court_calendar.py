@@ -26,6 +26,22 @@ def court_business_days_before(
     return date_to_check
 
 
+def late_answer_motion_needed(
+    current_date: Union[str, DADateTime],
+    answer_deadline: Union[str, DADateTime],
+    hearing_date: Union[str, DADateTime, None] = None,
+) -> bool:
+    """Return whether the late answer motion should be offered."""
+    today_date = as_datetime(current_date).format("yyyy-MM-dd")
+    deadline_date = as_datetime(answer_deadline).format("yyyy-MM-dd")
+
+    if hearing_date in (None, ""):
+        return today_date > deadline_date
+
+    hearing_date_value = as_datetime(hearing_date).format("yyyy-MM-dd")
+    return today_date > deadline_date and today_date <= hearing_date_value
+
+
 def court_holiday_name(date_to_check: Union[str, DADateTime]) -> str:
     """Return the observed Massachusetts court holiday name, if any."""
     normalized_date = as_datetime(date_to_check)
