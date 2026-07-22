@@ -57,12 +57,15 @@ code: |
   case.rescheduled_date
   if not case.hearing_date_assigned:
     case_is_on_time # explain court will assign a date
-  elif case.hearing_date_assigned and today() > case.first_event:
+  elif late_answer_motion_needed(today(), case.answer_date, case.first_event):
     firstdatepassed
     case.status = 'late'
   # if case.on_time:
   #  if person_answering == 'tenant':
   #    case_is_on_time # Inform the user of postponement
+
+  if late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None):
+    include_late_answer_motion
 
   eviction_reason
   set_plead_counterclaims
@@ -152,6 +155,9 @@ code: |
   initial_defense.no_standing
   initial_defense.inconsistent_reasons
   initial_defense.other
+
+  if has_city_specific_occupancy_ordinance:
+    occupancy_ordinance_applies
   
   if plead_counterclaims:
     paid_deposit
