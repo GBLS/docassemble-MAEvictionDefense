@@ -32,13 +32,13 @@ def late_answer_motion_needed(
     hearing_date: Union[str, DADateTime, None] = None,
 ) -> bool:
     """Return whether the late answer motion should be offered."""
-    today_date = as_datetime(current_date)
-    deadline_date = as_datetime(answer_deadline)
+    today_date = as_datetime(current_date).format("yyyy-MM-dd")
+    deadline_date = as_datetime(answer_deadline).format("yyyy-MM-dd")
 
     if hearing_date in (None, ""):
         return today_date > deadline_date
 
-    hearing_date_value = as_datetime(hearing_date)
+    hearing_date_value = as_datetime(hearing_date).format("yyyy-MM-dd")
     return today_date > deadline_date and today_date <= hearing_date_value
 
 
