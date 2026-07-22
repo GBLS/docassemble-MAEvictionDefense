@@ -2246,7 +2246,7 @@ subquestion: |
   a defense to the eviction.
   Would you like to ask for a reasonable accommodation?
 fields:
-  - no label: disability.request_reasonable_accommodation
+  - Would you like to ask for a reasonable accommodation?: disability.request_reasonable_accommodation
     datatype: yesno
   - Has your landlord refused, or do you expect your landlord to refuse, this accommodation?: disability.unfairly_denied_accommodation
     datatype: yesno
