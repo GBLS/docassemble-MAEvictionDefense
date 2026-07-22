@@ -2225,10 +2225,7 @@ fields:
       - My skin color: skin color
     default: 
       code: |
-        {
-          'disability': tenant.is_disabled,
-          'receipt of rental assistance': eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal,
-        }
+        dict(disability = tenant.is_disabled)
   - Other class: discrimination.show_other
     datatype: yesno
   - "Other discrimination class:": discrimination.other
@@ -2251,6 +2248,9 @@ subquestion: |
 fields:
   - no label: disability.request_reasonable_accommodation
     datatype: yesno
+  - Has your landlord refused, or do you expect your landlord to refuse, this accommodation?: disability.unfairly_denied_accommodation
+    datatype: yesno
+    show if: disability.request_reasonable_accommodation
 # section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
