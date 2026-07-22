@@ -2225,10 +2225,7 @@ fields:
       - My skin color: skin color
     default: 
       code: |
-        {
-          'disability': tenant.is_disabled,
-          'receipt of rental assistance': eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal,
-        }
+        dict(disability = tenant.is_disabled)
   - Other class: discrimination.show_other
     datatype: yesno
   - "Other discrimination class:": discrimination.other
