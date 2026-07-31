@@ -294,6 +294,18 @@ review:
       discriminated against by your landlord.
       
       You said you were discriminated against because of ${ discrimination.protected_classes.true_values() }.
+  - Update local permit or certification rule:
+    - occupancy_ordinance_applies
+    button: |
+      % if occupancy_ordinance_applies:
+      You said that your landlord may not have had the required local permit or certification while collecting rent.
+      % else:
+      You said that your landlord had or you were not relying on the required local permit or certification while collecting rent.
+      % endif
+      % if has_city_specific_occupancy_ordinance:
+      The ordinance we identified for your city is ${ local_occupancy_ordinance_name }.
+      % endif
+    show if: has_city_specific_occupancy_ordinance
   - Update sexual harassment:
     - claims.harassment
     - recompute:
@@ -796,6 +808,18 @@ review:
   - Edit: initial_defense.custom_other
     button: |
       I have other defenses or counterclaims as follows : ${ initial_defense.custom_other }
+  - Edit: occupancy_ordinance_applies
+    button: |
+      I believe my landlord did not have the required local permit or certification while collecting rent. : ${ word(yesno(occupancy_ordinance_applies)) }
+    show if: has_city_specific_occupancy_ordinance
+  - Edit: occupancy_ordinance_use_as_defense
+    button: |
+      I want to include ${ local_occupancy_ordinance_name } as a defense to the eviction. : ${ word(yesno(occupancy_ordinance_use_as_defense)) }
+    show if: has_city_specific_occupancy_ordinance and occupancy_ordinance_applies
+  - Edit: occupancy_ordinance_use_as_counterclaim
+    button: |
+      I want to include ${ local_occupancy_ordinance_name } as a counterclaim or claim for relief. : ${ word(yesno(occupancy_ordinance_use_as_counterclaim)) }
+    show if: has_city_specific_occupancy_ordinance and occupancy_ordinance_applies and plead_counterclaims
   - Edit: more_than_3_units
     button: |
       My apartment building has more than 3 units. : ${ word(yesno(more_than_3_units)) }
