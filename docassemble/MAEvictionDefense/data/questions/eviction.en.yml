@@ -2305,9 +2305,7 @@ fields:
   - I want to include this as a counterclaim or claim for relief.: occupancy_ordinance_use_as_counterclaim
     datatype: yesno
     default: ${ plead_counterclaims }
-    show if:
-      code: |
-        occupancy_ordinance_applies and plead_counterclaims
+    show if: occupancy_ordinance_applies and plead_counterclaims
 # section: Claims and Defenses
 help: |
   Local ordinances in some cities require landlords to get an occupancy permit or apartment certification
