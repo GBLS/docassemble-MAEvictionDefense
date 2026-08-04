@@ -2298,19 +2298,37 @@ subquestion: |
 fields:
   - I believe my landlord did not have the required permit or certification while collecting rent.: occupancy_ordinance_applies
     datatype: yesno
-  - I want to include this as a defense to the eviction.: occupancy_ordinance_use_as_defense
-    datatype: yesno
-    default: True
-    show if: occupancy_ordinance_applies
-  - I want to include this as a counterclaim or claim for relief.: occupancy_ordinance_use_as_counterclaim
-    datatype: yesno
-    default: ${ plead_counterclaims }
-    show if: occupancy_ordinance_applies and plead_counterclaims
 # section: Claims and Defenses
 help: |
   Local ordinances in some cities require landlords to get an occupancy permit or apartment certification
   before they can legally collect rent. Bring any permit, inspection, certification, or city notices you have to court.
 
+---
+id: local occupancy ordinance defense selection
+question: |
+  ${ local_occupancy_ordinance_name }
+subquestion: |
+  You said your landlord may not have had the required permit or certification.
+
+  Do you want to include this as a defense to the eviction?
+fields:
+  - I want to include this as a defense to the eviction.: occupancy_ordinance_use_as_defense
+    datatype: yesno
+    default: True
+# section: Claims and Defenses
+---
+id: local occupancy ordinance counterclaim selection
+question: |
+  ${ local_occupancy_ordinance_name }
+subquestion: |
+  You said your landlord may not have had the required permit or certification.
+
+  Do you want to include this as a counterclaim or claim for relief?
+fields:
+  - I want to include this as a counterclaim or claim for relief.: occupancy_ordinance_use_as_counterclaim
+    datatype: yesno
+    default: True
+# section: Claims and Defenses
 ---
 id: security deposit
 question: Security Deposit

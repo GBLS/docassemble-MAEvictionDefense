@@ -117,7 +117,7 @@ code: |
   occupancy_ordinance_defense_selected = showifdef('occupancy_ordinance_applies', False) and showifdef('occupancy_ordinance_use_as_defense', False)
 ---
 code: |
-  occupancy_ordinance_counterclaim_selected = showifdef('occupancy_ordinance_applies', False) and showifdef('occupancy_ordinance_use_as_counterclaim', False)
+  occupancy_ordinance_counterclaim_selected = plead_counterclaims and showifdef('occupancy_ordinance_applies', False) and showifdef('occupancy_ordinance_use_as_counterclaim', False)
 ---
 code: |
   if occupancy_ordinance_defense_selected:

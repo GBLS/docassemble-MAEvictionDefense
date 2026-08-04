@@ -155,6 +155,10 @@ code: |
 
   if has_city_specific_occupancy_ordinance:
     occupancy_ordinance_applies
+    if occupancy_ordinance_applies:
+      occupancy_ordinance_use_as_defense
+      if plead_counterclaims:
+        occupancy_ordinance_use_as_counterclaim
   
   if plead_counterclaims:
     paid_deposit
