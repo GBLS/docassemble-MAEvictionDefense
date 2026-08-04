@@ -126,12 +126,16 @@ code: |
   else:
     initial_defense.local_occupancy_ordinance = False
     local_occupancy_ordinance_defense_summary = ''
+
+  check_occupancy_ordinance_defense_selected = True
 ---
 code: |
   if occupancy_ordinance_counterclaim_selected:
     local_occupancy_ordinance_counterclaim_summary = local_occupancy_ordinance_counterclaim_text
   else:
     local_occupancy_ordinance_counterclaim_summary = ''
+
+  check_occupancy_ordinance_counterclaim_selected = True
 ---
 code: |
   tenant.address.geolocate()
