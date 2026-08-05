@@ -15,8 +15,9 @@ code: |
 code: |
   reconsider('instructions', 'cover_letter', 'answer', 'discovery','safe_filename')
   downloads = [instructions,cover_letter,answer,discovery]
+  include_late_motion = case.status == 'late' or (defined('include_late_answer_motion') and include_late_answer_motion)
       
-  if case.status == 'late':
+  if include_late_motion:
     reconsider('late_answer')
     downloads.append(late_answer)
   if not court_is_housing_court and transfer_to_housing_court:
@@ -40,9 +41,10 @@ code: |
 ---
 code: |
   download_titles_temp = ['Answer','Discovery']
+  include_late_motion = case.status == 'late' or (defined('include_late_answer_motion') and include_late_answer_motion)
   
   num_downloads = 2
-  if case.status == 'late':
+  if include_late_motion:
     num_downloads += 1
     download_titles_temp.append('Motion to File Late Answer')
   if not court_is_housing_court and transfer_to_housing_court:
