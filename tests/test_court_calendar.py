@@ -60,6 +60,7 @@ sys.modules["docassemble.base.util"] = util_module
 from docassemble.MAEvictionDefense.court_calendar import (
     court_business_days_before,
     court_holiday_name,
+    late_answer_motion_needed,
 )
 
 
@@ -84,3 +85,15 @@ def test_patriots_day_is_a_court_business_day():
 
 def test_court_holiday_name_returns_observed_holiday():
     assert court_holiday_name("2026-01-19") == "Martin Luther King Jr. Day"
+
+
+def test_late_answer_motion_needed_before_deadline():
+    assert late_answer_motion_needed("2026-03-01", "2026-03-02", "2026-03-10") is False
+
+
+def test_late_answer_motion_needed_after_deadline_before_hearing():
+    assert late_answer_motion_needed("2026-03-03", "2026-03-02", "2026-03-10") is True
+
+
+def test_late_answer_motion_needed_after_hearing():
+    assert late_answer_motion_needed("2026-03-11", "2026-03-02", "2026-03-10") is False
