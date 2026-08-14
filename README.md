@@ -1,11 +1,52 @@
 # docassemble.MAEvictionDefense
 
 A guided interview for pro se eviction defense in Massachusetts, using the project
-name MADE, Massachusetts Defense for Eviction. Generates an Answer form, 
+name MADE, Massachusetts Defense for Eviction. Generates an Answer form,
 Request for Discovery, and accompanying forms and motions.
+
+## Current capabilities
+
+MADE is a production docassemble interview for tenants, attorneys, and other
+helpers in Massachusetts summary process cases. In addition to the Answer and
+Request for Discovery, it can generate a Late Answer, Notice of Transfer to
+Housing Court, Motion to Compel Discovery, Motion to Intervene, and Interpreter
+Notice.
+
+The interview includes Massachusetts court-date and business-day calculations,
+GBLS intake support, court transfer and late-answer checks, and defense and
+discovery flows for issues including foreclosure, RAFT assistance and
+discrimination, disability and accommodation, avoidance of forfeiture, sale of
+the property, and local occupancy ordinances.
+
+## Development and testing
+
+The package uses `pyproject.toml` for build metadata and dependencies. Python
+unit tests live in `tests/` and can be run with:
+
+```text
+pytest
+```
+
+GitHub Actions also run Python tests, package/build checks, YAML/Jinja
+validation, DOCX word-diff checks, and ALKiln integration tests against an
+isolated temporary docassemble server. The integration scenarios are in
+`docassemble/MAEvictionDefense/data/sources/`.
 
 ## Changelog
 
+* 2026-08-05 Added date-based checks for when a Late Answer and Discovery motion should be offered.
+* 2026-08-04 Added occupancy-ordinance handling and updated generated Answer content.
+* 2026-07-21 Separated disability and accommodation questions and defense logic.
+* 2026-07-02 Added a RAFT discrimination defense and sale-of-building questions with related discovery requests.
+* 2026-07-01 Added the avoidance-of-forfeiture defense.
+* 2026-05-14 Added an equitable defense option.
+* 2026-02-25 Added Massachusetts court business-day calculations and improved deadline handling.
+* 2025-05-05 Removed remaining COVID-specific logic and fixed related interview behavior.
+* 2024-09-04 Updated interview metadata and package presentation.
+* 2024-08-26 Updated interview metadata, including review and form information.
+* 2023-06-04 Added fixes and improvements for intake, interview language, review screens, and next-step documents.
+* 2023-05-01 Updated navigation colors, help button, and footer presentation.
+* 2023-03-04 Added custom MADE styling and logo work.
 * 2022-06-30 Updated SMS reminder of court date (clarify virtual hearing possibility)
 * 2021-01-18 Updated with December 2021 Answer revisions
 * 2021-01-17 Updated with December 2021 discovery language; removed reference to CDC moratorium
