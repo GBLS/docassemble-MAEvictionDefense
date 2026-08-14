@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docassemble.MAEvictionDefense"
-version = "0.5.0"
+version = "0.6.0"
 description = "A guided interview for pro se eviction defense in Massachusetts. Generates an Answer form, Request for Discovery, and accompanying forms and motions."
 readme = "README.md"
 authors = [
