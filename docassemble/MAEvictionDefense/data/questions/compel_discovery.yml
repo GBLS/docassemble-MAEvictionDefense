@@ -12,7 +12,7 @@ subquestion: |
   
 fields:
   - no label: received_correspondence
-    datatype: yesno
+    datatype: yesnoradio
 ---
 id: was_mail_response
 question: |
@@ -23,7 +23,7 @@ subquestion: |
   Document Requests"?
 fields:
   - no label: looks_like_discovery_response
-    datatype: yesno
+    datatype: yesnoradio
 ---
 id: landlord_answered_all
 question: |
