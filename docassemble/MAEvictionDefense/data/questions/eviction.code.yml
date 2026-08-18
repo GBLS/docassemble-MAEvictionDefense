@@ -171,7 +171,8 @@ code: |
   else:
     case.original_date = "TBD"
     case.rescheduled_date = "TBD"
-    case.answer_date = today().plus(days=1)
+    # No hearing date yet, so the answer is due the next day the court is open.
+    case.answer_date = next_court_business_day(today().plus(days=1))
 ---
 # TODO: covid-specific
 code: |

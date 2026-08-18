@@ -25,6 +25,19 @@ def court_business_days_before(
 
     return date_to_check
 
+def next_court_business_day(date_to_check: Union[str, DADateTime]) -> DADateTime:
+    """Return the first Massachusetts court business day on or after the given date."""
+    candidate = as_datetime(date_to_check)
+
+    while not is_business_day(
+        date=candidate,
+        subdiv="MA",
+        remove_holidays=COURT_HOLIDAY_EXCLUSIONS,
+    ):
+        candidate = candidate.plus(days=1)
+
+    return candidate
+
 def late_answer_motion_needed(
     current_date: Union[str, DADateTime],
     answer_deadline: Union[str, DADateTime],

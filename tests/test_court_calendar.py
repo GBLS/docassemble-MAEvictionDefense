@@ -30,6 +30,9 @@ class DADateTime:
     def minus(self, *, days: int) -> "DADateTime":
         return DADateTime(self.value - timedelta(days=days))
 
+    def plus(self, *, days: int) -> "DADateTime":
+        return DADateTime(self.value + timedelta(days=days))
+
     def format(self, date_format: str) -> str:
         if date_format != "yyyy-MM-dd":
             raise ValueError(f"Unsupported test date format: {date_format}")
@@ -61,6 +64,7 @@ from docassemble.MAEvictionDefense.court_calendar import (
     court_business_days_before,
     court_holiday_name,
     late_answer_motion_needed,
+    next_court_business_day,
 )
 
 
@@ -97,3 +101,38 @@ def test_late_answer_motion_needed_after_deadline_before_hearing():
 
 def test_late_answer_motion_needed_after_hearing():
     assert late_answer_motion_needed("2026-03-11", "2026-03-02", "2026-03-10") is False
+
+
+def test_next_court_business_day_moves_sunday_to_monday():
+    result = next_court_business_day("2026-08-16")
+
+    assert result.format("yyyy-MM-dd") == "2026-08-17"
+
+
+def test_next_court_business_day_keeps_a_business_day():
+    result = next_court_business_day("2026-08-17")
+
+    assert result.format("yyyy-MM-dd") == "2026-08-17"
+
+
+def test_next_court_business_day_skips_a_holiday_and_the_weekend():
+    # 2026-11-26 is Thanksgiving, so the next court business day is the Friday.
+    assert next_court_business_day("2026-11-26").format("yyyy-MM-dd") == "2026-11-27"
+    # 2026-12-25 is Christmas on a Friday, so the deadline moves to the Monday.
+    assert next_court_business_day("2026-12-25").format("yyyy-MM-dd") == "2026-12-28"
+
+
+def test_next_court_business_day_treats_patriots_day_as_a_business_day():
+    assert next_court_business_day("2026-04-20").format("yyyy-MM-dd") == "2026-04-20"
+
+
+def test_answer_deadline_without_hearing_date_is_never_a_weekend_or_holiday():
+    """Regression test for #355: the deadline must land on a court business day."""
+    day = date(2026, 1, 1)
+    while day < date(2027, 1, 1):
+        deadline = next_court_business_day(DADateTime(day).plus(days=1))
+        assert deadline.dow not in (6, 7), f"{day}: deadline {deadline.format('yyyy-MM-dd')} is a weekend"
+        assert court_holiday_name(deadline) == "", (
+            f"{day}: deadline {deadline.format('yyyy-MM-dd')} is a court holiday"
+        )
+        day += timedelta(days=1)
