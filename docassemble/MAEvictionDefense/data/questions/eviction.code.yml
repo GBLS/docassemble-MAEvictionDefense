@@ -63,6 +63,44 @@ code: |
     didnt_provide_contact_info = True
 ---
 code: |
+  # Delivery methods for the certificate of service. Mail is only offered while
+  # there is still time for it to arrive.
+  service_method_choices = []
+  if format_date(case.answer_date) != format_date(today()):
+    service_method_choices.append({'mailed': 'Mail'})
+  service_method_choices.extend([
+    {'delivered in-hand': 'By hand'},
+    {'emailed': 'Email (with permission of my landlord)'},
+    {'faxed': 'Fax (with permission of my landlord)'},
+  ])
+---
+code: |
+  # Only asked when the landlord has an attorney; otherwise there is no choice.
+  if not landlord.has_attorney:
+    service_recipient = 'landlord'
+---
+code: |
+  # Only asked when an advocate is running the interview; a pro se tenant
+  # delivers their own paperwork.
+  if person_answering != 'attorney':
+    service_performed_by = 'tenant'
+---
+code: |
+  if service_recipient == 'attorney':
+    service_recipient_description = "the landlord's attorney, " + str(landlords_attorney)
+  else:
+    service_recipient_description = "the landlord, " + str(landlord)
+---
+code: |
+  # The "caused the foregoing to be served" wording needs a manner, not a verb.
+  service_method_phrase = {
+    'mailed': 'first-class mail',
+    'delivered in-hand': 'hand delivery',
+    'emailed': 'email',
+    'faxed': 'fax',
+  }.get(method_of_service, str(method_of_service))
+---
+code: |
   date_discovery_received = service_date
   if method_of_service == 'mailed':
     date_discovery_received = date_discovery_received.plus(days=1)

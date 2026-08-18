@@ -1141,6 +1141,12 @@ review:
 
   - note: |
       <h2 class="h4 mt-4">Getting the documents served</h2>
+  - Edit: service_recipient
+    button: |
+      Delivered to : ${ service_recipient_description }
+  - Edit: service_performed_by
+    button: |
+      Delivered by : ${ 'the tenant' if service_performed_by == 'tenant' else 'the tenant&rsquo;s advocate' }
   - Edit: method_of_service
     button: |
       Delivery method : ${ method_of_service }
