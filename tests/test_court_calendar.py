@@ -89,6 +89,13 @@ def test_patriots_day_is_not_a_court_business_day():
     assert court_holiday_name("2026-04-20") == "Patriots' Day"
 
 
+def test_answer_deadline_skips_patriots_day_in_e2e_fixture_year():
+    result = court_business_days_before("2027-04-22", 3)
+
+    assert result.format("yyyy-MM-dd") == "2027-04-16"
+    assert court_holiday_name("2027-04-19") == "Patriots' Day"
+
+
 def test_court_holiday_name_returns_observed_holiday():
     assert court_holiday_name("2026-01-19") == "Martin Luther King Jr. Day"
 
