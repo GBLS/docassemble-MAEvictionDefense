@@ -2436,6 +2436,13 @@ subquestion: |
   Please select all questions that you would like to ask your landlord.
 fields: 
   code: ints_fields
+validation code: |
+  # Uniform Summary Process Rule 7(b) caps interrogatories at 30.
+  if ints.count_checked() > 30:
+    validation_error(
+      "You selected " + str(ints.count_checked()) + " questions, but you can only ask "
+      "your landlord 30. Please remove " + str(ints.count_checked() - 30) + "."
+    )
 continue button field: interrogatory_questions  
 ---
 id: discovery
