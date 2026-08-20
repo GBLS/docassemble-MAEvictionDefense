@@ -6,7 +6,9 @@ import json
 from nameparser import HumanName
 
 
-__all__ = ['in_service_area','ls_submit_online_intake','nameparts','address_to_json','address_to_dict']
+__all__ = ['in_service_area','city_in_service_area','GBLS_SERVICE_AREA',
+           'GBLS_ELDER_ONLY_SERVICE_AREA','ls_submit_online_intake','nameparts',
+           'address_to_json','address_to_dict']
 
 def nameparts(name):
     return HumanName(name)
@@ -34,35 +36,60 @@ def address_to_json(address):
     addr = {key:value for (key,value) in addr.items() if not value is None}
     return json.dumps(addr)
 
-def in_service_area(tenant):
+# Communities GBLS serves regardless of the client's age.
+GBLS_SERVICE_AREA = [
+    "harvard",	"randolph",
+    "arlington", "hingham", "reading",
+    "bedford",	"holbrook",	"revere",
+    "belmont",	"hull",	"scituate",
+    "boston",	"lexington",	"somerville",
+    "boxborough",	"lincoln",	"stoneham",
+    "braintree",	"littleton",	"stow",
+    "brookline",	"malden",	"wakefield",
+    "burlington",	"maynard",	"waltham",
+    "cambridge",	"medford",	"watertown",
+    "canton",	"melrose",	"weymouth",
+    "carlisle",	"milton",	"wilmington",
+    "chelsea",	"newton",	"winchester",
+    "cohasset",	"north reading",	"winthrop",
+    "concord",	"norwell",	"woburn",
+    "everett",	"quincy",'allston','back bay',
+    'beacon hill','brighton','charlestown',
+    'chinatown','dorchester','east boston',
+    'fenway','kenmore','hyde park','jamaica plain',
+    'mattapan','north end','roslindale','roxbury',
+    'south boston','south end','west end','west roxbury'
+]
+
+# Communities GBLS serves only for elders. Non-elders here should be referred
+# elsewhere rather than sent into GBLS intake.
+GBLS_ELDER_ONLY_SERVICE_AREA = [
+    "acton",
+]
+
+
+def city_in_service_area(city, is_elder=False):
+    """Return whether GBLS covers this city, widening the area for elders."""
+    if not city:
+        return False
+    normalized_city = city.strip().lower()
+    if normalized_city in GBLS_SERVICE_AREA:
+        return True
+    return bool(is_elder) and normalized_city in GBLS_ELDER_ONLY_SERVICE_AREA
+
+
+def in_service_area(tenant, is_elder=False):
+    """Return whether GBLS can take this tenant, based on where they live.
+
+    Some communities are within the service area only for elders, so pass
+    is_elder for a household with someone over 60.
+    """
     tenant.address.geolocate()
     if hasattr(tenant.address, 'norm_long'):
       address_to_compare = tenant.address.norm_long
     else:
       address_to_compare = tenant.address
-    return address_to_compare.city.lower() in [
-            "acton","harvard",	"randolph",
-            "arlington", "hingham", "reading",
-            "bedford",	"holbrook",	"revere",
-            "belmont",	"hull",	"scituate",
-            "boston",	"lexington",	"somerville",
-            "boxborough",	"lincoln",	"stoneham",
-            "braintree",	"littleton",	"stow",
-            "brookline",	"malden",	"wakefield",
-            "burlington",	"maynard",	"waltham",
-            "cambridge",	"medford",	"watertown",
-            "canton",	"melrose",	"weymouth",
-            "carlisle",	"milton",	"wilmington",
-            "chelsea",	"newton",	"winchester",
-            "cohasset",	"north reading",	"winthrop",
-            "concord",	"norwell",	"woburn",
-            "everett",	"quincy",'allston','back bay',
-            'beacon hill','brighton','charlestown',
-            'chinatown','dorchester','east boston',
-            'fenway','kenmore','hyde park','jamaica plain',
-            'mattapan','north end','roslindale','roxbury',
-            'south boston','south end','west end','west roxbury'
-        ]
+    return city_in_service_area(address_to_compare.city, is_elder=is_elder)
 
 def ls_submit_online_intake(params, task=None):
     """Looks in config for legal server key, subkeys servername, username, and password
