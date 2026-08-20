@@ -667,15 +667,27 @@ subquestion: |
   your landlord will get it on or before ${format_date(case.answer_date)}.
   % endif
 fields: 
+  - Who are you delivering the paperwork to?: service_recipient
+    input type: radio
+    choices:
+      - The landlord's attorney, ${ landlords_attorney }: attorney
+      - The landlord, ${ landlord }: landlord
+    default: attorney
+    show if:
+      code: |
+        landlord.has_attorney
+  - Who is delivering the paperwork?: service_performed_by
+    input type: radio
+    choices:
+      - The tenant: tenant
+      - I am, or my office is: advocate
+    default: advocate
+    show if:
+      code: |
+        person_answering == 'attorney'
   - Delivery method: method_of_service
     code: |
-      [{"delivered in-hand": "Delivering by hand" },
-            {"emailed":"Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
-            {"delivered (or caused to be delivered)":"delivered in-hand"},
-            {"emailed": "Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}]
-        
+      service_method_choices
   - Date of delivery: service_date
     datatype: date
 # section: Conclusion
