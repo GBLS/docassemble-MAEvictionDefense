@@ -589,9 +589,9 @@ review:
   - Edit: facts.tenant_address_is_eviction_address
     button: |
       This is also the address I am being evicted from : ${ facts.tenant_address_is_eviction_address }
-  - Edit: premises_alternate_address
+  - Edit: premises_alternate_address.address
     button: |
-      What address are you being evicted from? (all on one line) : ${ premises_alternate_address }
+      What address are you being evicted from : ${ premises_alternate_address.on_one_line() }
 
   - note: |
       <h2 class="h4 mt-4">About your landlord</h2>
@@ -701,7 +701,7 @@ review:
       I am a survivor of domestic violence. : ${ word(yesno(tenant.is_dvvictim)) }
   - Edit: postforeclosure.is_foreclosed
     button: |
-      ${tenant.address.address} has been foreclosed on. : ${ word(yesno(postforeclosure.is_foreclosed)) }
+      ${premises_street} has been foreclosed on. : ${ word(yesno(postforeclosure.is_foreclosed)) }
   - Edit: is_pfc_owner
     button: |
       I am or I was the owner before the foreclosure. : ${ word(yesno(is_pfc_owner)) }
@@ -1100,7 +1100,7 @@ review:
       I pay for one or more utilities. : ${ word(yesno(claims.utilities)) }
   - Edit: is_condo_conversion
     button: |
-      ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
+      ${premises_street} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
   - Edit: paid_deposit
     button: |
       I paid a security deposit. : ${ word(yesno(paid_deposit)) }
@@ -1149,6 +1149,12 @@ review:
 
   - note: |
       <h2 class="h4 mt-4">Getting the documents served</h2>
+  - Edit: service_recipient
+    button: |
+      Delivered to : ${ service_recipient_description }
+  - Edit: service_performed_by
+    button: |
+      Delivered by : ${ 'the tenant' if service_performed_by == 'tenant' else 'the tenant&rsquo;s advocate' }
   - Edit: method_of_service
     button: |
       Delivery method : ${ method_of_service }

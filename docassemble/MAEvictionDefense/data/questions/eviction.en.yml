@@ -676,15 +676,27 @@ subquestion: |
   received, not when you put it in the mail.
   % endif
 fields: 
+  - Who are you delivering the paperwork to?: service_recipient
+    input type: radio
+    choices:
+      - The landlord's attorney, ${ landlords_attorney }: attorney
+      - The landlord, ${ landlord }: landlord
+    default: attorney
+    show if:
+      code: |
+        landlord.has_attorney
+  - Who is delivering the paperwork?: service_performed_by
+    input type: radio
+    choices:
+      - The tenant: tenant
+      - I am, or my office is: advocate
+    default: advocate
+    show if:
+      code: |
+        person_answering == 'attorney'
   - Delivery method: method_of_service
     code: |
-      [{"delivered in-hand": "Delivering by hand" },
-            {"emailed":"Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}] if (not case.answer_deadline_known or today() >= case.answer_date) else [{'mailed':'Mail'},
-            {"delivered (or caused to be delivered)":"delivered in-hand"},
-            {"emailed": "Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}]
-        
+      service_method_choices
   - Date of delivery: service_date
     datatype: date
 # section: Conclusion
@@ -910,7 +922,33 @@ fields:
   - This is also the address I am being evicted from: facts.tenant_address_is_eviction_address
     datatype: yesnoradio
     default: True
-  - What address are you being evicted from? (all on one line): premises_alternate_address
+  - note: |
+      **What address are you being evicted from?**
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+  - address: premises_alternate_address.address
+    address autocomplete: True
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+  - unit: premises_alternate_address.unit
+    required: False
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+  - city: premises_alternate_address.city
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+  - state: premises_alternate_address.state
+    code: |
+      states_list()
+    default: "MA"
+    show if: 
+      variable: facts.tenant_address_is_eviction_address
+      is: False
+  - zip: premises_alternate_address.zip
     show if: 
       variable: facts.tenant_address_is_eviction_address
       is: False
@@ -1040,14 +1078,14 @@ help: |
   benefits.  
 ---
 id: tenancy facts
-question: Information about ${tenant.address.address}
+question: Information about ${premises_street}
 subquestion: |
   Below are statements that apply to some tenancies.
   Read the list below carefully and select all of the facts that applied to you during
-  the time that you lived at ${tenant.address.address}. If you are not sure, click
+  the time that you lived at ${premises_street}. If you are not sure, click
   yes.
 fields:
-  - ${tenant.address.address} has been foreclosed on.: postforeclosure.is_foreclosed
+  - ${premises_street} has been foreclosed on.: postforeclosure.is_foreclosed
     datatype: yesno
     show if:
       code: |
@@ -1072,7 +1110,7 @@ fields:
     show if:
       code: |
         plead_counterclaims    
-  - ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon.: is_condo_conversion
+  - ${premises_street} was recently converted into a condominium or cooperative, or will be converted soon.: is_condo_conversion
     datatype: yesno
     show if:
       code: |
@@ -1844,7 +1882,7 @@ fields:
     datatype: checkboxes
     show if:
       code: |
-        tenant.address.city in ['Abington','Acton','Amherst','Boston','Brookline','Haverhill','Lexington','Malden','Marlborough','New Bedford','Newburyport','Newton','Somerville']
+        premises_city in ['Abington','Acton','Amherst','Boston','Brookline','Haverhill','Lexington','Malden','Marlborough','New Bedford','Newburyport','Newton','Somerville']
     code: |
       condo_local_options
 help: |
@@ -1855,7 +1893,7 @@ help: |
 ---
 code: |
   temp = [{'My landlord failed to obtain the proper local permit.':'My landlord failed to obtain the proper local permit.'}]
-  if tenant.address.city == 'Boston':
+  if premises_city == 'Boston':
     temp.append({"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.":"My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household."})
     temp.append({"My landlord failed to specify 'just cause' for my eviction (they gave no reason or a bad reason).":"My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason)."})
   temp.append({"My landlord violated another local rule.":"My landlord violated another local rule (see links in help)."})
@@ -2238,7 +2276,7 @@ video: |
   ${ "[YOUTUBE 3INbS7qS1qI]" if user_language == "es" else "[YOUTUBE Yxry8Zbmcgs]" }
 fields:
   - no label: tenant.is_discriminated
-    datatype: yesno
+    datatype: yesnoradio
 # section: Claims and Defenses
 help: |
   [Learn more about discrimination law](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
@@ -2294,7 +2332,7 @@ subquestion: |
   Would you like to ask for a reasonable accommodation?
 fields:
   - no label: disability.request_reasonable_accommodation
-    datatype: yesno
+    datatype: yesnoradio
 # section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
@@ -2451,6 +2489,13 @@ subquestion: |
   Please select all questions that you would like to ask your landlord.
 fields: 
   code: ints_fields
+validation code: |
+  # Uniform Summary Process Rule 7(b) caps interrogatories at 30.
+  if ints.count_checked() > 30:
+    validation_error(
+      "You selected " + str(ints.count_checked()) + " questions, but you can only ask "
+      "your landlord 30. Please remove " + str(ints.count_checked() - 30) + "."
+    )
 continue button field: interrogatory_questions  
 ---
 id: discovery
