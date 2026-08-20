@@ -2223,7 +2223,7 @@ video: |
   ${ "[YOUTUBE 3INbS7qS1qI]" if user_language == "es" else "[YOUTUBE Yxry8Zbmcgs]" }
 fields:
   - no label: tenant.is_discriminated
-    datatype: yesno
+    datatype: yesnoradio
 # section: Claims and Defenses
 help: |
   [Learn more about discrimination law](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
@@ -2279,7 +2279,7 @@ subquestion: |
   Would you like to ask for a reasonable accommodation?
 fields:
   - no label: disability.request_reasonable_accommodation
-    datatype: yesno
+    datatype: yesnoradio
 # section: Claims and Defenses
 help: |
   See [Legal Tactics, Chapter 7](https://www.masslegalhelp.org/housing/lt1-chapter-7-discrimination.pdf).
