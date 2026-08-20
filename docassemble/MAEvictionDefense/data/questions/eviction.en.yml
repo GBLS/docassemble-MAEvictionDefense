@@ -390,11 +390,15 @@ buttons:
 # section: Getting Started
 decoration: users
 help: |
-  Either the landlord or the tenant can choose a jury trial any time up until the
-  answer date which is printed on your Summons and Complaint. You can use this
-  interview to ask for your jury trial, or another form, but it must be
-  before the deadline. If you do think you may want a jury, you should keep your
-  jury right in this interview.
+  Either the landlord or the tenant can ask for a jury trial. Under the current
+  summary process standing orders, your Answer and jury demand are ordinarily
+  due 3 court business days before your first-tier court event. The court sends
+  a separate notice with that event date; it is not the Entry Date printed on
+  your Summons and Complaint.
+
+  You can use this interview to ask for a jury trial. If you do not know your
+  first-tier event date, file and deliver your paperwork as soon as possible and
+  check the court docket or contact the clerk for the date.
   
   A jury trial can be difficult for a tenant to do on their own. However, because
   most cases end in an agreement, asking for a jury trial now has very low risk.
@@ -646,25 +650,30 @@ question: |
 subquestion: |
   You must give a copy of the forms we are working on to your landlord or their 
   attorney. 
-  % if case.hearing_date_assigned:
-  They need to _get_ the forms no later than 
-  **${format_date(case.answer_date)}**.
-  % if answer_date_is_holiday:
-  Because ${case.answer_date} is ${answer_date_holiday}, you can
-  deliver it the next weekday after ${answer_date_holiday}.
-  % endif
+  % if case.answer_deadline_known:
+  Under the current summary process rules, you must file the forms with the
+  court and your landlord or their attorney must _get_ their copy no later than
+  3 court business days before your first-tier event. Based on the event date
+  you entered, that deadline is **${format_date(case.answer_date)}**.
   % else:
-  Give a copy to your landlord or their attorney as soon as you can.
+  Your exact deadline cannot be calculated without a valid date for your
+  first-tier court event. It is ordinarily 3 court business days before that
+  event. Check the court docket or contact the clerk now to confirm the event date.
+  File the forms with the court and give a copy to your landlord or their
+  attorney **as soon as you can—do not wait for the court notice**.
   % endif
 
-  Deliver it in person
-  if you can. Your landlord may agree to get the paperwork by fax or email,
-  but you need to get their permission first. 
-  % if format_date(case.answer_date) == format_date(today()):
+  Deliver it in person if you can. Your landlord may agree to get the paperwork
+  by fax or email, but you need to get their permission first.
+  % if not case.answer_deadline_known:
+  Mailing may be too slow because you do not know the deadline. Use a faster
+  delivery method unless the clerk confirms that mailing will arrive in time.
+  % elif today() >= case.answer_date:
   It's too late to mail the paperwork.
   % else:
-  Only mail it if you know
-  your landlord will get it on or before ${format_date(case.answer_date)}.
+  Only mail it if you know your landlord will get it on or before
+  ${format_date(case.answer_date)}. Service by mail is complete when it is
+  received, not when you put it in the mail.
   % endif
 fields: 
   - Who are you delivering the paperwork to?: service_recipient
@@ -711,8 +720,15 @@ subquestion: |
     Deliver one copy to your
      ${("landlord's attorney, " + landlords_attorney.name.text) if landlord.has_attorney else ('landlord, ' + landlord.name.text) }, 
      at ${landlords_attorney.address.on_one_line() if landlord.has_attorney else 'their address' }, 
-     no later than ${format_date(case.answer_date)}. Deliver a second copy to the ${ court }. Keep
-     one copy for yourself.
+     % if case.answer_deadline_known:
+     no later than ${format_date(case.answer_date)}. This is 3 court business
+     days before the first-tier event date you entered.
+     % else:
+     as soon as possible. Your exact deadline is not known without a valid
+     first-tier event date. Check the docket or contact the clerk now, and do
+     not wait for the court notice before filing.
+     % endif
+     Deliver a second copy to the ${ court }. Keep one copy for yourself.
   </li>
   <li>
   Your landlord should give you {discovery} by ${date_discovery_due}. File a 
@@ -722,13 +738,17 @@ subquestion: |
   % endif
   </li>
   <li>
+  % if case.hearing_date_assigned:
   <b>Get ready for court and show up on ${court_date}.</b>
   % if court_date_is_holiday:
   ${court_date} is a holiday (${court_date_holiday}), so ask the court
   when your case will be postponed until.
   % endif
-  Because of the Covid-19 emergency, your court date may change. Call
-  the court to be sure.
+  % else:
+  <b>Your first court-event date is not known yet.</b> Check your mail and the
+  court docket. Contact the clerk if the case has been entered and you have not
+  received a separate event notice. Attend every court event the court assigns.
+  % endif
 
   </li>
   </ol>
@@ -1219,6 +1239,11 @@ subquestion: |
 
   This may be called a "Tier 1" event.
 fields:
+  - What **Entry Date** is printed near the bottom of your Summons and Complaint?: case.entry_date
+    datatype: date
+    help: |
+      This is labeled **Entry Date** near the bottom of the Summons and Complaint.
+      It is not your Answer deadline or your first court-event date.
   - Did you get a letter from the court that tells you what **day and time** to go to court yet?: case.hearing_date_assigned
     datatype: yesnoradio
   - When do you need to go to court?: case.first_event
@@ -1229,12 +1254,20 @@ id: case postponed
 event: case_is_on_time
 # decoration: thumbs-up
 question: |
-  Your hearing date will be assigned soon
+  Your first court-event date is not known yet
 subquestion: |
-  Check your mail regularly.
-  
-  You will get a notice of your court date in the mail. It will likely be
-  in a few weeks.  
+  Your exact Answer deadline depends on a date we do not know yet. Under the
+  current summary process rules, you ordinarily must **file your Answer with the
+  court and deliver a copy to your landlord or their attorney no later than 3
+  court business days before your first-tier court event**.
+
+  The court assigns the first-tier event after the case is entered and sends a
+  separate notice. Check your mail and the court docket. If the case has already
+  been entered and you have not received the notice, contact the clerk's office
+  now to ask for the event date.
+
+  **Do not wait for the notice to file these forms. File with the court and
+  deliver the other copy as soon as possible.**
 buttons:
   - Continue: 
       code: |
@@ -1244,7 +1277,7 @@ id: late answer motion
 question: |
   Motion to file a late answer and discovery
 subquestion: |
-  % if late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None):
+  % if case.answer_deadline_known and late_answer_motion_needed(today(), case.answer_date, case.first_event):
   Your answer deadline has passed, but your court date has not happened yet.
 
   You may want to include a Motion to File Late Answer and Discovery with your
@@ -1256,7 +1289,7 @@ subquestion: |
 fields:
   - Include the Motion to File Late Answer and Discovery: include_late_answer_motion
     datatype: yesno
-    default: ${ late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None) }
+    default: ${ case.answer_deadline_known and late_answer_motion_needed(today(), case.answer_date, case.first_event) }
 # section: About Your Court Case
 ---
 id: fault defenses
@@ -1692,7 +1725,15 @@ subquestion: |
   You may have the right to stop the eviction if you paid all of the money that you owed the landlord
   no later than  
   % if tenancy_type == 'lease':
-  the answer date, ${case.answer_date}.
+  % if case.answer_deadline_known:
+  the Answer deadline, ${case.answer_date}. Under current court rules, that is
+  3 court business days before your first-tier court event.
+  % else:
+  the Answer deadline. That deadline is ordinarily 3 court business days before
+  your first-tier court event, but you told us you do not know the event date yet.
+  Check the court docket or contact the clerk to learn the date. We will include
+  the payment facts in your Answer without guessing whether the deadline passed.
+  % endif
   % else:
   10 days after you got the notice to quit
   ${', ' + str(date_received_ntq.plus(days=10)) if (defined('date_received_ntq') and date_received_ntq != '') else ''}
@@ -2607,8 +2648,17 @@ content: |
   % if case.hearing_date_assigned:
   As a reminder, your court date will be ${format_date(court_date)},
   unless you hear otherwise from the court.
+  % endif
+  % if case.answer_deadline_known:
+  Your Answer deadline is ${format_date(case.answer_date)}, 3 court business
+  days before the first-tier event date you entered. File with the court and
+  make sure the landlord or their attorney receives a copy by that date.
   % else:
-  You will get a notice from the court about your hearing date.
+  Your exact Answer deadline is not known without a valid first-tier event date.
+  It is ordinarily 3 court business days before that event. File with the court
+  and deliver a copy to the landlord or their attorney as soon as possible. Do
+  not wait for the notice. Check the docket or contact the clerk now for the
+  event date, and keep watching for the court's separate notice.
   % endif
   
   Once you have a case ID number (docket number), you can also sign up
@@ -2635,15 +2685,21 @@ content: |
 template: interview_complete_text
 content: |
   Congrats on finishing the interview! Don't forget:
+  % if case.answer_deadline_known:
+  File with the court and deliver the landlord's copy by ${format_date(case.answer_date)}.
+  % else:
+  Your deadline is ordinarily 3 court business days before your first-tier event,
+  but a valid event date is not known. File and deliver the forms ASAP. Check the
+  docket or call the clerk now and watch for the court notice.
+  % endif
   % if case.hearing_date_assigned:
-  File your paperwork and attend court on ${ format_date(court_date) }.
+  Attend court on ${format_date(court_date)}.
   % if court_date_is_holiday:
   Because ${court_date} is a holiday, ${court_date_holiday},
   ask the court what date to appear.
   % endif
   % else:
-  Look for a notice from the court about your hearing date and
-  be sure to attend court when you are scheduled to do so.
+  Attend every court event the court assigns.
   % endif
 
   Get ready here: https://gbls.org/tactics/12

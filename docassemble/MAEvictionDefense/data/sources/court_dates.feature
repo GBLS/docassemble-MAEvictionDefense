@@ -45,6 +45,7 @@ Scenario: User has a "fault" case with NO court date
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
+    | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | False |  |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
@@ -111,8 +112,9 @@ Scenario: User has a public housing voucher with a court date
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
+    | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | True |  |
-    | case.first_event | 01/01/2025 |  |
+    | case.first_event | 04/22/2027 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | tenant_got_accompanying_form | False |  |
     | facts.tenant_has_subsidy | True |  |
@@ -183,8 +185,9 @@ Scenario: User fell behind because of RAFT delay
     | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
+    | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | True |  |
-    | case.first_event | 01/01/2025 |  |
+    | case.first_event | 04/22/2027 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | tenant_got_accompanying_form | False |  |
     | delay_in_raft | True |  |

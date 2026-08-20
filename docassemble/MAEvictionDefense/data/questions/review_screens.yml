@@ -134,8 +134,9 @@ review:
       to transfer your case to the ${transfer_court_name}.
   - Update court date: 
       - case.original_date
-      - case.answer_date
       - recompute:
+        - case.answer_deadline_known
+        - case.answer_date
         - case.on_time
         - case.rescheduled_date
         - date_discovery_due
@@ -143,12 +144,19 @@ review:
         - date_motion_to_compel_due
         - court_date
     button: |
+      % if case.answer_deadline_known:
       You said your case was originally scheduled to be heard on ${ case.original_date }
       with an answer date of ${ case.answer_date }.
       
       % if case.on_time:
       If correct, this makes your rescheduled court date ${ case.rescheduled_date }
       % endif
+      % else:
+      You have not received the notice assigning your first-tier court event, so
+      your exact Answer deadline is not known yet.
+      % endif
+
+      The Entry Date printed on your Summons and Complaint is ${ case.entry_date }.
   - Update late answer motion:
     - include_late_answer_motion
     button: |
@@ -1177,6 +1185,5 @@ question: |
 subquestion: |
   ${ additional_tenants.review_table }
   ${ additional_tenants.add_action() }
-  
-    
+
     

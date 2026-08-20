@@ -209,38 +209,26 @@ code: |
   local_housing_court = macourts.matching_housing_court(eviction_address)
 ---
 code: |
-  case.entry_date = case.answer_date + date_interval(days=-7)
----
-# TODO: Covid-specific
-code: |
   if case.hearing_date_assigned:
     case.original_date = case.first_event
     case.rescheduled_date = case.first_event
-    case.answer_date = court_business_days_before(case.first_event, 3)
+    case.answer_deadline_known = is_court_business_day(case.first_event)
+    case.answer_date = court_business_days_before(case.first_event, 3) if case.answer_deadline_known else None
   else:
     case.original_date = "TBD"
     case.rescheduled_date = "TBD"
-    case.answer_date = today().plus(days=1)
+    case.answer_deadline_known = False
+    # The standing orders tie the deadline to the first-tier event. Until the
+    # court assigns that event, there is no calendar deadline to calculate.
+    case.answer_date = None
 ---
 # TODO: covid-specific
 code: |
   # Check if today is on or before the deadline (3 business days before mediation)
   case.on_time = (
-    not case.hearing_date_assigned
+    not case.answer_deadline_known
     or today() <= court_business_days_before(case.first_event, 3)
   )
-#code: |
-#  if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)):
-#    case.on_time = True
-#  else:
-#    case.on_time = False
-# code: |
-#   if today() <= case.answer_date or (answer_date_is_holiday and today() <= case.answer_date.plus(days=1)): # int(date_difference(starting=current_datetime(), ending=case.answer_date).days) >= 0:
-#     case.rescheduled_date = case.original_date.plus(days=14)
-#     case.on_time = True
-#   else:
-#     case.rescheduled_date = case.original_date
-#     case.on_time = False
 ---
 code: |
   if case.on_time:
@@ -366,13 +354,12 @@ code: |
 ---
 sets: initial_defense.defective_summons
 code: |
-
-  case.entry_date = case.answer_date.plus(days=-7) # The Entry date should be 1 week before the Answer date--don't make the Tenant enter this information
-
-  if defined('date_received_ntq'):
-    initial_defense.summons_served_at_wrong_time = not (case.entry_date >= date_received_ntq.plus(days=7) and case.entry_date <= date_received_ntq.plus(days=30))
-  else:
-    initial_defense.summons_served_at_wrong_time = True
+  # Rule 2(b) measures the entry date from service of the Summons and
+  # Complaint—not from the notice to quit and not from the Answer deadline.
+  initial_defense.summons_served_at_wrong_time = not (
+    case.entry_date >= date_received_summons.plus(days=7)
+    and case.entry_date <= date_received_summons.plus(days=30)
+  )
   
   initial_defense.summons_missing_information = (tenant.name_different_on_summons and tenant.not_named_on_summons) or ( not (summons_includes_all_tenants and summons_includes_correct_address))
   initial_defense.defective_summons = (
@@ -415,7 +402,12 @@ code: |
   if tenancy_type == 'lease':
     if paid_rent_owed and cure_date <= case.entry_date:
       initial_defense.cure = True
-    elif paid_rent_owed and cure_date <= case.answer_date and paid_court_fees:
+    elif paid_rent_owed and paid_court_fees and case.answer_deadline_known and cure_date <= case.answer_date:
+      initial_defense.cure = True
+    elif paid_rent_owed and paid_court_fees and not case.answer_deadline_known:
+      # Preserve a possible cure defense without inventing the unknown answer
+      # deadline. The Answer states the payment facts and leaves timeliness to
+      # the court once the first-tier event date is known.
       initial_defense.cure = True
     else:
       initial_defense.cure = False
@@ -508,14 +500,10 @@ code: |
 code: |
   # TODO: Covid-19 change
   if isinstance(court_date, str):
-    answer_date_is_holiday = False
     court_date_is_holiday = False
-    answer_date_holiday = ""
     court_date_holiday = ""
   else:
-    answer_date_holiday = court_holiday_name(case.answer_date)
     court_date_holiday = court_holiday_name(court_date)
-    answer_date_is_holiday = bool(answer_date_holiday)
     court_date_is_holiday = bool(court_date_holiday)
 ---
 code: |
