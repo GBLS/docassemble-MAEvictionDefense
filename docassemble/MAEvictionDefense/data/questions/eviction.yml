@@ -142,6 +142,7 @@ objects:
   - household: DAList.using(object_type=Individual)
   - incomes: IncomeList.using(there_are_any=True)
   #- ntq_pictures: DAFileList.using(there_are_any = True)
+  - premises_alternate_address: Address
   - landlord: Person
   - landlords_attorney: Person
   - court: MACourt

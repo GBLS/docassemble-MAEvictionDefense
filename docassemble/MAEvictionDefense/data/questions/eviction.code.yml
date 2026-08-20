@@ -80,10 +80,21 @@ code: |
     defendants_name = comma_and_list(additional_tenants + [tenant.name])
 ---
 code: |
+  # The address the tenant is being evicted from, which is not always where they
+  # live now: a tenant who has already moved still answers about the old unit.
   if facts.tenant_address_is_eviction_address:
-    premises_address = tenant.address.on_one_line()
+    eviction_address = tenant.address
   else:
-     premises_address = premises_alternate_address
+    eviction_address = premises_alternate_address
+---
+code: |
+  premises_address = eviction_address.on_one_line()
+---
+code: |
+  premises_street = eviction_address.address
+---
+code: |
+  premises_city = eviction_address.city
 ---
 code: |
   occupancy_ordinances = load_from_csv(occupancy_ordinance_url)
@@ -96,14 +107,14 @@ code: |
       occupancy_ordinance_by_city[city_name] = ordinance
 ---
 code: |
-  city_specific_occupancy_ordinance = occupancy_ordinance_by_city.get(tenant.address.city.strip().lower(), dict())
+  city_specific_occupancy_ordinance = occupancy_ordinance_by_city.get(premises_city.strip().lower(), dict())
 ---
 code: |
   has_city_specific_occupancy_ordinance = bool(city_specific_occupancy_ordinance)
 ---
 code: |
   if has_city_specific_occupancy_ordinance:
-    local_occupancy_ordinance_name = city_specific_occupancy_ordinance.get('ordinance_label', tenant.address.city + ' occupancy ordinance')
+    local_occupancy_ordinance_name = city_specific_occupancy_ordinance.get('ordinance_label', premises_city + ' occupancy ordinance')
     local_occupancy_ordinance_requirement = city_specific_occupancy_ordinance.get('requirement_summary', '')
     local_occupancy_ordinance_defense_text = city_specific_occupancy_ordinance.get('defense_text', '')
     local_occupancy_ordinance_counterclaim_text = city_specific_occupancy_ordinance.get('counterclaim_text', '')
@@ -157,7 +168,7 @@ code: |
 
 ---
 code: |
-  local_housing_court = macourts.matching_housing_court(tenant.address)
+  local_housing_court = macourts.matching_housing_court(eviction_address)
 ---
 code: |
   case.entry_date = case.answer_date + date_interval(days=-7)
