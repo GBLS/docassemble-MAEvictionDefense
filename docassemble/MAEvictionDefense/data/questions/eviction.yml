@@ -142,6 +142,7 @@ objects:
   - household: DAList.using(object_type=Individual)
   - incomes: IncomeList.using(there_are_any=True)
   #- ntq_pictures: DAFileList.using(there_are_any = True)
+  - premises_alternate_address: Address
   - landlord: Person
   - landlords_attorney: Person
   - court: MACourt
@@ -309,8 +310,9 @@ code: |
   if url_args.get('clinic', '').lower() == 'gbls':
     ls_case_id
 
-  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic
-  if in_service_area(tenant) and not url_args.get('clinic', '').lower() == 'gbls':
+  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic.
+  # Some communities are in the service area for elders only.
+  if in_service_area(tenant, is_elder=tenant.is_over60) and not url_args.get('clinic', '').lower() == 'gbls':
     ask_intake_questions
     if ask_intake_questions == 'reminder':
       sent_take_intake_later_email

@@ -30,6 +30,9 @@ class DADateTime:
     def minus(self, *, days: int) -> "DADateTime":
         return DADateTime(self.value - timedelta(days=days))
 
+    def plus(self, *, days: int) -> "DADateTime":
+        return DADateTime(self.value + timedelta(days=days))
+
     def format(self, date_format: str) -> str:
         if date_format != "yyyy-MM-dd":
             raise ValueError(f"Unsupported test date format: {date_format}")
@@ -60,7 +63,9 @@ sys.modules["docassemble.base.util"] = util_module
 from docassemble.MAEvictionDefense.court_calendar import (
     court_business_days_before,
     court_holiday_name,
+    is_court_business_day,
     late_answer_motion_needed,
+    next_court_business_day,
 )
 
 
@@ -76,11 +81,19 @@ def test_court_business_days_before_skips_holidays():
     assert result.format("yyyy-MM-dd") == "2026-01-14"
 
 
-def test_patriots_day_is_a_court_business_day():
+def test_patriots_day_is_not_a_court_business_day():
     result = court_business_days_before("2026-04-21", 1)
 
-    assert result.format("yyyy-MM-dd") == "2026-04-20"
-    assert court_holiday_name("2026-04-20") == ""
+    assert result.format("yyyy-MM-dd") == "2026-04-17"
+    assert not is_court_business_day("2026-04-20")
+    assert court_holiday_name("2026-04-20") == "Patriots' Day"
+
+
+def test_answer_deadline_skips_patriots_day_in_e2e_fixture_year():
+    result = court_business_days_before("2027-04-22", 3)
+
+    assert result.format("yyyy-MM-dd") == "2027-04-16"
+    assert court_holiday_name("2027-04-19") == "Patriots' Day"
 
 
 def test_court_holiday_name_returns_observed_holiday():
@@ -97,3 +110,38 @@ def test_late_answer_motion_needed_after_deadline_before_hearing():
 
 def test_late_answer_motion_needed_after_hearing():
     assert late_answer_motion_needed("2026-03-11", "2026-03-02", "2026-03-10") is False
+
+
+def test_next_court_business_day_moves_sunday_to_monday():
+    result = next_court_business_day("2026-08-16")
+
+    assert result.format("yyyy-MM-dd") == "2026-08-17"
+
+
+def test_next_court_business_day_keeps_a_business_day():
+    result = next_court_business_day("2026-08-17")
+
+    assert result.format("yyyy-MM-dd") == "2026-08-17"
+
+
+def test_next_court_business_day_skips_a_holiday_and_the_weekend():
+    # 2026-11-26 is Thanksgiving, so the next court business day is the Friday.
+    assert next_court_business_day("2026-11-26").format("yyyy-MM-dd") == "2026-11-27"
+    # 2026-12-25 is Christmas on a Friday, so the deadline moves to the Monday.
+    assert next_court_business_day("2026-12-25").format("yyyy-MM-dd") == "2026-12-28"
+
+
+def test_next_court_business_day_skips_patriots_day():
+    assert next_court_business_day("2026-04-20").format("yyyy-MM-dd") == "2026-04-21"
+
+
+def test_next_open_court_date_is_never_a_weekend_or_holiday():
+    """A practical filing target may use this helper, but it is not a legal deadline."""
+    day = date(2026, 1, 1)
+    while day < date(2027, 1, 1):
+        open_date = next_court_business_day(DADateTime(day))
+        assert open_date.dow not in (6, 7), f"{day}: {open_date.format('yyyy-MM-dd')} is a weekend"
+        assert court_holiday_name(open_date) == "", (
+            f"{day}: {open_date.format('yyyy-MM-dd')} is a court holiday"
+        )
+        day += timedelta(days=1)
