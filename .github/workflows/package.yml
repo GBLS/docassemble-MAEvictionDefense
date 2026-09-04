@@ -1,4 +1,4 @@
-name: Deploy to Docassemble Server
+name: Deploy to Docassemble Servers
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -17,5 +17,18 @@ jobs:
         with:
           SERVER_URL: "https://interviews-dev.gbls.org"
           DOCASSEMBLE_DEVELOPER_API_KEY: ${{ secrets.DOCASSEMBLE_DEVELOPER_API_KEY }}
+          GITHUB_URL: "https://github.com/${{ github.repository }}"
+          GITHUB_BRANCH: "main"
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Deploy to Docassemble
+        uses: SuffolkLITLab/ALActions/da_package@main
+        with:
+          SERVER_URL: "https://interviews.gbls.org"
+          DOCASSEMBLE_DEVELOPER_API_KEY: ${{ secrets.DOCASSEMBLE_PRODUCTION_API_KEY }}
           GITHUB_URL: "https://github.com/${{ github.repository }}"
           GITHUB_BRANCH: "main"
