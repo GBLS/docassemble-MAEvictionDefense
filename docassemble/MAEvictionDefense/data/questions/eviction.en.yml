@@ -469,7 +469,7 @@ subquestion: |
   someone who will help you finish it. Choose any of the options below to share
   the interview.
   
-  Right-click and copy [this link](${interview_url()}).
+  Right-click and copy [the link to your interview](${interview_url()}).
   
   % if device() and not device().is_mobile:
   Use your phone's camera to point at this barcode. Click the link that appears
@@ -658,8 +658,8 @@ subquestion: |
   % endif
 
   Deliver it in person
-  if you can. Your landlord may agree to get the paperwork by fax or email,
-  but you need to get their permission first. 
+  if you can. If your landlord has a lawyer, you can email it to the lawyer.
+  If your landlord does not have a lawyer, ask them first before you email it. 
   % if format_date(case.answer_date) == format_date(today()):
   It's too late to mail the paperwork.
   % else:
@@ -668,14 +668,10 @@ subquestion: |
   % endif
 fields: 
   - Delivery method: method_of_service
-    code: |
-      [{"delivered in-hand": "Delivering by hand" },
-            {"emailed":"Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}] if format_date(case.answer_date) == format_date(today()) else [{'mailed':'Mail'},
-            {"delivered (or caused to be delivered)":"delivered in-hand"},
-            {"emailed": "Email (with permission of my landlord)"},
-            {"faxed":"Fax (with permission of my landlord)"}]
-        
+    choices:
+      - By hand: "delivered (or caused to be delivered)"
+      - By email: emailed
+      - By mail: mailed
   - Date of delivery: service_date
     datatype: date
 # section: Conclusion
@@ -2488,7 +2484,7 @@ content: |
   % endif
   You also need to send a copy of the motion to ${court}.
   
-  Learn more and continue the form online [here](${interview_url()}) or download
+  Learn more and [continue the form online](${interview_url()}) or download
   the PDF here: https://gbls.org/tactics/compel.
 ---
 template: compel_discovery_text
@@ -2546,7 +2542,7 @@ content: |
   Someone who was completing an interview using Massachusetts Defense for
   Eviction (MADE) sent you this link.
   
-  Click [here](${interview_url()}) to keep working on the interview.
+  [Keep working on the interview](${interview_url()}).
 ---
 template: interview_complete_email
 subject: |
