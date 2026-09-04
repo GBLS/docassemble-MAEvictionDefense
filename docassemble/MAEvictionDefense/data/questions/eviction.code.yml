@@ -65,13 +65,14 @@ code: |
 code: |
   # Delivery methods for the certificate of service. Mail is only offered while
   # there is still time for it to arrive.
+  # word() is used because labels built in code are not picked up by the
+  # eviction_<lang>.xlsx translation files.
   service_method_choices = []
   if format_date(case.answer_date) != format_date(today()):
-    service_method_choices.append({'mailed': 'Mail'})
+    service_method_choices.append({'mailed': word('By mail')})
   service_method_choices.extend([
-    {'delivered in-hand': 'By hand'},
-    {'emailed': 'Email (with permission of my landlord)'},
-    {'faxed': 'Fax (with permission of my landlord)'},
+    {'delivered in-hand': word('By hand')},
+    {'emailed': word('By email')},
   ])
 ---
 code: |

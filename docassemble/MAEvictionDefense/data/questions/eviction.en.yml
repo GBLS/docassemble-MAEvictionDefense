@@ -128,7 +128,7 @@ id: intro screen
 question: |
   <img src="${ large_logo.url_for() }" alt="MADE: Massachusetts Defense for Eviction" style="width: 100%;"/>
 subquestion: |
-  ${get_language_list_inline(get_tuples(['en','es','vi','pt','zh-t','ht']),current='en')}
+  ${get_language_list_inline(get_tuples(['en','es','vi','pt','zh-t','ht']),current=user_language)}
 
   MADE is a free tool to help tenants defend against an eviction in court.
   When you finish, you need to print and deliver paperwork to
@@ -473,7 +473,7 @@ subquestion: |
   someone who will help you finish it. Choose any of the options below to share
   the interview.
   
-  Right-click and copy [this link](${interview_url()}).
+  Right-click and copy [the link to your interview](${interview_url()}).
   
   % if device() and not device().is_mobile:
   Use your phone's camera to point at this barcode. Click the link that appears
@@ -577,19 +577,19 @@ fields:
       ${interview_url_as_qr()}
       </center>
 
-    show if: 
+    show if:
       code: |
         device() and device().is_pc
   - Email a link instead: email_link
     datatype: yesnowide
-    show if: 
+    show if:
       code: |
         device() and device().is_pc
   - Email address: link_email
     show if: email_link
   - Text a link instead: text_link
     datatype: yesnowide
-    show if: 
+    show if:
       code: |
         device() and device().is_pc
   - label: Cell phone number
@@ -600,7 +600,7 @@ fields:
       Click ${word("continue")} to add your signature.
   - note: |
       Click ${word("continue")} to add your signature.
-    show if: 
+    show if:
       code: |
         device() and not device().is_pc
 help: |
@@ -663,8 +663,9 @@ subquestion: |
   attorney **as soon as you can—do not wait for the court notice**.
   % endif
 
-  Deliver it in person if you can. Your landlord may agree to get the paperwork
-  by fax or email, but you need to get their permission first.
+  Deliver it in person
+  if you can. If your landlord has a lawyer, you can email it to the lawyer.
+  If your landlord does not have a lawyer, ask them first before you email it.
   % if not case.answer_deadline_known:
   Mailing may be too slow because you do not know the deadline. Use a faster
   delivery method unless the clerk confirms that mailing will arrive in time.
@@ -924,32 +925,32 @@ fields:
     default: True
   - note: |
       **What address are you being evicted from?**
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
   - address: premises_alternate_address.address
     address autocomplete: True
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
   - unit: premises_alternate_address.unit
     required: False
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
   - city: premises_alternate_address.city
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
   - state: premises_alternate_address.state
     code: |
       states_list()
     default: "MA"
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
   - zip: premises_alternate_address.zip
-    show if: 
+    show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
 ---
@@ -2574,7 +2575,7 @@ content: |
   % endif
   You also need to send a copy of the motion to ${court}.
   
-  Learn more and continue the form online [here](${interview_url()}) or download
+  Learn more and [continue the form online](${interview_url()}) or download
   the PDF here: https://gbls.org/tactics/compel.
 ---
 template: compel_discovery_text
@@ -2632,7 +2633,7 @@ content: |
   Someone who was completing an interview using Massachusetts Defense for
   Eviction (MADE) sent you this link.
   
-  Click [here](${interview_url()}) to keep working on the interview.
+  [Keep working on the interview](${interview_url()}).
 ---
 template: interview_complete_email
 subject: |
