@@ -50,21 +50,17 @@ code: |
       transfer_court_name
   
   case.original_date
-  # TODO: covid-19
-  # if today() > case.answer_date :
-  #   firstdatepassed
-  #  case.status = 'late'
   case.rescheduled_date
   if not case.hearing_date_assigned:
     case_is_on_time # explain court will assign a date
-  elif late_answer_motion_needed(today(), case.answer_date, case.first_event):
+  elif case.answer_deadline_known and late_answer_motion_needed(today(), case.answer_date, case.first_event):
     firstdatepassed
     case.status = 'late'
   # if case.on_time:
   #  if person_answering == 'tenant':
   #    case_is_on_time # Inform the user of postponement
 
-  if late_answer_motion_needed(today(), case.answer_date, case.first_event if case.hearing_date_assigned else None):
+  if case.answer_deadline_known and late_answer_motion_needed(today(), case.answer_date, case.first_event):
     include_late_answer_motion
 
   eviction_reason

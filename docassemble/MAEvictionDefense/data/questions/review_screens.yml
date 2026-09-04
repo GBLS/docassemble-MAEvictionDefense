@@ -134,8 +134,9 @@ review:
       to transfer your case to the ${transfer_court_name}.
   - Update court date: 
       - case.original_date
-      - case.answer_date
       - recompute:
+        - case.answer_deadline_known
+        - case.answer_date
         - case.on_time
         - case.rescheduled_date
         - date_discovery_due
@@ -143,12 +144,19 @@ review:
         - date_motion_to_compel_due
         - court_date
     button: |
+      % if case.answer_deadline_known:
       You said your case was originally scheduled to be heard on ${ case.original_date }
       with an answer date of ${ case.answer_date }.
       
       % if case.on_time:
       If correct, this makes your rescheduled court date ${ case.rescheduled_date }
       % endif
+      % else:
+      You have not received the notice assigning your first-tier court event, so
+      your exact Answer deadline is not known yet.
+      % endif
+
+      The Entry Date printed on your Summons and Complaint is ${ case.entry_date }.
   - Update late answer motion:
     - include_late_answer_motion
     button: |
@@ -581,9 +589,9 @@ review:
   - Edit: facts.tenant_address_is_eviction_address
     button: |
       This is also the address I am being evicted from : ${ facts.tenant_address_is_eviction_address }
-  - Edit: premises_alternate_address
+  - Edit: premises_alternate_address.address
     button: |
-      What address are you being evicted from? (all on one line) : ${ premises_alternate_address }
+      What address are you being evicted from : ${ premises_alternate_address.on_one_line() }
 
   - note: |
       <h2 class="h4 mt-4">About your landlord</h2>
@@ -693,7 +701,7 @@ review:
       I am a survivor of domestic violence. : ${ word(yesno(tenant.is_dvvictim)) }
   - Edit: postforeclosure.is_foreclosed
     button: |
-      ${tenant.address.address} has been foreclosed on. : ${ word(yesno(postforeclosure.is_foreclosed)) }
+      ${premises_street} has been foreclosed on. : ${ word(yesno(postforeclosure.is_foreclosed)) }
   - Edit: is_pfc_owner
     button: |
       I am or I was the owner before the foreclosure. : ${ word(yesno(is_pfc_owner)) }
@@ -1092,7 +1100,7 @@ review:
       I pay for one or more utilities. : ${ word(yesno(claims.utilities)) }
   - Edit: is_condo_conversion
     button: |
-      ${tenant.address.address} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
+      ${premises_street} was recently converted into a condominium or cooperative, or will be converted soon. : ${ word(yesno(is_condo_conversion)) }
   - Edit: paid_deposit
     button: |
       I paid a security deposit. : ${ word(yesno(paid_deposit)) }
@@ -1141,6 +1149,12 @@ review:
 
   - note: |
       <h2 class="h4 mt-4">Getting the documents served</h2>
+  - Edit: service_recipient
+    button: |
+      Delivered to : ${ service_recipient_description }
+  - Edit: service_performed_by
+    button: |
+      Delivered by : ${ 'the tenant' if service_performed_by == 'tenant' else 'the tenant&rsquo;s advocate' }
   - Edit: method_of_service
     button: |
       Delivery method : ${ method_of_service }
@@ -1171,6 +1185,5 @@ question: |
 subquestion: |
   ${ additional_tenants.review_table }
   ${ additional_tenants.add_action() }
-  
-    
+
     
