@@ -648,19 +648,22 @@ id: method of service
 question: |
   Getting paperwork to your landlord
 subquestion: |
-  You must give a copy of the forms we are working on to your landlord or their 
-  attorney. 
+  % if landlord.has_attorney:
+  You must give a copy of the forms we are working on to **the landlord's attorney**.
+  % else:
+  You must give a copy of the forms we are working on to **the landlord**.
+  % endif
   % if case.answer_deadline_known:
   Under the current summary process rules, you must file the forms with the
-  court and your landlord or their attorney must _get_ their copy no later than
+  court and ${ service_recipient_description } must _get_ their copy no later than
   3 court business days before your first-tier event. Based on the event date
   you entered, that deadline is **${format_date(case.answer_date)}**.
   % else:
   Your exact deadline cannot be calculated without a valid date for your
   first-tier court event. It is ordinarily 3 court business days before that
   event. Check the court docket or contact the clerk now to confirm the event date.
-  File the forms with the court and give a copy to your landlord or their
-  attorney **as soon as you can—do not wait for the court notice**.
+  File the forms with the court and give a copy to ${ service_recipient_description }
+  **as soon as you can—do not wait for the court notice**.
   % endif
 
   Deliver it in person
@@ -672,29 +675,11 @@ subquestion: |
   % elif today() >= case.answer_date:
   It's too late to mail the paperwork.
   % else:
-  Only mail it if you know your landlord will get it on or before
+  Only mail it if you know ${ service_recipient_description } will get it on or before
   ${format_date(case.answer_date)}. Service by mail is complete when it is
   received, not when you put it in the mail.
   % endif
 fields: 
-  - Who are you delivering the paperwork to?: service_recipient
-    input type: radio
-    choices:
-      - The landlord's attorney, ${ landlords_attorney }: attorney
-      - The landlord, ${ landlord }: landlord
-    default: attorney
-    show if:
-      code: |
-        landlord.has_attorney
-  - Who is delivering the paperwork?: service_performed_by
-    input type: radio
-    choices:
-      - The tenant: tenant
-      - I am, or my office is: advocate
-    default: advocate
-    show if:
-      code: |
-        person_answering == 'attorney'
   - Delivery method: method_of_service
     code: |
       service_method_choices

@@ -69,7 +69,7 @@ code: |
     if len(ints.matches_category(category)) > 0:
       ints_fields.append({'note': '### Questions relating to ' + category})
     for key in ints.matches_category(category):
-      ints_fields.append({'label': ints[key].description,
+      ints_fields.append({'label': 'Does the landlord intend to sell the building?' if key == 'sale_of_building' else ints[key].description,
                         'field': "ints[" + repr(key) + "].checked",
                         'datatype': 'yesno'})
                         

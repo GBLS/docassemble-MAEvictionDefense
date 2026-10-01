@@ -75,25 +75,14 @@ code: |
     {'emailed': word('By email')},
   ])
 ---
+reconsider: True
 code: |
-  # Only asked when the landlord has an attorney; otherwise there is no choice.
-  if not landlord.has_attorney:
-    service_recipient = 'landlord'
+  # Service must go to counsel when the landlord is represented.
+  service_recipient = 'attorney' if landlord.has_attorney else 'landlord'
+  service_recipient_description = "the landlord's attorney" if landlord.has_attorney else "the landlord"
 ---
 code: |
-  # Only asked when an advocate is running the interview; a pro se tenant
-  # delivers their own paperwork.
-  if person_answering != 'attorney':
-    service_performed_by = 'tenant'
----
-code: |
-  if service_recipient == 'attorney':
-    service_recipient_description = "the landlord's attorney, " + str(landlords_attorney)
-  else:
-    service_recipient_description = "the landlord, " + str(landlord)
----
-code: |
-  # The "caused the foregoing to be served" wording needs a manner, not a verb.
+  # Attorney-signed certificates describe the method of service as a noun.
   service_method_phrase = {
     'mailed': 'first-class mail',
     'delivered in-hand': 'hand delivery',
