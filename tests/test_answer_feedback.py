@@ -22,7 +22,8 @@ def paragraphs(name):
 
 
 def render(text, **context):
-    return Environment(undefined=StrictUndefined).from_string(
+    # These are extracted DOCX paragraphs, not HTML; preserve literal text.
+    return Environment(undefined=StrictUndefined, autoescape=False).from_string(  # nosec B701
         text.replace('{%p ', '{% ')
     ).render(**context)
 

@@ -34,6 +34,7 @@ dev = [
     "mypy",
     "pyyaml",
     "pytest",
+    "types-PyYAML",
 ]
 
 [tool.pytest.ini_options]
