@@ -30,8 +30,11 @@ where = ["."]
 
 [dependency-groups]
 dev = [
+    "jinja2",
     "mypy",
+    "pyyaml",
     "pytest",
+    "types-PyYAML",
 ]
 
 [tool.pytest.ini_options]
