@@ -30,9 +30,12 @@ where = ["."]
 
 [dependency-groups]
 dev = [
+    "jinja2",
     "docxtpl",
     "mypy",
+    "pyyaml",
     "pytest",
+    "types-PyYAML",
     "ruamel.yaml",
     "mako",
 ]
