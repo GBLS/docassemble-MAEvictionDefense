@@ -30,8 +30,11 @@ where = ["."]
 
 [dependency-groups]
 dev = [
+    "docxtpl",
     "mypy",
     "pytest",
+    "ruamel.yaml",
+    "mako",
 ]
 
 [tool.pytest.ini_options]

@@ -16,6 +16,7 @@ buttons:
   ${word("Resume")}: continue
 ---
 event: review_about_you
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: review_about_you_screen
 question: |
   About You
@@ -86,6 +87,7 @@ edit:
   - signature
 ---
 event: review_about_landlord
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: review_about_landlord_screen
 question: |
   About your landlord
@@ -109,6 +111,7 @@ review:
       % endif
 ---
 event: review_about_court
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: review_about_court_case
 question: |
   About your court case
@@ -211,6 +214,7 @@ review:
       You said you will deliver the paperwork on ${service_date} by ${method_of_service}      
 ---
 event: review_about_tenancy
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: review_about_tenancy_screen
 question: About your tenancy
 subquestion: |
@@ -267,6 +271,7 @@ review:
       of domestic violence.
 ---
 event: review_claims
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: review_claims_defenses
 question: |
   Review Claims and Defenses
@@ -512,6 +517,7 @@ review:
       You requested ${ drq.count_checked() } kinds of documents.
 ---
 event: review_everything
+if: person_answering != 'attorney' or attorney_workflow != 'fast'
 id: edit_answers_screen
 question: |
   Edit your answers

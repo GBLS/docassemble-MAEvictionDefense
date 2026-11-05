@@ -1,8 +1,14 @@
 ---
 need: all_answer_variables
 code: |
-  other_ints.there_are_any = False
-  other_drq.there_are_any = False
+  # Facts can be edited after discovery has been reviewed. Keep those explicit
+  # selections (including unchecked requests) while refreshing recommendations.
+  previous_int_choices = {key: item.__dict__.get('checked') for key, item in ints.elements.items()}
+  previous_drq_choices = {key: item.__dict__.get('checked') for key, item in drq.elements.items()}
+  if not defined('other_ints.there_are_any'):
+    other_ints.there_are_any = False
+  if not defined('other_drq.there_are_any'):
+    other_drq.there_are_any = False
   ints.there_are_any = True
   drq.there_are_any = True
   
@@ -29,12 +35,12 @@ code: |
       if 'ints.' in item['Variable']:
         ints.initializeObject(iname, DiscoveryRequest)
         ints[iname].description = item['Description']
-        ints[iname].checked = is_checked
+        ints[iname].recommended = is_checked
         ints[iname].category = item['Category']
       if 'drq.' in item['Variable']:
         drq.initializeObject(iname, DiscoveryRequest)
         drq[iname].description = item['Description']
-        drq[iname].checked = is_checked
+        drq[iname].recommended = is_checked
         drq[iname].category = item['Category']
 
   # Evaluate our logic table to set discovery values automatically.
@@ -55,9 +61,14 @@ code: |
       # evaluate whether there's a rule that says to check this discovery item
       if defined(lemma['Claim']) and value(lemma['Claim']) == comparison:
         if 'ints.' in lemma['Discovery']:
-          ints[discovery_name].checked = True
+          ints[discovery_name].recommended = True
         elif 'drq.' in lemma['Discovery']:
-          drq[discovery_name].checked = True
+          drq[discovery_name].recommended = True
+
+  for key, item in ints.elements.items():
+    item.checked = discovery_checked_value(item.recommended, previous_int_choices.get(key), defined('interrogatory_questions'))
+  for key, item in drq.elements.items():
+    item.checked = discovery_checked_value(item.recommended, previous_drq_choices.get(key), defined('drq_questions'))
 
   ints.there_is_another = False
   drq.there_is_another = False
@@ -72,6 +83,8 @@ code: |
       ints_fields.append({'label': ints[key].description,
                         'field': "ints[" + repr(key) + "].checked",
                         'datatype': 'yesno'})
+      if person_answering == 'attorney' and attorney_workflow == 'fast':
+        ints_fields[-1]['help'] = word('Recommended from the current facts.') if ints[key].recommended else word('Optional request; not recommended from the current facts.')
                         
   drq_fields = []
 
@@ -82,6 +95,8 @@ code: |
       drq_fields.append({'label': drq[key].description,
                         'field': "drq[" + repr(key) + "].checked",
                         'datatype': 'yesno'})
+      if person_answering == 'attorney' and attorney_workflow == 'fast':
+        drq_fields[-1]['help'] = word('Recommended from the current facts.') if drq[key].recommended else word('Optional request; not recommended from the current facts.')
 
   loaded_discovery = True        
 ---

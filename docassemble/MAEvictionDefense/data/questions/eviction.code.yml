@@ -106,8 +106,11 @@ code: |
   if method_of_service == 'mailed':
     date_discovery_received = date_discovery_received.plus(days=1)
 
-  date_discovery_due = date_discovery_received.plus(days=10)
-  date_motion_to_compel_due = date_discovery_received.plus(days=15)
+  # USPR 7(c): ten days after receipt; Rule 6(a) moves a closed-court
+  # deadline to the next court business day. USPR 7(d)'s five-day motion
+  # period excludes intervening weekends and holidays under Rule 6(a).
+  date_discovery_due = next_court_business_day(date_discovery_received.plus(days=10))
+  date_motion_to_compel_due = court_business_days_after(date_discovery_due, 5)
 ---
 comment: |
   Information about tenant
@@ -312,7 +315,8 @@ code: |
   if not facts.tenant_has_subsidy and postforeclosure.is_foreclosed and is_pfc_owner:
     tenant_type = 'pfc_owner'
 
-  initial_defense.ntq_defective = not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language
+  # There is no notice text to inspect when no notice was received.
+  initial_defense.ntq_defective = notice_type != 'no_ntq' and (not (ntq_includes_tenant_name and ntq_includes_all_tenants and ntq_includes_correct_address) or ntq_leaves_off_required_language)
   
   if tenant_type == 'renter' and tenancy_type == 'lease':
     initial_defense.need_ntq = not (lease_type == 'fixed_term' and lease_end_date <= date_received_summons) and not (tenancy_type == 'pca')
@@ -337,7 +341,9 @@ code: |
 ---
 sets: initial_defense.new_tenancy
 code: |
-  if post_ntq_waiver['rent'] and not ntq_contains_reservation:
+  if notice_type == 'no_ntq':
+    initial_defense.new_tenancy = False
+  elif post_ntq_waiver['rent'] and not ntq_contains_reservation:
     initial_defense.new_tenancy = True
   elif post_ntq_waiver['lease']:
     initial_defense.new_tenancy = True
@@ -471,6 +477,7 @@ code: |
   other.repair_and_deduct_statute = other.tenant_repaired and other.certified_report and other.no_timely_repairs and other.deducted_repair_cost and other.repair_less_than_4_months
 ---
 code: |
+  plead_lead_paint = False
   if tenant.is_discriminated:
     if discrimination.protected_classes['Family status']:
       if bad_conditions.conditions['lead paint']:

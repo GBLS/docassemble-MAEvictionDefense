@@ -1,6 +1,9 @@
 from pathlib import Path
 from zipfile import ZipFile
 
+from docx import Document
+from jinja2 import Environment, StrictUndefined
+
 
 ROOT = Path(__file__).resolve().parents[1]
 QUESTION_DIR = ROOT / "docassemble" / "MAEvictionDefense" / "data" / "questions"
@@ -48,3 +51,12 @@ def test_answer_does_not_claim_unknown_cure_timing_as_fact():
 
     assert "I ask the court to determine" in answer
     assert "within the time allowed by law" in answer
+
+
+def test_next_steps_uses_the_motion_deadline_without_adding_another_period():
+    paragraph = next(p.text for p in Document(TEMPLATE_DIR / "NextSteps.docx").paragraphs
+        if "Deliver the Motion to Compel Discovery" in p.text)
+    rendered = Environment(undefined=StrictUndefined).from_string(paragraph).render(
+        date_motion_to_compel_due="November 20, 2026")
+    assert "no later than November 20, 2026" in rendered
+    assert "within 5 days" not in rendered

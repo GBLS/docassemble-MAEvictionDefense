@@ -11,7 +11,7 @@ metadata:
     # We ran into a bug.
     We are very sorry for the inconvenience. 
     
-    [Please tell us more about the bug at this link](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}.
+    [Please tell us more about the bug](?i=docassemble.MAEvictionDefense%3Afeedback.yml&reset=1){:target="_blank"}.
     
     1. Try reloading the screen (use the refresh button) and fill in information
     that you left blank.
@@ -85,7 +85,7 @@ default screen parts:
   footer: |
     [:share-alt-square: Share](${ revisit_sharing_url })
     [:info-circle: About](${ url_action('about_this_interview') })
-    [:comment-dots: Feedback](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)} ){:target="_blank"}
+    [:comment-dots: Feedback](${ interview_url(i=user_info().package + ":feedback.yml", github_repo="docassemble-MAEvictionDefense", github_user='gbls', variable=user_info().variable, question_id=user_info().question_id, local=False,reset=1)}){:target="_blank"}
   pre: |
     % if get_config('debug'):
     `id: ${ user_info().question_id }`
@@ -120,6 +120,7 @@ features:
     - fix_back_button.js
     - al_audio.js
     - favicon.js
+    - attorney_worksheet.js
   css:
     - al_audio.css
     - custom.css
@@ -134,6 +135,7 @@ modules:
   - .language
   - .gbls_intake
   - .review
+  - .attorney
   - docassemble.PovertyScale.poverty
 ---
 objects:
@@ -179,6 +181,9 @@ objects:
 ---
 initial: True
 code: |
+  # The worksheet hides the interview sidebar in favor of in-page jump links.
+  # Restore it on every request before a question chooses its own navigation.
+  nav.unhide()
   process_action()
 ---
 initial: True
@@ -211,6 +216,7 @@ include:
   - eviction.cron.yml
   - eviction.attachments.yml
   - interview-order.yml
+  - interview-attorney.yml
 #  - help.yml
   - discovery-logic.yml
   - compel_discovery.yml
@@ -310,18 +316,19 @@ code: |
   if url_args.get('clinic', '').lower() == 'gbls':
     ls_case_id
 
-  # Ask the tenant if they want to submit an intake iff in service area and we're not already in a GBLS clinic.
-  # Some communities are in the service area for elders only.
-  if in_service_area(tenant, is_elder=tenant.is_over60) and not url_args.get('clinic', '').lower() == 'gbls':
-    ask_intake_questions
-    if ask_intake_questions == 'reminder':
-      sent_take_intake_later_email
-    if ask_intake_questions == "ask_now" or (ask_intake_questions == 'reminder' and time_to_do_intake):
-      asked_intake_questions
-      if household_qualifies:
-        created_online_intake
-  else:
-    out_of_service_area
+  # Tenants with an attorney entering an appearance do not need an intake invitation.
+  # Ghostwritten cases retain the tenant's opportunity to request representation.
+  if not (person_answering == 'attorney' and representation_type == 'entering_appearance'):
+    if in_service_area(tenant, is_elder=tenant.is_over60) and not url_args.get('clinic', '').lower() == 'gbls':
+      ask_intake_questions
+      if ask_intake_questions == 'reminder':
+        sent_take_intake_later_email
+      if ask_intake_questions == "ask_now" or (ask_intake_questions == 'reminder' and time_to_do_intake):
+        asked_intake_questions
+        if household_qualifies:
+          created_online_intake
+    else:
+      out_of_service_area
   
   if (defined('compel_discovery_needed') and compel_discovery_needed) or 'compel_discovery' in url_args:
     compel_discovery_motion

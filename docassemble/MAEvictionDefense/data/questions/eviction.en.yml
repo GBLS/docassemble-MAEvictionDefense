@@ -679,8 +679,9 @@ subquestion: |
 fields: 
   - Who are you delivering the paperwork to?: service_recipient
     input type: radio
+    # Choice labels render even when the recipient field is hidden.
     choices:
-      - The landlord's attorney, ${ landlords_attorney }: attorney
+      - The landlord's attorney${ ', ' + str(landlords_attorney) if landlord.has_attorney else '' }: attorney
       - The landlord, ${ landlord }: landlord
     default: attorney
     show if:
@@ -733,7 +734,7 @@ subquestion: |
   </li>
   <li>
   Your landlord should give you {discovery} by ${date_discovery_due}. File a 
-  {motion to compel discovery} if needed on ${date_motion_to_compel_due} 
+  {motion to compel discovery} if needed no later than ${date_motion_to_compel_due} 
   % if remind_user and not didnt_provide_contact_info:
   (we will send you a reminder).
   % endif
@@ -2222,13 +2223,10 @@ subquestion: |
 fields:
   - I withheld rent because of bad conditions.: retaliation.withheld_rent
     datatype: yesno
-    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I reported bad conditions in writing to the landlord.: retaliation.badconditions_to_landlord
     datatype: yesno
-    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I reported bad conditions orally or in writing to a public agency.: retaliation.badconditions_to_agency
     datatype: yesno
-    default: ${plead_counterclaims and bad_conditions.have_conditions}
   - I am a member of a tenants union or participated in tenant organizing meetings.: retaliation.tenant_union
     datatype: yesno
   - I sued my landlord or brought a claim against my landlord.: retaliation.brought_claim
@@ -2246,8 +2244,7 @@ fields:
     show if: show_retaliation_other
   - One or more of the above happened in the last 6 months.: retaliation.within_6_months
     datatype: yesnoradio
-    required: False
-    default: True
+    required: True
 # section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)  
@@ -2581,7 +2578,7 @@ content: |
 template: compel_discovery_text
 content: |
   Reminder: file a motion to compel discovery
-  in your eviction case ${landlord} v. ${tenant} before date_motion_to_compel_due. 
+  in your eviction case ${landlord} v. ${tenant} no later than ${date_motion_to_compel_due}. 
   Fill it out online: ${interview_url()} or download a PDF form with instructions 
   here: 
   https://gbls.org/tactics/compel

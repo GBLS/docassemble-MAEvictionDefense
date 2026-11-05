@@ -20,6 +20,34 @@ the property, and local occupancy ordinances.
 
 ## Development and testing
 
+Attorneys can choose a single-page worksheet or the guided interview. The fast
+path is defined in `interview-attorney.yml`; both paths finish through
+`common_answer_variables` in `interview-order.yml`, using the same factual
+variables, defense calculations, templates, service, and signature flow.
+
+The worksheet follows the tenant workflow's order: attorney and tenant,
+landlord, court case, tenancy and notices, claims and defenses, then relief.
+Its “On this page” menu scrolls to headings without submitting or replacing the
+form. Fields and subsection headings react to current input with `js show if`.
+The regular interview sidebar is hidden on this screen and restored afterward.
+Continue saves the whole worksheet; additional tenants, discovery, service, and
+signatures can still require follow-up screens.
+
+Saving clears the calculated values listed in `attorney.py`, then checks the
+shared rules again. Explicit retaliation/discrimination choices are preserved,
+with suggestions shown inline as relevant facts change. Discovery refreshes
+recommendations separately from reviewed selections, including unchecked and
+custom requests. The existing fault-only counterclaim restriction remains in
+effect; mixed fault/nonpayment cases follow the tenant path's rule.
+
+The fast path tests evaluate live visibility expressions using Node.js when
+available. Live docassemble testing should also cover save/resume, both
+representation types, and equivalent generated documents.
+
+Use `tests/attorney_workflow_manual.md` for the live regression matrix and
+PDF/Word output checks. The worksheet's local DOM checks run with
+`node tests/attorney_worksheet.cjs` when Playwright and Chrome are available.
+
 The package uses `pyproject.toml` for build metadata and dependencies. Python
 unit tests live in `tests/` and can be run with:
 
