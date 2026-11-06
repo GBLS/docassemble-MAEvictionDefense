@@ -8,20 +8,20 @@ const { chromium } = require('playwright');
     const page = await browser.newPage();
     const form = `
       <form>
-        <style>#made-attorney-tenant, #made-attorney-menu { scroll-margin-top: 96px; }</style>
-        <nav id="made-attorney-menu" tabindex="-1">
-          <a href="#made-attorney-tenant">Tenant</a>
-          <a href='javascript:daGoToAnchor("#made-attorney-tenant");'><span>Rendered Tenant</span></a>
+        <style>#worksheet-tenant, #worksheet-menu { scroll-margin-top: 96px; }</style>
+        <nav id="worksheet-menu" tabindex="-1">
+          <a href="#worksheet-tenant">Tenant</a>
+          <a href='javascript:daGoToAnchor("#worksheet-tenant");'><span>Rendered Tenant</span></a>
         </nav>
         <div style="height:1200px"></div>
-        <h2 id="made-attorney-tenant" tabindex="-1">Tenant</h2>
-        <a href="javascript:daGoToAnchor('#made-attorney-menu');"><span>Back to sections</span></a>
+        <h2 id="worksheet-tenant" tabindex="-1">Tenant</h2>
+        <a href="javascript:daGoToAnchor('#worksheet-menu');"><span>Back to sections</span></a>
         <input id="unsaved-name">
-        <div class="made-attorney-saved-none-container">
+        <div class="worksheet-saved-none-container">
           <input id="saved-choice" type="checkbox" class="danon-nota-checkbox">
           <input id="saved-none" type="checkbox" class="danota-checkbox">
         </div>
-        <div class="made-attorney-saved-none-container">
+        <div class="worksheet-saved-none-container">
           <input id="edited-choice" type="checkbox" class="danon-nota-checkbox" checked>
           <input id="edited-none" type="checkbox" class="danota-checkbox">
         </div>
@@ -61,16 +61,16 @@ const { chromium } = require('playwright');
 
     await page.locator('#unsaved-name').fill('Unsaved fictional tenant');
     await page.getByRole('link', { name: 'Tenant', exact: true }).click();
-    assert.equal(await page.evaluate(() => document.activeElement.id), 'made-attorney-tenant');
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'worksheet-tenant');
     assert.equal(await page.locator('#unsaved-name').inputValue(), 'Unsaved fictional tenant');
     assert.equal(await page.evaluate(() => window.submits), 0);
     console.log('PASS: section jumps preserve unsaved input without submission');
 
     await page.getByRole('link', { name: 'Back to sections', exact: true }).click();
-    assert.equal(await page.evaluate(() => document.activeElement.id), 'made-attorney-menu');
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'worksheet-menu');
     await page.getByRole('link', { name: 'Rendered Tenant', exact: true }).click();
-    assert.equal(await page.evaluate(() => document.activeElement.id), 'made-attorney-tenant');
-    const headingTop = await page.locator('#made-attorney-tenant').evaluate(el => el.getBoundingClientRect().top);
+    assert.equal(await page.evaluate(() => document.activeElement.id), 'worksheet-tenant');
+    const headingTop = await page.locator('#worksheet-tenant').evaluate(el => el.getBoundingClientRect().top);
     assert.ok(headingTop >= 90 && headingTop <= 102, `heading must scroll below header, got ${headingTop}`);
     assert.equal(await page.locator('#unsaved-name').inputValue(), 'Unsaved fictional tenant');
     assert.equal(await page.evaluate(() => window.submits), 0);
@@ -81,7 +81,7 @@ const { chromium } = require('playwright');
     await page.evaluate(html => { document.body.innerHTML = html; }, form);
     await page.evaluate(() => document.dispatchEvent(new Event('daPageLoad')));
     assert.equal(await page.locator('#saved-none').isChecked(), true);
-    await page.evaluate(() => { document.getElementById('made-attorney-menu').remove(); });
+    await page.evaluate(() => { document.getElementById('worksheet-menu').remove(); });
     await page.locator('#saved-none').uncheck();
     await page.evaluate(() => document.dispatchEvent(new Event('daPageLoad')));
     assert.equal(await page.locator('#saved-none').isChecked(), false);

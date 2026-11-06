@@ -458,7 +458,7 @@ help: |
   We can also save information about your case if you choose. Saved information
   will be used only by a non-profit legal aid organization. It may be used to help
   you if your case is accepted for full representation, or it may be used to identify
-  trends to help the non-profit legal aid organization bettter decide how to use
+  trends to help the non-profit legal aid organization better decide how to use
   its resources to prevent evictions.
   
   Sharing your information is optional. You can use this service for free whether or not
@@ -863,7 +863,7 @@ question: |
 fields:
   - First name: additional_tenants[i].name.first
   - Last name: additional_tenants[i].name.last
-  - Street addres: additional_tenants[i].address.address
+  - Street address: additional_tenants[i].address.address
     address autocomplete: True
     default: ${tenant.address.address}
   - Unit: additional_tenants[i].address.unit
@@ -907,17 +907,17 @@ id: address
 question: |
   What is your current address?
 fields:
-  - address: tenant.address.address
+  - Current street address: tenant.address.address
     address autocomplete: True
-  - unit: tenant.address.unit
+  - Current unit: tenant.address.unit
     required: False
-  - city: tenant.address.city
-  - state: tenant.address.state
+  - Current city: tenant.address.city
+  - Current state: tenant.address.state
     code: |
       states_list()
     default: "MA"
-  - zip: tenant.address.zip
-  - county: tenant.address.county
+  - Current ZIP code: tenant.address.zip
+  - Current county: tenant.address.county
     required: False
   - Phone number: tenant.phone_number
     required: False
@@ -932,28 +932,28 @@ fields:
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
-  - address: premises_alternate_address.address
+  - Eviction street address: premises_alternate_address.address
     address autocomplete: True
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
-  - unit: premises_alternate_address.unit
+  - Eviction unit: premises_alternate_address.unit
     required: False
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
-  - city: premises_alternate_address.city
+  - Eviction city: premises_alternate_address.city
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
-  - state: premises_alternate_address.state
+  - Eviction state: premises_alternate_address.state
     code: |
       states_list()
     default: "MA"
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
-  - zip: premises_alternate_address.zip
+  - Eviction ZIP code: premises_alternate_address.zip
     show if:
       variable: facts.tenant_address_is_eviction_address
       is: False
@@ -1894,7 +1894,8 @@ help: |
   See: https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-state-laws
   and https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-condo-conversion
   
-  Also https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
+# This URL no longer exists if there is anotehr source it can be brought back removing https to ignore for now
+# Also archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
 ---
 code: |
   temp = [{'My landlord failed to obtain the proper local permit.':'My landlord failed to obtain the proper local permit.'}]
@@ -2236,7 +2237,7 @@ fields:
     datatype: yesno
   - I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E).: retaliation.protection_or_prevention_order
     datatype: yesno
-  - I or someone in my household reported an incident of domestic violance, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
+  - I or someone in my household reported an incident of domestic violence, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
     datatype: yesno
   - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons.: retaliation.survivor_rights
     datatype: yesno
@@ -2247,7 +2248,6 @@ fields:
     show if: show_retaliation_other
   - One or more of the above happened in the last 6 months.: retaliation.within_6_months
     datatype: yesnoradio
-    required: True
 # section: Claims and Defenses
 help: |
   Learn more about retaliation in [Legal Tactics: Chapter 7, Taking your Landlord to Court](https://www.masslegalhelp.org/housing/lt1-chapter-13-taking-landlord-to-court.pdf)  

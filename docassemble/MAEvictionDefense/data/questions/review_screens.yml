@@ -1018,7 +1018,7 @@ review:
       I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E). : ${ word(yesno(retaliation.protection_or_prevention_order)) }
   - Edit: retaliation.domestic_violence
     button: |
-      I or someone in my household reported an incident of domestic violance, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order. : ${ word(yesno(retaliation.domestic_violence)) }
+      I or someone in my household reported an incident of domestic violence, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order. : ${ word(yesno(retaliation.domestic_violence)) }
   - Edit: retaliation.survivor_rights
     button: |
       I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons. : ${ word(yesno(retaliation.survivor_rights)) }

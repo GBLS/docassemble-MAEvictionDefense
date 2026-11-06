@@ -30,6 +30,38 @@ code: |
 sets: attorney_worksheet_ready
 code: |
   nav.hide()
+  # Initialize field objects and choice lists in this small block. Otherwise
+  # each missing object retries the large question and repeats its full source
+  # in the Playground debug panel, stalling client-side initialization.
+  need(
+    macourts, occupancy_ordinance_by_city, case, tenants_attorney, tenant, landlord,
+    landlords_attorney, additional_tenants, premises_alternate_address, facts,
+    discrimination, discrimination.sexual_harassment, retaliation, initial_defense,
+    security_deposit, postforeclosure, postforeclosure.no_just_cause,
+    postforeclosure.notice_provisions, disability, bqe, consumer_protection,
+    claims, relief, other, bad_conditions, fault, last_months_rent, subsidized_housing,
+  )
+  # Snapshot optional saved answers once rather than seeking them in field templates.
+  attorney_saved_checkbox_answers = {
+    name: showifdef(name, None) for name in (
+      'fault_basis', 'nofault_basis', 'summons_eviction_reasons',
+      'post_ntq_waiver', 'condo_violations', 'condo_local_violations',
+      'bad_conditions.conditions', 'bad_conditions.landlord_notified',
+      'discrimination.protected_classes', 'security_deposit.violations',
+    )
+  }
+  attorney_saved_none = {
+    name: checkbox_none_selected(saved) for name, saved in attorney_saved_checkbox_answers.items()
+  }
+  attorney_saved_none['condo_local_violations'] = checkbox_none_selected(
+    attorney_saved_checkbox_answers['condo_local_violations'],
+    ['My landlord failed to obtain the proper local permit.', 'My landlord violated another local rule (see links in help).'],
+  )
+  attorney_saved_condo = attorney_saved_checkbox_answers['condo_local_violations']
+  attorney_boston_condo_defaults = {
+    'notice': attorney_saved_condo.get("My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.", False) if attorney_saved_condo is not None else False,
+    'just_cause': attorney_saved_condo.get("My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason).", False) if attorney_saved_condo is not None else False,
+  }
   attorney_worksheet_ready = True
 ---
 if: person_answering == 'attorney' and attorney_workflow == 'fast'
@@ -63,37 +95,37 @@ fields:
     choices:
       - Entering an appearance: entering_appearance
       - Ghostwriting: ghostwriting
-  - First name: tenants_attorney.name.first
+  - Tenant attorney first name: tenants_attorney.name.first
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Middle name: tenants_attorney.name.middle
+  - Tenant attorney middle name: tenants_attorney.name.middle
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Last name: tenants_attorney.name.last
+  - Tenant attorney last name: tenants_attorney.name.last
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Suffix: tenants_attorney.name.suffix
+  - Tenant attorney name suffix: tenants_attorney.name.suffix
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - BBO Number: tenants_attorney.bbo
+  - Tenant attorney BBO number: tenants_attorney.bbo
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Email: tenants_attorney.email
+  - Tenant attorney email address: tenants_attorney.email
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
     datatype: email
-  - Phone number: tenants_attorney.phone_number
+  - Tenant attorney phone number: tenants_attorney.phone_number
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Fax number: tenants_attorney.fax_number
+  - Tenant attorney fax number: tenants_attorney.fax_number
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Office name (type or select from list): tenants_attorney.office
+  - Tenant attorney office name (type or select from list): tenants_attorney.office
     input type: combobox
     choices:
       - Community Legal Aid
@@ -108,23 +140,23 @@ fields:
       - Volunteer Lawyers Project
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Street address: tenants_attorney.address.address
+  - Tenant attorney street address: tenants_attorney.address.address
     address autocomplete: true
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Unit: tenants_attorney.address.unit
+  - Tenant attorney suite or unit: tenants_attorney.address.unit
     required: false
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - City: tenants_attorney.address.city
+  - Tenant attorney city: tenants_attorney.address.city
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - State: tenants_attorney.address.state
+  - Tenant attorney state: tenants_attorney.address.state
     code: |
       states_list()
     js show if: |-
       (val("representation_type") === "entering_appearance")
-  - Zip: tenants_attorney.address.zip
+  - Tenant attorney ZIP code: tenants_attorney.address.zip
     js show if: |-
       (val("representation_type") === "entering_appearance")
   - note: |
@@ -133,61 +165,58 @@ fields:
       [Back to sections](#worksheet-menu)
       [NEWLINE]
   - Tenant first name: tenant.name.first
-  - Middle name: tenant.name.middle
+  - Tenant middle name: tenant.name.middle
     required: false
-  - Last name: tenant.name.last
-  - Suffix: tenant.name.suffix
+  - Tenant last name: tenant.name.last
+  - Tenant name suffix: tenant.name.suffix
     required: false
     code: |
       name_suffix()
-  - Address: tenant.address.address
+  - Tenant current street address: tenant.address.address
     address autocomplete: true
-  - Unit: tenant.address.unit
+  - Tenant current unit: tenant.address.unit
     required: false
-  - City: tenant.address.city
-  - State: tenant.address.state
+  - Tenant current city: tenant.address.city
+  - Tenant current state: tenant.address.state
     code: |
       states_list()
     default: MA
-  - Zip: tenant.address.zip
-  - County: tenant.address.county
+  - Tenant current ZIP code: tenant.address.zip
+  - Tenant current county: tenant.address.county
     required: false
-  - Phone number: tenant.phone_number
+  - Tenant phone number: tenant.phone_number
     datatype: al_international_phone
     required: false
-  - Email address: tenant.email
+  - Tenant email address: tenant.email
     datatype: email
     required: false
   - Eviction premises match current address: facts.tenant_address_is_eviction_address
     datatype: yesnoradio
-    required: true
     default: true
-  - Premise Address: premises_alternate_address.address
+  - Eviction street address: premises_alternate_address.address
     address autocomplete: true
     js show if: |-
       ((val("facts.tenant_address_is_eviction_address") === false))
-  - Premise Unit: premises_alternate_address.unit
+  - Eviction unit: premises_alternate_address.unit
     required: false
     js show if: |-
       ((val("facts.tenant_address_is_eviction_address") === false))
-  - Premise City: premises_alternate_address.city
+  - Eviction city: premises_alternate_address.city
     js show if: |-
       ((val("facts.tenant_address_is_eviction_address") === false))
-  - Premise State: premises_alternate_address.state
+  - Eviction state: premises_alternate_address.state
     code: |
       states_list()
     default: MA
     js show if: |-
       ((val("facts.tenant_address_is_eviction_address") === false))
-  - Premise Zip: premises_alternate_address.zip
+  - Eviction ZIP code: premises_alternate_address.zip
     js show if: |-
       ((val("facts.tenant_address_is_eviction_address") === false))
   - Additional tenants will sign: additional_tenants.there_are_any
     datatype: yesnoradio
-    required: true
   - Defendant names differ on summons: tenant.name_different_on_summons
     datatype: yesnoradio
-    required: true
     default: false
   - Additional names on summons: tenant.more_names_on_summons
     datatype: yesno
@@ -208,7 +237,6 @@ fields:
     datatype: yesnoradio
     js show if: |-
       (val("tenant.name_different_on_summons") && val("tenant.not_named_on_summons"))
-    required: true
   - Grounds for intervention: intervention_reason
     datatype: area
     js show if: |-
@@ -255,38 +283,37 @@ fields:
     datatype: yesno
     js show if: |-
       (val("landlord.is_new")) && ((val("new_landlord_reason") === "My landlord sold the building"))
-  - Property Address: landlord.address.address
+  - Plaintiff street address: landlord.address.address
     address autocomplete: true
-  - Property Unit: landlord.address.unit
+  - Plaintiff suite or unit: landlord.address.unit
     required: false
-  - Property City: landlord.address.city
-  - Property State: landlord.address.state
+  - Plaintiff city: landlord.address.city
+  - Plaintiff state: landlord.address.state
     default: MA
-  - Prperty Zip: landlord.address.zip
+  - Plaintiff ZIP code: landlord.address.zip
   - Plaintiff has counsel: landlord.has_attorney
     datatype: yesnoradio
-    required: true
     default: false
-  - Attorney Name: landlords_attorney.name.text
+  - Plaintiff attorney name: landlords_attorney.name.text
     js show if: |-
       (val("landlord.has_attorney"))
-  - Attorney Address: landlords_attorney.address.address
+  - Plaintiff attorney street address: landlords_attorney.address.address
     required: false
     js show if: |-
       (val("landlord.has_attorney"))
-  - Attorney Suite or Unit: landlords_attorney.address.unit
+  - Plaintiff attorney suite or unit: landlords_attorney.address.unit
     required: false
     js show if: |-
       (val("landlord.has_attorney"))
-  - Attorney City: landlords_attorney.address.city
+  - Plaintiff attorney city: landlords_attorney.address.city
     required: false
     js show if: |-
       (val("landlord.has_attorney"))
-  - Attorney State: landlords_attorney.address.state
+  - Plaintiff attorney state: landlords_attorney.address.state
     required: false
     js show if: |-
       (val("landlord.has_attorney"))
-  - Attorney Zip: landlords_attorney.address.zip
+  - Plaintiff attorney ZIP code: landlords_attorney.address.zip
     required: false
     js show if: |-
       (val("landlord.has_attorney"))
@@ -306,14 +333,12 @@ fields:
     datatype: date
   - First-tier event date assigned: case.hearing_date_assigned
     datatype: yesnoradio
-    required: true
   - First-tier event date: case.first_event
     datatype: date
     js show if: |-
       (val("case.hearing_date_assigned"))
   - Request transfer from District Court to Housing Court: transfer_to_housing_court
     datatype: yesnoradio
-    required: true
     js show if: |-
       val("court") && !${ json.dumps([x.instanceName for x in macourts if "housing court" in x.name.lower()]) }.includes(val("court"))
   - Receiving Housing Court: transfer_court_name_temp
@@ -321,7 +346,6 @@ fields:
     choices: "[x for x in macourts if \"housing court\" in x.name.lower()]  \n"
     js show if: |-
       val("court") && !${ json.dumps([x.instanceName for x in macourts if "housing court" in x.name.lower()]) }.includes(val("court")) && val("transfer_to_housing_court")
-    required: true
     help: Select the Housing Court to receive the case.
   - Include motion to file late Answer and discovery: include_late_answer_motion
     datatype: yesno
@@ -338,7 +362,7 @@ fields:
       - Unknown: unsure
   - Fault allegations: fault_basis
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("fault_basis", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["fault_basis"] else "" }
     choices:
       - Chronic late payment of rent: chronic late payment of rent
       - Overcrowding: overcrowding
@@ -356,7 +380,7 @@ fields:
       (val("eviction_all_reasons['fault']"))
   - No-fault grounds: nofault_basis
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("nofault_basis", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["nofault_basis"] else "" }
     choices:
       - The tenant refused to pay a higher rent: refusal of rent increase
       - They want to sell the building: desire to sell
@@ -368,7 +392,6 @@ fields:
       ((!val("eviction_all_reasons['fault']") && !val("eviction_all_reasons['nonpayment']") && val("eviction_all_reasons['nofault']")))
   - Rent unpaid pending RAFT or other rental assistance: delay_in_raft
     datatype: yesnoradio
-    required: true
     js show if: |-
       (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
   - Required accompanying form received with nonpayment notice: tenant_got_accompanying_form
@@ -377,7 +400,6 @@ fields:
       (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
   - Landlord refused or is expected to refuse rental assistance: discrimination.raft_refusal
     datatype: yesnoradio
-    required: true
     js show if: |-
       (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment")) && (val("delay_in_raft"))
   - note: |
@@ -496,7 +518,6 @@ fields:
     datatype: yesnoradio
     js show if: |-
       val("notice_type") === "fourteen_day"
-    required: true
     default: true
   - Rent amount in notice was never agreed: refused_rent_increase
     datatype: yesno
@@ -504,19 +525,16 @@ fields:
       val("notice_type") === "fourteen_day"
   - Notice names tenant: ntq_includes_tenant_name
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       val("notice_type") !== "no_ntq"
   - Notice names all lease signatories: ntq_includes_all_tenants
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       val("notice_type") !== "no_ntq"
   - Notice has correct premises address: ntq_includes_correct_address
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       val("notice_type") !== "no_ntq"
@@ -544,11 +562,10 @@ fields:
     datatype: yesno
   - Summons grounds match notice: ntq_matches_summons
     datatype: yesnoradio
-    required: true
     default: true
   - Additional grounds on summons: summons_eviction_reasons
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("summons_eviction_reasons", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["summons_eviction_reasons"] else "" }
     choices:
       - Failure to vacate after a valid notice or notice to quit has expired (or similar): failure_to_vacate
       - Non-payment of rent: rent
@@ -559,15 +576,13 @@ fields:
       ((!val("ntq_matches_summons")))
   - Summons names all adult lease signatories: summons_includes_all_tenants
     datatype: yesnoradio
-    required: true
     default: true
   - Summons has correct premises address: summons_includes_correct_address
     datatype: yesnoradio
-    required: true
     default: true
   - Events after notice to quit: post_ntq_waiver
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("post_ntq_waiver", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["post_ntq_waiver"] else "" }
     choices:
       - Rent paid after notice: rent
       - New lease signed, excluding subsidy recertification: lease
@@ -577,7 +592,6 @@ fields:
     datatype: yesnoradio
     js show if: |-
       val("notice_type") !== "no_ntq" && val("post_ntq_waiver['rent']")
-    required: true
     default: true
   - note: '### Subsidized housing'
     js show if: |-
@@ -600,30 +614,25 @@ fields:
       (val("facts.tenant_has_subsidy"))
   - Subsidy termination rules violated: subsidized_housing.no_proper_termination
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       (val("facts.tenant_has_subsidy"))
   - No good cause for termination: subsidized_housing.no_just_cause
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       (val("facts.tenant_has_subsidy"))
   - Notice not sent simultaneously to PHA: subsidized_housing.no_ntq_to_agency
     datatype: yesnoradio
-    required: true
     js show if: |-
       ((val("facts.tenant_has_subsidy") && (val("subsidy_type") === "Section 8 voucher")))
   - Required conference or grievance hearing not offered: subsidized_housing.no_hearing_or_conference
     datatype: yesnoradio
-    required: true
     default: true
     js show if: |-
       ((val("facts.tenant_has_subsidy") && (val("subsidy_type") !== "Section 8 voucher")))
   - VAWA defense: subsidized_housing.vawa
     datatype: yesnoradio
-    required: true
     js show if: |-
       (val("facts.tenant_has_subsidy"))
   - note: '### Condominium conversion'
@@ -635,7 +644,7 @@ fields:
       (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion")))
   - State condominium conversion violations: condo_violations
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("condo_violations", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["condo_violations"] else "" }
     choices:
       - Failed to provide the tenant with 1 year's notice: Failed to provide me with 1 year's notice
       - ? Failed to provide the tenant with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in the tenant's household
@@ -649,7 +658,7 @@ fields:
       (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion"))) && (val("more_than_3_units"))
   - Local condominium conversion violations: condo_local_violations
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("condo_local_violations", None), ["My landlord failed to obtain the proper local permit.", "My landlord violated another local rule (see links in help)."]) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["condo_local_violations"] else "" }
     js show if: |-
       (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1)))
     choices:
@@ -658,13 +667,13 @@ fields:
   - 'Boston: required 5-year notice was not provided for an elder or household member with a disability': attorney_boston_condo_notice
     datatype: yesno
     default: |
-      ${ condo_local_violations.get("My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.", False) if defined('condo_local_violations') else False }
+      ${ attorney_boston_condo_defaults["notice"] }
     js show if: |-
       (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1))) && String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase() === "boston"
   - 'Boston: landlord did not specify just cause': attorney_boston_condo_just_cause
     datatype: yesno
     default: |
-      ${ condo_local_violations.get("My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason).", False) if defined('condo_local_violations') else False }
+      ${ attorney_boston_condo_defaults["just_cause"] }
     js show if: |-
       (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1))) && String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase() === "boston"
   - note: |
@@ -676,7 +685,7 @@ fields:
       ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))
   - Conditions during the last 6 years: bad_conditions.conditions
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("bad_conditions.conditions", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["bad_conditions.conditions"] else "" }
     choices:
       - Insects: insects
       - Cockroaches: cockroaches
@@ -701,7 +710,7 @@ fields:
       (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("bad_conditions.conditions['other']"))
   - Notice of conditions to landlord: bad_conditions.landlord_notified
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("bad_conditions.landlord_notified", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["bad_conditions.landlord_notified"] else "" }
     choices:
       - The tenant told the landlord in person or on the phone.: I told the landlord in person or on the phone.
       - The tenant told the landlord in writing (by text, email, letter, or written note).: I told the landlord in writing (by text, email, letter, or written note).
@@ -739,7 +748,6 @@ fields:
   - note: '### Retaliation'
   - Retaliation: retaliation.is_retaliated
     datatype: yesnoradio
-    required: true
   - note: The recorded facts suggest reviewing a retaliation defense. The attorney can choose whether to include it.
     js show if: |-
       ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && (Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) || val("tenant.is_dvvictim") || val("claims.harassment")) && val("retaliation.is_retaliated") === false
@@ -785,19 +793,17 @@ fields:
       val("retaliation.is_retaliated") && val("show_retaliation_other")
   - Protected activity within six months: retaliation.within_6_months
     datatype: yesnoradio
-    required: true
     js show if: |-
       val("retaliation.is_retaliated")
   - note: '### Discrimination and accommodation'
   - Discrimination: tenant.is_discriminated
     datatype: yesnoradio
-    required: true
   - note: The recorded facts suggest reviewing a discrimination defense. The attorney can choose whether to include it.
     js show if: |-
       (val("tenant.is_disabled") || ((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment" && val("delay_in_raft") && val("discrimination.raft_refusal"))) && val("tenant.is_discriminated") === false
   - Protected classes: discrimination.protected_classes
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("discrimination.protected_classes", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["discrimination.protected_classes"] else "" }
     choices:
       - Tenant has children: Family status
       - The tenant's age: age
@@ -824,7 +830,6 @@ fields:
       val("tenant.is_discriminated") && val("discrimination.show_other")
   - Request reasonable accommodation: disability.request_reasonable_accommodation
     datatype: yesnoradio
-    required: true
     js show if: |-
       (val("tenant.is_disabled"))
   - Pressured for sexual favors: discrimination.sexual_harassment.pressured_sexual_favors
@@ -985,7 +990,7 @@ fields:
       (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_deposit"))
   - Violations: security_deposit.violations
     datatype: checkboxes
-    css class: ${ "worksheet-saved-none" if checkbox_none_selected(showifdef("security_deposit.violations", None)) else "" }
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["security_deposit.violations"] else "" }
     choices:
       - Accepted a deposit for more than one month's rent: Accepted a deposit for more than one month's rent
       - Failed to keep the deposit in a separate bank account: Failed to keep the deposit in a separate bank account
@@ -1017,12 +1022,10 @@ fields:
       (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr"))
   - Tenancy longer than one year: last_months_rent.over_a_year
     datatype: yesnoradio
-    required: true
     js show if: |-
       (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr"))
   - Annual interest paid: last_months_rent.paid_interest
     datatype: yesnoradio
-    required: true
     js show if: |-
       (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr") && val("last_months_rent.over_a_year"))
   - note: '### Consumer protection'
@@ -1139,7 +1142,6 @@ fields:
     maxlength: 500
   - Demand jury trial: claim_jurytrial
     datatype: yesnoradio
-    required: true
 continue button field: attorney_intake_complete
 continue button label: Save worksheet and continue
 need: attorney_worksheet_ready

@@ -2,10 +2,10 @@
 (function () {
   "use strict";
   function restoreSavedNone() {
-    if (!document.getElementById("made-attorney-menu")) {
+    if (!document.getElementById("worksheet-menu")) {
       return;
     }
-    document.querySelectorAll(".made-attorney-saved-none-container").forEach(function (group) {
+    document.querySelectorAll(".worksheet-saved-none-container").forEach(function (group) {
       var none = group.querySelector("input.danota-checkbox");
       // Never replace a substantive selection, including an unsaved edit.
       if (none && !none.checked && !group.querySelector("input.danon-nota-checkbox:checked")) {
@@ -19,7 +19,7 @@
   window.madeAttorneyJumpHandler = true;
   window.jQuery(document).on("daPageLoad", restoreSavedNone);
   document.addEventListener("click", function (event) {
-    if (!document.getElementById("made-attorney-menu")) {
+    if (!document.getElementById("worksheet-menu")) {
       return;
     }
     var link = event.target.closest("a");
@@ -29,9 +29,9 @@
     // Docassemble rewrites hash links when it renders Markdown. Recognize
     // that specific wrapper without evaluating its JavaScript.
     var href = link.getAttribute("href") || "";
-    var anchor = href.match(/^#(made-attorney-[a-z-]+)$/);
+    var anchor = href.match(/^#(worksheet-[a-z-]+)$/);
     if (!anchor) {
-      anchor = href.match(/^javascript:\s*daGoToAnchor\(\s*["']#(made-attorney-[a-z-]+)["']\s*\);?\s*$/);
+      anchor = href.match(/^javascript:\s*daGoToAnchor\(\s*["']#(worksheet-[a-z-]+)["']\s*\);?\s*$/);
     }
     var target = anchor && document.getElementById(anchor[1]);
     if (!target) {

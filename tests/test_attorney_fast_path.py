@@ -69,6 +69,34 @@ def lookup_scope(answers):
     return {**answers, "defined": defined, "showifdef": showifdef}
 
 
+def prepared_worksheet_scope(answers):
+    objects = {
+        name: SimpleNamespace() for name in (
+            "case", "tenants_attorney", "tenant", "landlord", "landlords_attorney",
+            "additional_tenants", "premises_alternate_address", "facts",
+            "retaliation", "initial_defense", "security_deposit", "disability",
+            "bqe", "consumer_protection", "claims", "relief", "other",
+            "bad_conditions", "fault", "last_months_rent", "subsidized_housing",
+        )
+    }
+    objects["discrimination"] = SimpleNamespace(sexual_harassment=SimpleNamespace())
+    objects["postforeclosure"] = SimpleNamespace(no_just_cause=SimpleNamespace(), notice_provisions=SimpleNamespace())
+    scope = {
+        **objects, **lookup_scope(answers), "checkbox_none_selected": checkbox_none_selected,
+        "nav": SimpleNamespace(hide=lambda: None),
+        "need": lambda *_: None, "macourts": [], "occupancy_ordinance_by_city": {},
+    }
+    # Nested objects have their own declarations in the interview. A saved
+    # checkbox dictionary on the parent does not remove those child objects.
+    for parent, child in (("discrimination", "sexual_harassment"),
+                          ("postforeclosure", "no_just_cause"),
+                          ("postforeclosure", "notice_provisions")):
+        if not hasattr(scope[parent], child):
+            setattr(scope[parent], child, SimpleNamespace())
+    exec(rule("interview-attorney.yml", "attorney_worksheet_ready"), scope)
+    return scope
+
+
 def browser_expression(expression, answers):
     scope = {
         "occupancy_ordinance_by_city": {"boston": {}, "somerville": {}},
@@ -210,7 +238,9 @@ def test_one_worksheet_uses_in_page_links_and_follows_the_tenant_order():
     form = forms[0]
     assert form["continue button field"] == "attorney_intake_complete"
     assert "url_action" not in form["subquestion"]
-    targets = re.findall(r'href="#(made-attorney-[^"]+)"', form["subquestion"])
+    targets = re.findall(r'href="#(worksheet-[^"]+)"', form["subquestion"])
+    assert len(targets) == 8
+    assert len(set(targets)) == len(targets)
     for target in targets:
         assert any(f'id="{target}"' in f.get("note", "") for f in form["fields"])
     variables = [field_name(f) for f in form["fields"]]
@@ -224,7 +254,7 @@ def test_one_worksheet_uses_in_page_links_and_follows_the_tenant_order():
 
 def test_first_render_never_seeks_unsaved_on_screen_answers():
     scope = {
-        **lookup_scope({}),
+        **prepared_worksheet_scope({}),
         "occupancy_ordinance_by_city": {"boston": {}, "somerville": {}},
         "macourts": [SimpleNamespace(instanceName="housing", name="Boston Housing Court")],
         "json": json, "url_of": lambda filename: filename, "default_lang": "",
@@ -243,6 +273,28 @@ def test_first_render_never_seeks_unsaved_on_screen_answers():
     assert not any(isinstance(f.get("show if"), dict) for f in worksheet()["fields"])
 
 
+def test_worksheet_initializes_declared_field_objects_in_the_small_preparation_block():
+    declared = {
+        name for filename in QUESTIONS.glob("*.yml") for block in blocks(filename.name)
+        for declaration in block.get("objects", []) if isinstance(declaration, dict)
+        for name in declaration
+    }
+    required = set()
+    for field in worksheet()["fields"]:
+        name = field_name(field)
+        if not isinstance(name, str):
+            continue
+        parents = [obj for obj in declared if name.startswith(obj + ".") or name.startswith(obj + "[")]
+        if parents:
+            required.add(max(parents, key=len))
+    tree = ast.parse(rule("interview-attorney.yml", "attorney_worksheet_ready"))
+    preparation = next(n for n in ast.walk(tree) if isinstance(n, ast.Call)
+                       and isinstance(n.func, ast.Name) and n.func.id == "need")
+    initialized = {ast.unparse(arg) for arg in preparation.args}
+    assert required <= initialized, f"Worksheet objects would retry the large question: {required - initialized}"
+    assert worksheet()["need"] == worksheet()["reconsider"] == "attorney_worksheet_ready"
+
+
 @pytest.mark.parametrize("variable,key", [
     ("attorney_boston_condo_notice", "My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household."),
     ("attorney_boston_condo_just_cause", "My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason)."),
@@ -257,7 +309,7 @@ def test_boston_condo_defaults_preserve_saved_answers_without_seeking_questions(
     answers = {}
     if saved != "undefined":
         answers["condo_local_violations"] = {} if saved == "missing" else {key: saved}
-    rendered = Template(field(variable)["default"]).render(**lookup_scope(answers))
+    rendered = Template(field(variable)["default"]).render(**prepared_worksheet_scope(answers))
     assert rendered.strip() == str(expected)
 
 
@@ -285,7 +337,7 @@ def test_every_worksheet_checkbox_group_restores_only_saved_empty_answers():
             continue
         name = field_name(item)
         key = next(iter(item["choices"][0].values()))
-        for saved, expected in [(None, ""), ({key: False}, "made-attorney-saved-none"), ({key: True}, "")]:
+        for saved, expected in [(None, ""), ({key: False}, "worksheet-saved-none"), ({key: True}, "")]:
             answers = {}
             if saved is not None:
                 parts = name.split(".")
@@ -293,7 +345,7 @@ def test_every_worksheet_checkbox_group_restores_only_saved_empty_answers():
                     answers[name] = saved
                 else:
                     answers[parts[0]] = SimpleNamespace(**{parts[1]: saved})
-            scope = {**lookup_scope(answers), "checkbox_none_selected": checkbox_none_selected}
+            scope = prepared_worksheet_scope(answers)
             assert Template(item["css class"]).render(**scope).strip() == expected
 
 
@@ -302,8 +354,28 @@ def test_boston_standalone_answers_do_not_select_hidden_local_checkbox_choices()
     answers = {"condo_local_violations": {
         "My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason).": True,
     }}
-    scope = {**lookup_scope(answers), "checkbox_none_selected": checkbox_none_selected}
-    assert Template(item["css class"]).render(**scope).strip() == "made-attorney-saved-none"
+    scope = prepared_worksheet_scope(answers)
+    assert Template(item["css class"]).render(**scope).strip() == "worksheet-saved-none"
+
+
+def test_worksheet_render_uses_prepared_answers_without_repeating_optional_lookups():
+    answers = {"bad_conditions": SimpleNamespace(conditions={"insects": False})}
+    scope = prepared_worksheet_scope(answers)
+    assert scope["attorney_saved_none"]["bad_conditions.conditions"] is True
+    # Reopening review must reflect a changed answer rather than a cached flag.
+    answers["bad_conditions"].conditions["insects"] = True
+    exec(rule("interview-attorney.yml", "attorney_worksheet_ready"), scope)
+    assert scope["attorney_saved_none"]["bad_conditions.conditions"] is False
+
+    def unexpected_lookup(*_):
+        pytest.fail("A field template must use prepared saved answers, not seek optional answers again")
+
+    scope.update(showifdef=unexpected_lookup, defined=unexpected_lookup)
+    for item in worksheet()["fields"]:
+        if "css class" in item:
+            Template(item["css class"]).render(**scope)
+    for name in ("attorney_boston_condo_notice", "attorney_boston_condo_just_cause"):
+        Template(field(name)["default"]).render(**scope)
 
 
 def test_guided_retaliation_facts_are_not_inferred_from_bad_conditions():
@@ -319,7 +391,8 @@ def test_six_month_retaliation_fact_requires_an_explicit_answer_in_both_workflow
     guided_field = next(f for f in guided["fields"] if field_name(f) == "retaliation.within_6_months")
     for item in (guided_field, field("retaliation.within_6_months")):
         assert item["datatype"] == "yesnoradio"
-        assert item["required"] is True
+        # Fields are required by default; an explicit override is optional.
+        assert item.get("required", True) is True
         assert "default" not in item
 
 

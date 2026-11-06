@@ -5,6 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+import yaml
 from docx import Document
 from docxtpl import DocxTemplate
 from jinja2 import Environment, StrictUndefined
@@ -61,13 +62,22 @@ def test_signature_template_honors_paper_and_electronic_choices(person, represen
         "tenant": tenant,
         "tenants_attorney": attorney,
         "additional_tenants": AdditionalTenants([cotenant]),
-        "service_performed_by": "advocate",
         "service_recipient_description": "the landlord",
+        "method_of_service": "mailed",
         "service_method_phrase": "first-class mail",
         "service_date": SimpleNamespace(format=lambda _: "October 29, 2026"),
         "today": lambda: SimpleNamespace(format=lambda _: "10/29/2026"),
         "showifdef": lambda _: "",
     }
+    if person == "attorney":
+        context["service_performed_by"] = "advocate"
+    else:
+        # Tenant screens never ask this question. Resolve the production
+        # fallback instead of supplying the answer that hid the live bug.
+        rules = yaml.safe_load_all((ROOT / "docassemble/MAEvictionDefense/data/questions/eviction.code.yml").read_text(encoding="utf-8"))
+        delivery_rule = next(b for b in rules if b and b.get("sets") == "service_performed_by")
+        assert eval(delivery_rule["if"], {}, context)
+        exec(delivery_rule["code"], context)
     if choice is not None:
         context["signature_choice"] = choice
     context["defined"] = lambda name: name in context
@@ -78,6 +88,8 @@ def test_signature_template_honors_paper_and_electronic_choices(person, represen
     template.save(output)
     output.seek(0)
     text = "\n".join(p.text for p in Document(output).paragraphs)
+    if person != "attorney":
+        assert "I caused a copy of this document to be mailed to the landlord" in text
 
     if person == "attorney" and representation == "entering_appearance":
         expected_signers = [attorney]
