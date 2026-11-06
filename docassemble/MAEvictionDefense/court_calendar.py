@@ -34,6 +34,21 @@ def next_court_business_day(date_to_check: Union[str, DADateTime]) -> DADateTime
     return candidate
 
 
+def court_business_days_after(
+    start_date: Union[str, DADateTime], number_of_days: int
+) -> DADateTime:
+    """Count Massachusetts court business days, excluding the starting date."""
+    candidate = as_datetime(start_date)
+    business_days_counted = 0
+
+    while business_days_counted < number_of_days:
+        candidate = candidate.plus(days=1)
+        if is_court_business_day(candidate):
+            business_days_counted += 1
+
+    return candidate
+
+
 def late_answer_motion_needed(
     current_date: Union[str, DADateTime],
     answer_deadline: Union[str, DADateTime],
