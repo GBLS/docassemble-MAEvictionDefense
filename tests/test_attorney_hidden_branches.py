@@ -60,7 +60,7 @@ def render_answer_section(opening, context, start=None):
     source.seek(0)
     template = DocxTemplate(source)
     context = {**context, "defined": lambda name: name in context}
-    template.render(context, jinja_env=Environment(undefined=StrictUndefined))
+    template.render(context, jinja_env=Environment(undefined=StrictUndefined, autoescape=True))
     output = BytesIO()
     template.save(output)
     output.seek(0)
@@ -197,7 +197,7 @@ def test_fresh_no_fault_answer_renders_without_nonpayment_or_fault_answers(is_di
     # Answer's dependencies from the shared document-composition runtime.
     context["include_docx_template"] = lambda *args, **kwargs: ""
     template = DocxTemplate(DATA / "templates/SummaryProcessAnswer.docx")
-    template.render(context, jinja_env=Environment(undefined=StrictUndefined))
+    template.render(context, jinja_env=Environment(undefined=StrictUndefined, autoescape=True))
     output = BytesIO()
     template.save(output)
     output.seek(0)

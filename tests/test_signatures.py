@@ -83,7 +83,7 @@ def test_signature_template_honors_paper_and_electronic_choices(person, represen
     context["defined"] = lambda name: name in context
 
     template = DocxTemplate(TEMPLATE)
-    template.render(context, jinja_env=Environment(undefined=StrictUndefined))
+    template.render(context, jinja_env=Environment(undefined=StrictUndefined, autoescape=True))
     output = BytesIO()
     template.save(output)
     output.seek(0)
