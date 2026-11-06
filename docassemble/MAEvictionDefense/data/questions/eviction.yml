@@ -233,7 +233,9 @@ code: |
   nav.set_section('start')
   multi_user = True
   allow_cron = True
-  speak_text = True
+  # Fresh test servers may not have speech configured. Do not request audio
+  # records unless the server supports speech and has not disabled it.
+  speak_text = bool(get_config('enable tts', True) and server_capabilities().get('voicerss', False))
   menu_items = [action_menu_item('Edit answers', 'review_everything')]
   menu_items.append( {'url': url_ask(['share_fields', 'share_success', {'recompute': ['share_email','sent_sharing_email','share_cell','sent_sharing_text']}]), 'label': 'Share interview'})
   set_live_help_status(availability='available', mode='help',partner_roles='advocate')

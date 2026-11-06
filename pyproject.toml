@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docassemble.MAEvictionDefense"
-version = "0.6.3"
+version = "0.6.4"
 description = "A guided interview for pro se eviction defense in Massachusetts. Generates an Answer form, Request for Discovery, and accompanying forms and motions."
 readme = "README.md"
 authors = [
@@ -48,8 +48,10 @@ testpaths = ["tests"]
 module = [
     "bs4",
     "docassemble.*",
+    "docxtpl",
     "gspread",
     "nameparser",
+    "mako.*",
     "oauth2client.*",
     "requests",
 ]

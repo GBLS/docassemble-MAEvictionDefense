@@ -66,6 +66,20 @@ These local changes need to be installed before the next
 live attorney rerun; the timing comparison used the captured response, not a
 server installation of the change.
 
+The isolated GitHub run at `20h30m26sUTC` failed all six scenarios before the
+first question. Its saved pages report `speaklist.upload` rejecting a null value
+while creating a text-to-speech record. This is a server speech/database startup
+failure, before any story-table answers are used. The interview now enables
+`speak_text` only when `server_capabilities()['voicerss']` is available and the
+server has not set `enable tts: False`. Configured servers retain audio; fresh
+servers without speech do not request speech records. If a custom
+`CONFIG_CONTENTS` enables VoiceRSS on the affected docassemble version, set
+`enable tts: False` in that test configuration until the upstream schema issue
+is fixed. See [docassemble's speech configuration](https://docassemble.org/docs/config.html#voicerss)
+and [server capabilities](https://docassemble.org/docs/functions.html#server_capabilities).
+`tests/test_interview_speech.py` covers both fresh and configured servers. The
+GitHub ALKiln run must be repeated to verify the fresh-server startup fix.
+
 For date calculation unit tests, see `tests/test_court_calendar.py`. Local Python
 checks do not replace an ALKiln run against a docassemble server. Story-table
 and relative-date syntax follow the [ALKiln writing guide](https://assemblyline.suffolklitlab.org/docs/components/ALKiln/writing/).

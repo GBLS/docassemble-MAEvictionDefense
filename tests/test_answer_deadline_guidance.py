@@ -22,7 +22,7 @@ class Court:
 
 def docx_text(template_name: str) -> str:
     # Word can split a Jinja expression across runs when a document is edited.
-    return "\n".join(p.text for p in Document(TEMPLATE_DIR / template_name).paragraphs)
+    return "\n".join(p.text for p in Document(str(TEMPLATE_DIR / template_name)).paragraphs)
 
 
 def test_unknown_first_tier_event_does_not_create_an_answer_deadline():
