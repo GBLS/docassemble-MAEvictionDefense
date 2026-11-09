@@ -53,6 +53,7 @@ Scenario: User has a "fault" case with NO court date
     | landlord.has_attorney | False |  |
     | case.entry_date | today - 10 |  |
     | case.hearing_date_assigned | False |  |
+    | case_is_on_time | True |  |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
     | fault.did_not_occur | True |  |
@@ -171,9 +172,7 @@ Scenario: User has a public housing voucher with a court date
     | attempted_offered_cure | False |  |
     | other.vendor_payments | False |  |
     | initial_defense.avoidance_of_forfeiture | True |  |
-    | paid_rent_owed | False |  |
-    | paid_court_fees | False |  |
-    | no_ntq_in_12_months | True |  |
+    | paid_rent_owed | True |  |
     | lease_type | self_extending |  |
     | date_received_ntq | today - 90 |  |
     | date_received_summons | today - 20 |  |
@@ -292,9 +291,7 @@ Scenario: User fell behind because of RAFT delay
     | attempted_offered_cure | False |  |
     | other.vendor_payments | False |  |
     | initial_defense.avoidance_of_forfeiture | True |  |
-    | paid_rent_owed | False |  |
-    | paid_court_fees | False |  |
-    | no_ntq_in_12_months | True |  |
+    | paid_rent_owed | True |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
     | date_received_ntq | today - 90 |  |

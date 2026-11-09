@@ -271,7 +271,6 @@ fields:
       - Individual or other: other
   - Ownership changed during tenancy: landlord.is_new
     datatype: yesno
-    default: false
   - Reason for ownership change: new_landlord_reason
     choices:
       - Landlord died: My landlord died
@@ -349,7 +348,6 @@ fields:
     help: Select the Housing Court to receive the case.
   - Include motion to file late Answer and discovery: include_late_answer_motion
     datatype: yesno
-    default: false
     help: The shared date checks will also review whether a late Answer motion is needed.
   - Grounds stated by landlord: eviction_all_reasons
     datatype: checkboxes
@@ -540,12 +538,10 @@ fields:
       val("notice_type") !== "no_ntq"
   - Lease requires 30-day notice for nonpayment: lease_requires_30_day_notice
     datatype: yesno
-    default: false
     js show if: |-
       val("notice_type") !== "no_ntq"
   - Notice omits required language: ntq_leaves_off_required_language
     datatype: yesno
-    default: false
     js show if: |-
       val("notice_type") !== "no_ntq"
   - Notice to quit received: date_received_ntq
