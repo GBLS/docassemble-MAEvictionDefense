@@ -18,7 +18,6 @@ Scenario: User's court date has passed
   And the max seconds for each step is 200
   Then I get to the question id "not right interview" with this data:
     | var | value | trigger |
-    | acknowledged_information_use['user_accepts'] | True |  |
     | person_answering | tenant |  |
     | how_to_answer | continue |  |
     | case.status | late |  |
@@ -29,7 +28,6 @@ Scenario: User has a "fault" case with NO court date
   And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
-    | acknowledged_information_use['user_accepts'] | True |  |
     | person_answering | tenant |  |
     | how_to_answer | continue |  |
     | case.status | summons |  |
@@ -115,7 +113,6 @@ Scenario: User has a public housing voucher with a court date
   And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
-    | acknowledged_information_use['user_accepts'] | True |  |
     | person_answering | tenant |  |
     | how_to_answer | continue |  |
     | case.status | summons |  |
@@ -229,7 +226,6 @@ Scenario: User fell behind because of RAFT delay
   And the max seconds for each step is 200
   Then I get to the question id "signature" with this data:
     | var | value | trigger |
-    | acknowledged_information_use['user_accepts'] | True |  |
     | person_answering | tenant |  |
     | how_to_answer | continue |  |
     | case.status | summons |  |
@@ -346,7 +342,6 @@ Scenario Outline: Attorney completes the no-fault worksheet with <representation
   And the max seconds for each step is 200
   Then I get to the question id "attorney worksheet" with this data:
     | var | value | trigger |
-    | acknowledged_information_use['user_accepts'] | True |  |
     | person_answering | attorney |  |
     | attorney_workflow | fast |  |
     | case.status | summons |  |
