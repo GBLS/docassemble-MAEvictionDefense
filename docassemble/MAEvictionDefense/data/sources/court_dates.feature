@@ -11,6 +11,11 @@ Since the tests are so long and many scenarios don't conflict, some have been co
 - Attorney worksheet: entering an appearance and ghostwriting, discovery review,
   paper signing, service, and downloads in a no-fault case.
 
+# Leave initially unchecked checkboxes out of the tables. ALKiln v5 reads the
+# label's aria-checked attribute, absent from newer docassemble native checkboxes,
+# and can check an empty box when asked to set False. Keep explicit radio answers
+# and False responses that turn off the prechecked reminder checkboxes.
+
 @fast @1 
 
 Scenario: User's court date has passed
@@ -47,29 +52,16 @@ Scenario: User has a "fault" case with NO court date
     | edit_contact_info | False |  |
     | landlord.name.text | Len Lessor |  |
     | landlord.organization_type | other |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | transfer_to_housing_court | False |  |
     | landlord.has_attorney | False |  |
     | case.entry_date | today - 10 |  |
     | case.hearing_date_assigned | False |  |
-    | case_is_on_time | True |  |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
     | fault.did_not_occur | True |  |
     | fault.not_violation_of_agreement | True |  |
-    | fault.no_control_of_guest | False |  |
     | initial_defense.avoidance_of_forfeiture | True |  |
-    | facts.tenant_has_subsidy | False |  |
-    | tenant.is_nonnativespeaker | False |  |
-    | tenant.is_disabled | False |  |
-    | tenant.is_under6 | False |  |
-    | tenant.is_over60 | False |  |
-    | tenant.is_dvvictim | False |  |
-    | postforeclosure.is_foreclosed | False |  |
-    | claims.harassment | False |  |
-    | is_condo_conversion | False |  |
-    | is_pca | False |  |
     | facts.tenant_movein | today - 730 |  |
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_rent_frequency | week |  |
@@ -78,22 +70,17 @@ Scenario: User has a "fault" case with NO court date
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | lease_requires_30_day_notice | False |  |
-    | ntq_leaves_off_required_language | False |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
     | date_received_ntq | today - 90 |  |
     | date_received_summons | today - 20 |  |
     | summons_in_hand | True |  |
-    | summons_mailed | False |  |
-    | summons_last_and_usual | False |  |
     | ntq_matches_summons | True |  |
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | post_ntq_waiver['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
-    | occupancy_ordinance_applies | False |  |
     | claim_jurytrial | False |  |
     | needs_time_because | Busy |  |
     | tenant_review_discovery | False |  |
@@ -133,7 +120,6 @@ Scenario: User has a public housing voucher with a court date
     | edit_contact_info | False |  |
     | landlord.name.text | Len Lessor |  |
     | landlord.organization_type | other |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | transfer_to_housing_court | False |  |
     | landlord.has_attorney | False |  |
@@ -145,15 +131,6 @@ Scenario: User has a public housing voucher with a court date
     | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
     | delay_in_raft | False |  |
-    | tenant.is_nonnativespeaker | False |  |
-    | tenant.is_disabled | False |  |
-    | tenant.is_under6 | False |  |
-    | tenant.is_over60 | False |  |
-    | tenant.is_dvvictim | False |  |
-    | postforeclosure.is_foreclosed | False |  |
-    | claims.harassment | False |  |
-    | is_condo_conversion | False |  |
-    | is_pca | False |  |
     | facts.tenant_movein | today - 730 |  |
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_contract_rent | 100 |  |
@@ -163,48 +140,27 @@ Scenario: User has a public housing voucher with a court date
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | lease_requires_30_day_notice | False |  |
-    | ntq_leaves_off_required_language | False |  |
     | dont_owe_rent | True |  |
     | behind_in_rent | True |  |
-    | refused_rent_increase | False |  |
-    | attempted_full_cure | False |  |
-    | attempted_offered_cure | False |  |
-    | other.vendor_payments | False |  |
     | initial_defense.avoidance_of_forfeiture | True |  |
     | paid_rent_owed | True |  |
+    | cure_date | today - 15 |  |
     | lease_type | self_extending |  |
     | date_received_ntq | today - 90 |  |
     | date_received_summons | today - 20 |  |
     | summons_in_hand | True |  |
-    | summons_mailed | False |  |
-    | summons_last_and_usual | False |  |
     | ntq_matches_summons | True |  |
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | post_ntq_waiver['None'] | True |  |
     | subsidized_housing.pha_pays_rent | True |  |
-    | subsidized_housing.stopped_payment | False |  |
-    | subsidized_housing.improper_rent_calculation | False |  |
-    | subsidized_housing.landlord_overcharged | False |  |
     | subsidized_housing.no_proper_termination | True |  |
     | subsidized_housing.no_just_cause | True |  |
     | subsidized_housing.no_ntq_to_agency | False |  |
     | subsidized_housing.vawa | False |  |
-    | bqe.locked_out | False |  |
-    | bqe.entered_without_permission | False |  |
-    | claims.utilities | False |  |
-    | paid_deposit | False |  |
-    | paid_lmr | False |  |
     | bad_conditions.conditions['None'] | True |  |
-    | consumer_protection.late_fees | False |  |
-    | consumer_protection.nonagreed_rent | False |  |
-    | consumer_protection.unlawful_court_fees | False |  |
-    | consumer_protection.unlawful_lease_terms | False |  |
-    | consumer_protection.other | False |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
-    | occupancy_ordinance_applies | False |  |
     | claim_jurytrial | False |  |
     | needs_time_because | Busy |  |
     | tenant_review_discovery | False |  |
@@ -244,7 +200,6 @@ Scenario: User fell behind because of RAFT delay
     | edit_contact_info | False |  |
     | landlord.name.text | Len Lessor |  |
     | landlord.organization_type | other |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | transfer_to_housing_court | False |  |
     | landlord.has_attorney | False |  |
@@ -255,22 +210,10 @@ Scenario: User fell behind because of RAFT delay
     | tenant_got_accompanying_form | False |  |
     | delay_in_raft | True |  |
     | discrimination.raft_refusal | True |  |
-    | tenant.is_nonnativespeaker | False |  |
-    | tenant.is_disabled | False |  |
-    | tenant.is_under6 | False |  |
-    | tenant.is_over60 | False |  |
-    | tenant.is_dvvictim | False |  |
-    | postforeclosure.is_foreclosed | False |  |
-    | claims.harassment | False |  |
-    | is_condo_conversion | False |  |
-    | is_pca | False |  |
     | facts.tenant_movein | today - 730 |  |
     | facts.tenant_has_subsidy | True |  |
     | subsidy_type | Section 8 voucher |  |
     | subsidized_housing.pha_pays_rent | True |  |
-    | subsidized_housing.stopped_payment | False |  |
-    | subsidized_housing.improper_rent_calculation | False |  |
-    | subsidized_housing.landlord_overcharged | False |  |
     | subsidized_housing.no_proper_termination | True |  |
     | subsidized_housing.no_just_cause | True |  |
     | subsidized_housing.no_ntq_to_agency | False |  |
@@ -282,43 +225,24 @@ Scenario: User fell behind because of RAFT delay
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | lease_requires_30_day_notice | False |  |
-    | ntq_leaves_off_required_language | False |  |
     | dont_owe_rent | True |  |
     | behind_in_rent | True |  |
-    | refused_rent_increase | False |  |
-    | attempted_full_cure | False |  |
-    | attempted_offered_cure | False |  |
-    | other.vendor_payments | False |  |
     | initial_defense.avoidance_of_forfeiture | True |  |
     | paid_rent_owed | True |  |
+    | cure_date | today - 15 |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
     | date_received_ntq | today - 90 |  |
     | date_received_summons | today - 20 |  |
     | summons_in_hand | True |  |
-    | summons_mailed | False |  |
-    | summons_last_and_usual | False |  |
     | ntq_matches_summons | True |  |
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | post_ntq_waiver['None'] | True |  |
-    | bqe.locked_out | False |  |
-    | bqe.entered_without_permission | False |  |
-    | claims.utilities | False |  |
-    | paid_deposit | False |  |
-    | paid_lmr | False |  |
     | bad_conditions.conditions['None'] | True |  |
-    | consumer_protection.late_fees | False |  |
-    | consumer_protection.nonagreed_rent | False |  |
-    | consumer_protection.unlawful_court_fees | False |  |
-    | consumer_protection.unlawful_lease_terms | False |  |
-    | consumer_protection.other | False |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | True |  |
     | discrimination.protected_classes['receipt of rental assistance'] | True |  |
-    | discrimination.show_other | False |  |
-    | occupancy_ordinance_applies | False |  |
     | claim_jurytrial | False |  |
     | needs_time_because | Busy |  |
     | tenant_review_discovery | False |  |
@@ -371,7 +295,6 @@ Scenario Outline: Attorney completes the no-fault worksheet with <representation
     | survey_user | False |  |
     | landlord.name.text | Example Housing LLC |  |
     | landlord.organization_type | corporate |  |
-    | landlord.is_new | False |  |
     | landlord.address.address | 456 Example Street |  |
     | landlord.address.city | Boston |  |
     | landlord.address.state | MA |  |
@@ -387,34 +310,19 @@ Scenario Outline: Attorney completes the no-fault worksheet with <representation
     | case.entry_date | today - 10 |  |
     | case.hearing_date_assigned | True |  |
     | case.first_event | today + 60 |  |
-    | include_late_answer_motion | False |  |
     | eviction_all_reasons['nofault'] | True |  |
     | nofault_basis['desire to sell'] | True |  |
-    | facts.tenant_has_subsidy | False |  |
-    | tenant.is_nonnativespeaker | False |  |
-    | tenant.is_disabled | False |  |
-    | tenant.is_under6 | False |  |
-    | tenant.is_over60 | False |  |
-    | tenant.is_dvvictim | False |  |
     | facts.tenant_movein | today - 730 |  |
-    | is_pca | False |  |
     | facts.tenant_rent_share | 1500 |  |
     | facts.tenant_rent_frequency | month |  |
     | tenancy_type | taw |  |
-    | postforeclosure.is_foreclosed | False |  |
-    | claims.harassment | False |  |
-    | is_condo_conversion | False |  |
     | notice_type | thirty_day |  |
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | lease_requires_30_day_notice | False |  |
-    | ntq_leaves_off_required_language | False |  |
     | date_received_ntq | today - 90 |  |
     | date_received_summons | today - 20 |  |
     | summons_in_hand | True |  |
-    | summons_mailed | False |  |
-    | summons_last_and_usual | False |  |
     | ntq_matches_summons | True |  |
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
@@ -422,23 +330,6 @@ Scenario Outline: Attorney completes the no-fault worksheet with <representation
     | bad_conditions.conditions['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
-    | occupancy_ordinance_applies | False |  |
-    | claims.utilities | False |  |
-    | bqe.locked_out | False |  |
-    | bqe.entered_without_permission | False |  |
-    | bqe.heat | False |  |
-    | bqe.hot_water | False |  |
-    | bqe.unpaid_utilities | False |  |
-    | bqe.shutoff_utilities | False |  |
-    | bqe.removed_possessions | False |  |
-    | bqe.bad_conditions | False |  |
-    | paid_deposit | False |  |
-    | paid_lmr | False |  |
-    | consumer_protection.late_fees | False |  |
-    | consumer_protection.nonagreed_rent | False |  |
-    | consumer_protection.unlawful_court_fees | False |  |
-    | consumer_protection.unlawful_lease_terms | False |  |
-    | consumer_protection.other | False |  |
     | initial_defense.custom_reason_for_dismissal | TEST ONLY - custom dismissal ground. |  |
     | initial_defense.custom_other | TEST ONLY - custom defense check. |  |
     | needs_time_because | TEST ONLY - additional time to move requested. |  |

@@ -71,6 +71,12 @@ def test_attorney_story_tables_supply_all_required_visible_worksheet_answers():
         }
         fields = []
         for field in worksheet["fields"]:
+            if field.get("datatype") == "yesno":
+                name = field.get("field", next(iter(field.values())))
+                # A single checkbox needs no table response when its initial
+                # state already matches the scenario. Include that state when
+                # evaluating conditional required fields.
+                answers.setdefault(name, field.get("default", False))
             if "note" in field or field.get("required") is False:
                 continue
             name = field.get("field", next(iter(field.values())))
@@ -97,3 +103,20 @@ process.stdout.write(JSON.stringify(results));
             f"{scenario['scenario']} is missing required visible worksheet answers: "
             + ", ".join(scenario["missing"])
         )
+
+
+def test_nonpayment_story_tables_supply_a_date_when_rent_is_paid():
+    path = SOURCES / "court_dates.feature"
+    document = Parser().parse(path.read_text(encoding="utf-8"))
+    document["uri"] = str(path)
+    for scenario in Compiler().compile(document):
+        answers = {}
+        for step in scenario["steps"]:
+            rows = step.get("argument", {}).get("dataTable", {}).get("rows", [])
+            for row in rows[1:]:
+                name, value = [cell["value"] for cell in row["cells"][:2]]
+                answers[name] = value
+        if answers.get("paid_rent_owed") == "True":
+            assert answers.get("cure_date"), (
+                f"{scenario['name']} says rent was paid but omits the required cure_date"
+            )

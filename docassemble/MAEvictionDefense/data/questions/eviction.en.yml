@@ -1256,8 +1256,6 @@ fields:
     show if: case.hearing_date_assigned
 ---
 id: case postponed
-event: case_is_on_time
-# decoration: thumbs-up
 question: |
   Your first court-event date is not known yet
 subquestion: |
@@ -1273,10 +1271,9 @@ subquestion: |
 
   **Do not wait for the notice to file these forms. File with the court and
   deliver the other copy as soon as possible.**
-buttons:
-  - Continue: 
-      code: |
-        case_is_on_time = True  
+continue button field: case_is_on_time
+continue button label: |
+  Continue
 ---
 id: late answer motion
 question: |
@@ -1808,7 +1805,6 @@ fields:
 # section: Claims and Defenses
 ---
 id: have a defense
-sets: show_defense_summary
 decoration: thumbs-up
 question: |
   You may have a defense
@@ -1855,9 +1851,9 @@ subquestion: |
   % if initial_defense.avoidance_of_forfeiture:
   * Based on principles of equity and fairness, it may be unfair to evict you (tenant should not lose their apartment)
   % endif
-field: show_defense_summary
-buttons:
-  - Continue: continue  
+continue button field: show_defense_summary
+continue button label: |
+  Continue
 # section: Claims and Defenses
 help: |
   Please see [Legal Tactics, Chapter 12](https://www.masslegalhelp.org/housing/lt1-chapter-12-legal-defenses-counterclaims) for more information.
