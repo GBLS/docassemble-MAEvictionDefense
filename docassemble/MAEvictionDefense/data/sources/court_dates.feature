@@ -242,7 +242,6 @@ Scenario: User fell behind because of RAFT delay
     | bad_conditions.conditions['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | True |  |
-    | discrimination.protected_classes['receipt of rental assistance'] | True |  |
     | claim_jurytrial | False |  |
     | needs_time_because | Busy |  |
     | tenant_review_discovery | False |  |
