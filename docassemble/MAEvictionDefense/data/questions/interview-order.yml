@@ -1,9 +1,19 @@
 ---
 comment: |
-  This block controls the order in which key questions are asked in one place, 
-  instead of several mandatory and need statements.
-  We want this to run before generating discovery selections
+  Route to the attorney or guided workflow before generating discovery selections.
 sets: all_answer_variables
+code: |
+  nav.set_section('review_about_you')
+  person_answering
+  if person_answering == 'attorney' and attorney_workflow == 'fast':
+    attorney_answer_variables
+  else:
+    guided_answer_variables
+  all_answer_variables = True
+---
+comment: |
+  Guided introduction followed by the shared Answer calculations and questions.
+sets: guided_answer_variables
 code: |
   show_instructions = True
 
@@ -20,6 +30,11 @@ code: |
       if tenant_attorney_name.isnumeric():
         confirm_attorney_contact_information
     explain_pronouns      
+  common_answer_variables
+  guided_answer_variables = True
+---
+sets: common_answer_variables
+code: |
   if case.status == "onlyntq":
     onlyhasntq
   if case.status == "afj" or case.status == 'late':
@@ -115,7 +130,7 @@ code: |
       bad_conditions.landlord_notified
       other.repair_and_deduct_statute
   
-  if (plead_counterclaims and bad_conditions.have_conditions) or tenant.is_dvvictim or claims.harassment: 
+  if ((plead_counterclaims and bad_conditions.have_conditions) or tenant.is_dvvictim or claims.harassment) and not (person_answering == 'attorney' and attorney_workflow == 'fast'):
     retaliation.is_retaliated = True
   #retaliation.is_retaliated
   if retaliation.is_retaliated:
@@ -130,7 +145,7 @@ code: |
       retaliation.other
     retaliation.within_6_months
 
-  if tenant.is_disabled or (eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal):
+  if (tenant.is_disabled or (eviction_reason == 'nonpayment' and delay_in_raft and discrimination.raft_refusal)) and not (person_answering == 'attorney' and attorney_workflow == 'fast'):
     tenant.is_discriminated = True
   if tenant.is_discriminated:
     discrimination.protected_classes
@@ -238,6 +253,7 @@ code: |
   claim_jurytrial
 
   needs_time_because
-  almost_done
+  if person_answering != 'attorney' or attorney_workflow == 'guided':
+    almost_done
    
-  all_answer_variables = True
+  common_answer_variables = True

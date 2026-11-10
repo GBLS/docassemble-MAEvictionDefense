@@ -61,12 +61,45 @@ sys.modules["docassemble.base"] = base_module
 sys.modules["docassemble.base.util"] = util_module
 
 from docassemble.MAEvictionDefense.court_calendar import (
+    court_business_days_after,
     court_business_days_before,
     court_holiday_name,
     is_court_business_day,
     late_answer_motion_needed,
     next_court_business_day,
 )
+
+
+def test_motion_to_compel_period_skips_veterans_day_and_weekend():
+    # Retest fixture: discovery due Monday November 9, not a motion due Saturday.
+    assert court_business_days_after("2026-11-09", 5).format("yyyy-MM-dd") == "2026-11-17"
+
+
+def test_motion_to_compel_period_excludes_start_and_skips_patriots_day():
+    assert court_business_days_after("2026-04-17", 1).format("yyyy-MM-dd") == "2026-04-21"
+
+
+def test_discovery_deadlines_use_the_adjusted_response_deadline():
+    from ruamel.yaml import YAML
+
+    questions = Path(__file__).resolve().parents[1] / "docassemble/MAEvictionDefense/data/questions/eviction.code.yml"
+    blocks = YAML(typ="safe").load_all(questions.read_text(encoding="utf-8"))
+    code = next(b["code"] for b in blocks if b and "date_discovery_received = service_date" in b.get("code", ""))
+    # Ten calendar days ends on Saturday October 31; the response deadline
+    # moves to Monday before the five-business-day motion period starts.
+    scope = {
+        "service_date": as_datetime("2026-10-21"),
+        "method_of_service": "delivered in-hand",
+        "next_court_business_day": next_court_business_day,
+        "court_business_days_after": court_business_days_after,
+    }
+    exec(code, scope)
+    assert scope["date_discovery_due"].format("yyyy-MM-dd") == "2026-11-02"
+    assert scope["date_motion_to_compel_due"].format("yyyy-MM-dd") == "2026-11-09"
+    scope.update(service_date=as_datetime("2026-10-29"), method_of_service="mailed")
+    exec(code, scope)
+    assert scope["date_discovery_due"].format("yyyy-MM-dd") == "2026-11-09"
+    assert scope["date_motion_to_compel_due"].format("yyyy-MM-dd") == "2026-11-17"
 
 
 def test_court_business_days_before_skips_weekends():

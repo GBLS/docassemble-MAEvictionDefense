@@ -1,0 +1,1211 @@
+---
+if: person_answering == 'attorney'
+id: attorney workflow choice
+question: How would the attorney like to complete the interview?
+fields:
+  - no label: attorney_workflow
+    input type: radio
+    default: fast
+    choices:
+      - Single-page worksheet (fast path): fast
+      - Guided interview: guided
+---
+sets: attorney_answer_variables
+code: |
+  show_instructions = False
+  nav.set_section('review_about_you')
+  # Keep the tenant workflow's eligibility and procedural warnings.
+  case.status
+  if case.status == 'onlyntq':
+    onlyhasntq
+  if case.status in ('afj', 'late'):
+    firstdatepassed
+  if case.status in ('need-emergency-repair', 'self-help-eviction'):
+    redirect_to_uptocode
+  attorney_intake_complete
+  prepared_with_aoc
+  common_answer_variables
+  attorney_answer_variables = True
+---
+sets: attorney_worksheet_ready
+code: |
+  nav.hide()
+  # Initialize field objects and choice lists in this small block. Otherwise
+  # each missing object retries the large question and repeats its full source
+  # in the Playground debug panel, stalling client-side initialization.
+  need(
+    macourts, occupancy_ordinance_by_city, case, tenants_attorney, tenant, landlord,
+    landlords_attorney, additional_tenants, premises_alternate_address, facts,
+    discrimination, discrimination.sexual_harassment, retaliation, initial_defense,
+    security_deposit, postforeclosure, postforeclosure.no_just_cause,
+    postforeclosure.notice_provisions, disability, bqe, consumer_protection,
+    claims, relief, other, bad_conditions, fault, last_months_rent, subsidized_housing,
+  )
+  # Snapshot optional saved answers once rather than seeking them in field templates.
+  attorney_saved_checkbox_answers = {
+    name: showifdef(name, None) for name in (
+      'fault_basis', 'nofault_basis', 'summons_eviction_reasons',
+      'post_ntq_waiver', 'condo_violations', 'condo_local_violations',
+      'bad_conditions.conditions', 'bad_conditions.landlord_notified',
+      'discrimination.protected_classes', 'security_deposit.violations',
+    )
+  }
+  attorney_saved_none = {
+    name: checkbox_none_selected(saved) for name, saved in attorney_saved_checkbox_answers.items()
+  }
+  attorney_saved_none['condo_local_violations'] = checkbox_none_selected(
+    attorney_saved_checkbox_answers['condo_local_violations'],
+    ['My landlord failed to obtain the proper local permit.', 'My landlord violated another local rule (see links in help).'],
+  )
+  attorney_saved_condo = attorney_saved_checkbox_answers['condo_local_violations']
+  attorney_boston_condo_defaults = {
+    'notice': attorney_saved_condo.get("My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household.", False) if attorney_saved_condo is not None else False,
+    'just_cause': attorney_saved_condo.get("My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason).", False) if attorney_saved_condo is not None else False,
+  }
+  attorney_worksheet_ready = True
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+id: attorney worksheet
+question: |
+  Attorney Worksheet
+subquestion: |
+  <nav id="worksheet-menu" aria-label="On this page" class="worksheet-menu" tabindex="-1">
+  <strong>Sections:</strong>
+  <ul>
+  <li><a href="#worksheet-representation">Attorney</a></li>
+  <li><a href="#worksheet-tenant">Tenant</a></li>
+  <li><a href="#worksheet-landlord">Landlord</a></li>
+  <li><a href="#worksheet-case">Court case</a></li>
+  <li><a href="#worksheet-tenancy">Tenancy</a></li>
+  <li><a href="#worksheet-notices">Notices and tenancy defenses</a></li>
+  <li><a href="#worksheet-claims">Claims and defenses</a></li>
+  <li><a href="#worksheet-relief">Relief and finish</a></li>
+  </ul>
+  </nav>
+
+  Navigate sections without leaving the page and **Continue** saves the whole worksheet.
+fields:
+  - note: |
+      <h2 id="worksheet-representation" class="worksheet-heading" tabindex="-1">Attorney Representation</h2>
+
+      [Back to sections](#worksheet-menu)
+      [NEWLINE]
+  - Representation: representation_type
+    input type: radio
+    choices:
+      - Entering an appearance: entering_appearance
+      - Ghostwriting: ghostwriting
+  - Tenant attorney first name: tenants_attorney.name.first
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney middle name: tenants_attorney.name.middle
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney last name: tenants_attorney.name.last
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney name suffix: tenants_attorney.name.suffix
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney BBO number: tenants_attorney.bbo
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney email address: tenants_attorney.email
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+    datatype: email
+  - Tenant attorney phone number: tenants_attorney.phone_number
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney fax number: tenants_attorney.fax_number
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney office name (type or select from list): tenants_attorney.office
+    input type: combobox
+    choices:
+      - Community Legal Aid
+      - De Novo Center for Justice and Healing
+      - Disability Law Center
+      - Greater Boston Legal Services
+      - Massachusetts Law Reform Institute
+      - MetroWest Legal Services
+      - National Consumer Law Center
+      - Northeast Legal Aid
+      - South Coastal Counties Legal Services
+      - Volunteer Lawyers Project
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney street address: tenants_attorney.address.address
+    address autocomplete: true
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney suite or unit: tenants_attorney.address.unit
+    required: false
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney city: tenants_attorney.address.city
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney state: tenants_attorney.address.state
+    code: |
+      states_list()
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - Tenant attorney ZIP code: tenants_attorney.address.zip
+    js show if: |-
+      (val("representation_type") === "entering_appearance")
+  - note: |
+      <h2 id="worksheet-tenant" class="worksheet-heading" tabindex="-1">Tenant</h2>
+
+      [Back to sections](#worksheet-menu)
+      [NEWLINE]
+  - Tenant first name: tenant.name.first
+  - Tenant middle name: tenant.name.middle
+    required: false
+  - Tenant last name: tenant.name.last
+  - Tenant name suffix: tenant.name.suffix
+    required: false
+    code: |
+      name_suffix()
+  - Tenant current street address: tenant.address.address
+    address autocomplete: true
+  - Tenant current unit: tenant.address.unit
+    required: false
+  - Tenant current city: tenant.address.city
+  - Tenant current state: tenant.address.state
+    code: |
+      states_list()
+    default: MA
+  - Tenant current ZIP code: tenant.address.zip
+  - Tenant current county: tenant.address.county
+    required: false
+  - Tenant phone number: tenant.phone_number
+    datatype: al_international_phone
+    required: false
+  - Tenant email address: tenant.email
+    datatype: email
+    required: false
+  - Eviction premises match current address: facts.tenant_address_is_eviction_address
+    datatype: yesnoradio
+    default: true
+  - Eviction street address: premises_alternate_address.address
+    address autocomplete: true
+    js show if: |-
+      ((val("facts.tenant_address_is_eviction_address") === false))
+  - Eviction unit: premises_alternate_address.unit
+    required: false
+    js show if: |-
+      ((val("facts.tenant_address_is_eviction_address") === false))
+  - Eviction city: premises_alternate_address.city
+    js show if: |-
+      ((val("facts.tenant_address_is_eviction_address") === false))
+  - Eviction state: premises_alternate_address.state
+    code: |
+      states_list()
+    default: MA
+    js show if: |-
+      ((val("facts.tenant_address_is_eviction_address") === false))
+  - Eviction ZIP code: premises_alternate_address.zip
+    js show if: |-
+      ((val("facts.tenant_address_is_eviction_address") === false))
+  - Additional tenants will sign: additional_tenants.there_are_any
+    datatype: yesnoradio
+  - Defendant names differ on summons: tenant.name_different_on_summons
+    datatype: yesnoradio
+    default: false
+  - Additional names on summons: tenant.more_names_on_summons
+    datatype: yesno
+    js show if: |-
+      (val("tenant.name_different_on_summons"))
+  - Tenant name misspelled: tenant.name_misspelled
+    datatype: yesno
+    js show if: |-
+      (val("tenant.name_different_on_summons"))
+  - Tenant omitted from summons: tenant.not_named_on_summons
+    datatype: yesno
+    js show if: |-
+      (val("tenant.name_different_on_summons"))
+  - Defendants as listed on summons: defendant_name_as_listed_on_summons
+    js show if: |-
+      (val("tenant.name_different_on_summons"))
+  - Request intervention: request_right_to_intervene
+    datatype: yesnoradio
+    js show if: |-
+      (val("tenant.name_different_on_summons") && val("tenant.not_named_on_summons"))
+  - Grounds for intervention: intervention_reason
+    datatype: area
+    js show if: |-
+      (val("tenant.name_different_on_summons") && val("tenant.not_named_on_summons")) && (val("request_right_to_intervene"))
+  - Harm if intervention denied: intervention_harm
+    datatype: area
+    js show if: |-
+      (val("tenant.name_different_on_summons") && val("tenant.not_named_on_summons")) && (val("request_right_to_intervene"))
+  - note: Copies, reminders, and surveys use the tenant contact information above.
+  - Email or text the tenant a copy of the completed forms: email_after_completion
+    datatype: yesno
+    default: true
+  - Remind the tenant about deadlines: remind_user
+    datatype: yesno
+    default: true
+  - Send the tenant a survey after the first court date: survey_user
+    datatype: yesno
+    default: true
+  - note: |
+      <h2 id="worksheet-landlord" class="worksheet-heading" tabindex="-1">Landlord</h2>
+
+      [Back to sections](#worksheet-menu)
+  - note: '### Plaintiff and counsel'
+  - Plaintiff name: landlord.name.text
+  - Plaintiff type: landlord.organization_type
+    datatype: radio
+    choices:
+      - Corporation, LLC, or company: corporate
+      - Housing authority or government agency: public
+      - Owner occupies building: livesinbuilding
+      - Trust: trust
+      - Individual or other: other
+  - Ownership changed during tenancy: landlord.is_new
+    datatype: yesno
+  - Reason for ownership change: new_landlord_reason
+    choices:
+      - Landlord died: My landlord died
+      - Landlord sold the building: My landlord sold the building
+      - Unknown owner, but new management: I don't know who owns the building now but there is new management
+    js show if: |-
+      (val("landlord.is_new"))
+  - Property sold after notice to quit: building_sold_after_ntq
+    datatype: yesno
+    js show if: |-
+      (val("landlord.is_new")) && ((val("new_landlord_reason") === "My landlord sold the building"))
+  - Plaintiff street address: landlord.address.address
+    address autocomplete: true
+  - Plaintiff suite or unit: landlord.address.unit
+    required: false
+  - Plaintiff city: landlord.address.city
+  - Plaintiff state: landlord.address.state
+    default: MA
+  - Plaintiff ZIP code: landlord.address.zip
+  - Plaintiff has counsel: landlord.has_attorney
+    datatype: yesnoradio
+    default: false
+  - Plaintiff attorney name: landlords_attorney.name.text
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - Plaintiff attorney street address: landlords_attorney.address.address
+    required: false
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - Plaintiff attorney suite or unit: landlords_attorney.address.unit
+    required: false
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - Plaintiff attorney city: landlords_attorney.address.city
+    required: false
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - Plaintiff attorney state: landlords_attorney.address.state
+    required: false
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - Plaintiff attorney ZIP code: landlords_attorney.address.zip
+    required: false
+    js show if: |-
+      (val("landlord.has_attorney"))
+  - note: |
+      <h2 id="worksheet-case" class="worksheet-heading" tabindex="-1">Court case</h2>
+
+      [Back to sections](#worksheet-menu)
+      [NEWLINE]
+  - LegalServer case number (GBLS clinics only): ls_case_id
+    required: false
+    help: The internal GBLS case number, such as 26-123456.
+  - Court name: court
+    datatype: object
+    choices: macourts
+    help: Select the court where the case is currently pending.
+  - Entry date: case.entry_date
+    datatype: date
+  - First-tier event date assigned: case.hearing_date_assigned
+    datatype: yesnoradio
+  - First-tier event date: case.first_event
+    datatype: date
+    js show if: |-
+      (val("case.hearing_date_assigned"))
+  - Request transfer from District Court to Housing Court: transfer_to_housing_court
+    datatype: yesnoradio
+    js show if: |-
+      val("court") && !${ json.dumps([x.instanceName for x in macourts if "housing court" in x.name.lower()]) }.includes(val("court"))
+  - Receiving Housing Court: transfer_court_name_temp
+    datatype: object
+    choices: "[x for x in macourts if \"housing court\" in x.name.lower()]  \n"
+    js show if: |-
+      val("court") && !${ json.dumps([x.instanceName for x in macourts if "housing court" in x.name.lower()]) }.includes(val("court")) && val("transfer_to_housing_court")
+    help: Select the Housing Court to receive the case.
+  - Include motion to file late Answer and discovery: include_late_answer_motion
+    datatype: yesno
+    help: The shared date checks will also review whether a late Answer motion is needed.
+  - Grounds stated by landlord: eviction_all_reasons
+    datatype: checkboxes
+    none of the above: false
+    choices:
+      - Nonpayment: nonpayment
+      - Fault: fault
+      - No fault: nofault
+      - No notice to quit received: nontq
+      - Unknown: unsure
+  - Fault allegations: fault_basis
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["fault_basis"] else "" }
+    choices:
+      - Chronic late payment of rent: chronic late payment of rent
+      - Overcrowding: overcrowding
+      - Unauthorized occupants: unauthorized occupants
+      - Excessive foot traffic: excessive foot traffic
+      - Clutter or hoarding: clutter or hoarding
+      - Destruction of property: destruction of property
+      - Assault on staff or other tenant: assault on staff or other tenant
+      - Harassment of staff or other tenant: harassment of staff or other tenant
+      - Disturbance of other tenants (like smoking, noise, or odor) coming from the tenant's apartment: disturbance of other tenants
+      - Arrest or conviction for a crime: arrest or criminal conviction
+      - Disturbing health and safety of tenants or others: health and safety
+      - Other lease violation: other lease violation
+    js show if: |-
+      (val("eviction_all_reasons['fault']"))
+  - No-fault grounds: nofault_basis
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["nofault_basis"] else "" }
+    choices:
+      - The tenant refused to pay a higher rent: refusal of rent increase
+      - They want to sell the building: desire to sell
+      - They want to renovate: desire to renovate
+      - They want the apartment for a family member: moving in a family member
+      - Landlord did not give a reason: no reason
+      - Other: other
+    js show if: |-
+      ((!val("eviction_all_reasons['fault']") && !val("eviction_all_reasons['nonpayment']") && val("eviction_all_reasons['nofault']")))
+  - Rent unpaid pending RAFT or other rental assistance: delay_in_raft
+    datatype: yesnoradio
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Required accompanying form received with nonpayment notice: tenant_got_accompanying_form
+    datatype: yesnomaybe
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Landlord refused or is expected to refuse rental assistance: discrimination.raft_refusal
+    datatype: yesnoradio
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment")) && (val("delay_in_raft"))
+  - note: |
+      <h2 id="worksheet-tenancy" class="worksheet-heading" tabindex="-1">Tenancy</h2>
+
+      [Back to sections](#worksheet-menu)
+      [NEWLINE]
+  - Subsidized tenancy: facts.tenant_has_subsidy
+    datatype: yesno
+    help: Include public housing, portable vouchers, and privately owned subsidized housing.
+  - Tenant speaks a language other than English: tenant.is_nonnativespeaker
+    datatype: yesno
+  - Interpreter requested: tenant.needs_interpreter
+    datatype: yesno
+    js show if: |-
+      (val("tenant.is_nonnativespeaker"))
+  - Interpreter language: tenant.preferred_language
+    datatype: combobox
+    default: ${ default_lang }
+    choices:
+      - Spanish
+      - Cantonese
+      - Cape Verdean Creole
+      - French
+      - Haitian Creole
+      - Khmer
+      - Mandarin
+      - Portuguese
+      - Vietnamese
+    js show if: |-
+      (val("tenant.is_nonnativespeaker")) && ((val("tenant.needs_interpreter")))
+  - Household member has a disability: tenant.is_disabled
+    datatype: yesno
+  - Household member under age 6: tenant.is_under6
+    datatype: yesno
+  - Household member over age 60: tenant.is_over60
+    datatype: yesno
+  - Tenant is a survivor of domestic violence: tenant.is_dvvictim
+    datatype: yesno
+  - Subsidy program: subsidy_type
+    choices:
+      - Section 8 voucher (portable voucher): Section 8 voucher
+      - MRVP (Massachusetts Rental Voucher Program): MRVP
+      - Public housing (the landlord is a housing authority): public housing
+      - HUD housing run by a private landlord: HUD multi-family
+      - Tax credit: tax credit
+      - Other or unknown: other
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - Move-in date: facts.tenant_movein
+    datatype: date
+    required: false
+  - Occupancy in exchange for services; no rent: is_pca
+    datatype: yesno
+  - Tenant rent share: facts.tenant_rent_share
+    datatype: currency
+    step: 1
+    js show if: |-
+      ((!val("is_pca")))
+  - Rent frequency: facts.tenant_rent_frequency
+    choices:
+      - Weekly: week
+      - Monthly: month
+    default: month
+    js show if: |-
+      ((!val("is_pca")))
+  - Contract rent: facts.tenant_contract_rent
+    datatype: currency
+    required: false
+    js show if: |-
+      val("facts.tenant_has_subsidy")
+  - Tenancy type: tenancy_type
+    choices:
+      - Lease, including expired lease: lease
+      - Tenancy at will, no agreement, or unknown: taw
+  - Lease renewal terms: lease_type
+    choices:
+      - ends and doesn't renew.: fixed_term
+      - renews for another term .: self_extending
+      - renews month-to-month or week to week.: renews_as_taw
+      - Unknown: unknown
+    js show if: |-
+      (val("tenancy_type") === "lease")
+  - Fixed-term lease expiration: lease_end_date
+    datatype: date
+    js show if: |-
+      (val("tenancy_type") === "lease") && ((val("lease_type") === "fixed_term"))
+  - Property foreclosed: postforeclosure.is_foreclosed
+    datatype: yesno
+    js show if: |-
+      ((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))))
+  - Tenant was owner before foreclosure: is_pfc_owner
+    datatype: yesno
+    js show if: |-
+      (!(val("facts.tenant_has_subsidy") && val("subsidy_type") === "public housing")) && ((val("postforeclosure.is_foreclosed")))
+  - Sexual harassment: claims.harassment
+    datatype: yesno
+  - Condominium or cooperative conversion: is_condo_conversion
+    datatype: yesno
+    js show if: |-
+      ((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))))
+  - note: |
+      <h2 id="worksheet-notices" class="worksheet-heading" tabindex="-1">Notices and tenancy defenses</h2>
+
+      [Back to sections](#worksheet-menu)
+  - note: '### Notices and service of summons'
+  - Kind of notice to quit: notice_type
+    choices:
+      - 14 day Notice to Quit: fourteen_day
+      - 30 day Notice to Quit: thirty_day
+      - 72 hour Notice to Quit: seventy_two_hour
+      - Notice "until the end of the next rental period" or similar: rental_period
+      - Tenant never got a Notice to Quit: no_ntq
+      - Unknown: thirty_day
+  - Rent unpaid when 14-day notice received: behind_in_rent
+    datatype: yesnoradio
+    js show if: |-
+      val("notice_type") === "fourteen_day"
+    default: true
+  - Rent amount in notice was never agreed: refused_rent_increase
+    datatype: yesno
+    js show if: |-
+      val("notice_type") === "fourteen_day"
+  - Notice names tenant: ntq_includes_tenant_name
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Notice names all lease signatories: ntq_includes_all_tenants
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Notice has correct premises address: ntq_includes_correct_address
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Lease requires 30-day notice for nonpayment: lease_requires_30_day_notice
+    datatype: yesno
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Notice omits required language: ntq_leaves_off_required_language
+    datatype: yesno
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Notice to quit received: date_received_ntq
+    datatype: date
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Summons served: date_received_summons
+    datatype: date
+  - Summons served in hand on tenant or adult household member: summons_in_hand
+    datatype: yesno
+  - Summons mailed: summons_mailed
+    datatype: yesno
+  - Summons left at last and usual address: summons_last_and_usual
+    datatype: yesno
+  - Summons grounds match notice: ntq_matches_summons
+    datatype: yesnoradio
+    default: true
+  - Additional grounds on summons: summons_eviction_reasons
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["summons_eviction_reasons"] else "" }
+    choices:
+      - Failure to vacate after a valid notice or notice to quit has expired (or similar): failure_to_vacate
+      - Non-payment of rent: rent
+      - A different amount of rent than listed on the notice: rent
+      - The same "fault" reason listed on the notice to quit: same_fault
+      - A new "fault" reason or breach of lease, not listed on the notice to quit: new_fault
+    js show if: |-
+      ((!val("ntq_matches_summons")))
+  - Summons names all adult lease signatories: summons_includes_all_tenants
+    datatype: yesnoradio
+    default: true
+  - Summons has correct premises address: summons_includes_correct_address
+    datatype: yesnoradio
+    default: true
+  - Events after notice to quit: post_ntq_waiver
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["post_ntq_waiver"] else "" }
+    choices:
+      - Rent paid after notice: rent
+      - New lease signed, excluding subsidy recertification: lease
+    js show if: |-
+      val("notice_type") !== "no_ntq"
+  - Notice reserves acceptance for use and occupancy only: ntq_contains_reservation
+    datatype: yesnoradio
+    js show if: |-
+      val("notice_type") !== "no_ntq" && val("post_ntq_waiver['rent']")
+    default: true
+  - note: '### Subsidized housing'
+    js show if: |-
+      val("facts.tenant_has_subsidy")
+  - PHA pays a portion of rent: subsidized_housing.pha_pays_rent
+    datatype: yesno
+    js show if: |-
+      ((val("facts.tenant_has_subsidy") && (["Section 8 voucher", "MRVP"].indexOf(val("subsidy_type")) !== -1)))
+  - PHA withheld payment due to conditions: subsidized_housing.stopped_payment
+    datatype: yesno
+    js show if: |-
+      ((val("facts.tenant_has_subsidy") && (["Section 8 voucher", "MRVP"].indexOf(val("subsidy_type")) !== -1)))
+  - Rent share incorrectly calculated: subsidized_housing.improper_rent_calculation
+    datatype: yesno
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - Unauthorized side payments: subsidized_housing.landlord_overcharged
+    datatype: yesno
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - Subsidy termination rules violated: subsidized_housing.no_proper_termination
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - No good cause for termination: subsidized_housing.no_just_cause
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - Notice not sent simultaneously to PHA: subsidized_housing.no_ntq_to_agency
+    datatype: yesnoradio
+    js show if: |-
+      ((val("facts.tenant_has_subsidy") && (val("subsidy_type") === "Section 8 voucher")))
+  - Required conference or grievance hearing not offered: subsidized_housing.no_hearing_or_conference
+    datatype: yesnoradio
+    default: true
+    js show if: |-
+      ((val("facts.tenant_has_subsidy") && (val("subsidy_type") !== "Section 8 voucher")))
+  - VAWA defense: subsidized_housing.vawa
+    datatype: yesnoradio
+    js show if: |-
+      (val("facts.tenant_has_subsidy"))
+  - note: '### Condominium conversion'
+    js show if: |-
+      !(val("facts.tenant_has_subsidy") && val("subsidy_type") === "public housing") && val("is_condo_conversion")
+  - Building has more than three units: more_than_3_units
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion")))
+  - State condominium conversion violations: condo_violations
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["condo_violations"] else "" }
+    choices:
+      - Failed to provide the tenant with 1 year's notice: Failed to provide me with 1 year's notice
+      - ? Failed to provide the tenant with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in the tenant's household
+        : Failed to provide me with 2 years' notice and someone with a disability or an elder (over the age of 61) lives in my household
+      - ? Failed to provide the tenant with 2 years' notice and the tenant is low or moderate income (earns less than 80% of area median income)
+        : Failed to provide me with 2 years' notice and I am low or moderate income (I earn less than 80% of area median income)
+      - Increased the rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller: Increased my rent by more than 10% or by more than the increase in the Consumer Price Index, whichever is smaller
+      - Failed to offer the tenant the right to purchase the apartment before listing it for sale: Failed to offer me the right to purchase my apartment before listing it for sale
+      - Failed to offer the tenant moving expenses: Failed to offer me moving expenses
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion"))) && (val("more_than_3_units"))
+  - Local condominium conversion violations: condo_local_violations
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["condo_local_violations"] else "" }
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1)))
+    choices:
+      - Required local permit was not obtained: My landlord failed to obtain the proper local permit.
+      - Another local rule was violated: My landlord violated another local rule (see links in help).
+  - 'Boston: required 5-year notice was not provided for an elder or household member with a disability': attorney_boston_condo_notice
+    datatype: yesno
+    default: |
+      ${ attorney_boston_condo_defaults["notice"] }
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1))) && String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase() === "boston"
+  - 'Boston: landlord did not specify just cause': attorney_boston_condo_just_cause
+    datatype: yesno
+    default: |
+      ${ attorney_boston_condo_defaults["just_cause"] }
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("is_condo_conversion") && (["abington", "acton", "amherst", "boston", "brookline", "haverhill", "lexington", "malden", "marlborough", "new bedford", "newburyport", "newton", "somerville"].indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1))) && String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase() === "boston"
+  - note: |
+      <h2 id="worksheet-claims" class="worksheet-heading" tabindex="-1">Claims and defenses</h2>
+
+      [Back to sections](#worksheet-menu)
+  - note: '### Housing conditions and repairs'
+    js show if: |-
+      ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))
+  - Conditions during the last 6 years: bad_conditions.conditions
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["bad_conditions.conditions"] else "" }
+    choices:
+      - Insects: insects
+      - Cockroaches: cockroaches
+      - Mice or rats: mice or rats
+      - Water leaks or other plumbing problems: water leaks or other plumbing problems
+      - Electrical problems: electrical problems
+      - Lead paint: lead paint
+      - Defective or leaky windows: defective or leaky windows
+      - Defective ceilings, walls, or floors: defective ceilings, walls, or floors
+      - No heat: no heat
+      - No hot water: no hot water
+      - Not enough heat: not enough heat
+      - Not enough hot water: not enough hot water
+      - Defective locks: defective locks
+      - Security problems: security problems
+      - Other: other
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Other conditions: bad_conditions.other_condition
+    datatype: area
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("bad_conditions.conditions['other']"))
+  - Notice of conditions to landlord: bad_conditions.landlord_notified
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["bad_conditions.landlord_notified"] else "" }
+    choices:
+      - The tenant told the landlord in person or on the phone.: I told the landlord in person or on the phone.
+      - The tenant told the landlord in writing (by text, email, letter, or written note).: I told the landlord in writing (by text, email, letter, or written note).
+      - The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told the landlord about the problems.: The apartment was inspected by Inspectional Services, Board of Health, a housing agency, or someone else and they told my landlord about the problems.
+      - All or some of the conditions existed when the tenant moved in.: All or some of the conditions existed when I moved in.
+      - All or some of the conditions existed when the landlord purchased the property or at the time of  foreclosure.: All or some of the conditions existed when the landlord purchased the property or at the time of foreclosure.
+      - All or some of these conditions existed in a shared area of the apartment building (such as a basement  or hallway).: All or some of these conditions existed in a shared area of the apartment building (such as a basement or hallway).
+      - Other: other
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))))
+  - Other condition: bad_conditions.other
+    required: false
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("bad_conditions.landlord_notified['other']")))
+  - Tenant paid for repairs: other.tenant_repaired
+    datatype: yesno
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))))
+  - Certified inspection report provided before repairs: other.certified_report
+    datatype: yesno
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("other.tenant_repaired")))
+  - Landlord failed to make ordered repairs timely: other.no_timely_repairs
+    datatype: yesno
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("other.tenant_repaired")))
+  - Repair costs deducted from rent: other.deducted_repair_cost
+    datatype: yesno
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("other.tenant_repaired")))
+  - Deduction less than four months of rent: other.repair_less_than_4_months
+    datatype: yesno
+    js show if: |-
+      ((Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) && ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("other.tenant_repaired")))
+  - note: '### Retaliation'
+  - Retaliation: retaliation.is_retaliated
+    datatype: yesnoradio
+  - note: The recorded facts suggest reviewing a retaliation defense. The attorney can choose whether to include it.
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && (Array.isArray(val("bad_conditions.conditions")) && val("bad_conditions.conditions").length > 0)) || val("tenant.is_dvvictim") || val("claims.harassment")) && val("retaliation.is_retaliated") === false
+  - Withheld rent for conditions: retaliation.withheld_rent
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Reported conditions to landlord in writing: retaliation.badconditions_to_landlord
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Reported conditions to public agency: retaliation.badconditions_to_agency
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Tenant organizing activity: retaliation.tenant_union
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Brought claim against landlord: retaliation.brought_claim
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Sought protection or harassment prevention order: retaliation.protection_or_prevention_order
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Reported violence, assault, stalking, or order violation: retaliation.domestic_violence
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Exercised survivor rights to terminate lease or change locks: retaliation.survivor_rights
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Other protected activity: show_retaliation_other
+    datatype: yesno
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - Other retaliation: retaliation.other
+    required: false
+    js show if: |-
+      val("retaliation.is_retaliated") && val("show_retaliation_other")
+  - Protected activity within six months: retaliation.within_6_months
+    datatype: yesnoradio
+    js show if: |-
+      val("retaliation.is_retaliated")
+  - note: '### Discrimination and accommodation'
+  - Discrimination: tenant.is_discriminated
+    datatype: yesnoradio
+  - note: The recorded facts suggest reviewing a discrimination defense. The attorney can choose whether to include it.
+    js show if: |-
+      (val("tenant.is_disabled") || ((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment" && val("delay_in_raft") && val("discrimination.raft_refusal"))) && val("tenant.is_discriminated") === false
+  - Protected classes: discrimination.protected_classes
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["discrimination.protected_classes"] else "" }
+    choices:
+      - Tenant has children: Family status
+      - The tenant's age: age
+      - the tenant is on benefits: receipt of benefits
+      - The tenant receives rental assistance: receipt of rental assistance
+      - The tenant's gender: gender
+      - The tenant's gender identity: gender identity
+      - The tenant's marital status: marital status
+      - The tenant's race: race
+      - The tenant's religion: religion
+      - The tenant's sexual orientation: sexual orientation
+      - The tenant's Veteran status: veteran status
+      - The tenant's national origin (the country the tenant's family comes from): national origin
+      - Tenant has a disability: disability
+      - The tenant's skin color: skin color
+    js show if: |-
+      val("tenant.is_discriminated")
+  - Other protected class: discrimination.show_other
+    datatype: yesno
+    js show if: |-
+      val("tenant.is_discriminated")
+  - Other protected class details: discrimination.other
+    js show if: |-
+      val("tenant.is_discriminated") && val("discrimination.show_other")
+  - Request reasonable accommodation: disability.request_reasonable_accommodation
+    datatype: yesnoradio
+    js show if: |-
+      (val("tenant.is_disabled"))
+  - Pressured for sexual favors: discrimination.sexual_harassment.pressured_sexual_favors
+    datatype: yesno
+    js show if: |-
+      (val("claims.harassment"))
+  - Tenancy terms changed in response to harassment: discrimination.sexual_harassment.tenancy_terms_changed
+    datatype: yesno
+    js show if: |-
+      (val("claims.harassment"))
+  - Harassment created unsafe or uncomfortable environment: discrimination.sexual_harassment.unsafe_or_uncomfortable
+    datatype: yesno
+    js show if: |-
+      (val("claims.harassment"))
+  - note: Select a protected class or describe the other supporting basis for the discrimination defense.
+    js show if: |-
+      val("tenant.is_discriminated") && (!Array.isArray(val("discrimination.protected_classes")) || val("discrimination.protected_classes").length === 0) && !val("discrimination.other")
+  - note: '### Nonpayment'
+    js show if: |-
+      (val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"
+  - Dispute claimed rent balance: dont_owe_rent
+    datatype: yesno
+    default: true
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Full balance paid to landlord: attempted_full_cure
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Full balance offered to landlord: attempted_offered_cure
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - DTA vendor payment failure without tenant fault: other.vendor_payments
+    datatype: yesno
+    js show if: |-
+      (((!val("eviction_all_reasons['fault']")) && val("eviction_all_reasons['nonpayment']")))
+  - Avoidance of forfeiture / equitable defense: initial_defense.avoidance_of_forfeiture
+    datatype: yesno
+    default: true
+    js show if: |-
+      ((["fault", "nonpayment"].indexOf((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure")) !== -1))
+  - All rent paid or tendered and refused: paid_rent_owed
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Court costs paid: paid_court_fees
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - First notice to quit in preceding 12 months: no_ntq_in_12_months
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment"))
+  - Payment or tender date: cure_date
+    datatype: date
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "nonpayment")) && (val("paid_rent_owed"))
+  - note: '### Fault defenses'
+    js show if: |-
+      val("eviction_all_reasons['fault']")
+  - Deny alleged conduct: fault.did_not_occur
+    datatype: yesno
+    default: true
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "fault"))
+  - Conduct does not violate lease: fault.not_violation_of_agreement
+    datatype: yesno
+    default: true
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "fault"))
+  - Guest conduct outside tenant control: fault.no_control_of_guest
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") ? "fault" : val("eviction_all_reasons['nonpayment']") ? "nonpayment" : val("eviction_all_reasons['nofault']") ? "nofault" : val("eviction_all_reasons['nontq']") ? "nontq" : "unsure") === "fault"))
+  - note: '### Local occupancy ordinance'
+    js show if: |-
+      (${ json.dumps(sorted(occupancy_ordinance_by_city)) }.indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1)
+  - Required local occupancy permit or certification missing: occupancy_ordinance_applies
+    datatype: yesno
+    js show if: |-
+      ((${ json.dumps(sorted(occupancy_ordinance_by_city)) }.indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1))
+  - Include occupancy ordinance defense: occupancy_ordinance_use_as_defense
+    datatype: yesno
+    default: true
+    js show if: |-
+      ((${ json.dumps(sorted(occupancy_ordinance_by_city)) }.indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1)) && (val("occupancy_ordinance_applies"))
+  - Include occupancy ordinance counterclaim: occupancy_ordinance_use_as_counterclaim
+    datatype: yesno
+    default: true
+    js show if: |-
+      (((${ json.dumps(sorted(occupancy_ordinance_by_city)) }.indexOf(String(val("facts.tenant_address_is_eviction_address") === false ? val("premises_alternate_address.city") || "" : val("tenant.address.city") || "").trim().toLowerCase()) !== -1) && ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))) && (val("occupancy_ordinance_applies"))
+  - note: '### Quiet enjoyment and utilities'
+    js show if: |-
+      ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))
+  - Tenant pays utilities: claims.utilities
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Lockout: bqe.locked_out
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Entry without permission or notice: bqe.entered_without_permission
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Inadequate heat: bqe.heat
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Inadequate hot water: bqe.hot_water
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Landlord failed to pay required utilities: bqe.unpaid_utilities
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Utilities shut off: bqe.shutoff_utilities
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Possessions removed without court order: bqe.removed_possessions
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Conditions interfere with quiet enjoyment: bqe.bad_conditions
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Other interference: bqe.other
+    required: false
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Utilities billed without written agreement: bqe.billed_no_agreement
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("claims.utilities"))
+  - Utilities billed for common areas or other units: bqe.billed_for_others
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("claims.utilities"))
+  - Water billing violates G.L. c. 186, § 22: other.water_violation
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("claims.utilities"))
+  - note: '### Security deposit'
+    js show if: |-
+      ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))
+  - Security deposit paid: paid_deposit
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Amount of security deposit: security_deposit.amount
+    datatype: currency
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_deposit"))
+  - Violations: security_deposit.violations
+    datatype: checkboxes
+    css class: ${ "worksheet-saved-none" if attorney_saved_none["security_deposit.violations"] else "" }
+    choices:
+      - Accepted a deposit for more than one month's rent: Accepted a deposit for more than one month's rent
+      - Failed to keep the deposit in a separate bank account: Failed to keep the deposit in a separate bank account
+      - Failed to provide required receipts: Failed to provide required receipts
+      - Failed to pay interest on each anniversary of the tenant's deposit or give the tenant a credit on the rent: Failed to pay interest on each anniversary of your deposit or give me a credit on my rent
+      - Failed to provide a statement of conditions: Failed to provide a statement of conditions
+      - Did not take responsibility for the deposit paid to a former landlord: Did not take responsibility for the deposit paid to a former landlord
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_deposit"))
+  - note: "### Last month's rent"
+    js show if: |-
+      ((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))
+  - Last month's rent prepaid: paid_lmr
+    datatype: yesno
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))))
+  - Amount of the tenant's prepaid last month's rent: last_months_rent.amount
+    datatype: currency
+    required: false
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr"))
+  - Prepaid rent paid to: last_months_rent.to_whom
+    datatype: radio
+    default: current
+    choices:
+      - Current landlord: current
+      - Former landlord: former
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr"))
+  - Tenancy longer than one year: last_months_rent.over_a_year
+    datatype: yesnoradio
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr"))
+  - Annual interest paid: last_months_rent.paid_interest
+    datatype: yesnoradio
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']")))) && (val("paid_lmr") && val("last_months_rent.over_a_year"))
+  - note: '### Consumer protection'
+    js show if: |-
+      (((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1)
+  - Unlawful late fees: consumer_protection.late_fees
+    datatype: yesno
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1))
+  - Rent charged without agreement: consumer_protection.nonagreed_rent
+    datatype: yesno
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1))
+  - Unlawful court or constable fees: consumer_protection.unlawful_court_fees
+    datatype: yesno
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1))
+  - Unlawful lease terms: consumer_protection.unlawful_lease_terms
+    datatype: yesno
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1))
+  - Other consumer protection violation: consumer_protection.other
+    datatype: yesno
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1))
+  - Other violation details: consumer_protection.other_reason
+    js show if: |-
+      ((((val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']") || val("eviction_all_reasons['nofault']") || val("eviction_all_reasons['nontq']") || val("eviction_all_reasons['unsure']")) && (!val("eviction_all_reasons['fault']") || val("eviction_all_reasons['nonpayment']"))) && ["corporate", "trust", "other"].indexOf(val("landlord.organization_type")) !== -1)) && (val("consumer_protection.other"))
+  - note: '### Foreclosure'
+    js show if: |-
+      !(val("facts.tenant_has_subsidy") && val("subsidy_type") === "public housing") && val("postforeclosure.is_foreclosed")
+  - Bona fide tenant protected by G.L. c. 186A: postforeclosure.no_just_cause.bona_fide_protections
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - No just cause or binding purchase and sale agreement: postforeclosure.no_just_cause.no_binding_purchase
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Notice or displacement efforts violate post-foreclosure protections: postforeclosure.no_just_cause.ntq_or_other_actions
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Required contact and repair information not delivered: postforeclosure.notice_provisions.no_plaintiff_info
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Notice served before required 30-day period: postforeclosure.notice_provisions.less_than_30_days
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - No written notice of right to court hearing: postforeclosure.notice_provisions.no_right_to_court_notice
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - No written notice of substantial tenancy violations: postforeclosure.notice_provisions.no_written_notice_of_violations
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - No 30-day opportunity to cure claimed violations: postforeclosure.notice_provisions.no_30_days_to_cure_claims
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Rent amount or payment recipient not identified: postforeclosure.notice_provisions.plaintiff_did_not_inform_amount
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Required foreclosure tenancy notices not provided: postforeclosure.notice_provisions.plaintiff_did_not_comply_with_requirements
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Plaintiff lacks superior title or right to possession: postforeclosure.no_standing
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Request declaration that foreclosure is void: relief.void_foreclosure
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Foreclosure violates mortgage, sale, or note-holding requirements: postforeclosure.failure_to_comply
+    datatype: yesno
+    default: true
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Unfair loan modification or foreclosure alternatives: postforeclosure.unfair_loan_mod
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Unfair pre-foreclosure notices: postforeclosure.unfair_notices
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - Predatory, unfair, or unaffordable loan: postforeclosure.unfair_loan_based_on_income
+    datatype: yesno
+    js show if: |-
+      (((!(val("facts.tenant_has_subsidy") && (val("subsidy_type") === "public housing"))) && val("postforeclosure.is_foreclosed")))
+  - note: The guided interview does not plead the listed counterclaims for a fault-only case. Retaliation, discrimination, fault defenses, and custom defenses remain available.
+    js show if: |-
+      val("eviction_all_reasons['fault']") && !val("eviction_all_reasons['nonpayment']")
+  - note: |
+      <h2 id="worksheet-relief" class="worksheet-heading" tabindex="-1">Relief and finish</h2>
+
+      [Back to sections](#worksheet-menu)
+  - note: '### Additional defenses and relief'
+  - Additional grounds for dismissal: initial_defense.custom_reason_for_dismissal
+    datatype: area
+    required: false
+  - Other defenses or counterclaims: initial_defense.custom_other
+    datatype: area
+    required: false
+  - Grounds for additional time to move: needs_time_because
+    required: false
+    datatype: area
+    maxlength: 500
+  - Demand jury trial: claim_jurytrial
+    datatype: yesnoradio
+continue button field: attorney_intake_complete
+continue button label: Save worksheet and continue
+need: attorney_worksheet_ready
+reconsider: attorney_worksheet_ready
+validation code: |
+  # Recompute from the submitted facts, never from pre-submit values.
+  undefine(*ATTORNEY_DERIVED_ANSWERS)
+  edit_contact_info = False
+  if "housing court" in court.name.lower():
+    transfer_to_housing_court = False
+  if not tenant.is_nonnativespeaker:
+    tenant.needs_interpreter = False
+  if facts.tenant_has_subsidy and subsidy_type == "public housing":
+    postforeclosure.is_foreclosed = False
+    is_pfc_owner = False
+    is_condo_conversion = False
+  # Validation cannot seek calculated variables. Use the submitted city directly.
+  attorney_submitted_city = (tenant.address.city if facts.tenant_address_is_eviction_address else premises_alternate_address.city).strip().lower()
+  if attorney_submitted_city not in occupancy_ordinance_by_city:
+    occupancy_ordinance_applies = False
+    occupancy_ordinance_use_as_defense = False
+    occupancy_ordinance_use_as_counterclaim = False
+  if not showifdef("bad_conditions.landlord_notified['other']", False):
+    bad_conditions.other = ""
+  if not retaliation.is_retaliated or not showifdef("show_retaliation_other", False):
+    retaliation.other = ""
+  if not tenant.is_discriminated or not showifdef("discrimination.show_other", False):
+    discrimination.other = ""
+  # Boston-only answers merge into the tenant workflow's existing dictionary.
+  if defined('condo_local_violations'):
+    condo_local_violations["My landlord failed to provide me with 5 years' notice and someone with a disability or an elder is part of my household."] = attorney_submitted_city == 'boston' and showifdef('attorney_boston_condo_notice', False)
+    condo_local_violations["My landlord did not give me 'just cause' for my eviction (they gave no reason or a bad reason)."] = attorney_submitted_city == 'boston' and showifdef('attorney_boston_condo_just_cause', False)
+  nav.unhide()
+css: |
+  <style>
+  .worksheet-menu { border: 1px solid #b8c2cc; border-radius: .3rem; padding: 1rem; }
+  .worksheet-menu ul { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; list-style: none; margin: .5rem 0 0; padding: 0; }
+  .worksheet-heading, #worksheet-menu { scroll-margin-top: 6rem; }
+  .worksheet-heading { margin-top: 1.5rem; border-bottom: 1px solid #b8c2cc; padding-bottom: .4rem; }
+  .worksheet-heading:focus { outline: 2px solid currentColor; outline-offset: .2rem; }
+  </style>
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_about_you
+code: |
+  force_ask('attorney_intake_complete')
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_about_landlord
+code: |
+  force_ask('attorney_intake_complete')
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_about_court
+code: |
+  force_ask('attorney_intake_complete')
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_about_tenancy
+code: |
+  force_ask('attorney_intake_complete')
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_claims
+code: |
+  force_ask('attorney_intake_complete')
+---
+if: person_answering == 'attorney' and attorney_workflow == 'fast'
+event: review_everything
+code: |
+  force_ask('attorney_intake_complete')
