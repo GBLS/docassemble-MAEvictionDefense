@@ -16,7 +16,8 @@ dependencies = [
     "docassemble.PovertyScale>=2026.0.0",
     "docassemble.income>=0.0.36",
     "gspread",
-    "nameparser>=1.1.3",
+    # MADE uses HumanName and its first/last attributes, removed in nameparser 3.
+    "nameparser>=1.1.3,<3",
     "oauth2client",
     "usaddress",
 ]

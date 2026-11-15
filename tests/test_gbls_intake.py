@@ -42,6 +42,7 @@ from docassemble.MAEvictionDefense.gbls_intake import (  # noqa: E402
     GBLS_ELDER_ONLY_SERVICE_AREA,
     GBLS_SERVICE_AREA,
     city_in_service_area,
+    nameparts,
 )
 
 
@@ -73,3 +74,10 @@ def test_missing_city_is_not_in_the_service_area():
 
 def test_elder_only_towns_are_not_also_in_the_general_area():
     assert not set(GBLS_ELDER_ONLY_SERVICE_AREA) & set(GBLS_SERVICE_AREA)
+
+
+def test_nameparts_preserves_human_name_fields_used_by_intake():
+    name = nameparts("Jane Marie Smith")
+    assert name.first == "Jane"
+    assert name.middle == "Marie"
+    assert name.last == "Smith"

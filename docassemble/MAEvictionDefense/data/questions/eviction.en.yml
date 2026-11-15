@@ -1875,7 +1875,7 @@ help: |
   See: https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-state-laws
   and https://www.masslegalhelp.org/housing/lt1-chapter-17-protections-tenants-condo-conversion
   
-  Also https://archives.lib.state.ma.us/actsResolves/1983/1983acts0527.pdf
+  Also https://hdl.handle.net/2452/39633
 ---
 code: |
   temp = [{'My landlord failed to obtain the proper local permit.':'My landlord failed to obtain the proper local permit.'}]
