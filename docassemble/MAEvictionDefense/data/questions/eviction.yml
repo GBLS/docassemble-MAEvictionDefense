@@ -26,6 +26,11 @@ metadata:
     Answer and Discovery form and other forms you may need to file in court. MADE will also help you gather information 
     to help you defend your case.
 
+    Use MADE after an eviction case has been filed in court. It helps defendants in private,
+    public, and subsidized housing eviction cases raise defenses, including problems with
+    the eviction notice or procedure, bad housing conditions, and retaliation.
+    It is not a standalone tool for getting emergency help with a lockout before a case is filed.
+
     There are also special defenses in MADE for homeowners after a foreclosure.
 
     Most tenants who use MADE will get an extension of 2 weeks in their court hearing date in order to allow
@@ -49,8 +54,17 @@ metadata:
     - en
   help_page_url: https://www.gbls.org/MADE
   help_page_title: Massachusetts Defense for Eviction (Made) Self-Guided Eviction Help
-  LIST_topics: 
-    - HO-02-00-00-00
+  LIST_topics:
+    - HO-02-00-00-00 # Eviction from a home
+    - HO-02-02-00-00 # Eviction from subsidized or public housing
+    - HO-02-03-00-00 # Eviction from private rental housing (not public or subsidized)
+    - HO-02-03-02-00 # Going to court for Eviction and Landlord-Tenant issues
+    - HO-02-03-02-01 # Being a defendant in an eviction lawsuit
+    - HO-02-04-00-00 # Defenses to stop or delay an eviction
+    - HO-02-04-01-00 # Notice and Procedural defenses against an eviction
+    - HO-02-04-03-00 # Living conditions (habitability) defenses against an eviction
+    - HO-02-04-05-00 # Title and ownership defenses against an eviction
+    - HO-02-04-06-00 # Retaliatory Eviction defenses against an eviction
   tags: 
     - Housing
   jurisdiction: NAM-US-US+MA
