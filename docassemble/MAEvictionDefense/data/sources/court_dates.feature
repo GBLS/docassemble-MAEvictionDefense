@@ -1,3 +1,7 @@
+# Leave optional checkboxes at their interview defaults unless a scenario changes them.
+# ALKiln v5 reads aria-checked on labels; current native checkbox labels omit it,
+# so repeating an existing default in a story table can toggle the wrong answer.
+
 Feature: MADE tests
 
 Since the tests are so long and many scenarios don't conflict, some have been combined.
@@ -23,7 +27,7 @@ Scenario: User's court date has passed
 @slow @4 @fault
 Scenario: User has a "fault" case with NO court date
   Given I start the interview at "eviction"
-  Then I get to the question id "signature" with this data:
+  Then I get to the question id "case postponed" with this data:
     | var | value | trigger |
     | person_answering | tenant |  |
     | how_to_answer | continue |  |
@@ -42,16 +46,16 @@ Scenario: User has a "fault" case with NO court date
     | survey_user | True |  |
     | edit_contact_info | True |  |
     | landlord.name.text | Len Lessor |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
     | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | False |  |
+  Then I should see the phrase "Your first court-event date is not known yet"
+  And I tap the "#daquestion button[type='submit'][value='0']" element
+  Then I get to the question id "signature" with this data:
+    | var | value | trigger |
     | eviction_all_reasons['fault'] | True |  |
     | fault_basis['overcrowding'] | True |  |
-    | fault.did_not_occur | True |  |
-    | fault.not_violation_of_agreement | True |  |
-    | fault.no_control_of_guest | False |  |
     | facts.tenant_movein | 01/01/2019 |  |
     | facts.tenant_rent_share | 1 |  |
     | facts.tenant_rent_frequency | week |  |
@@ -60,8 +64,6 @@ Scenario: User has a "fault" case with NO court date
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | lease_requires_30_day_notice | False |  |
-    | ntq_leaves_off_required_language | False |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
     | date_received_ntq | 01/01/2020 |  |
@@ -70,6 +72,7 @@ Scenario: User has a "fault" case with NO court date
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
     | claim_jurytrial | False |  |
@@ -82,7 +85,7 @@ Scenario: User has a "fault" case with NO court date
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
-    | service_date | 01/01/2024 |  |
+    | service_date | today |  |
     | ask_intake_questions | skip |  |
   And I wait 1 second
   Then I download "Eviction_Forms.zip"
@@ -109,12 +112,11 @@ Scenario: User has a public housing voucher with a court date
     | survey_user | True |  |
     | edit_contact_info | True |  |
     | landlord.name.text | Len Lessor |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
     | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | True |  |
-    | case.first_event | 04/22/2027 |  |
+    | case.first_event | today + 60 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | tenant_got_accompanying_form | False |  |
     | facts.tenant_has_subsidy | True |  |
@@ -129,7 +131,6 @@ Scenario: User has a public housing voucher with a court date
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | dont_owe_rent | True |  |
     | behind_in_rent | True |  |
     | lease_type | self_extending |  |
     | date_received_ntq | 01/01/2020 |  |
@@ -138,6 +139,7 @@ Scenario: User has a public housing voucher with a court date
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | subsidized_housing.no_proper_termination | True |  |
     | subsidized_housing.no_just_cause | True |  |
     | subsidized_housing.no_ntq_to_agency | False |  |
@@ -155,7 +157,7 @@ Scenario: User has a public housing voucher with a court date
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
-    | service_date | 01/01/2024 |  |
+    | service_date | today |  |
     | ask_intake_questions | skip |  |
   And I wait 1 second
   Then I download "Eviction_Forms.zip"
@@ -182,12 +184,11 @@ Scenario: User fell behind because of RAFT delay
     | survey_user | True |  |
     | edit_contact_info | True |  |
     | landlord.name.text | Len Lessor |  |
-    | landlord.is_new | False |  |
     | court | macourts[31] |  |
     | landlord.has_attorney | False |  |
     | case.entry_date | 02/10/2020 |  |
     | case.hearing_date_assigned | True |  |
-    | case.first_event | 04/22/2027 |  |
+    | case.first_event | today + 60 |  |
     | eviction_all_reasons['nonpayment'] | True |  |
     | tenant_got_accompanying_form | False |  |
     | delay_in_raft | True |  |
@@ -206,7 +207,6 @@ Scenario: User fell behind because of RAFT delay
     | ntq_includes_tenant_name | True |  |
     | ntq_includes_all_tenants | True |  |
     | ntq_includes_correct_address | True |  |
-    | dont_owe_rent | True |  |
     | behind_in_rent | True |  |
     | lease_type | fixed_term |  |
     | lease_end_date | today + 365 |  |
@@ -216,6 +216,7 @@ Scenario: User fell behind because of RAFT delay
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | bad_conditions.conditions['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
@@ -229,7 +230,7 @@ Scenario: User fell behind because of RAFT delay
   Then I get to the question id "download screen" with this data:
     | var | value | trigger |
     | method_of_service | emailed |  |
-    | service_date | 01/01/2024 |  |
+    | service_date | today |  |
     | ask_intake_questions | skip |  |
   And I wait 1 second
   Then I download "Eviction_Forms.zip"

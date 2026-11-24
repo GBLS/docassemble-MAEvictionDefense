@@ -458,7 +458,7 @@ help: |
   We can also save information about your case if you choose. Saved information
   will be used only by a non-profit legal aid organization. It may be used to help
   you if your case is accepted for full representation, or it may be used to identify
-  trends to help the non-profit legal aid organization bettter decide how to use
+  trends to help the non-profit legal aid organization better decide how to use
   its resources to prevent evictions.
   
   Sharing your information is optional. You can use this service for free whether or not
@@ -844,7 +844,7 @@ question: |
 fields:
   - First name: additional_tenants[i].name.first
   - Last name: additional_tenants[i].name.last
-  - Street addres: additional_tenants[i].address.address
+  - Street address: additional_tenants[i].address.address
     address autocomplete: True
     default: ${tenant.address.address}
   - Unit: additional_tenants[i].address.unit
@@ -2220,7 +2220,7 @@ fields:
     datatype: yesno
   - I or someone in my household took steps to obtain a protection order (G.L. c. 209A) or a harassment prevention order (G.L. c. 258E).: retaliation.protection_or_prevention_order
     datatype: yesno
-  - I or someone in my household reported an incident of domestic violance, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
+  - I or someone in my household reported an incident of domestic violence, rape, sexual assault or stalking to law enforcement, or report a violation of a protection or harassment prevention order.: retaliation.domestic_violence
     datatype: yesno
   - I am a survivor of abuse, sexual assault, rape or stalking, and my landlord is evicting me for breaking my lease or changing my locks for safety reasons.: retaliation.survivor_rights
     datatype: yesno
