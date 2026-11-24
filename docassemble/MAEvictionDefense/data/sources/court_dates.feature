@@ -72,6 +72,7 @@ Scenario: User has a "fault" case with NO court date
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
     | claim_jurytrial | False |  |
@@ -138,6 +139,7 @@ Scenario: User has a public housing voucher with a court date
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | subsidized_housing.no_proper_termination | True |  |
     | subsidized_housing.no_just_cause | True |  |
     | subsidized_housing.no_ntq_to_agency | False |  |
@@ -214,6 +216,7 @@ Scenario: User fell behind because of RAFT delay
     | summons_includes_all_tenants | True |  |
     | summons_includes_correct_address | True |  |
     | ntq_contains_reservation | True |  |
+    | show_defense_summary | continue |  |
     | bad_conditions.conditions['None'] | True |  |
     | retaliation.is_retaliated | False |  |
     | tenant.is_discriminated | False |  |
