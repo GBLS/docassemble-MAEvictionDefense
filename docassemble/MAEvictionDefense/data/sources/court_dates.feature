@@ -1,8 +1,8 @@
-Feature: MADE tests
-
 # Leave optional checkboxes at their interview defaults unless a scenario changes them.
 # ALKiln v5 reads aria-checked on labels; current native checkbox labels omit it,
 # so repeating an existing default in a story table can toggle the wrong answer.
+
+Feature: MADE tests
 
 Since the tests are so long and many scenarios don't conflict, some have been combined.
 
